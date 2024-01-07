@@ -21,12 +21,13 @@ public final class SwerveConstants {
         public static final double STEER_MOTOR_D = 0.1;
     }
 
-    public static final class Falcon500SwerveModule {
-        public static final int FALCON500_ROUNDS_PER_MINUTE = 6380;
-        public static final int TICKS_PER_ROTATION = 2048;
+    public static final class KrakenSwerveModule {
+        // TODO: add kraken swerve constants
+        public static final int KRAKEN_ROUNDS_PER_MINUTE = 6000;
+        //public static final int TICKS_PER_ROTATION = 2048;
         
-        public static final double STEER_MOTOR_P = 0.2;
+        public static final double STEER_MOTOR_P = 0.0;
         public static final double STEER_MOTOR_I = 0.0;
-        public static final double STEER_MOTOR_D = 0.1;
+        public static final double STEER_MOTOR_D = 0.0;
     }
 }

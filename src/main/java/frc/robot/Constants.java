@@ -22,6 +22,7 @@ public final class Constants {
         // Front-to-back distance between drivetrain wheels
         public static final double DRIVETRAIN_WHEELBASE_METERS = 0;
 
+        // TODO: Add drivetrain constants
         public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 0;
         public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 0;
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 0;

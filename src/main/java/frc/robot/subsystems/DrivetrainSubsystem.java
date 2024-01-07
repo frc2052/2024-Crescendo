@@ -14,8 +14,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -29,16 +27,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final NeoSwerverModule backRightModule;
 
     private final AHRS navx;
-
-    private final Field2d field;
-
-    private boolean balanced = false;
     
     /** Creates a new SwerveDrivetrainSubsystem. */
     public DrivetrainSubsystem() {
         frontLeftModule = new NeoSwerverModule(
             "front left",
-            ModuleConfiguration.MK4I_L2,
+            ModuleConfiguration.MK4I_L3,
             Constants.Drivetrain.FRONT_LEFT_MODULE_DRIVE_MOTOR,
             Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_MOTOR,
             Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_ENCODER,
@@ -46,7 +40,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
         frontRightModule = new NeoSwerverModule(
             "front right",
-            ModuleConfiguration.MK4I_L2,
+            ModuleConfiguration.MK4I_L3,
             Constants.Drivetrain.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
             Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_MOTOR,
             Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_ENCODER,
@@ -54,7 +48,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
         backLeftModule = new NeoSwerverModule(
             "back left",
-            ModuleConfiguration.MK4I_L2,
+            ModuleConfiguration.MK4I_L3,
             Constants.Drivetrain.BACK_LEFT_MODULE_DRIVE_MOTOR,
             Constants.Drivetrain.BACK_LEFT_MODULE_STEER_MOTOR,
             Constants.Drivetrain.BACK_LEFT_MODULE_STEER_ENCODER,
@@ -62,7 +56,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
         backRightModule = new NeoSwerverModule(
             "back right",
-            ModuleConfiguration.MK4I_L2,
+            ModuleConfiguration.MK4I_L3,
             Constants.Drivetrain.BACK_RIGHT_MODULE_DRIVE_MOTOR,
             Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_MOTOR,
             Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_ENCODER,
@@ -72,11 +66,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
         navx = new AHRS(SPI.Port.kMXP, (byte) 200);
 
         zeroGyro();
-
-        field = new Field2d();
-        
-        Shuffleboard.getTab("Odometry").add(navx);
-        Shuffleboard.getTab("Odometry").add(field);
     }
 
     @Override
@@ -174,7 +163,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public static double getMaxVelocityMetersPerSecond() {
-        return NeoSwerverModule.getMaxVelocityMetersPerSecond(ModuleConfiguration.MK4I_L2);
+        return NeoSwerverModule.getMaxVelocityMetersPerSecond(ModuleConfiguration.MK4I_L3);
     }
 
     public static double getMaxAngularVelocityRadiansPerSecond() {
@@ -183,12 +172,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
          * (a measure of how fast the robot can rotate in place).
          */
         
-        return NeoSwerverModule.getMaxVelocityMetersPerSecond(ModuleConfiguration.MK4I_L2) / Math.hypot(
-            Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, 
-            Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0
-        );
+        // return NeoSwerverModule.getMaxVelocityMetersPerSecond(ModuleConfiguration.MK4I_L3) / Math.hypot(
+        //     Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, 
+        //     Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0
+        // );
 
-        //return 6 * Math.PI;
+        return 6 * Math.PI;
     }
 
     public void debug() {
