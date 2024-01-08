@@ -8,7 +8,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-//import frc.robot.io.Dashboard;
+import frc.robot.io.Dashboard;
 
 public class RobotState {
     private static RobotState INSTANCE;
@@ -174,12 +174,12 @@ public class RobotState {
         return DriverStation.isTest();
     }
 
-    // public void outputRobotStateToDashboard(){
-    //     Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
-    //     Dashboard.getInstance().putData("Robot Position X Inches: ", Units.inchesToMeters(robotPose.getX()));
-    //     Dashboard.getInstance().putData("Robot Position Y Inches: ", Units.inchesToMeters(robotPose.getY()));
-    //     Dashboard.getInstance().putData("VISION Robot Position X Inches: ", Units.inchesToMeters(robotVisionPose2d.getX()));
-    //     Dashboard.getInstance().putData("VISION Robot Position Y Inches: ", Units.inchesToMeters(robotVisionPose2d.getY()));
-    //     Dashboard.getInstance().putData("Vision Rotational Value Degrees: ", robotVisionPose2d.getRotation().getDegrees());
-    // }   
+    public void outputRobotStateToDashboard(){
+        Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
+        Dashboard.getInstance().putData("Robot Position X Inches: ", Units.inchesToMeters(robotPose.getX()));
+        Dashboard.getInstance().putData("Robot Position Y Inches: ", Units.inchesToMeters(robotPose.getY()));
+        Dashboard.getInstance().putData("VISION Robot Position X Inches: ", Units.inchesToMeters(robotVisionPose2d.getX()));
+        Dashboard.getInstance().putData("VISION Robot Position Y Inches: ", Units.inchesToMeters(robotVisionPose2d.getY()));
+        Dashboard.getInstance().putData("Vision Rotational Value Degrees: ", robotVisionPose2d.getRotation().getDegrees());
+    }   
 }

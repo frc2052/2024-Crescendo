@@ -1,4 +1,4 @@
-package com.team2052.lib;
+package frc.robot.com.lib;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

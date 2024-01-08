@@ -133,7 +133,6 @@ public final class Constants {
         public static final double TAG15_ROTATION = 120;
         public static final Translation3d TAG16_TRANSLATION3D = new Translation3d(182.73, 146.19, 52.00);
         public static final double TAG16_ROTATION = 240;
-        AprilTagFieldLayout apriltagLayout = new AprilTagFieldLayout(null)
     }
 
 
