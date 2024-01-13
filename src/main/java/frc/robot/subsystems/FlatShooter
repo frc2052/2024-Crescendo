@@ -1,0 +1,40 @@
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+
+
+public class FlatShooterSubsystem extends Subsystembase{
+  
+  Private final TalonFX flatMotor;
+
+  public ShooterSubsytem() {
+    flatMotor = new TalonFX(constants.FLAT_SHOOTER_MOTOR_ID);
+    flatMotor.set(TalonFXControlMode.Velocity, Constants.SHOOTER_IDLE_SPEED_TPS);
+  }
+
+  Public void setFlatShooterSpeed(Double flatShooterMotorSpeedTPS) {
+    flatMotor.set(TalonFXControlMode.Velocity, flatShooterMotorSpeedTPS);
+  }
+
+  public void stopShooterMoter();{
+    flatMotor(TalonFXControlMode.Velocity, 0)
+  }
+
+  public void returnIdleSpeed() {
+    flatMotor.set(TalonFXControlMode.Velocity, Constants.SHOOTER_IDLE_SPEED_TPS);
+  }
+  public double getFlatMotorShooterSpeed() {
+    return flatMotor.getSelectedSensorVelocity();
+  }
+    @Override
+  public void periodic() {
+    
+  }
+
+
+}
