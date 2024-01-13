@@ -5,34 +5,20 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ClimberSubsystem extends SubsystemBase{
-    // DoubleSolenoid that controls both in and out solenoids for both climbing arms.
-    private final DoubleSolenoid climberSolenoid;
-    private ClimberSolenoidState currentSolenoidState;
+ 
     // Motor that controls the wenches for climbing.
     private final TalonFX climberMotor;
     private double targetHeightTicks;
 
-    private final DoubleSolenoid lockSolenoid;
     private boolean isLocked;
     private boolean isVertical;
 
     public ClimberSubsystem() {
-        climberSolenoid = new DoubleSolenoid(
-            Constants.Climber.COMPRESSOR_MODULE_ID,
-            PneumaticsModuleType.REVPH, 
-            Constants.Climber.CLIMBER_FORWARD_SOLENOID,
-            Constants.Climber.CLIMBER_BACKWARD_SOLENOID
-        );
-        currentSolenoidState = ClimberSolenoidState.BACKWARD;
-
         climberMotor = new TalonFX(Constants.Climber.CLIMBER_MOTOR);
         climberMotor.configFactoryDefault();
         climberMotor.setNeutralMode(NeutralMode.Brake);
@@ -45,15 +31,7 @@ public class ClimberSubsystem extends SubsystemBase{
         // climberMotor.configMotionCruiseVelocity(100, 10);
         // climberMotor.configMotionAcceleration(100, 10);
 
-        lockSolenoid = new DoubleSolenoid(
-            Constants.Climber.COMPRESSOR_MODULE_ID,
-            PneumaticsModuleType.REVPH, 
-            Constants.Climber.CLIMBER_LOCK_SOLENOID,
-            Constants.Climber.CLIMBER_UNLOCK_SOLENOID
-        );
-        isLocked = lockSolenoid.get() == Value.kReverse;
-        isVertical = true;
-        unlock();
+       
     }
 
     /**
@@ -129,40 +107,7 @@ public class ClimberSubsystem extends SubsystemBase{
     public void stop() {
         climberMotor.set(ControlMode.PercentOutput, 0);
     }
-    /**
-     * Shifts climber arms into climbing ready position (verticle)
-     */
-    public void shiftForward(){
-        climberSolenoid.set(Value.kForward);
-        currentSolenoidState = ClimberSolenoidState.FORWARD;
-        isVertical = true;
-    }
 
-    /**
-     * Shifts climber arms into the relaxed or reaching position (angled)
-     */
-    public void shiftBackward(){
-        climberSolenoid.set(Value.kReverse);
-        currentSolenoidState = ClimberSolenoidState.BACKWARD;
-        isVertical = false;
-
-    }
-
-    public ClimberSolenoidState getClimberSolenoidState() {
-        return currentSolenoidState;
-    }
-
-    public void lock() {
-        System.err.println("************************ CLIMBER LOCKED");
-        lockSolenoid.set(Value.kReverse);
-        isLocked = true;
-    }
-
-    public void unlock() {
-        System.err.println("************************ CLIMBER UNLOCKED");
-        lockSolenoid.set(Value.kForward);
-        isLocked = false;
-    }
 
     public void zeroEncoder() {
         climberMotor.setSelectedSensorPosition(0);
