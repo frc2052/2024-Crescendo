@@ -18,11 +18,11 @@ public final class Constants {
   }
 
   public static class UnderIntake1SideConstants {
-    public final static int topMotorChannel = 1;
-    public final static int bottomMotorChannel = 2;
+    public final static int TOP_MOTOR_CHANNEL = 1;
+    public final static int BOTTOM_MOTOR_CHANNEL = 2;
 
-    public final static double intakeOutSpeed = 0.5;
-    public final static double intakeInSpeed = 0.5;
+    public final static double INTAKE_OUT_SPEED_TPS = 0.5;
+    public final static double INTAKE_IN_SPEED_TPS = 0.5;
   }
 
   

@@ -17,20 +17,20 @@ public class UnderIntake1Side extends SubsystemBase {
   private final TalonFX bottomMotor;
 
   public UnderIntake1Side () {    
-    topMotor = new TalonFX(Constants.UnderIntake1SideConstants.topMotorChannel);
-    bottomMotor = new TalonFX(Constants.UnderIntake1SideConstants.bottomMotorChannel);
+    topMotor = new TalonFX(Constants.UnderIntake1SideConstants.TOP_MOTOR_CHANNEL);
+    bottomMotor = new TalonFX(Constants.UnderIntake1SideConstants.BOTTOM_MOTOR_CHANNEL);
   }
 
   public void intakeIn() {
     //reversed bottom motor
-    topMotor.set(ControlMode.PercentOutput, Constants.UnderIntake1SideConstants.intakeInSpeed);
-    bottomMotor.set(ControlMode.PercentOutput, -Constants.UnderIntake1SideConstants.intakeInSpeed);
+    topMotor.set(ControlMode.Velocity, Constants.UnderIntake1SideConstants.INTAKE_IN_SPEED_TPS);
+    bottomMotor.set(ControlMode.Velocity, -Constants.UnderIntake1SideConstants.INTAKE_IN_SPEED_TPS);
   }
 
   public void intakeOut() {
     //reversed top motor
-    topMotor.set(ControlMode.PercentOutput, -Constants.UnderIntake1SideConstants.intakeOutSpeed);
-    bottomMotor.set(ControlMode.PercentOutput, Constants.UnderIntake1SideConstants.intakeOutSpeed);
+    topMotor.set(ControlMode.Velocity, -Constants.UnderIntake1SideConstants.INTAKE_OUT_SPEED_TPS);
+    bottomMotor.set(ControlMode.Velocity, Constants.UnderIntake1SideConstants.INTAKE_OUT_SPEED_TPS);
   }
   @Override
   public void periodic() {}
