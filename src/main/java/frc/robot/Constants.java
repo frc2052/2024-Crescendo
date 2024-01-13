@@ -16,6 +16,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static class OperatorConstants {
+        public static final int kDriverControllerPort = 0;
+    }
+
+    public static class VerticalShooterConstants {
+        public static final int LOWER_SHOOTER_MOTOR_ID = 0; //CHANGE
+        public static final int UPPER_SHOOTER_MOTOR_ID = 0; //CHANGE
+        public static final double SHOOTER_IDLE_SPEED_TPS = 10000; //CHANGE
+    }
     public static class Drivetrain {
         // Left-to-right distance between drivetrain wheels
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0;
