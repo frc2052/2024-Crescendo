@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.shooter;
 
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -19,10 +19,10 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   private final TalonFX upperMotor;
 
   public VerticalShooterSubsystem() {
-    lowerMotor = new TalonFX(Constants.VerticalShooterConstants.UPPER_SHOOTER_MOTOR_ID);
-    upperMotor = new TalonFX(Constants.VerticalShooterConstants.LOWER_SHOOTER_MOTOR_ID);
-    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooterConstants.SHOOTER_IDLE_SPEED_TPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooterConstants.SHOOTER_IDLE_SPEED_TPS);
+    lowerMotor = new TalonFX(Constants.VerticalShooter.UPPER_SHOOTER_MOTOR_ID);
+    upperMotor = new TalonFX(Constants.VerticalShooter.LOWER_SHOOTER_MOTOR_ID);
+    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
+    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
   }
 
   public void setUpperShooterSpeed(double upperShooterMotorSpeedTPS) {
@@ -39,8 +39,8 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   }
 
   public void returnToIdleSpeed() {
-    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooterConstants.SHOOTER_IDLE_SPEED_TPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooterConstants.SHOOTER_IDLE_SPEED_TPS);
+    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
+    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
   }
 
   public double getUpperShooterSpeed() {
