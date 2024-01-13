@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -25,11 +24,32 @@ public class VerticalShooterSubsystem extends SubsystemBase {
     lowerMotor.set(TalonFXControlMode.Velocity, Constants.SHOOTER_IDLE_SPEED_TPS);
     upperMotor.set(TalonFXControlMode.Velocity, -Constants.SHOOTER_IDLE_SPEED_TPS);
   }
-  public void SetShooterSpeed(double ShooterMotorSpeedTPS) {
-    lowerMotor.set(TalonFXControlMode.Velocity, ShooterMotorSpeedTPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -ShooterMotorSpeedTPS);
+
+  public void setUpperShooterSpeed(double upperShooterMotorSpeedTPS) {
+    upperMotor.set(TalonFXControlMode.Velocity, upperShooterMotorSpeedTPS);
   }
 
+  public void setLowerShooterSpeed(double lowerShooterMotorSpeedTPS) {
+    lowerMotor.set(TalonFXControlMode.Velocity, lowerShooterMotorSpeedTPS);
+  }
+
+  public void stopShooterMotor() {
+    lowerMotor.set(TalonFXControlMode.Velocity, 0);
+    upperMotor.set(TalonFXControlMode.Velocity, 0);
+  }
+
+  public void returnIdleSpeed() {
+    lowerMotor.set(TalonFXControlMode.Velocity, Constants.SHOOTER_IDLE_SPEED_TPS);
+    upperMotor.set(TalonFXControlMode.Velocity, -Constants.SHOOTER_IDLE_SPEED_TPS);
+  }
+
+  public double getUpperShooterSpeed() {
+    return upperMotor.getSelectedSensorVelocity();
+  }
+
+  public double getLowerShooterSpeed() {
+    return lowerMotor.getSelectedSensorVelocity();
+  }
 
   @Override
   public void periodic() {
