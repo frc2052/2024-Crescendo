@@ -16,8 +16,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+
+  public static class OverTheBumperIntake{
+    public static final int INSOLENOID_ID = 0;
+    public static final int OUTSOLENOID_ID = 0;
+    public static final int INTAKE_MOTOR_ID = 0;
   }
     public static class Climber{
       public static final int COMPRESSOR_MODULE_ID = 0;
