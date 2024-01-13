@@ -15,7 +15,6 @@ public class ClimberSubsystem extends SubsystemBase{
     private final TalonFX climberMotor;
     private double targetHeightTicks;
 
-    private boolean isLocked;
     private boolean isVertical;
 
     public ClimberSubsystem() {
@@ -37,55 +36,49 @@ public class ClimberSubsystem extends SubsystemBase{
     /**
      * Extends the climbing arm at a set speed - old way we did it
      */
-    public void oldExtend(double extendPctOutput, boolean override) {
-        if (!isLocked) {
-            if (override) {
-                climberMotor.set(ControlMode.PercentOutput, extendPctOutput * 0.5);
-            } else if (getIsAboveMaxHeight()) {
-                climberMotor.set(ControlMode.PercentOutput, 0);;
-            } else if (getIsAbove95PctHeight()) {
-                climberMotor.set(ControlMode.PercentOutput, extendPctOutput * 0.5);
-            } else {
-                // System.err.println("Climber extended to (or past) the max height!");
-                climberMotor.set(ControlMode.PercentOutput, extendPctOutput);
-            }
+    public void extend(double extendPctOutput, boolean override) {
+     
+        if (override) {
+        climberMotor.set(ControlMode.PercentOutput, extendPctOutput * 0.5);
+        } else if (getIsAboveMaxHeight()) {
+            climberMotor.set(ControlMode.PercentOutput, 0);;
+        } else if (getIsAbove95PctHeight()) {
+            climberMotor.set(ControlMode.PercentOutput, extendPctOutput * 0.5);
         } else {
-            System.err.println("ATTEMPTED TO MOVE CLIMBER WHEN LOCKED");
+            // System.err.println("Climber extended to (or past) the max height!");
+            climberMotor.set(ControlMode.PercentOutput, extendPctOutput);
         }
     }
 
-    public void oldExtend(boolean override) {
-        oldExtend(Constants.Climber.CLIMBER_EXTENSION_SPEED_PCT, override);
+    public void extend(boolean override) {
+        extend(Constants.Climber.CLIMBER_EXTENSION_SPEED_PCT, override);
     }
 
     /**
      * Retracts the climbing arm at a set speed
      */
-    public void oldRetract(double retractPctOutput, boolean override) {
-        if (!isLocked) {
-            if (override) {
-                climberMotor.set(ControlMode.PercentOutput, retractPctOutput * .75); //slower climb speed when doing override
-            } else if (getIsBelow3PctHeight() && getIsAboveMinHeight()) {
-                climberMotor.set(ControlMode.PercentOutput, retractPctOutput * 0.5);
-            } else if (getIsAboveMinHeight()) {
-                climberMotor.set(ControlMode.PercentOutput, retractPctOutput);
-            } else {
-                // System.err.println("Climber retracted to (or past) the min height!");
-                climberMotor.set(ControlMode.PercentOutput, 0);;
-            }
+    public void retract(double retractPctOutput, boolean override) {
+       
+        if (override) {
+            climberMotor.set(ControlMode.PercentOutput, retractPctOutput * .75); //slower climb speed when doing override
+        } else if (getIsBelow3PctHeight() && getIsAboveMinHeight()) {
+            climberMotor.set(ControlMode.PercentOutput, retractPctOutput * 0.5);
+        } else if (getIsAboveMinHeight()) {
+            climberMotor.set(ControlMode.PercentOutput, retractPctOutput);
         } else {
-            System.err.println("ATTEMPTED TO MOVE CLIMBER WHEN LOCKED");
+            // System.err.println("Climber retracted to (or past) the min height!");
+            climberMotor.set(ControlMode.PercentOutput, 0);;
         }
+
     }
 
-    public void oldRetract(boolean override) {
-        oldRetract(Constants.Climber.CLIMBER_EXTENSION_SPEED_PCT, override);
+    public void retract(boolean override) {
+        retract(Constants.Climber.CLIMBER_EXTENSION_SPEED_PCT, override);
     }
 
     public void movePctOutput(double pctOutput) {
-        if (!isLocked) {
-            climberMotor.set(ControlMode.PercentOutput, pctOutput);
-        }
+        climberMotor.set(ControlMode.PercentOutput, pctOutput);
+        
     }
 
     // public void moveToHeight(double targetHeightTicks) {
@@ -115,10 +108,6 @@ public class ClimberSubsystem extends SubsystemBase{
 
     public boolean getIsVertical() {
         return isVertical;
-    }
-
-    public boolean getIsLocked() {
-        return isLocked;
     }
 
     public boolean getIsAboveMaxHeight() {
@@ -167,13 +156,8 @@ public class ClimberSubsystem extends SubsystemBase{
 @Override
 public void periodic() {
     SmartDashboard.putNumber("Climber Height Ticks", climberMotor.getSelectedSensorPosition());
-    SmartDashboard.putBoolean("Climber Locked", isLocked);
     SmartDashboard.putBoolean("Climber Is At Max Height", getIsAboveMaxHeight());
     SmartDashboard.putBoolean("Climber Is At Min Height", !getIsAboveMinHeight());
 }
 
-    public static enum ClimberSolenoidState {
-        FORWARD,
-        BACKWARD;
-    }
 }
