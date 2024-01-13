@@ -25,6 +25,9 @@ public final class SwerveConstants {
         // TODO: add kraken swerve constants
         public static final int KRAKEN_ROUNDS_PER_MINUTE = 6000;
         //public static final int TICKS_PER_ROTATION = 2048;
+
+        public static final boolean DRIVE_INVERTED = false;
+        public static final boolean STEER_INVERTED = false;
         
         public static final double STEER_MOTOR_P = 0.0;
         public static final double STEER_MOTOR_I = 0.0;

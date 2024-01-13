@@ -1,89 +1,65 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package com.team2052.swervemodule;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * Swerve module implementation for swerve module with Neos
- */
-public class NeoSwerverModule extends SwerveModule {
-    private final CANSparkMax driveMotor;
+public class KrakenSwerveModule extends SwerveModule {
+    private final TalonFX driveMotor;
     private final CANSparkMax steerMotor;
+    private double driveVelocityConversionFactor;
+    private double drivePositionConversionFactor;
 
-    public NeoSwerverModule(
-        String debugName, 
-        ModuleConfiguration moduleConfiguration,
-        int driveMotorChannel,
-        int steerMotorChannel,
-        int canCoderChannel,
-        Rotation2d steerOffset
-    ) {
+    public KrakenSwerveModule(
+            String debugName, 
+            ModuleConfiguration moduleConfiguration, 
+            int driveMotorChannel,
+            int steerMotorChannel,
+            int canCoderChannel,
+            Rotation2d steerOffset
+        ) {
         super(debugName, moduleConfiguration, canCoderChannel, steerOffset);
 
         /*
-         * Drive Motor Initialization
+         *  Drive Motor Initialization
          */
-        driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
-        checkError("Failed to restore drive motor factory defaults", driveMotor.restoreFactoryDefaults());
 
-        // Reduce CAN status frame rates
-        checkError(
-            "Failed to set drive motor periodic status frame rate",
-            driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100),
-            driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20),
-            driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20)
-        );
+        driveMotor = new TalonFX(driveMotorChannel);
 
-        checkError(
-            "Failed to set drive motor idle mode",
-            driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake)
-        );
-        driveMotor.setInverted(moduleConfiguration.isDriveInverted());
+        checkError("Failed to restore drive motor factory defaults", driveMotor.getConfigurator().apply(new TalonFXConfiguration()));
+        driveMotor.setInverted(SwerveConstants.KrakenSwerveModule.DRIVE_INVERTED);
+        driveMotor.setNeutralMode(NeutralModeValue.Brake);
+
+
+        drivePositionConversionFactor = Math.PI * moduleConfiguration.getWheelDiameter() * 
+        moduleConfiguration.getDriveReduction();
+
+        driveVelocityConversionFactor = drivePositionConversionFactor / 60.0;
 
         checkError(
-            "Failed to enable drive motor voltage compensation",
-            driveMotor.enableVoltageCompensation(SwerveConstants.MAX_VOLTAGE_VOLTS)
-        );
-        checkError(
-            "Failed to set steer motor current limit",
-            driveMotor.setSmartCurrentLimit(
-                SwerveConstants.DRIVE_STALL_CURRENT_LIMIT_AMPS, 
-                SwerveConstants.DRIVE_FREE_CURRENT_LIMIT_AMPS
+            "Failed to set drive motor status frame period",
+            driveMotor.getPosition().setUpdateFrequency(
+                250,
+                CAN_TIMEOUT_MS
             )
         );
 
-        // Drive Motor encoder initialization
-        RelativeEncoder driveEncoder = driveMotor.getEncoder();
-
-        // Conversion factor for switching between ticks and meters in terms of meters per tick
-        double drivePositionConversionFactor = Math.PI * moduleConfiguration.getWheelDiameter() * 
-            moduleConfiguration.getDriveReduction();
-        
-        checkError(
-            "Failed to set drive motor encoder conversion factors",
-            // Set the position conversion factor so the encoder will automatically convert ticks to meters
-            driveEncoder.setPositionConversionFactor(drivePositionConversionFactor),
-            // Velocity of the encoder in meters per second
-            driveEncoder.setVelocityConversionFactor(drivePositionConversionFactor / 60.0)
-        );
 
         /*
          * Steer Motor Initialization
          */
         steerMotor = new CANSparkMax(steerMotorChannel, MotorType.kBrushless);
-        checkError("Failed to resotre steer motor factory defaults", steerMotor.restoreFactoryDefaults());
+        checkError("Failed to restore steer motor factory defaults", steerMotor.restoreFactoryDefaults());
 
         // Reduce CAN status frame rates
         checkError(
@@ -112,6 +88,7 @@ public class NeoSwerverModule extends SwerveModule {
         
         // Steer Motor encoder initialization
         RelativeEncoder steerEncoder = steerMotor.getEncoder();
+        steerEncoder.setInverted(SwerveConstants.KrakenSwerveModule.STEER_INVERTED);
 
         // Conversion factor for switching between ticks and radians in terms of radians per tick
         double steerPositionConversionFactor = 2.0 * Math.PI * moduleConfiguration.getSteerReduction();
@@ -149,10 +126,9 @@ public class NeoSwerverModule extends SwerveModule {
 
     @Override
     public SwerveModuleState getState() {
-        // Both encoder values are automatically in units of meters per second and
-        // radians because of the position and velocity conversion factors
         return new SwerveModuleState(
-            driveMotor.getEncoder().getVelocity(),
+            // Convert from ticks to meters per second using the predefined conversion factor
+            driveMotor.getVelocity().getValueAsDouble() * driveVelocityConversionFactor,
             new Rotation2d(
                 steerMotor.getEncoder().getPosition() % (2.0 * Math.PI)
             )
@@ -186,13 +162,13 @@ public class NeoSwerverModule extends SwerveModule {
     @Override
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            driveMotor.getEncoder().getPosition(),
+            driveMotor.getPosition().getValueAsDouble() * drivePositionConversionFactor,
             new Rotation2d(
                 steerMotor.getEncoder().getPosition()
             )
         );
     }
-
+    
     public static double getMaxVelocityMetersPerSecond(ModuleConfiguration moduleConfiguration) {
         /*
          * The formula for calculating the theoretical maximum velocity is:
