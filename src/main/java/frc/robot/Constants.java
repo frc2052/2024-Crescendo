@@ -19,6 +19,19 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+    public static class Climber{
+      public static final int COMPRESSOR_MODULE_ID = 0;
+      public static final int CLIMBER_FORWARD_SOLENOID = 0;
+      public static final int CLIMBER_BACKWARD_SOLENOID = 0;
+      public static final int CLIMBER_LOCK_SOLENOID = 0;
+      public static final int CLIMBER_UNLOCK_SOLENOID = 0;
+      public static final int CLIMBER_EXTENSION_SPEED_PCT = 0;
+      public static final int CLIMBER_MOTOR = 0;
+      public static final int MAX_CLIMBER_HEIGHT_TICKS_VERTICAL = 0;
+      public static final int MIN_CLIMBER_HEIGHT_TICKS = 0;
+      public static final int WINCH_CIRCUMFERENCE_INCHES = 0;
+      public static final int TICKS_PER_WINCH_ROTATION = 0;
+      public static final int MAX_CLIMBER_HEIGHT_TICKS_TILTED = 0;
 
   public static class UnderIntake1SideConstants {
     public final static int UPPER_MOTOR_CHANNEL = 1;
