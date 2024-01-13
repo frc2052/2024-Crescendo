@@ -21,6 +21,14 @@ public class UnderIntake1SideSubsystem extends SubsystemBase {
     lowerMotor = new TalonFX(Constants.UnderIntake1SideConstants.LOWER_MOTOR_CHANNEL);
   }
 
+  public void setUpperMotorSpeed(double upperMotorSpeedTPS) {
+    upperMotor.set(ControlMode.Velocity, upperMotorSpeedTPS);
+  }
+
+  public void setLowerMotorSpeed(double lowerMotorSpeedTPS) {
+    lowerMotor.set(ControlMode.Velocity, lowerMotorSpeedTPS);
+  }
+
   public void intakeIn() {
     //reversed bottom motor
     upperMotor.set(ControlMode.Velocity, Constants.UnderIntake1SideConstants.INTAKE_IN_SPEED_TPS);
