@@ -8,10 +8,10 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class DriveCommand extends CommandBase {
+public class DriveCommand extends Command {
     protected final DrivetrainSubsystem drivetrain;
 
     private final DoubleSupplier xSupplier;

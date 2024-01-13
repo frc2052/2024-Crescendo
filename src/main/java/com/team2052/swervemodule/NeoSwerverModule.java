@@ -5,9 +5,10 @@
 package com.team2052.swervemodule;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -34,15 +35,15 @@ public class NeoSwerverModule extends SwerveModule {
         /*
          * Drive Motor Initialization
          */
-        driveMotor = new CANSparkMax(driveMotorChannel, CANSparkMaxLowLevel.MotorType.kBrushless);
+        driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
         checkError("Failed to resotre drive motor factory defaults", driveMotor.restoreFactoryDefaults());
 
         // Reduce CAN status frame rates
         checkError(
             "Failed to set drive motor periodic status frame rate",
-            driveMotor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus0, 100),
-            driveMotor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus1, 20),
-            driveMotor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus2, 20)
+            driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100),
+            driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20),
+            driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20)
         );
 
         checkError(
@@ -81,15 +82,15 @@ public class NeoSwerverModule extends SwerveModule {
         /*
          * Steer Motor Initialization
          */
-        steerMotor = new CANSparkMax(steerMotorChannel, CANSparkMaxLowLevel.MotorType.kBrushless);
+        steerMotor = new CANSparkMax(steerMotorChannel, MotorType.kBrushless);
         checkError("Failed to resotre steer motor factory defaults", steerMotor.restoreFactoryDefaults());
 
         // Reduce CAN status frame rates
         checkError(
             "Failed to set steer motor periodic status frame rate",
-            steerMotor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus0, 100),
-            steerMotor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus1, 20),
-            steerMotor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus2, 20)
+            steerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100),
+            steerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20),
+            steerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20)
         );
 
         checkError(
@@ -129,7 +130,7 @@ public class NeoSwerverModule extends SwerveModule {
             steerEncoder.setPosition(Math.toRadians(canCoder.getAbsolutePosition()))
         );
 
-        SparkMaxPIDController steerController = steerMotor.getPIDController();
+        SparkPIDController steerController = steerMotor.getPIDController();
         checkError(
             "Failed to configure steer motor PID",
             steerController.setP(SwerveConstants.NeoSwerveModule.STEER_MOTOR_P),
