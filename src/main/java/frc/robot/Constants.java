@@ -16,4 +16,14 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class UnderIntake1SideConstants {
+    public final static int topMotorChannel = 1;
+    public final static int bottomMotorChannel = 2;
+
+    public final static double intakeOutSpeed = 0.5;
+    public final static double intakeInSpeed = 0.5;
+  }
+
+  
 }
