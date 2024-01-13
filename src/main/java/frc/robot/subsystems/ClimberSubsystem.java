@@ -81,18 +81,11 @@ public class ClimberSubsystem extends SubsystemBase{
         
     }
 
-    // public void moveToHeight(double targetHeightTicks) {
-    //     this.targetHeightTicks = targetHeightTicks;
-    //     if (!isLocked) {
-    //         climberMotor.set(ControlMode.MotionMagic, targetHeightTicks);
-    //     }
-    // }
-
-    // public void moveToHeight() {
-    //     if (!isLocked) {
-    //         climberMotor.set(ControlMode.MotionMagic, targetHeightTicks);
-    //     }
-    // }
+    public void moveToHeight(double targetHeightTicks) {
+        this.targetHeightTicks = targetHeightTicks;
+        climberMotor.set(ControlMode.MotionMagic, targetHeightTicks);
+    
+    }
 
     /**
      * Stops all climber motor activity.
