@@ -5,17 +5,18 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.Solenoid;
 
-public class OverBumperIntake extends SubsystemBase {
-  private final Talon overBumperIntake = new Talon(0);
+public class OverBumperIntakeSubsystem extends SubsystemBase {
+  private final Talon overBumperIntake = new Talon(Constants.OverTheBumperIntake.INTAKE_MOTOR_ID);
   private Solenoid inSolonoid;
   private Solenoid outSolonoid;
  
-  public OverBumperIntake(){
-    inSolonoid = new Solenoid(null, 1);
-    outSolonoid = new Solenoid(null, 2);
+  public OverBumperIntakeSubsystem(){
+    inSolonoid = new Solenoid(null, Constants.OverTheBumperIntake.INSOLENOID_ID);
+    outSolonoid = new Solenoid(null, Constants.OverTheBumperIntake.OUTSOLENOID_ID);
   }
 
   public void intake(){
