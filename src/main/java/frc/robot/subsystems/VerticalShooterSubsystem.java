@@ -19,10 +19,10 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   private final TalonFX upperMotor;
 
   public VerticalShooterSubsystem() {
-    lowerMotor = new TalonFX(Constants.UPPER_SHOOTER_MOTOR_ID);
-    upperMotor = new TalonFX(Constants.LOWER_SHOOTER_MOTOR_ID);
-    lowerMotor.set(TalonFXControlMode.Velocity, Constants.SHOOTER_IDLE_SPEED_TPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -Constants.SHOOTER_IDLE_SPEED_TPS);
+    lowerMotor = new TalonFX(Constants.VerticalShooterConstants.UPPER_SHOOTER_MOTOR_ID);
+    upperMotor = new TalonFX(Constants.VerticalShooterConstants.LOWER_SHOOTER_MOTOR_ID);
+    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooterConstants.SHOOTER_IDLE_SPEED_TPS);
+    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooterConstants.SHOOTER_IDLE_SPEED_TPS);
   }
 
   public void setUpperShooterSpeed(double upperShooterMotorSpeedTPS) {
@@ -38,9 +38,9 @@ public class VerticalShooterSubsystem extends SubsystemBase {
     upperMotor.set(TalonFXControlMode.Velocity, 0);
   }
 
-  public void returnIdleSpeed() {
-    lowerMotor.set(TalonFXControlMode.Velocity, Constants.SHOOTER_IDLE_SPEED_TPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -Constants.SHOOTER_IDLE_SPEED_TPS);
+  public void returnToIdleSpeed() {
+    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooterConstants.SHOOTER_IDLE_SPEED_TPS);
+    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooterConstants.SHOOTER_IDLE_SPEED_TPS);
   }
 
   public double getUpperShooterSpeed() {
