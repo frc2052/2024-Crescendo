@@ -83,6 +83,5 @@ public final class Constants {
             public static final String CAMERA_CONNECTION_KEY = "Camera Connected";
             public static final String AUTO_COMPILED_KEY = "Auto Compiled";
             public static final String AUTO_DESCRIPTION_KEY = "Auto Description";
-            public static final String CONE_OFFSET_KEY = "Cone Offset";
         }
 }
