@@ -21,10 +21,10 @@ import frc.robot.RobotState;
 public class DrivetrainSubsystem extends SubsystemBase {
     private RobotState robotState = RobotState.getInstance();
 
-    private final NeoSwerverModule frontLeftModule;
-    private final NeoSwerverModule frontRightModule;
-    private final NeoSwerverModule backLeftModule;
-    private final NeoSwerverModule backRightModule;
+    final NeoSwerverModule frontLeftModule;
+    final NeoSwerverModule frontRightModule;
+    final NeoSwerverModule backLeftModule;
+    final NeoSwerverModule backRightModule;
 
     private final AHRS navx;
     

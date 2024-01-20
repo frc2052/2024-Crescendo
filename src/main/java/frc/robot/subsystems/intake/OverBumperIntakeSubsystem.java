@@ -37,4 +37,12 @@ public class OverBumperIntakeSubsystem extends SubsystemBase {
     outSolonoid.set(true);
   }
 
+  public boolean isInSolonoidActive() {
+    return inSolonoid.get();
+  }
+
+  public boolean isOutSolonoidActive() {
+    return outSolonoid.get();
+  }
+
 }

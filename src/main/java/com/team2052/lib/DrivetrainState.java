@@ -1,5 +1,7 @@
 package com.team2052.lib;
 
+import com.team2052.swervemodule.SwerveConstants.NeoSwerveModule;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
@@ -17,7 +19,7 @@ public class DrivetrainState {
 
     public SwerveModulePosition[] getModulePositions(){
         return swerveModulePositions;
-    }
+        }
 
     public Rotation2d getRotation2d(){
         return rotation2d;
