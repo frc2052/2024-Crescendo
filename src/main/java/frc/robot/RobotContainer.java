@@ -4,7 +4,14 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OneUnderBumperIntake;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.intake.OneUnderBumperIntakeSubsystem;
+import frc.robot.subsystems.intake.OverBumperIntakeSubsystem;
+import frc.robot.subsystems.shooter.FlatShooterSubsystem;
+import frc.robot.subsystems.shooter.HorizontalShooterSubsystem;
+import frc.robot.subsystems.shooter.VerticalShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -15,8 +22,13 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
-
+  public final static DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  public final static OneUnderBumperIntakeSubsystem oneUnderBumperIntakeSubsystem = new OneUnderBumperIntakeSubsystem();
+  public final static OverBumperIntakeSubsystem overBumperIntakeSubsystem = new OverBumperIntakeSubsystem();
+  public final static FlatShooterSubsystem flatShooterSubsystem = new FlatShooterSubsystem();
+  public final static HorizontalShooterSubsystem horizontalShooterSubsystem = new HorizontalShooterSubsystem();
+  public final static VerticalShooterSubsystem verticalShooterSubsystem = new VerticalShooterSubsystem();
+  public final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
