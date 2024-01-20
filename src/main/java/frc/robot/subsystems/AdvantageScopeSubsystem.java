@@ -66,6 +66,21 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
     public static void recordDrivetrainData () {
 
+        double[] swerveArray = {
+            RobotContainer.drivetrain.frontLeftModule.getState().angle.getDegrees(), 
+            RobotContainer.drivetrain.frontLeftModule.getState().speedMetersPerSecond,
+
+            RobotContainer.drivetrain.frontRightModule.getState().angle.getDegrees(), 
+            RobotContainer.drivetrain.frontRightModule.getState().speedMetersPerSecond,
+
+            RobotContainer.drivetrain.backLeftModule.getState().angle.getDegrees(), 
+            RobotContainer.drivetrain.backLeftModule.getState().speedMetersPerSecond,
+
+            RobotContainer.drivetrain.backRightModule.getState().angle.getDegrees(), 
+            RobotContainer.drivetrain.backRightModule.getState().speedMetersPerSecond,
+        };
+
+        SmartDashboard.getNumberArray("Swerve Array", swerveArray);
     }
 
 
