@@ -37,6 +37,7 @@ public final class Constants {
         public static final int LEFT_SHOOTER_MOTOR_ID = 0;
         public static final int RIGHT_SHOOTER_MOTOR_ID = 0;
         public static final double SHOOTER_DEFAULT_SPEED_TPS = 0.5;
+        public static final double SHOOTER_SHOOT_SPEED_TPS = 0.75;
     }
 
     public static class VerticalShooter {
