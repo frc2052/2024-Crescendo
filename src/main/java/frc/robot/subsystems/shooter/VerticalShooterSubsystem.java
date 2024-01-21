@@ -21,8 +21,11 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   public VerticalShooterSubsystem() {
     lowerMotor = new TalonFX(Constants.VerticalShooter.UPPER_SHOOTER_MOTOR_ID);
     upperMotor = new TalonFX(Constants.VerticalShooter.LOWER_SHOOTER_MOTOR_ID);
+
+    upperMotor.setInverted(true);
+
     lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
+    upperMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
   }
 
   public void setUpperShooterSpeed(double upperShooterMotorSpeedTPS) {
@@ -40,7 +43,7 @@ public class VerticalShooterSubsystem extends SubsystemBase {
 
   public void returnToIdleSpeed() {
     lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
+    upperMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
   }
 
   public double getUpperShooterSpeed() {
