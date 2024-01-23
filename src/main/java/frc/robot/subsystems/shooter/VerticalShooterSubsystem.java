@@ -29,7 +29,7 @@ public class VerticalShooterSubsystem extends SubsystemBase {
     upperMotor.set(TalonFXControlMode.Velocity, ShooterSpeeds.OFF.getUpperTPS());
   }
 
-  public void setShooterSpeed(ShooterSpeeds speeds) {
+  public void setSpeed(ShooterSpeeds speeds) {
     lowerMotor.set(TalonFXControlMode.Velocity, speeds.getLowerTPS());
     upperMotor.set(TalonFXControlMode.Velocity, speeds.getUpperTPS());
   }
@@ -41,7 +41,7 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   public void setLowerShooterSpeed(double lowerShooterMotorSpeedTPS) {
     lowerMotor.set(TalonFXControlMode.Velocity, lowerShooterMotorSpeedTPS);
   }
-  
+
   public double getUpperShooterSpeed() {
     return upperMotor.getSelectedSensorVelocity();
   }
