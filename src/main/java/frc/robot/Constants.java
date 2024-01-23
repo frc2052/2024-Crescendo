@@ -33,23 +33,18 @@ public final class Constants {
         public final static double INTAKE_OUT_SPEED_TPS = 0.5;
     }
   
-    public class HorizontalShooter{
-        public static final int LEFT_SHOOTER_MOTOR_ID = 0;
-        public static final int RIGHT_SHOOTER_MOTOR_ID = 0;
-        public static final double SHOOTER_DEFAULT_SPEED_TPS = 0.5;
-    }
-
     public static class VerticalShooter {
         public static final int LOWER_SHOOTER_MOTOR_ID = 0;
         public static final int UPPER_SHOOTER_MOTOR_ID = 0;
-        public static final double SHOOTER_IDLE_SPEED_TPS = 10000;
+
+        public static final int LOWER_SHOOTER_IDLE_SPEED_TPS = 0;
+        public static final int LOWER_SHOOTER_SPEAKER_SPEED_TPS = 0;
+        public static final int LOWER_SHOOTER_AMP_SPEED_TPS = 0;
+        public static final int UPPER_SHOOTER_IDLE_SPEED_TPS = 0;
+        public static final int UPPER_SHOOTER_SPEAKER_SPEED_TPS = 0;
+        public static final int UPPER_SHOOTER_AMP_SPEED_TPS = 0;
     }
 
-    public static class FlatShooter {
-        public static final int FLAT_SHOOTER_MOTOR_ID = 0;
-        public static final int SHOOTER_IDLE_SPEED_TPS = 0;
-
-    }
     public static class Drivetrain {
         // Left-to-right distance between drivetrain wheels
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0;
