@@ -87,5 +87,35 @@ public final class Constants {
             new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0)
         );
     }
+
+     public static final class Elevator{
+            public static final int BELT_MOTOR = 15;
+    
+            public static final int LIMIT_SWITCH_DIO_CHANNEL = 0;
+    
+            public static final double BELT_MOTOR_F = 0.054;
+            public static final double BELT_MOTOR_P = 0.2046;
+            public static final double BELT_MOTOR_I = 0.002;
+            public static final double BELT_MOTOR_D = 1.023;
+    
+            public static final double MANUAL_UP_SPEED = 0.15;
+            public static final double MANUAL_DOWN_SPEED = -0.15;
+            public static final double FEED_FORWARD = 0.065;
+    
+            public static final double BELT_MOTOR_CRUISE_VELOCITY = 14000;
+            public static final double BELT_MOTOR_MAX_ACCELERATION = 24000;
+            public static final int BELT_MOTOR_DEAD_ZONE_TICKS = 250;
+        }
+
+        public static final class Dashboard {
+            public static final String DRIVE_MODE_KEY = "Drive Mode";
+            public static final String ELEVATOR_POSITION_KEY = "Elevator Position";
+            public static final String ELEVATOR_LIMIT_SWITCH_KEY = "Elevator Limit Switch"; 
+            public static final String INTAKE_CURRENT_KEY = "Intake Current";
+            public static final String PRESSURE_KEY = "Pressure";
+            public static final String CAMERA_CONNECTION_KEY = "Camera Connected";
+            public static final String AUTO_COMPILED_KEY = "Auto Compiled";
+            public static final String AUTO_DESCRIPTION_KEY = "Auto Description";
+        }
 }
 
