@@ -13,7 +13,6 @@ import frc.robot.Constants;
 
 
 public class VerticalShooterSubsystem extends SubsystemBase {
-  /** Creates a new VerticalShooterSubsystem. */
 
   private final TalonFX lowerMotor;
   private final TalonFX upperMotor;
@@ -21,8 +20,18 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   public VerticalShooterSubsystem() {
     lowerMotor = new TalonFX(Constants.VerticalShooter.UPPER_SHOOTER_MOTOR_ID);
     upperMotor = new TalonFX(Constants.VerticalShooter.LOWER_SHOOTER_MOTOR_ID);
-    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
+    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.LOWER_SHOOTER_IDLE_SPEED_TPS);
+    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooter.UPPER_SHOOTER_IDLE_SPEED_TPS);
+  }
+
+  public void stop() {
+    lowerMotor.set(TalonFXControlMode.Velocity, ShooterSpeeds.OFF.getLowerTPS());
+    upperMotor.set(TalonFXControlMode.Velocity, ShooterSpeeds.OFF.getUpperTPS());
+  }
+
+  public void setSpeed(ShooterSpeeds speeds) {
+    lowerMotor.set(TalonFXControlMode.Velocity, speeds.getLowerTPS());
+    upperMotor.set(TalonFXControlMode.Velocity, speeds.getUpperTPS());
   }
 
   public void setUpperShooterSpeed(double upperShooterMotorSpeedTPS) {
@@ -31,16 +40,6 @@ public class VerticalShooterSubsystem extends SubsystemBase {
 
   public void setLowerShooterSpeed(double lowerShooterMotorSpeedTPS) {
     lowerMotor.set(TalonFXControlMode.Velocity, lowerShooterMotorSpeedTPS);
-  }
-
-  public void stopShooterMotor() {
-    lowerMotor.set(TalonFXControlMode.Velocity, 0);
-    upperMotor.set(TalonFXControlMode.Velocity, 0);
-  }
-
-  public void returnToIdleSpeed() {
-    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooter.SHOOTER_IDLE_SPEED_TPS);
   }
 
   public double getUpperShooterSpeed() {
@@ -55,5 +54,27 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  
+  public static enum ShooterSpeeds {
+    OFF(0, 0),
+    IDLING(Constants.VerticalShooter.LOWER_SHOOTER_IDLE_SPEED_TPS, Constants.VerticalShooter.UPPER_SHOOTER_IDLE_SPEED_TPS),
+    SPEAKER(Constants.VerticalShooter.LOWER_SHOOTER_SPEAKER_SPEED_TPS, Constants.VerticalShooter.UPPER_SHOOTER_SPEAKER_SPEED_TPS),
+    AMP(Constants.VerticalShooter.LOWER_SHOOTER_AMP_SPEED_TPS, Constants.VerticalShooter.UPPER_SHOOTER_AMP_SPEED_TPS);
+
+    private final int lowerTicksPerSecond;
+    private final int upperTicksPerSecond;
+
+    private ShooterSpeeds(int lowerTicksPerSecond, int upperTicksPerSecond) {
+      this.lowerTicksPerSecond = lowerTicksPerSecond;
+      this.upperTicksPerSecond = upperTicksPerSecond;
+    }
+
+    public int getLowerTPS() {
+      return lowerTicksPerSecond;
+    }
+
+    public int getUpperTPS() {
+      return upperTicksPerSecond;
+    }
+  }
 }
-;

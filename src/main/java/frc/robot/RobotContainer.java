@@ -11,8 +11,6 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.intake.OneUnderBumperIntakeSubsystem;
 import frc.robot.subsystems.intake.OverBumperIntakeSubsystem;
-import frc.robot.subsystems.shooter.FlatShooterSubsystem;
-import frc.robot.subsystems.shooter.HorizontalShooterSubsystem;
 import frc.robot.subsystems.shooter.VerticalShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -26,8 +24,6 @@ public class RobotContainer {
   private final static DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
   private final static OneUnderBumperIntakeSubsystem oneUnderBumperIntakeSubsystem = new OneUnderBumperIntakeSubsystem();
   private final static OverBumperIntakeSubsystem overBumperIntakeSubsystem = new OverBumperIntakeSubsystem();
-  private final static FlatShooterSubsystem flatShooterSubsystem = new FlatShooterSubsystem();
-  private final static HorizontalShooterSubsystem horizontalShooterSubsystem = new HorizontalShooterSubsystem();
   private final static VerticalShooterSubsystem verticalShooterSubsystem = new VerticalShooterSubsystem();
   private final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   private final static AdvantageScopeSubsystem advantageScopeSubsystem = new AdvantageScopeSubsystem();
