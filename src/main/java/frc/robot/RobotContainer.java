@@ -4,8 +4,16 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OneUnderBumperIntake;
+import frc.robot.subsystems.AdvantageScopeSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.intake.OneUnderBumperIntakeSubsystem;
+import frc.robot.subsystems.intake.OverBumperIntakeSubsystem;
+import frc.robot.subsystems.shooter.FlatShooterSubsystem;
+import frc.robot.subsystems.shooter.HorizontalShooterSubsystem;
+import frc.robot.subsystems.shooter.VerticalShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -15,8 +23,14 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final static DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final static OneUnderBumperIntakeSubsystem oneUnderBumperIntakeSubsystem = new OneUnderBumperIntakeSubsystem();
+  private final static OverBumperIntakeSubsystem overBumperIntakeSubsystem = new OverBumperIntakeSubsystem();
+  private final static FlatShooterSubsystem flatShooterSubsystem = new FlatShooterSubsystem();
+  private final static HorizontalShooterSubsystem horizontalShooterSubsystem = new HorizontalShooterSubsystem();
+  private final static VerticalShooterSubsystem verticalShooterSubsystem = new VerticalShooterSubsystem();
+  private final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final static AdvantageScopeSubsystem advantageScopeSubsystem = new AdvantageScopeSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -33,9 +47,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
-
-  }
+  private void configureBindings() {}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
