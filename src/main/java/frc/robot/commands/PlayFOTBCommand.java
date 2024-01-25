@@ -14,7 +14,7 @@ public class PlayFOTBCommand extends Command{
     @Override
     public void initialize() {
         player.stopMusic();
-        player.loadMusic(null);
+        player.loadMusic("FlightOfTheBumblebees.chrp");
         player.playLoadedTrack();
     }
 
