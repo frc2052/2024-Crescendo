@@ -8,6 +8,7 @@ import frc.robot.Constants.OneUnderBumperIntake;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.intake.OneUnderBumperIntakeSubsystem;
 import frc.robot.subsystems.intake.OverBumperIntakeSubsystem;
 import frc.robot.subsystems.shooter.FlatShooterSubsystem;
@@ -30,6 +31,7 @@ public class RobotContainer {
   public final static HorizontalShooterSubsystem horizontalShooterSubsystem = new HorizontalShooterSubsystem();
   public final static VerticalShooterSubsystem verticalShooterSubsystem = new VerticalShooterSubsystem();
   public final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  public final static MusicPlayerSubsystem musicPlayerSubsystem = new MusicPlayerSubsystem();
   private final static AdvantageScopeSubsystem advantageScopeSubsystem = new AdvantageScopeSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

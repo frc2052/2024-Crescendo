@@ -3,10 +3,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.MusicPlayerSubsystem;
 
-public class PauseMusicPlayer extends Command {
+public class PauseMusicPlayerCommand extends Command {
     private final MusicPlayerSubsystem player;
 
-    public PauseMusicPlayer(MusicPlayerSubsystem player) {
+    public PauseMusicPlayerCommand(MusicPlayerSubsystem player) {
         this.player = player;
         addRequirements(player);
     }
