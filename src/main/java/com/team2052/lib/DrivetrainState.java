@@ -1,7 +1,5 @@
 package com.team2052.lib;
 
-import com.team2052.swervemodule.SwerveConstants.NeoSwerveModule;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
