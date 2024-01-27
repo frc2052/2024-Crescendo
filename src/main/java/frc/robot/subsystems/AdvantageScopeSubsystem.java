@@ -1,11 +1,15 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
 public class AdvantageScopeSubsystem extends SubsystemBase {
     
+    private static String output = "SmartDashboard";
+
     public AdvantageScopeSubsystem () {
         recordOneUnderBumberIntakeData();
 
@@ -21,11 +25,16 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     }    
 
     public static void recordOneUnderBumberIntakeData () {
-        SmartDashboard.getNumber("Under Bumper Intake Lower Motor Speed", 
+        if (output == "SmartDashboard") {
+        Logger.recordOutput("Under Bumper Intake Lower Motor Speed", 
         RobotContainer.oneUnderBumperIntakeSubsystem.getLowerMotorSpeed());
 
-        SmartDashboard.getNumber("Under Bumper Intake Upper Motor Speed", 
+        Logger.recordOutput("Under Bumper Intake Upper Motor Speed", 
         RobotContainer.oneUnderBumperIntakeSubsystem.getUpperMotorSpeed());
+    } else {
+        Logger.recordOutput("Under Bumper Intake Lower Motor Speed", 
+        RobotContainer.oneUnderBumperIntakeSubsystem.getLowerMotorSpeed());
+    }
     }
 
     public static void recordOverBumberIntakeData () {
