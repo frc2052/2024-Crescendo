@@ -26,8 +26,6 @@ public class RobotContainer {
   public final static DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
   public final static OneUnderBumperIntakeSubsystem oneUnderBumperIntakeSubsystem = new OneUnderBumperIntakeSubsystem();
   public final static OverBumperIntakeSubsystem overBumperIntakeSubsystem = new OverBumperIntakeSubsystem();
-  public final static FlatShooterSubsystem flatShooterSubsystem = new FlatShooterSubsystem();
-  public final static HorizontalShooterSubsystem horizontalShooterSubsystem = new HorizontalShooterSubsystem();
   public final static VerticalShooterSubsystem verticalShooterSubsystem = new VerticalShooterSubsystem();
   public final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   public final static MusicPlayerSubsystem musicPlayerSubsystem = new MusicPlayerSubsystem();
