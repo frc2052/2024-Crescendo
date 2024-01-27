@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems;
 
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 
-public class VerticalShooterSubsystem extends SubsystemBase {
+public class ShooterSubsystem extends SubsystemBase {
 
   private final TalonFX lowerMotor;
   private final TalonFX upperMotor;
@@ -22,7 +22,7 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   private ProfiledPIDController lowerMotorController;
   private ProfiledPIDController upperMotorController;
 
-  public VerticalShooterSubsystem() {
+  public ShooterSubsystem() {
 
     lowerMotor = new TalonFX(Constants.VerticalShooter.UPPER_SHOOTER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(

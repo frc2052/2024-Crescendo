@@ -1,14 +1,14 @@
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.shooter.VerticalShooterSubsystem;
-import frc.robot.subsystems.shooter.VerticalShooterSubsystem.ShooterSpeeds;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShooterSubsystem.ShooterSpeeds;
 
 public class ShooterSpeakerSpeedCommand extends Command{
 
-    private final VerticalShooterSubsystem shooter;
+    private final ShooterSubsystem shooter;
 
-    public ShooterSpeakerSpeedCommand(VerticalShooterSubsystem shooter) {
+    public ShooterSpeakerSpeedCommand(ShooterSubsystem shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
     }
