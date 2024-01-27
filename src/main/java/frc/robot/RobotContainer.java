@@ -9,10 +9,9 @@ import frc.robot.subsystems.AdvantageScopeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.MusicPlayerSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.intake.OneUnderBumperIntakeSubsystem;
 import frc.robot.subsystems.intake.OverBumperIntakeSubsystem;
-import frc.robot.subsystems.shooter.FlatShooterSubsystem;
-import frc.robot.subsystems.shooter.HorizontalShooterSubsystem;
 import frc.robot.subsystems.shooter.VerticalShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
