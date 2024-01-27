@@ -30,7 +30,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
     Logger.addDataReceiver(new NT4Publisher()); // Publish AdvantageKit data to NetworkTables
-    Logger.start(); //Start AdvantakeKit Logger
+    Logger.start(); //Start AdvantageKit Logger
     
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
