@@ -2,11 +2,30 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.intake.OneUnderBumperIntakeSubsystem;
+import frc.robot.subsystems.intake.OverBumperIntakeSubsystem;
+import frc.robot.subsystems.shooter.VerticalShooterSubsystem;
 
 public class AdvantageScopeSubsystem extends SubsystemBase {
+    static OneUnderBumperIntakeSubsystem oneUnderBumperIntakeSubsystem;
+    static OverBumperIntakeSubsystem overBumperIntakeSubsystem;
+    static VerticalShooterSubsystem verticalShooterSubsystem;
+    static ClimberSubsystem climberSubsystem;
+    static DrivetrainSubsystem drivetrainSubsystem;
     
-    public AdvantageScopeSubsystem () {
+    public AdvantageScopeSubsystem (    
+    OneUnderBumperIntakeSubsystem oneUnderBumperIntakeSubsystem, 
+    OverBumperIntakeSubsystem overBumperIntakeSubsystem, 
+    VerticalShooterSubsystem verticalShooterSubsystem, 
+    ClimberSubsystem climberSubsystem, 
+    DrivetrainSubsystem drivetrainSubsystem) {
+
+        AdvantageScopeSubsystem.oneUnderBumperIntakeSubsystem = oneUnderBumperIntakeSubsystem;
+        AdvantageScopeSubsystem.overBumperIntakeSubsystem = overBumperIntakeSubsystem;
+        AdvantageScopeSubsystem.verticalShooterSubsystem = verticalShooterSubsystem;
+        AdvantageScopeSubsystem.climberSubsystem = climberSubsystem;
+        AdvantageScopeSubsystem.drivetrainSubsystem = drivetrainSubsystem;
+        
         recordOneUnderBumberIntakeData();
 
         recordOverBumberIntakeData();
@@ -20,46 +39,46 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
     public static void recordOneUnderBumberIntakeData () {
         SmartDashboard.getNumber("Under Bumper Intake Lower Motor Speed", 
-        RobotContainer.oneUnderBumperIntakeSubsystem.getLowerMotorSpeed());
+        oneUnderBumperIntakeSubsystem.getLowerMotorSpeed());
 
         SmartDashboard.getNumber("Under Bumper Intake Upper Motor Speed", 
-        RobotContainer.oneUnderBumperIntakeSubsystem.getUpperMotorSpeed());
+        oneUnderBumperIntakeSubsystem.getUpperMotorSpeed());
     }
 
     public static void recordOverBumberIntakeData () {
         SmartDashboard.getBoolean("Is Over Bumber Intake In Solenoid Active", 
-        RobotContainer.overBumperIntakeSubsystem.isInSolonoidActive());
+        overBumperIntakeSubsystem.isInSolonoidActive());
 
         SmartDashboard.getBoolean("Is Over Bumber Intake Out Solenoid Active", 
-        RobotContainer.overBumperIntakeSubsystem.isOutSolonoidActive());
+        overBumperIntakeSubsystem.isOutSolonoidActive());
     }
 
     public static void recordVerticalShooterData () {
         SmartDashboard.getNumber("Vertical Shooter Upper Motor Speed", 
-        RobotContainer.verticalShooterSubsystem.getUpperShooterSpeed());
+        verticalShooterSubsystem.getUpperShooterSpeed());
         
         SmartDashboard.getNumber("Vertical Shooter Lower Motor Speed", 
-        RobotContainer.verticalShooterSubsystem.getLowerShooterSpeed());
+        verticalShooterSubsystem.getLowerShooterSpeed());
     }
 
     public static void recordClimberData () {
         SmartDashboard.getNumber("Climber Encoder Position", 
-        RobotContainer.climberSubsystem.getEncoderPosition());
+        climberSubsystem.getEncoderPosition());
     }
 
     public static void recordDrivetrainData () {
         double[] swerveArray = {
-            RobotContainer.drivetrain.frontLeftModule.getState().angle.getDegrees(), 
-            RobotContainer.drivetrain.frontLeftModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.frontLeftModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.frontLeftModule.getState().speedMetersPerSecond,
 
-            RobotContainer.drivetrain.frontRightModule.getState().angle.getDegrees(), 
-            RobotContainer.drivetrain.frontRightModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.frontRightModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.frontRightModule.getState().speedMetersPerSecond,
 
-            RobotContainer.drivetrain.backLeftModule.getState().angle.getDegrees(), 
-            RobotContainer.drivetrain.backLeftModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.backLeftModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.backLeftModule.getState().speedMetersPerSecond,
 
-            RobotContainer.drivetrain.backRightModule.getState().angle.getDegrees(), 
-            RobotContainer.drivetrain.backRightModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.backRightModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.backRightModule.getState().speedMetersPerSecond,
         };
         SmartDashboard.getNumberArray("Swerve Array", swerveArray);
     }
