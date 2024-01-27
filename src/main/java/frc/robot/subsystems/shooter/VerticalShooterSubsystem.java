@@ -8,6 +8,8 @@ package frc.robot.subsystems.shooter;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -17,11 +19,31 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   private final TalonFX lowerMotor;
   private final TalonFX upperMotor;
 
+  private ProfiledPIDController lowerMotorController;
+  private ProfiledPIDController upperMotorController;
+
   public VerticalShooterSubsystem() {
+
     lowerMotor = new TalonFX(Constants.VerticalShooter.UPPER_SHOOTER_MOTOR_ID);
+    lowerMotorController = new ProfiledPIDController(
+    Constants.VerticalShooter.LOWER_SHOOTER_KP,
+    Constants.VerticalShooter.LOWER_SHOOTER_KI,
+    Constants.VerticalShooter.LOWER_SHOOTER_KD, 
+    new TrapezoidProfile.Constraints(
+    Constants.VerticalShooter.LOWER_SHOOTER_MAX_VELOCITY,
+    Constants.VerticalShooter.LOWER_SHOOTER_MAX_ACCELORATION));
+
     upperMotor = new TalonFX(Constants.VerticalShooter.LOWER_SHOOTER_MOTOR_ID);
-    lowerMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.LOWER_SHOOTER_IDLE_SPEED_TPS);
-    upperMotor.set(TalonFXControlMode.Velocity, -Constants.VerticalShooter.UPPER_SHOOTER_IDLE_SPEED_TPS);
+    upperMotorController = new ProfiledPIDController(
+    Constants.VerticalShooter.UPPER_SHOOTER_KP,
+    Constants.VerticalShooter.UPPER_SHOOTER_KI,
+    Constants.VerticalShooter.UPPER_SHOOTER_KD,      
+    new TrapezoidProfile.Constraints(
+    Constants.VerticalShooter.UPPER_SHOOTER_MAX_VELOCITY,
+    Constants.VerticalShooter.UPPER_SHOOTER_MAX_ACCELORATION));
+
+    lowerMotor.setInverted(Constants.VerticalShooter.LOWER_MOTER_IS_INVERTED);
+    upperMotor.setInverted(Constants.VerticalShooter.UPPER_MOTOR_IS_INVERTED);
   }
 
   public void stop() {
@@ -30,16 +52,16 @@ public class VerticalShooterSubsystem extends SubsystemBase {
   }
 
   public void setSpeed(ShooterSpeeds speeds) {
-    lowerMotor.set(TalonFXControlMode.Velocity, speeds.getLowerTPS());
-    upperMotor.set(TalonFXControlMode.Velocity, speeds.getUpperTPS());
+    lowerMotor.set(TalonFXControlMode.Velocity, lowerMotorController.calculate(getLowerShooterSpeed(), speeds.getLowerTPS()));
+    upperMotor.set(TalonFXControlMode.Velocity, upperMotorController.calculate(getUpperShooterSpeed(), speeds.getUpperTPS()));
   }
 
   public void setUpperShooterSpeed(double upperShooterMotorSpeedTPS) {
-    upperMotor.set(TalonFXControlMode.Velocity, upperShooterMotorSpeedTPS);
+    upperMotor.set(TalonFXControlMode.Velocity, upperMotorController.calculate(upperShooterMotorSpeedTPS, upperShooterMotorSpeedTPS));
   }
 
   public void setLowerShooterSpeed(double lowerShooterMotorSpeedTPS) {
-    lowerMotor.set(TalonFXControlMode.Velocity, lowerShooterMotorSpeedTPS);
+    lowerMotor.set(TalonFXControlMode.Velocity, lowerMotorController.calculate(lowerShooterMotorSpeedTPS, lowerShooterMotorSpeedTPS));
   }
 
   public double getUpperShooterSpeed() {
