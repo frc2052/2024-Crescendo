@@ -16,6 +16,8 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         recordClimberData();
 
         recordDrivetrainData();
+
+        recordMusicPlayerData();
     }    
 
     public static void recordOneUnderBumberIntakeData () {
@@ -45,6 +47,14 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     public static void recordClimberData () {
         SmartDashboard.getNumber("Climber Encoder Position", 
         RobotContainer.climberSubsystem.getEncoderPosition());
+    }
+
+    public static void recordMusicPlayerData() {
+        SmartDashboard.getNumber("Current Track Play Time",
+        RobotContainer.musicPlayerSubsystem.getCurrentPlayTime());
+
+        SmartDashboard.getBoolean("Is Music Player Playing", 
+        RobotContainer.musicPlayerSubsystem.isPlayerPLaying());
     }
 
     public static void recordDrivetrainData () {

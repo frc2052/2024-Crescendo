@@ -44,7 +44,9 @@ public final class Constants {
         public static final int UPPER_SHOOTER_SPEAKER_SPEED_TPS = 0;
         public static final int UPPER_SHOOTER_AMP_SPEED_TPS = 0;
     }
-
+    public static class MusicPlayer {
+        public static final int[] INSTRAMENT_TALONFX_PORT_LIST = {0, 0, 0};
+    }
     public static class Drivetrain {
         // Left-to-right distance between drivetrain wheels
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0;
