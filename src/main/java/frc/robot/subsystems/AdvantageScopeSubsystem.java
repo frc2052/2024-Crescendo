@@ -14,19 +14,22 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     static VerticalShooterSubsystem verticalShooterSubsystem;
     static ClimberSubsystem climberSubsystem;
     static DrivetrainSubsystem drivetrainSubsystem;
+    static MusicPlayerSubsystem musicPlayerSubsystem;
     
     public AdvantageScopeSubsystem (    
     OneUnderBumperIntakeSubsystem oneUnderBumperIntakeSubsystem, 
     OverBumperIntakeSubsystem overBumperIntakeSubsystem, 
     VerticalShooterSubsystem verticalShooterSubsystem, 
     ClimberSubsystem climberSubsystem, 
-    DrivetrainSubsystem drivetrainSubsystem) {
+    DrivetrainSubsystem drivetrainSubsystem,
+    MusicPlayerSubsystem musicPlayerSubsystem) {
 
         AdvantageScopeSubsystem.oneUnderBumperIntakeSubsystem = oneUnderBumperIntakeSubsystem;
         AdvantageScopeSubsystem.overBumperIntakeSubsystem = overBumperIntakeSubsystem;
         AdvantageScopeSubsystem.verticalShooterSubsystem = verticalShooterSubsystem;
         AdvantageScopeSubsystem.climberSubsystem = climberSubsystem;
         AdvantageScopeSubsystem.drivetrainSubsystem = drivetrainSubsystem;
+        AdvantageScopeSubsystem.musicPlayerSubsystem = musicPlayerSubsystem;
       
         recordOneUnderBumberIntakeData();
 
@@ -42,42 +45,41 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     }    
 
     public static void recordOneUnderBumberIntakeData () {
-      
-        SmartDashboard.getNumber("Under Bumper Intake Lower Motor Speed", 
+        Logger.RecordOutput("Under Bumper Intake Lower Motor Speed", 
         oneUnderBumperIntakeSubsystem.getLowerMotorSpeed());
 
-        SmartDashboard.getNumber("Under Bumper Intake Upper Motor Speed", 
+        Logger.RecordOutput("Under Bumper Intake Upper Motor Speed", 
         oneUnderBumperIntakeSubsystem.getUpperMotorSpeed());
 
     }
 
     public static void recordOverBumberIntakeData () {
-        SmartDashboard.getBoolean("Is Over Bumber Intake In Solenoid Active", 
+        Logger.RecordOutput("Is Over Bumber Intake In Solenoid Active", 
         overBumperIntakeSubsystem.isInSolonoidActive());
 
-        SmartDashboard.getBoolean("Is Over Bumber Intake Out Solenoid Active", 
+        Logger.RecordOutput("Is Over Bumber Intake Out Solenoid Active", 
         overBumperIntakeSubsystem.isOutSolonoidActive());
     }
 
     public static void recordVerticalShooterData () {
-        SmartDashboard.getNumber("Vertical Shooter Upper Motor Speed", 
+        Logger.RecordOutput("Vertical Shooter Upper Motor Speed", 
         verticalShooterSubsystem.getUpperShooterSpeed());
         
-        SmartDashboard.getNumber("Vertical Shooter Lower Motor Speed", 
+        Logger.RecordOutput("Vertical Shooter Lower Motor Speed", 
         verticalShooterSubsystem.getLowerShooterSpeed());
     }
 
     public static void recordClimberData () {
-        SmartDashboard.getNumber("Climber Encoder Position", 
+        Logger.RecordOutput("Climber Encoder Position", 
         climberSubsystem.getEncoderPosition());
     }
 
     public static void recordMusicPlayerData() {
-        SmartDashboard.getNumber("Current Track Play Time",
-        RobotContainer.musicPlayerSubsystem.getCurrentPlayTime());
+        Logger.RecordOutput("Current Track Play Time",
+        musicPlayerSubsystem.getCurrentPlayTime());
 
-        SmartDashboard.getBoolean("Is Music Player Playing", 
-        RobotContainer.musicPlayerSubsystem.isPlayerPLaying());
+        Logger.RecordOutput("Is Music Player Playing", 
+        musicPlayerSubsystem.isPlayerPLaying());
     }
 
     public static void recordDrivetrainData () {
@@ -94,6 +96,6 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
             drivetrainSubsystem.backRightModule.getState().angle.getDegrees(), 
             drivetrainSubsystem.backRightModule.getState().speedMetersPerSecond,
         };
-        SmartDashboard.getNumberArray("Swerve Array", swerveArray);
+        Logger.RecordOutput("Swerve Array", swerveArray);
     }
 }
