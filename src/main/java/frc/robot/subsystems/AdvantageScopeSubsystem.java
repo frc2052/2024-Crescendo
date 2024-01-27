@@ -45,40 +45,40 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     }    
 
     public static void recordOneUnderBumberIntakeData () {
-        Logger.RecordOutput("Under Bumper Intake Lower Motor Speed", 
+        Logger.recordOutput("Under Bumper Intake Lower Motor Speed", 
         oneUnderBumperIntakeSubsystem.getLowerMotorSpeed());
 
-        Logger.RecordOutput("Under Bumper Intake Upper Motor Speed", 
+        Logger.recordOutput("Under Bumper Intake Upper Motor Speed", 
         oneUnderBumperIntakeSubsystem.getUpperMotorSpeed());
 
     }
 
     public static void recordOverBumberIntakeData () {
-        Logger.RecordOutput("Is Over Bumber Intake In Solenoid Active", 
+        Logger.recordOutput("Is Over Bumber Intake In Solenoid Active", 
         overBumperIntakeSubsystem.isInSolonoidActive());
 
-        Logger.RecordOutput("Is Over Bumber Intake Out Solenoid Active", 
+        Logger.recordOutput("Is Over Bumber Intake Out Solenoid Active", 
         overBumperIntakeSubsystem.isOutSolonoidActive());
     }
 
     public static void recordVerticalShooterData () {
-        Logger.RecordOutput("Vertical Shooter Upper Motor Speed", 
+        Logger.recordOutput("Vertical Shooter Upper Motor Speed", 
         verticalShooterSubsystem.getUpperShooterSpeed());
         
-        Logger.RecordOutput("Vertical Shooter Lower Motor Speed", 
+        Logger.recordOutput("Vertical Shooter Lower Motor Speed", 
         verticalShooterSubsystem.getLowerShooterSpeed());
     }
 
     public static void recordClimberData () {
-        Logger.RecordOutput("Climber Encoder Position", 
+        Logger.recordOutput("Climber Encoder Position", 
         climberSubsystem.getEncoderPosition());
     }
 
     public static void recordMusicPlayerData() {
-        Logger.RecordOutput("Current Track Play Time",
+        Logger.recordOutput("Current Track Play Time",
         musicPlayerSubsystem.getCurrentPlayTime());
 
-        Logger.RecordOutput("Is Music Player Playing", 
+        Logger.recordOutput("Is Music Player Playing", 
         musicPlayerSubsystem.isPlayerPLaying());
     }
 
@@ -96,6 +96,6 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
             drivetrainSubsystem.backRightModule.getState().angle.getDegrees(), 
             drivetrainSubsystem.backRightModule.getState().speedMetersPerSecond,
         };
-        Logger.RecordOutput("Swerve Array", swerveArray);
+        Logger.recordOutput("Swerve Array", swerveArray);
     }
 }
