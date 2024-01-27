@@ -8,6 +8,7 @@ import frc.robot.Constants.OneUnderBumperIntake;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.intake.OneUnderBumperIntakeSubsystem;
 import frc.robot.subsystems.intake.OverBumperIntakeSubsystem;
@@ -21,11 +22,15 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final static DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
-  private final static OneUnderBumperIntakeSubsystem oneUnderBumperIntakeSubsystem = new OneUnderBumperIntakeSubsystem();
-  private final static OverBumperIntakeSubsystem overBumperIntakeSubsystem = new OverBumperIntakeSubsystem();
-  private final static VerticalShooterSubsystem verticalShooterSubsystem = new VerticalShooterSubsystem();
-  private final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  // The robot's subsystems and commands are defined here...
+  public final static DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  public final static OneUnderBumperIntakeSubsystem oneUnderBumperIntakeSubsystem = new OneUnderBumperIntakeSubsystem();
+  public final static OverBumperIntakeSubsystem overBumperIntakeSubsystem = new OverBumperIntakeSubsystem();
+  public final static FlatShooterSubsystem flatShooterSubsystem = new FlatShooterSubsystem();
+  public final static HorizontalShooterSubsystem horizontalShooterSubsystem = new HorizontalShooterSubsystem();
+  public final static VerticalShooterSubsystem verticalShooterSubsystem = new VerticalShooterSubsystem();
+  public final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  public final static MusicPlayerSubsystem musicPlayerSubsystem = new MusicPlayerSubsystem();
   private final static AdvantageScopeSubsystem advantageScopeSubsystem = new AdvantageScopeSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
