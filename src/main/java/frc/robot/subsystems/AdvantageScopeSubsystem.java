@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotState;
 import frc.robot.subsystems.intake.OneUnderBumperIntakeSubsystem;
 import frc.robot.subsystems.intake.OverBumperIntakeSubsystem;
 import frc.robot.subsystems.shooter.VerticalShooterSubsystem;
@@ -97,5 +98,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
             drivetrainSubsystem.backRightModule.getState().speedMetersPerSecond,
         };
         Logger.recordOutput("Swerve Array", swerveArray);
+
+        Logger.recordOutput("Pose 2D", RobotState.getInstance().getRobotPose());
     }
 }
