@@ -26,7 +26,12 @@ public class RobotContainer {
   private final static OverBumperIntakeSubsystem overBumperIntakeSubsystem = new OverBumperIntakeSubsystem();
   private final static VerticalShooterSubsystem verticalShooterSubsystem = new VerticalShooterSubsystem();
   private final static ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-  private final static AdvantageScopeSubsystem advantageScopeSubsystem = new AdvantageScopeSubsystem();
+  private final static AdvantageScopeSubsystem advantageScopeSubsystem = new AdvantageScopeSubsystem(
+    oneUnderBumperIntakeSubsystem, 
+    overBumperIntakeSubsystem, 
+    verticalShooterSubsystem, 
+    climberSubsystem, 
+    drivetrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
