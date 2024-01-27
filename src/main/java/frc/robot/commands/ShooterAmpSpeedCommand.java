@@ -1,14 +1,14 @@
-package frc.robot.commands.drive;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.shooter.VerticalShooterSubsystem;
 import frc.robot.subsystems.shooter.VerticalShooterSubsystem.ShooterSpeeds;
 
-public class ShooterIdleSpeedCommand extends Command{
+public class ShooterAmpSpeedCommand extends Command{
 
     private final VerticalShooterSubsystem shooter;
 
-    public ShooterIdleSpeedCommand(VerticalShooterSubsystem shooter) {
+    public ShooterAmpSpeedCommand(VerticalShooterSubsystem shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
     }

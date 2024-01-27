@@ -43,6 +43,23 @@ public final class Constants {
         public static final int UPPER_SHOOTER_IDLE_SPEED_TPS = 0;
         public static final int UPPER_SHOOTER_SPEAKER_SPEED_TPS = 0;
         public static final int UPPER_SHOOTER_AMP_SPEED_TPS = 0;
+
+        public static final double UPPER_SHOOTER_KP = 0;
+        public static final double UPPER_SHOOTER_KI = 0;
+        public static final double UPPER_SHOOTER_KD = 0;
+
+        public static final double LOWER_SHOOTER_KP = 0;
+        public static final double LOWER_SHOOTER_KI = 0;
+        public static final double LOWER_SHOOTER_KD = 0;
+
+        public static final double UPPER_SHOOTER_MAX_VELOCITY = 0;
+        public static final double UPPER_SHOOTER_MAX_ACCELORATION = 0;
+        
+        public static final double LOWER_SHOOTER_MAX_VELOCITY = 0;
+        public static final double LOWER_SHOOTER_MAX_ACCELORATION = 0;
+
+        public static final boolean UPPER_MOTOR_IS_INVERTED = false;
+        public static final boolean LOWER_MOTER_IS_INVERTED = false;
     }
     public static class MusicPlayer {
         public static final int[] INSTRAMENT_TALONFX_PORT_LIST = {0, 0, 0};
