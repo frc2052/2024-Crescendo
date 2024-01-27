@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.intake.OneUnderBumperIntakeSubsystem;
@@ -28,7 +30,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         AdvantageScopeSubsystem.climberSubsystem = climberSubsystem;
         AdvantageScopeSubsystem.drivetrainSubsystem = drivetrainSubsystem;
         AdvantageScopeSubsystem.musicPlayerSubsystem = musicPlayerSubsystem;
-        
+      
         recordOneUnderBumberIntakeData();
 
         recordOverBumberIntakeData();
@@ -48,6 +50,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
         Logger.RecordOutput("Under Bumper Intake Upper Motor Speed", 
         oneUnderBumperIntakeSubsystem.getUpperMotorSpeed());
+
     }
 
     public static void recordOverBumberIntakeData () {
