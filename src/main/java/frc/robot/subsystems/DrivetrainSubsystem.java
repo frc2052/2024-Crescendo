@@ -6,8 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.team2052.lib.DrivetrainState;
-import com.team2052.swervemodule.ModuleConfiguration;
-import com.team2052.swervemodule.NeoSwerverModule;
+import com.team2052.swervemodule.SwerveModule;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -21,42 +20,38 @@ import frc.robot.RobotState;
 public class DrivetrainSubsystem extends SubsystemBase {
     private RobotState robotState = RobotState.getInstance();
 
-    private final NeoSwerverModule frontLeftModule;
-    private final NeoSwerverModule frontRightModule;
-    private final NeoSwerverModule backLeftModule;
-    private final NeoSwerverModule backRightModule;
+    final SwerveModule frontLeftModule;
+    final SwerveModule frontRightModule;
+    final SwerveModule backLeftModule;
+    final SwerveModule backRightModule;
 
     private final AHRS navx;
     
     /** Creates a new SwerveDrivetrainSubsystem. */
     public DrivetrainSubsystem() {
-        frontLeftModule = new NeoSwerverModule(
+        frontLeftModule = new SwerveModule(
             "front left",
-            ModuleConfiguration.MK4I_L3,
             Constants.Drivetrain.FRONT_LEFT_MODULE_DRIVE_MOTOR,
             Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_MOTOR,
             Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS)
         );
-        frontRightModule = new NeoSwerverModule(
+        frontRightModule = new SwerveModule(
             "front right",
-            ModuleConfiguration.MK4I_L3,
             Constants.Drivetrain.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
             Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_MOTOR,
             Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS)
         );
-        backLeftModule = new NeoSwerverModule(
+        backLeftModule = new SwerveModule(
             "back left",
-            ModuleConfiguration.MK4I_L3,
             Constants.Drivetrain.BACK_LEFT_MODULE_DRIVE_MOTOR,
             Constants.Drivetrain.BACK_LEFT_MODULE_STEER_MOTOR,
             Constants.Drivetrain.BACK_LEFT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.BACK_LEFT_MODULE_STEER_OFFSET_RADIANS)
         );
-        backRightModule = new NeoSwerverModule(
+        backRightModule = new SwerveModule(
             "back right",
-            ModuleConfiguration.MK4I_L3,
             Constants.Drivetrain.BACK_RIGHT_MODULE_DRIVE_MOTOR,
             Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_MOTOR,
             Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_ENCODER,
@@ -163,7 +158,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public static double getMaxVelocityMetersPerSecond() {
-        return NeoSwerverModule.getMaxVelocityMetersPerSecond(ModuleConfiguration.MK4I_L3);
+        return SwerveModule.getMaxVelocityMetersPerSecond();
     }
 
     public static double getMaxAngularVelocityRadiansPerSecond() {

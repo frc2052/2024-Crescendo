@@ -17,7 +17,7 @@ public class DrivetrainState {
 
     public SwerveModulePosition[] getModulePositions(){
         return swerveModulePositions;
-    }
+        }
 
     public Rotation2d getRotation2d(){
         return rotation2d;

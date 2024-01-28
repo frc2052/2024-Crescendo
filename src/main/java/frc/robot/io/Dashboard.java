@@ -25,6 +25,14 @@ public class Dashboard {
 
     private final SendableChooser<DriveMode> driveModeChooser;
 
+    public static Dashboard getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new Dashboard();
+        }
+
+        return INSTANCE;
+    }
+
     private Dashboard() {
 
         ntinst = NetworkTableInstance.getDefault();
@@ -79,13 +87,5 @@ public class Dashboard {
     public static enum DriveMode {
         FIELD_CENTRIC,
         ROBOT_CENTRIC;
-    }
-
-    public static Dashboard getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Dashboard();
-        }
-
-        return INSTANCE;
     }
 }

@@ -4,28 +4,32 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.AdvantageScopeSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.MusicPlayerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
-
+  private final static DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final static IntakeSubsystem intake = new IntakeSubsystem();
+  private final static ShooterSubsystem shooter = new ShooterSubsystem();
+  private final static ClimberSubsystem climber = new ClimberSubsystem();
+  private final static MusicPlayerSubsystem musicPlayer = new MusicPlayerSubsystem();
+  private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    advantageScope.recordData();
+
     // Configure the trigger bindings
     configureBindings();
   }
 
   private void configureBindings() {
-
+    
   }
 
   public Command getAutonomousCommand() {
