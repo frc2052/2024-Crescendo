@@ -15,7 +15,7 @@ public class ShooterIdleSpeedCommand extends Command{
 
     @Override
     public void initialize() {
-        shooter.setSpeed(ShooterSpeeds.AMP);
+        shooter.setSpeed(ShooterSpeeds.IDLING);
     }
 
     @Override

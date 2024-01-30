@@ -6,22 +6,22 @@ import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ShooterSubsystem.ShooterSpeeds;
 
-public class ShooterAmpSpeedCommand extends Command {
+public class ShooterAmpAngleCommand extends Command {
 
     private final ShooterSubsystem shooter;
 
-    public ShooterAmpSpeedCommand(ShooterSubsystem shooter) {
+    public ShooterAmpAngleCommand(ShooterSubsystem shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
     }
 
     @Override
     public void initialize() {
-        shooter.setSpeed(ShooterSpeeds.AMP);
+        shooter.setShooterRotationAngle(Constants.VerticalShooter.SHOOTER_AMP_SCORING_ANGLE);
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooter.setSpeed(ShooterSpeeds.OFF);
+        shooter.setShooterRotationAngle(Constants.VerticalShooter.SHOOTER_DEFAULT_ANGLE);
     }
 }
