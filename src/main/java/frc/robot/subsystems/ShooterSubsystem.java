@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -18,9 +20,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final TalonFX lowerMotor;
   private final TalonFX upperMotor;
+  private final TalonFX rotationMotor;
+  private final AnalogEncoder rotationEncoder;
 
   private ProfiledPIDController lowerMotorController;
   private ProfiledPIDController upperMotorController;
+  private ProfiledPIDController rotationMotorController;
 
   public ShooterSubsystem() {
 
@@ -42,14 +47,27 @@ public class ShooterSubsystem extends SubsystemBase {
     Constants.VerticalShooter.UPPER_SHOOTER_MAX_VELOCITY,
     Constants.VerticalShooter.UPPER_SHOOTER_MAX_ACCELORATION));
 
-    lowerMotor.setInverted(Constants.VerticalShooter.LOWER_MOTER_IS_INVERTED);
+    rotationMotor = new TalonFX(Constants.VerticalShooter.ROTATION_SHOOTER_MOTOR_ID);
+    rotationMotorController = new ProfiledPIDController(
+    Constants.VerticalShooter.ROTATION_SHOOTER_KP,
+    Constants.VerticalShooter.ROTATION_SHOOTER_KI,
+    Constants.VerticalShooter.ROTATION_SHOOTER_KD,      
+    new TrapezoidProfile.Constraints(
+    Constants.VerticalShooter.ROTATION_SHOOTER_MAX_VELOCITY,
+    Constants.VerticalShooter.ROTATION_SHOOTER_MAX_ACCELORATION));
+
+    rotationEncoder = new AnalogEncoder(Constants.VerticalShooter.ROTATION_ENCODER_ID);
+
+    lowerMotor.setInverted(Constants.VerticalShooter.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.VerticalShooter.UPPER_MOTOR_IS_INVERTED);
+    rotationMotor.setInverted(Constants.VerticalShooter.ROTATION_MOTOR_IS_INVERTED);
   }
 
   public void stop() {
     lowerMotor.set(TalonFXControlMode.Velocity, ShooterSpeeds.OFF.getLowerTPS());
     upperMotor.set(TalonFXControlMode.Velocity, ShooterSpeeds.OFF.getUpperTPS());
   }
+
 
   public void setSpeed(ShooterSpeeds speeds) {
     lowerMotor.set(TalonFXControlMode.Velocity, lowerMotorController.calculate(getLowerShooterSpeed(), speeds.getLowerTPS()));

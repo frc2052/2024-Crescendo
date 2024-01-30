@@ -36,6 +36,8 @@ public final class Constants {
     public static class VerticalShooter {
         public static final int LOWER_SHOOTER_MOTOR_ID = 0;
         public static final int UPPER_SHOOTER_MOTOR_ID = 0;
+        public static final int ROTATION_SHOOTER_MOTOR_ID = 0;
+        public static final int ROTATION_ENCODER_ID = 0;
 
         public static final int LOWER_SHOOTER_IDLE_SPEED_TPS = 0;
         public static final int LOWER_SHOOTER_SPEAKER_SPEED_TPS = 0;
@@ -52,14 +54,27 @@ public final class Constants {
         public static final double LOWER_SHOOTER_KI = 0;
         public static final double LOWER_SHOOTER_KD = 0;
 
+        public static final double ROTATION_SHOOTER_KP = 0;
+        public static final double ROTATION_SHOOTER_KI = 0;
+        public static final double ROTATION_SHOOTER_KD = 0;
+
         public static final double UPPER_SHOOTER_MAX_VELOCITY = 0;
         public static final double UPPER_SHOOTER_MAX_ACCELORATION = 0;
         
         public static final double LOWER_SHOOTER_MAX_VELOCITY = 0;
         public static final double LOWER_SHOOTER_MAX_ACCELORATION = 0;
 
+        public static final double ROTATION_SHOOTER_MAX_VELOCITY = 0;
+        public static final double ROTATION_SHOOTER_MAX_ACCELORATION = 0;
+
         public static final boolean UPPER_MOTOR_IS_INVERTED = false;
-        public static final boolean LOWER_MOTER_IS_INVERTED = false;
+        public static final boolean LOWER_MOTOR_IS_INVERTED = false;
+        public static final boolean ROTATION_MOTOR_IS_INVERTED = false;
+
+        public static final double SHOOTER_HIGHT_IN_METERS = 0;
+        public static final double SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS = 0;
+        public static final double SHOOTER_MINNIMUM_ANGLE = 0;
+        public static final double SHOOTER_MAXIMUM_ANGLE = 0;
     }
     public static class MusicPlayer {
         public static final int[] INSTRAMENT_TALONFX_PORT_LIST = {0, 0, 0};
