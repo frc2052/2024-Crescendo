@@ -71,9 +71,6 @@ public final class Constants {
         public static final boolean LOWER_MOTOR_IS_INVERTED = false;
         public static final boolean ROTATION_MOTOR_IS_INVERTED = false;
 
-        public static final double SHOOTER_HIGHT_IN_METERS = 0;
-        public static final double SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS = 0;
-
         public static final double SHOOTER_MINNIMUM_ANGLE = 0;
         public static final double SHOOTER_MAXIMUM_ANGLE = 0;
         public static final double SHOOTER_DEFAULT_ANGLE = 0;
@@ -82,12 +79,20 @@ public final class Constants {
         public static final double ROTAION_MOTOR_TO_ACTUAL_ROTION_GEAR_RATIO = 0; //change
 
         public static final double SHOOTER_AMP_SCORING_ANGLE = 0;
-        
-
     }
+
+    public static class FeildAndRobot {
+        public static final double SHOOTER_HIGHT_IN_METERS = 0;
+        public static final double SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS = 0;
+
+        public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(0, 0);
+        public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(0, 0);
+    }
+
     public static class MusicPlayer {
         public static final int[] INSTRAMENT_TALONFX_PORT_LIST = {0, 0, 0};
     }
+
     public static class Drivetrain {
         // Left-to-right distance between drivetrain wheels
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0;

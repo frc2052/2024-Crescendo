@@ -9,11 +9,16 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotState;
 
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -119,7 +124,12 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getSpeakerTargetingAngle () {
-    
+    double targetHeight = Constants.FeildAndRobot.SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS - Constants.FeildAndRobot.SHOOTER_HIGHT_IN_METERS;
+    Pose2d pose = RobotState.getInstance().getRobotPose();
+    Translation2d location = pose.getTranslation();
+    Rotation2d rotaion = pose.getRotation();
+
+    //get distance
 
 
 
