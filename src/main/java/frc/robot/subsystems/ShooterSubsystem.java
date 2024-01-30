@@ -57,6 +57,7 @@ public class ShooterSubsystem extends SubsystemBase {
     Constants.VerticalShooter.ROTATION_SHOOTER_MAX_ACCELORATION));
 
     rotationEncoder = new AnalogEncoder(Constants.VerticalShooter.ROTATION_ENCODER_ID);
+    rotationEncoder.reset();
 
     lowerMotor.setInverted(Constants.VerticalShooter.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.VerticalShooter.UPPER_MOTOR_IS_INVERTED);
@@ -68,18 +69,45 @@ public class ShooterSubsystem extends SubsystemBase {
     upperMotor.set(TalonFXControlMode.Velocity, ShooterSpeeds.OFF.getUpperTPS());
   }
 
-
   public void setSpeed(ShooterSpeeds speeds) {
     lowerMotor.set(TalonFXControlMode.Velocity, lowerMotorController.calculate(getLowerShooterSpeed(), speeds.getLowerTPS()));
     upperMotor.set(TalonFXControlMode.Velocity, upperMotorController.calculate(getUpperShooterSpeed(), speeds.getUpperTPS()));
   }
 
   public void setUpperShooterSpeed(double upperShooterMotorSpeedTPS) {
-    upperMotor.set(TalonFXControlMode.Velocity, upperMotorController.calculate(upperShooterMotorSpeedTPS, upperShooterMotorSpeedTPS));
+    upperMotor.set(TalonFXControlMode.Velocity, upperMotorController.calculate(getUpperShooterSpeed(), upperShooterMotorSpeedTPS));
   }
 
   public void setLowerShooterSpeed(double lowerShooterMotorSpeedTPS) {
-    lowerMotor.set(TalonFXControlMode.Velocity, lowerMotorController.calculate(lowerShooterMotorSpeedTPS, lowerShooterMotorSpeedTPS));
+    lowerMotor.set(TalonFXControlMode.Velocity, lowerMotorController.calculate(getLowerShooterSpeed(), lowerShooterMotorSpeedTPS));
+  }
+
+  //run this in the perodic, if you don't it wont work.
+  public void setShooterRotationAngle(double shooterGoalAngle) {
+    //for safty. don't want the robot breaking
+    if (shooterGoalAngle < Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE) {
+      shooterGoalAngle = Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE;
+    } else if (shooterGoalAngle > Constants.VerticalShooter.SHOOTER_MAXIMUM_ANGLE) {
+      shooterGoalAngle = Constants.VerticalShooter.SHOOTER_MAXIMUM_ANGLE;
+    }
+    //sets movement
+    rotationMotor.set(TalonFXControlMode.Position, rotationMotorController.calculate(
+    ((getShooterAngle() / 360) * Constants.VerticalShooter.TICKS_PER_TALONFX_FULL_ROTION), 
+    ((shooterGoalAngle / 360) * Constants.VerticalShooter.TICKS_PER_TALONFX_FULL_ROTION) * Constants.VerticalShooter.ROTAION_MOTOR_TO_ACTUAL_ROTION_GEAR_RATIO));
+
+  }
+
+  public double getShooterAngle() {
+    return rotationEncoder.get() * 360;
+  }
+
+  public boolean checkShooterAngleValidity(double testShooterAngle) {
+      if (testShooterAngle < Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE) {
+      return false;
+    } else if (testShooterAngle > Constants.VerticalShooter.SHOOTER_MAXIMUM_ANGLE) {
+      return false;
+    }
+    return true;
   }
 
   public double getUpperShooterSpeed() {
