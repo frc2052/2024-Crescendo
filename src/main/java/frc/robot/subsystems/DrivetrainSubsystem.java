@@ -25,6 +25,7 @@ import frc.robot.RobotState;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     private RobotState robotState = RobotState.getInstance();
+    private ChassisSpeeds currentChassisSpeeds = new ChassisSpeeds();
 
     final SwerveModule frontLeftModule;
     final SwerveModule frontRightModule;
@@ -72,7 +73,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         AutoBuilder.configureHolonomic(
             this::getPose, // Robot pose supplier
             this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                     new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
@@ -140,6 +141,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * Autonomous commands still require a drive method controlled via a ChassisSpeeds object
      */
     public void drive(ChassisSpeeds chassisSpeeds) {
+        currentChassisSpeeds = chassisSpeeds;
         SwerveModuleState[] swerveModuleStates = Constants.Drivetrain.kinematics.toSwerveModuleStates(chassisSpeeds);
         setModuleStates(swerveModuleStates);
     }
@@ -215,9 +217,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
         backRightModule.debug();
     }
 
-    //TODO: Make real getPose, resetPose, getSpeeds, and driveRobotRelative methods
-    public Pose2d getPose() {return new Pose2d();}
-    public void resetPose(Pose2d pose) {}
-    public ChassisSpeeds getRobotRelativeSpeeds() {return new ChassisSpeeds();}
-    public void driveRobotRelative(ChassisSpeeds speeds) {}
+    public Pose2d getPose() {return RobotState.getInstance().getRobotPose();}
+    
+    public void resetPose(Pose2d pose) {RobotState.getInstance().reset(pose);}
+
+    public ChassisSpeeds getSpeeds() {
+        return currentChassisSpeeds;
+    }
+    public void driveRobotRelative(ChassisSpeeds speeds) {
+        drive(speeds);
+    }
 }
