@@ -10,12 +10,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -124,16 +121,35 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getSpeakerTargetingAngle () {
-    double targetHeight = Constants.FeildAndRobot.SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS - Constants.FeildAndRobot.SHOOTER_HIGHT_IN_METERS;
+    double targetHeight = (Constants.FeildAndRobot.SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS - Constants.FeildAndRobot.SHOOTER_HIGHT_IN_METERS) + Constants.VerticalShooter.SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS;
     Pose2d pose = RobotState.getInstance().getRobotPose();
     Translation2d location = pose.getTranslation();
-    Rotation2d rotaion = pose.getRotation();
+    Translation2d speaker;
+    double distance;
+    double angle;
+    double horizontalVelocityNeeded;
+    double verticalVelocityNeeded;
+    double timeUntilTrajectoryTargetHeight;
 
+    if (Constants.FeildAndRobot.IS_RED_ALLIENCE){
+      speaker = Constants.FeildAndRobot.RED_SPEAKER_LOCATION;
+    } else {
+      speaker = Constants.FeildAndRobot.BLUE_SPEAKER_LOCATION;
+    }
     //get distance
+    speaker.plus(new Translation2d(Constants.VerticalShooter.SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.VerticalShooter.SPEAKER_TARGET_Y_OFFSET_IN_METERS));
+    distance = location.getDistance(speaker);
 
+    //calculate velocitys
+    verticalVelocityNeeded = Math.sqrt(2 * Constants.FeildAndRobot.GRAVITY_IN_METERS_PER_SECOND * targetHeight);
+    timeUntilTrajectoryTargetHeight = (verticalVelocityNeeded / Constants.FeildAndRobot.GRAVITY_IN_METERS_PER_SECOND);
 
+    horizontalVelocityNeeded = distance / timeUntilTrajectoryTargetHeight;
 
-    return 0;
+    //calculate angle
+    angle = Math.toDegrees(Math.asin(verticalVelocityNeeded / horizontalVelocityNeeded));
+
+    return angle;
   }
 
   @Override

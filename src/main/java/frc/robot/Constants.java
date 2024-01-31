@@ -79,14 +79,22 @@ public final class Constants {
         public static final double ROTAION_MOTOR_TO_ACTUAL_ROTION_GEAR_RATIO = 0; //change
 
         public static final double SHOOTER_AMP_SCORING_ANGLE = 0;
+
+        public static final double SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS = 0;
+        public static final double SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
+        public static final double SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
     }
 
     public static class FeildAndRobot {
+        public static final boolean IS_RED_ALLIENCE = false; //change to the actuall thing / get tool
+
         public static final double SHOOTER_HIGHT_IN_METERS = 0;
         public static final double SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS = 0;
 
         public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(0, 0);
         public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(0, 0);
+
+        public static final double GRAVITY_IN_METERS_PER_SECOND = 9.805665;
     }
 
     public static class MusicPlayer {
