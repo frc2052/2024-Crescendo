@@ -7,9 +7,7 @@ import com.team2052.lib.PiCamera;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 
@@ -30,6 +28,7 @@ public class AprilTagSubsystem{
 
     private AprilTagSubsystem() {
         cameras.add(new PiCamera("PiCamera1", Constants.PiCamera1.PI_CAMERA_POSITION_METERS));
+        cameras.add(new PiCamera("PiCamera2", Constants.PiCamera2.PI_CAMERA_POSITION_METERS));
     }
 
     public void update() {

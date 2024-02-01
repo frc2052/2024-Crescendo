@@ -13,16 +13,16 @@ import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class RobotContainer {
-  private final static DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
-  private final static IntakeSubsystem intake = new IntakeSubsystem();
-  private final static ShooterSubsystem shooter = new ShooterSubsystem();
-  private final static ClimberSubsystem climber = new ClimberSubsystem();
-  private final static MusicPlayerSubsystem musicPlayer = new MusicPlayerSubsystem();
-  private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer);
+  //private final static DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  //private final static IntakeSubsystem intake = new IntakeSubsystem();
+  //private final static ShooterSubsystem shooter = new ShooterSubsystem();
+  //private final static ClimberSubsystem climber = new ClimberSubsystem();
+  //private final static MusicPlayerSubsystem musicPlayer = new MusicPlayerSubsystem();
+  //private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    advantageScope.recordData();
+    //advantageScope.recordData();
 
     // Configure the trigger bindings
     configureBindings();

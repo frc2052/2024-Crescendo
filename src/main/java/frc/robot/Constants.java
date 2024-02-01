@@ -4,22 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.apriltag.AprilTag;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 
 public final class Constants {
-    public static class Dashboard {
-        public static final String DRIVE_MODE_KEY = "Drive Mode";
-    }
 
     // TODO: Put in all the constants
 
@@ -116,6 +108,21 @@ public final class Constants {
     }
 
     public static final class PiCamera1 {
+        // TODO: Add PiCamera offsets
+        public static final double X_OFFSET_INCHES = 0;
+        public static final double Y_OFFSET_INCHES = 0;
+        public static final double Z_OFFSET_INCHES = 0;
+
+        public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll
+        public static final double THETA_Y_OFFSET_DEGREES = 0.0; // pitch
+        public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
+
+        public static final Transform3d PI_CAMERA_POSITION_METERS = new Transform3d(
+            new Translation3d(Units.inchesToMeters(X_OFFSET_INCHES), Units.inchesToMeters(Y_OFFSET_INCHES), Units.inchesToMeters(Z_OFFSET_INCHES)), 
+            new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
+        );
+    }
+    public static final class PiCamera2 {
         // TODO: Add PiCamera offsets
         public static final double X_OFFSET_INCHES = 0;
         public static final double Y_OFFSET_INCHES = 0;
