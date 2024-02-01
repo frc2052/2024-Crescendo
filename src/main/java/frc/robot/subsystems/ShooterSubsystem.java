@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -131,11 +132,15 @@ public class ShooterSubsystem extends SubsystemBase {
     double verticalVelocityNeeded;
     double timeUntilTrajectoryTargetHeight;
 
-    if (Constants.FeildAndRobot.IS_RED_ALLIENCE){
-      speaker = Constants.FeildAndRobot.RED_SPEAKER_LOCATION;
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent()) {
+      speaker = (alliance.get() == DriverStation.Alliance.Red) ? 
+      Constants.FeildAndRobot.RED_SPEAKER_LOCATION : 
+      Constants.FeildAndRobot.BLUE_SPEAKER_LOCATION;
     } else {
-      speaker = Constants.FeildAndRobot.BLUE_SPEAKER_LOCATION;
+      speaker = Constants.FeildAndRobot.RED_SPEAKER_LOCATION;
     }
++-
     //get distance
     speaker.plus(new Translation2d(Constants.VerticalShooter.SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.VerticalShooter.SPEAKER_TARGET_Y_OFFSET_IN_METERS));
     distance = location.getDistance(speaker);

@@ -86,7 +86,6 @@ public final class Constants {
     }
 
     public static class FeildAndRobot {
-        public static final boolean IS_RED_ALLIENCE = false; //change to the actuall thing / get tool
 
         public static final double SHOOTER_HIGHT_IN_METERS = 0;
         public static final double SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS = 0;
