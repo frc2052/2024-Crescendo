@@ -140,7 +140,7 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       speaker = Constants.FeildAndRobot.RED_SPEAKER_LOCATION;
     }
-+-
+
     //get distance
     speaker.plus(new Translation2d(Constants.VerticalShooter.SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.VerticalShooter.SPEAKER_TARGET_Y_OFFSET_IN_METERS));
     distance = location.getDistance(speaker);
