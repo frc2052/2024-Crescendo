@@ -26,8 +26,8 @@ public final class Constants {
     }
 
     public static class OneUnderBumperIntake {
-        public final static int UPPER_MOTOR_CHANNEL = 1;
-        public final static int LOWER_MOTOR_CHANNEL = 2;
+        public final static int UPPER_MOTOR_CHANNEL = 0;
+        public final static int LOWER_MOTOR_CHANNEL = 0;
 
         public final static double INTAKE_IN_SPEED_TPS = 0.5;
         public final static double INTAKE_OUT_SPEED_TPS = 0.5;
@@ -143,7 +143,7 @@ public final class Constants {
      public static final class Elevator{
             public static final int BELT_MOTOR = 15;
     
-            public static final int LIMIT_SWITCH_DIO_CHANNEL = 0;
+            public static final int LIMIT_SWITCH_DIO_CHANNEL = 14;
     
             public static final double BELT_MOTOR_F = 0.054;
             public static final double BELT_MOTOR_P = 0.2046;
@@ -158,6 +158,25 @@ public final class Constants {
             public static final double BELT_MOTOR_MAX_ACCELERATION = 24000;
             public static final int BELT_MOTOR_DEAD_ZONE_TICKS = 250;
         }
+
+        public static final class TrapArm {
+            public static final int ARM_MOTOR_ID = 0;
+            public static final int ARM_ROTATION_MOTOR_ID = 0;
+
+            public static final double ARM_KP = 0;
+            public static final double ARM_KI = 0;
+            public static final double ARM_KD = 0;
+            public static final double ARM_MAX_VELOCITY = 0;
+            public static final double ARM_MAX_ACCELERATION = 0;
+
+            public static final double OUTTAKE_KP = 0;
+            public static final double OUTTAKE_KI = 0;
+            public static final double OUTTAKE_KD = 0;            
+            public static final double OUTTAKE_MAX_VELOCITY = 0;
+            public static final double OUTTAKE_MAX_ACCELERATION = 0;
+
+            public static final double OUTTAKE_OUT_SPEED = 0;
+        }   
 
         public static final class Dashboard {
             public static final String DRIVE_MODE_KEY = "Drive Mode";
