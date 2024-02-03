@@ -40,32 +40,32 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     }
 
     public static void recordIntakeData () {
-        Logger.recordOutput("m_Under Bumper Intake Lower Motor Speed", 
+        Logger.recordOutput("Under Bumper Intake Lower Motor Speed", 
         intake.getLowerMotorSpeed());
 
-        Logger.recordOutput("m_Under Bumper Intake Upper Motor Speed", 
+        Logger.recordOutput("Under Bumper Intake Upper Motor Speed", 
         intake.getUpperMotorSpeed());
 
     }
 
     public static void recordShooterData () {
-        Logger.recordOutput("m_Vertical Shooter Upper Motor Speed", 
+        Logger.recordOutput("Vertical Shooter Upper Motor Speed", 
         shooter.getUpperShooterSpeed());
         
-        Logger.recordOutput("m_Vertical Shooter Lower Motor Speed", 
+        Logger.recordOutput("Vertical Shooter Lower Motor Speed", 
         shooter.getLowerShooterSpeed());
     }
 
     public static void recordClimberData () {
-        Logger.recordOutput("m_Climber Encoder Position", 
+        Logger.recordOutput("Climber Encoder Position", 
         climber.getEncoderPosition());
     }
 
     public static void recordMusicPlayerData() {
-        Logger.recordOutput("m_Current Track Play Time",
+        Logger.recordOutput("Current Track Play Time",
         musicPlayer.getCurrentPlayTime());
 
-        Logger.recordOutput("m_Is Music Player Playing", 
+        Logger.recordOutput("Is Music Player Playing", 
         musicPlayer.isPlayerPLaying());
     }
 
