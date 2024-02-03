@@ -83,5 +83,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         Logger.recordOutput("Swerve Array", swerveArray);
 
         Logger.recordOutput("Pose 2D", RobotState.getInstance().getRobotPose());
+
+        //SmartDashboard.getNumber("");
     }
 }
