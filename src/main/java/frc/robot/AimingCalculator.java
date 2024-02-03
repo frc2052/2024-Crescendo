@@ -54,8 +54,8 @@ public class AimingCalculator {
         yDistanceToSpeaker = speakerLocation.getY() - location.getY();
         angleToSpeaker = Math.atan(yDistanceToSpeaker / xDistanceToSpeaker);
 
-        robotXVelocity = drivetrain.getCurrentChassisSpeeds().vxMetersPerSecond;
-        robotYVelocity = drivetrain.getCurrentChassisSpeeds().vyMetersPerSecond;
+        robotXVelocity = drivetrain.getSpeeds().vxMetersPerSecond;
+        robotYVelocity = drivetrain.getSpeeds().vyMetersPerSecond;
 
         robotCombinedVelocity = Math.sqrt(Math.pow(robotXVelocity, 2) + Math.pow(robotYVelocity, 2));
 

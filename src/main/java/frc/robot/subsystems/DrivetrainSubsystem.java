@@ -33,8 +33,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     final SwerveModule backRightModule;
 
     private final AHRS navx;
-
-    private ChassisSpeeds currentChassisSpeeds;
     
     /** Creates a new SwerveDrivetrainSubsystem. */
     public DrivetrainSubsystem() {
