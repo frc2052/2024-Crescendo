@@ -22,24 +22,9 @@ public class RobotContainer {
   private final static MusicPlayerSubsystem musicPlayer = new MusicPlayerSubsystem();
   private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer);
 
-  private final Joystick joystick = new Joystick(0);
-  private final Joystick joystick2 = new Joystick(1);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     advantageScope.recordData();
-            drivetrain.setDefaultCommand(
-            new DriveCommand(
-                // Forward velocity supplier.
-                joystick::getY,
-                // Sideways velocity supplier.
-                joystick::getX,
-                // Rotation velocity supplier.
-                joystick2::getX,
-                this::isFieldCentric,
-                drivetrain
-            )
-        );
 
     // Configure the trigger bindings
     configureBindings();
@@ -52,9 +37,5 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return null;
-  }
-
-  public Boolean isFieldCentric() {
-    return true;
   }
 }
