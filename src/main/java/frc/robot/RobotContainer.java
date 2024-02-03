@@ -26,6 +26,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.Joystick;
@@ -39,7 +40,8 @@ public class RobotContainer {
   private final static ShooterSubsystem shooter = new ShooterSubsystem();
   private final static ClimberSubsystem climber = new ClimberSubsystem();
   private final static MusicPlayerSubsystem musicPlayer = new MusicPlayerSubsystem();
-  private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer);
+  private final static VisionSubsystem vision = new VisionSubsystem();
+  private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer, vision);
 
   private final Joystick translationJoystick;
   private final Joystick rotationJoystick;
@@ -64,6 +66,10 @@ public class RobotContainer {
   private boolean musicOn;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    translationJoystick = new Joystick(0);
+    rotationJoystick = new Joystick(1);
+    controlPanel = new Joystick(2);
+
     fieldCentricSupplier = new BooleanSupplier() {
             public boolean getAsBoolean() {return true;}
         };
@@ -75,9 +81,6 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    translationJoystick = new Joystick(0);
-    rotationJoystick = new Joystick(1);
-    controlPanel = new Joystick(2);
 
     staticAimButton = new JoystickButton(translationJoystick, 0);
     motionAimButton = new JoystickButton(rotationJoystick, 0);

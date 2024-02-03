@@ -11,19 +11,23 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     static ClimberSubsystem climberSubsystem;
     static DrivetrainSubsystem drivetrainSubsystem;
     static MusicPlayerSubsystem musicPlayerSubsystem;
+    static VisionSubsystem visionSubsystem;
+    static String folder = "Data_";
     
     public AdvantageScopeSubsystem (    
     IntakeSubsystem intakeSubsystem, 
     ShooterSubsystem shooterSubsystem, 
     ClimberSubsystem climberSubsystem, 
     DrivetrainSubsystem drivetrainSubsystem,
-    MusicPlayerSubsystem musicPlayerSubsystem) {
+    MusicPlayerSubsystem musicPlayerSubsystem,
+    VisionSubsystem visionSubsystem) {
 
         AdvantageScopeSubsystem.intakeSubsystem = intakeSubsystem;
         AdvantageScopeSubsystem.shooterSubsystem = shooterSubsystem;
         AdvantageScopeSubsystem.climberSubsystem = climberSubsystem;
         AdvantageScopeSubsystem.drivetrainSubsystem = drivetrainSubsystem;
         AdvantageScopeSubsystem.musicPlayerSubsystem = musicPlayerSubsystem;
+        AdvantageScopeSubsystem.visionSubsystem = visionSubsystem;
       
         recordOneUnderBumberIntakeData();
 
@@ -34,35 +38,37 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         recordDrivetrainData();
 
         recordMusicPlayerData();
+
+        recordVisionData();
     }    
 
     public static void recordOneUnderBumberIntakeData () {
-        Logger.recordOutput("Under Bumper Intake Lower Motor Speed", 
+        Logger.recordOutput(folder+"Under Bumper Intake Lower Motor Speed", 
         intakeSubsystem.getLowerMotorSpeed());
 
-        Logger.recordOutput("Under Bumper Intake Upper Motor Speed", 
+        Logger.recordOutput(folder+"Under Bumper Intake Upper Motor Speed", 
         intakeSubsystem.getUpperMotorSpeed());
 
     }
 
     public static void recordShooterData () {
-        Logger.recordOutput("Shooter Upper Motor Speed", 
+        Logger.recordOutput(folder+"Shooter Upper Motor Speed", 
         shooterSubsystem.getUpperShooterSpeed());
         
-        Logger.recordOutput("Shooter Lower Motor Speed", 
+        Logger.recordOutput(folder+"Shooter Lower Motor Speed", 
         shooterSubsystem.getLowerShooterSpeed());
     }
 
     public static void recordClimberData () {
-        Logger.recordOutput("Climber Encoder Position", 
+        Logger.recordOutput(folder+"Climber Encoder Position", 
         climberSubsystem.getEncoderPosition());
     }
 
     public static void recordMusicPlayerData() {
-        Logger.recordOutput("Current Track Play Time",
+        Logger.recordOutput(folder+"Current Track Play Time",
         musicPlayerSubsystem.getCurrentPlayTime());
 
-        Logger.recordOutput("Is Music Player Playing", 
+        Logger.recordOutput(folder+"Is Music Player Playing", 
         musicPlayerSubsystem.isPlayerPLaying());
     }
 
@@ -80,10 +86,16 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
             drivetrainSubsystem.backRightModule.getState().angle.getDegrees(), 
             drivetrainSubsystem.backRightModule.getState().speedMetersPerSecond,
         };
-        Logger.recordOutput("Swerve Array", swerveArray);
+        Logger.recordOutput(folder+"Swerve Array", swerveArray);
 
-        Logger.recordOutput("Pose 2D", RobotState.getInstance().getRobotPose());
+        Logger.recordOutput(folder+"Pose 2D", RobotState.getInstance().getRobotPose());
 
         //SmartDashboard.getNumber("");
+    }
+
+    public static void recordVisionData() {
+        Logger.recordOutput(folder+"Visions Has Target", visionSubsystem.hasTarget());
+
+        Logger.recordOutput(folder+"Best Note Pose2D", visionSubsystem.getBestNotePose());
     }
 }
