@@ -72,7 +72,7 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-    configureDiveType();
+    configureDriveType();
   }
 
   private void configureBindings() {
@@ -109,11 +109,11 @@ public class RobotContainer {
     shooterDefaultButton.onTrue(defaultSetup());
   }
 
-  private void configureDiveType() {
+  private void configureDriveType() {
     normalDrive();
     staticAimButton.onTrue(staticAimDrive());
     motionAimButton.onTrue(motionAimDrive());
-    staticAimButton.onFalse(normalDrive());
+    motionAimButton.onFalse(normalDrive());
     staticAimButton.onFalse(normalDrive());
   }
 
