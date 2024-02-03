@@ -42,9 +42,9 @@ public class RobotContainer {
   private final static MusicPlayerSubsystem musicPlayer = new MusicPlayerSubsystem();
   private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer);
 
-  private final static Joystick translationJoystick = new Joystick(0);
-  private final Joystick rotationJoystick = new Joystick(1);
-  private final Joystick controlPanel = new Joystick(2);
+  private final static Joystick translationJoystick;
+  private final Joystick rotationJoystick;
+  private final Joystick controlPanel;
 
   private JoystickButton staticAimButton;
   private JoystickButton motionAimButton;
@@ -76,6 +76,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    translationJoystick = new Joystick(0);
+    rotationJoystick = new Joystick(1);
+    controlPanel = new Joystick(2);
+
     staticAimButton = new JoystickButton(translationJoystick, 0);
     motionAimButton = new JoystickButton(rotationJoystick, 0);
 
@@ -121,13 +125,13 @@ public class RobotContainer {
 
   private Command motionAimDrive() {
     drivetrain.setDefaultCommand(
-      new RunCommand(() -> new DriveWhileMovingAimingCommand(null, null, fieldCentricSupplier, drivetrain)));
+      new RunCommand(() -> new DriveWhileMovingAimingCommand(() -> translationJoystick.getX(), () -> translationJoystick.getY(), fieldCentricSupplier, drivetrain)));
     return null;
   }
 
   private Command normalDrive() {
     drivetrain.setDefaultCommand(
-      new RunCommand(() -> new DriveCommand(null, null, null, fieldCentricSupplier, drivetrain)));
+      new RunCommand(() -> new DriveCommand(() -> translationJoystick.getX(), () -> translationJoystick.getY(), () -> rotationJoystick.getDirectionDegrees(), fieldCentricSupplier, drivetrain)));
     return null;
   }
 
