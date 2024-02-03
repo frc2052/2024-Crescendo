@@ -9,18 +9,26 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotState;
 
 
 public class ShooterSubsystem extends SubsystemBase {
 
   private final TalonFX lowerMotor;
   private final TalonFX upperMotor;
+  private final TalonFX rotationMotor;
+  private final AnalogEncoder rotationEncoder;
 
   private ProfiledPIDController lowerMotorController;
   private ProfiledPIDController upperMotorController;
+  private ProfiledPIDController rotationMotorController;
 
   public ShooterSubsystem() {
 
@@ -42,8 +50,21 @@ public class ShooterSubsystem extends SubsystemBase {
     Constants.VerticalShooter.UPPER_SHOOTER_MAX_VELOCITY,
     Constants.VerticalShooter.UPPER_SHOOTER_MAX_ACCELORATION));
 
-    lowerMotor.setInverted(Constants.VerticalShooter.LOWER_MOTER_IS_INVERTED);
+    rotationMotor = new TalonFX(Constants.VerticalShooter.ROTATION_SHOOTER_MOTOR_ID);
+    rotationMotorController = new ProfiledPIDController(
+    Constants.VerticalShooter.ROTATION_SHOOTER_KP,
+    Constants.VerticalShooter.ROTATION_SHOOTER_KI,
+    Constants.VerticalShooter.ROTATION_SHOOTER_KD,      
+    new TrapezoidProfile.Constraints(
+    Constants.VerticalShooter.ROTATION_SHOOTER_MAX_VELOCITY,
+    Constants.VerticalShooter.ROTATION_SHOOTER_MAX_ACCELORATION));
+
+    rotationEncoder = new AnalogEncoder(Constants.VerticalShooter.ROTATION_ENCODER_ID);
+    rotationEncoder.reset();
+
+    lowerMotor.setInverted(Constants.VerticalShooter.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.VerticalShooter.UPPER_MOTOR_IS_INVERTED);
+    rotationMotor.setInverted(Constants.VerticalShooter.ROTATION_MOTOR_IS_INVERTED);
   }
 
   public void stop() {
@@ -57,11 +78,39 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setUpperShooterSpeed(double upperShooterMotorSpeedTPS) {
-    upperMotor.set(TalonFXControlMode.Velocity, upperMotorController.calculate(upperShooterMotorSpeedTPS, upperShooterMotorSpeedTPS));
+    upperMotor.set(TalonFXControlMode.Velocity, upperMotorController.calculate(getUpperShooterSpeed(), upperShooterMotorSpeedTPS));
   }
 
   public void setLowerShooterSpeed(double lowerShooterMotorSpeedTPS) {
-    lowerMotor.set(TalonFXControlMode.Velocity, lowerMotorController.calculate(lowerShooterMotorSpeedTPS, lowerShooterMotorSpeedTPS));
+    lowerMotor.set(TalonFXControlMode.Velocity, lowerMotorController.calculate(getLowerShooterSpeed(), lowerShooterMotorSpeedTPS));
+  }
+
+  //run this in the perodic, if you don't it wont work.
+  public void setShooterRotationAngle(double shooterGoalAngle) {
+    //for safty. don't want the robot breaking
+    if (shooterGoalAngle < Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE) {
+      shooterGoalAngle = Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE;
+    } else if (shooterGoalAngle > Constants.VerticalShooter.SHOOTER_MAXIMUM_ANGLE) {
+      shooterGoalAngle = Constants.VerticalShooter.SHOOTER_MAXIMUM_ANGLE;
+    }
+    //sets movement
+    rotationMotor.set(TalonFXControlMode.Position, rotationMotorController.calculate(
+    ((getShooterAngle() / 360) * Constants.VerticalShooter.TICKS_PER_TALONFX_FULL_ROTION), 
+    ((shooterGoalAngle / 360) * Constants.VerticalShooter.TICKS_PER_TALONFX_FULL_ROTION) * Constants.VerticalShooter.ROTAION_MOTOR_TO_ACTUAL_ROTION_GEAR_RATIO));
+
+  }
+
+  public double getShooterAngle() {
+    return rotationEncoder.get() * 360;
+  }
+
+  public boolean checkShooterAngleValidity(double testShooterAngle) {
+      if (testShooterAngle < Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE) {
+      return false;
+    } else if (testShooterAngle > Constants.VerticalShooter.SHOOTER_MAXIMUM_ANGLE) {
+      return false;
+    }
+    return true;
   }
 
   public double getUpperShooterSpeed() {
@@ -71,6 +120,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public double getLowerShooterSpeed() {
     return lowerMotor.getSelectedSensorVelocity();
   }
+
+  
 
   @Override
   public void periodic() {

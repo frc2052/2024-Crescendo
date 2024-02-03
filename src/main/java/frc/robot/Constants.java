@@ -36,6 +36,8 @@ public final class Constants {
     public static class VerticalShooter {
         public static final int LOWER_SHOOTER_MOTOR_ID = 0;
         public static final int UPPER_SHOOTER_MOTOR_ID = 0;
+        public static final int ROTATION_SHOOTER_MOTOR_ID = 0;
+        public static final int ROTATION_ENCODER_ID = 0;
 
         public static final int LOWER_SHOOTER_IDLE_SPEED_TPS = 0;
         public static final int LOWER_SHOOTER_SPEAKER_SPEED_TPS = 0;
@@ -52,18 +54,54 @@ public final class Constants {
         public static final double LOWER_SHOOTER_KI = 0;
         public static final double LOWER_SHOOTER_KD = 0;
 
+        public static final double ROTATION_SHOOTER_KP = 0;
+        public static final double ROTATION_SHOOTER_KI = 0;
+        public static final double ROTATION_SHOOTER_KD = 0;
+
         public static final double UPPER_SHOOTER_MAX_VELOCITY = 0;
         public static final double UPPER_SHOOTER_MAX_ACCELORATION = 0;
         
         public static final double LOWER_SHOOTER_MAX_VELOCITY = 0;
         public static final double LOWER_SHOOTER_MAX_ACCELORATION = 0;
 
+        public static final double ROTATION_SHOOTER_MAX_VELOCITY = 0;
+        public static final double ROTATION_SHOOTER_MAX_ACCELORATION = 0;
+
         public static final boolean UPPER_MOTOR_IS_INVERTED = false;
-        public static final boolean LOWER_MOTER_IS_INVERTED = false;
+        public static final boolean LOWER_MOTOR_IS_INVERTED = false;
+        public static final boolean ROTATION_MOTOR_IS_INVERTED = false;
+
+        public static final double SHOOTER_MINNIMUM_ANGLE = 0;
+        public static final double SHOOTER_MAXIMUM_ANGLE = 0;
+        public static final double SHOOTER_DEFAULT_ANGLE = 0;
+
+        public static final double TICKS_PER_TALONFX_FULL_ROTION = 0;
+        public static final double ROTAION_MOTOR_TO_ACTUAL_ROTION_GEAR_RATIO = 0; //change
+
+        public static final double SHOOTER_AMP_SCORING_ANGLE = 0;
+
+        public static final double SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS = 0;
+        public static final double SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
+        public static final double SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
     }
+
+    public static class FeildAndRobot {
+
+        public static final double SHOOTER_HIGHT_IN_METERS = 0;
+        public static final double SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS = 0;
+
+        public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(0, 0);
+        public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(0, 0);
+
+        public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
+
+        public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 0;
+    }
+
     public static class MusicPlayer {
         public static final int[] INSTRAMENT_TALONFX_PORT_LIST = {0, 0, 0};
     }
+
     public static class Drivetrain {
         // Left-to-right distance between drivetrain wheels
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0;
