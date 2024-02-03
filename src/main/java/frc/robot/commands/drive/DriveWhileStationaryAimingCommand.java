@@ -8,15 +8,11 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.RobotState;
+import frc.robot.AimingCalculator;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class DriveWhileAimingCommand extends Command {
+public class DriveWhileStationaryAimingCommand extends Command {
     protected final DrivetrainSubsystem drivetrain;
 
     private final DoubleSupplier xSupplier;
@@ -33,9 +29,7 @@ public class DriveWhileAimingCommand extends Command {
      * @param ySupplier supplier for sideways velocity.
      * @param rotationSupplier supplier for angular velocity.
      */
-    public DriveWhileAimingCommand(
-        DoubleSupplier xSupplier, 
-        DoubleSupplier ySupplier, 
+    public DriveWhileStationaryAimingCommand(
         BooleanSupplier fieldCentricSupplier,
         DrivetrainSubsystem drivetrain
     ) {
@@ -43,20 +37,17 @@ public class DriveWhileAimingCommand extends Command {
 
             @Override
             public double getAsDouble() {
-                Translation2d speaker;
-                Pose2d pose = RobotState.getInstance().getRobotPose();
-                Translation2d location = pose.getTranslation();
+                AimingCalculator.updateInformation();
+                return AimingCalculator.getStationaryTargetRobotAngle();
+            }
+        };
 
-                var alliance = DriverStation.getAlliance();
-                if (alliance.isPresent()) {
-                speaker = (alliance.get() == DriverStation.Alliance.Red) ? 
-                Constants.FeildAndRobot.RED_SPEAKER_LOCATION : 
-                Constants.FeildAndRobot.BLUE_SPEAKER_LOCATION;
-            } else {
-                speaker = Constants.FeildAndRobot.RED_SPEAKER_LOCATION;
-            }
-                return Math.toDegrees(Math.acos((speaker.getX() - location.getX()) / (speaker.getY() - location.getY())));
-            }
+        DoubleSupplier xSupplier = new DoubleSupplier() {
+            public double getAsDouble() {return 0;}
+        };
+
+        DoubleSupplier ySupplier = new DoubleSupplier() {
+            public double getAsDouble() {return 0;}
         };
         this.drivetrain = drivetrain;
 

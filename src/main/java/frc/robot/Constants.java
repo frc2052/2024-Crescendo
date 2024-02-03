@@ -93,7 +93,9 @@ public final class Constants {
         public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(0, 0);
         public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(0, 0);
 
-        public static final double GRAVITY_IN_METERS_PER_SECOND = 9.805665;
+        public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
+
+        public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 0;
     }
 
     public static class MusicPlayer {

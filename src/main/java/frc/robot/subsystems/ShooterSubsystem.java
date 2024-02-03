@@ -121,41 +121,7 @@ public class ShooterSubsystem extends SubsystemBase {
     return lowerMotor.getSelectedSensorVelocity();
   }
 
-  public double getSpeakerTargetingAngle () {
-    double targetHeight = (Constants.FeildAndRobot.SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS - Constants.FeildAndRobot.SHOOTER_HIGHT_IN_METERS) + Constants.VerticalShooter.SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS;
-    Pose2d pose = RobotState.getInstance().getRobotPose();
-    Translation2d location = pose.getTranslation();
-    Translation2d speaker;
-    double distance;
-    double angle;
-    double horizontalVelocityNeeded;
-    double verticalVelocityNeeded;
-    double timeUntilTrajectoryTargetHeight;
-
-    var alliance = DriverStation.getAlliance();
-    if (alliance.isPresent()) {
-      speaker = (alliance.get() == DriverStation.Alliance.Red) ? 
-      Constants.FeildAndRobot.RED_SPEAKER_LOCATION : 
-      Constants.FeildAndRobot.BLUE_SPEAKER_LOCATION;
-    } else {
-      speaker = Constants.FeildAndRobot.RED_SPEAKER_LOCATION;
-    }
-
-    //get distance
-    speaker.plus(new Translation2d(Constants.VerticalShooter.SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.VerticalShooter.SPEAKER_TARGET_Y_OFFSET_IN_METERS));
-    distance = location.getDistance(speaker);
-
-    //calculate velocitys
-    verticalVelocityNeeded = Math.sqrt(2 * Constants.FeildAndRobot.GRAVITY_IN_METERS_PER_SECOND * targetHeight);
-    timeUntilTrajectoryTargetHeight = (verticalVelocityNeeded / Constants.FeildAndRobot.GRAVITY_IN_METERS_PER_SECOND);
-
-    horizontalVelocityNeeded = distance / timeUntilTrajectoryTargetHeight;
-
-    //calculate angle
-    angle = Math.toDegrees(Math.asin(verticalVelocityNeeded / horizontalVelocityNeeded));
-
-    return angle;
-  }
+  
 
   @Override
   public void periodic() {

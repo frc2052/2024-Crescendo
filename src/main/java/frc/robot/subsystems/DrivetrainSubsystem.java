@@ -26,6 +26,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     final SwerveModule backRightModule;
 
     private final AHRS navx;
+
+    private ChassisSpeeds currentChassisSpeeds;
     
     /** Creates a new SwerveDrivetrainSubsystem. */
     public DrivetrainSubsystem() {
@@ -107,6 +109,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * Autonomous commands still require a drive method controlled via a ChassisSpeeds object
      */
     public void drive(ChassisSpeeds chassisSpeeds) {
+        currentChassisSpeeds = chassisSpeeds;
         SwerveModuleState[] swerveModuleStates = Constants.Drivetrain.kinematics.toSwerveModuleStates(chassisSpeeds);
         setModuleStates(swerveModuleStates);
     }
@@ -180,5 +183,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
         frontRightModule.debug();   
         backLeftModule.debug();
         backRightModule.debug();
+    }
+
+    public ChassisSpeeds getCurrentChassisSpeeds() {
+        return currentChassisSpeeds;
     }
 }
