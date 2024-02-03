@@ -42,7 +42,7 @@ public class RobotContainer {
   private final static MusicPlayerSubsystem musicPlayer = new MusicPlayerSubsystem();
   private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer);
 
-  private final static Joystick translationJoystick;
+  private final Joystick translationJoystick;
   private final Joystick rotationJoystick;
   private final Joystick controlPanel;
 
