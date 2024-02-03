@@ -9,6 +9,7 @@ import frc.robot.commands.Climb.RaiseClimberCommand;
 import frc.robot.commands.Climb.LowerClimberCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileMovingAimingCommand;
+import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
 import frc.robot.commands.drive.DriveWhileStationaryAimingCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
@@ -49,6 +50,7 @@ public class RobotContainer {
 
   private JoystickButton staticAimButton;
   private JoystickButton motionAimButton;
+  private JoystickButton orbitNoteButton;
 
   private JoystickButton raiseClimberButton;
   private JoystickButton lowerClimberButton;
@@ -61,6 +63,7 @@ public class RobotContainer {
   private JoystickButton ampScoreSetupButton;
   private JoystickButton speakerScoreSetupButton;
   private JoystickButton shooterDefaultButton;
+
 
   private BooleanSupplier fieldCentricSupplier;
   private boolean musicOn;
@@ -84,6 +87,7 @@ public class RobotContainer {
 
     staticAimButton = new JoystickButton(translationJoystick, 0);
     motionAimButton = new JoystickButton(rotationJoystick, 0);
+    orbitNoteButton = new JoystickButton(rotationJoystick, 1);
 
     raiseClimberButton = new JoystickButton(controlPanel, 12);
     lowerClimberButton = new JoystickButton(controlPanel, 11);
@@ -115,8 +119,10 @@ public class RobotContainer {
     normalDrive();
     staticAimButton.onTrue(staticAimDrive());
     motionAimButton.onTrue(motionAimDrive());
+    orbitNoteButton.onTrue(orbitDrive());
     motionAimButton.onFalse(normalDrive());
     staticAimButton.onFalse(normalDrive());
+    orbitNoteButton.onFalse(normalDrive());
   }
 
   private Command staticAimDrive() {
@@ -134,6 +140,12 @@ public class RobotContainer {
   private Command normalDrive() {
     drivetrain.setDefaultCommand(
       new RunCommand(() -> new DriveCommand(() -> translationJoystick.getX(), () -> translationJoystick.getY(), () -> rotationJoystick.getDirectionDegrees(), fieldCentricSupplier, drivetrain)));
+    return null;
+  }
+
+  private Command orbitDrive() {
+    drivetrain.setDefaultCommand(
+      new RunCommand(() -> new DriveWhileOrbitingNoteCommand(() -> translationJoystick.getX(), () -> translationJoystick.getY(), fieldCentricSupplier, drivetrain, vision)));
     return null;
   }
 
