@@ -26,16 +26,16 @@ public final class Constants {
     }
 
     public static class OneUnderBumperIntake {
-        public final static int UPPER_MOTOR_CHANNEL = 1;
-        public final static int LOWER_MOTOR_CHANNEL = 2;
+        public final static int UPPER_MOTOR_CHANNEL = 0;
+        public final static int LOWER_MOTOR_CHANNEL = 0;
 
         public final static double INTAKE_IN_SPEED_TPS = 0.5;
         public final static double INTAKE_OUT_SPEED_TPS = 0.5;
     }
   
     public static class VerticalShooter {
-        public static final int LOWER_SHOOTER_MOTOR_ID = 1;
-        public static final int UPPER_SHOOTER_MOTOR_ID = 2;
+        public static final int LOWER_SHOOTER_MOTOR_ID = 0;
+        public static final int UPPER_SHOOTER_MOTOR_ID = 0;
 
         public static final int LOWER_SHOOTER_IDLE_SPEED_TPS = 0;
         public static final int LOWER_SHOOTER_SPEAKER_SPEED_TPS = 0;
@@ -62,7 +62,7 @@ public final class Constants {
         public static final boolean LOWER_MOTER_IS_INVERTED = false;
     }
     public static class MusicPlayer {
-        public static final int[] INSTRAMENT_TALONFX_PORT_LIST = {3, 4, 5};
+        public static final int[] INSTRAMENT_TALONFX_PORT_LIST = {0, 0, 0};
     }
     public static class Drivetrain {
         // Left-to-right distance between drivetrain wheels
@@ -70,23 +70,23 @@ public final class Constants {
         // Front-to-back distance between drivetrain wheels
         public static final double DRIVETRAIN_WHEELBASE_METERS = 0;
 
-        public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 6;
-        public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 7;
+        public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 0;
+        public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 0;
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 0;
         public static final double FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS = 2.76420367321;
 
-        public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 8;
-        public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 9;
+        public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 0;
+        public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 0;
         public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 0;
         public static final double FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS = 3.28720367321;
 
-        public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 10;
-        public static final int BACK_LEFT_MODULE_STEER_MOTOR = 11;
+        public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 0;
+        public static final int BACK_LEFT_MODULE_STEER_MOTOR = 0;
         public static final int BACK_LEFT_MODULE_STEER_ENCODER = 0;
         public static final double BACK_LEFT_MODULE_STEER_OFFSET_RADIANS = 0.0412036732;
 
-        public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 12;
-        public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 13;
+        public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 0;
+        public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 0;
         public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 0;
         public static final double BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS = -0.39179632679;
 
