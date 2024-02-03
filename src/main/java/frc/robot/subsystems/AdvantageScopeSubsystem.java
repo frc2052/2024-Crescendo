@@ -83,9 +83,9 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
             drivetrain.backRightModule.getState().angle.getDegrees(), 
             drivetrain.backRightModule.getState().speedMetersPerSecond,
         };
-        Logger.recordOutput("m_Swerve Array", swerveArray);
+        Logger.recordOutput("Swerve Array", swerveArray);
 
-        Logger.recordOutput("m_Pose 2D", RobotState.getInstance().getRobotPose());
+        Logger.recordOutput("Pose 2D", RobotState.getInstance().getRobotPose());
 
         //SmartDashboard.getNumber("");
     }
