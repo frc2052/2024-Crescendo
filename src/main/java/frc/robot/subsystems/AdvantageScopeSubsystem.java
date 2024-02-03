@@ -6,29 +6,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotState;
 
 public class AdvantageScopeSubsystem extends SubsystemBase {
-    static IntakeSubsystem intake;
-    static ShooterSubsystem shooter;
-    static ClimberSubsystem climber;
-    static DrivetrainSubsystem drivetrain;
-    static MusicPlayerSubsystem musicPlayer;
+    static IntakeSubsystem intakeSubsystem;
+    static ShooterSubsystem shooterSubsystem;
+    static ClimberSubsystem climberSubsystem;
+    static DrivetrainSubsystem drivetrainSubsystem;
+    static MusicPlayerSubsystem musicPlayerSubsystem;
     
     public AdvantageScopeSubsystem (    
-        IntakeSubsystem intake,
-        ShooterSubsystem shooter, 
-        ClimberSubsystem climber, 
-        DrivetrainSubsystem drivetrain,
-        MusicPlayerSubsystem musicPlayer
-    ) {
+    IntakeSubsystem intakeSubsystem, 
+    ShooterSubsystem shooterSubsystem, 
+    ClimberSubsystem climberSubsystem, 
+    DrivetrainSubsystem drivetrainSubsystem,
+    MusicPlayerSubsystem musicPlayerSubsystem) {
 
-        AdvantageScopeSubsystem.intake = intake;
-        AdvantageScopeSubsystem.shooter = shooter;
-        AdvantageScopeSubsystem.climber = climber;
-        AdvantageScopeSubsystem.drivetrain = drivetrain;
-        AdvantageScopeSubsystem.musicPlayer = musicPlayer;
-    }    
-
-    public void recordData() {
-        recordIntakeData();
+        AdvantageScopeSubsystem.intakeSubsystem = intakeSubsystem;
+        AdvantageScopeSubsystem.shooterSubsystem = shooterSubsystem;
+        AdvantageScopeSubsystem.climberSubsystem = climberSubsystem;
+        AdvantageScopeSubsystem.drivetrainSubsystem = drivetrainSubsystem;
+        AdvantageScopeSubsystem.musicPlayerSubsystem = musicPlayerSubsystem;
+      
+        recordOneUnderBumberIntakeData();
 
         recordShooterData();
 
@@ -37,51 +34,51 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         recordDrivetrainData();
 
         recordMusicPlayerData();
-    }
+    }    
 
-    public static void recordIntakeData () {
+    public static void recordOneUnderBumberIntakeData () {
         Logger.recordOutput("Under Bumper Intake Lower Motor Speed", 
-        intake.getLowerMotorSpeed());
+        intakeSubsystem.getLowerMotorSpeed());
 
         Logger.recordOutput("Under Bumper Intake Upper Motor Speed", 
-        intake.getUpperMotorSpeed());
+        intakeSubsystem.getUpperMotorSpeed());
 
     }
 
     public static void recordShooterData () {
-        Logger.recordOutput("Vertical Shooter Upper Motor Speed", 
-        shooter.getUpperShooterSpeed());
+        Logger.recordOutput("Shooter Upper Motor Speed", 
+        shooterSubsystem.getUpperShooterSpeed());
         
-        Logger.recordOutput("Vertical Shooter Lower Motor Speed", 
-        shooter.getLowerShooterSpeed());
+        Logger.recordOutput("Shooter Lower Motor Speed", 
+        shooterSubsystem.getLowerShooterSpeed());
     }
 
     public static void recordClimberData () {
         Logger.recordOutput("Climber Encoder Position", 
-        climber.getEncoderPosition());
+        climberSubsystem.getEncoderPosition());
     }
 
     public static void recordMusicPlayerData() {
         Logger.recordOutput("Current Track Play Time",
-        musicPlayer.getCurrentPlayTime());
+        musicPlayerSubsystem.getCurrentPlayTime());
 
         Logger.recordOutput("Is Music Player Playing", 
-        musicPlayer.isPlayerPLaying());
+        musicPlayerSubsystem.isPlayerPLaying());
     }
 
     public static void recordDrivetrainData () {
         double[] swerveArray = {
-            drivetrain.frontLeftModule.getState().angle.getDegrees(), 
-            drivetrain.frontLeftModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.frontLeftModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.frontLeftModule.getState().speedMetersPerSecond,
 
-            drivetrain.frontRightModule.getState().angle.getDegrees(), 
-            drivetrain.frontRightModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.frontRightModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.frontRightModule.getState().speedMetersPerSecond,
 
-            drivetrain.backLeftModule.getState().angle.getDegrees(), 
-            drivetrain.backLeftModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.backLeftModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.backLeftModule.getState().speedMetersPerSecond,
 
-            drivetrain.backRightModule.getState().angle.getDegrees(), 
-            drivetrain.backRightModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.backRightModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.backRightModule.getState().speedMetersPerSecond,
         };
         Logger.recordOutput("Swerve Array", swerveArray);
 
