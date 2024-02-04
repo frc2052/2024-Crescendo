@@ -21,7 +21,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotState;
+import frc.robot.states.RobotState;
+import frc.robot.util.RobotStateEstimator;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     private RobotState robotState = RobotState.getInstance();
@@ -69,12 +70,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         zeroGyro();
 
+        //TODO: can the reset happen in robotState?
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
-            this::getPose, // Robot pose supplier
+            () -> robotState.getRobotPose(), // Robot pose supplier
             this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+            () -> robotState.getChassisSpeeds(), // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                     new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
                     new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
@@ -97,9 +99,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     );
   }
 
+    private void resetPose (Pose2d pose) {
+        RobotStateEstimator.getInstance().resetOdometry(pose);
+    }
+
     @Override
     public void periodic() {
-        robotState.addDrivetrainState(new DrivetrainState(getModulePositions(), getNavx().getRotation2d()));
+        robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(), getNavx().getRotation2d()));
     }
 
     /**
@@ -215,16 +221,5 @@ public class DrivetrainSubsystem extends SubsystemBase {
         frontRightModule.debug();   
         backLeftModule.debug();
         backRightModule.debug();
-    }
-
-    public Pose2d getPose() {return RobotState.getInstance().getRobotPose();}
-    
-    public void resetPose(Pose2d pose) {RobotState.getInstance().reset(pose);}
-
-    public ChassisSpeeds getSpeeds() {
-        return currentChassisSpeeds;
-    }
-    public void driveRobotRelative(ChassisSpeeds speeds) {
-        drive(speeds);
     }
 }

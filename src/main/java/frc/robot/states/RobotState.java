@@ -1,13 +1,16 @@
-package frc.robot;
+package frc.robot.states;
 
 import com.team2052.lib.DrivetrainState;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-//import frc.robot.io.Dashboard;
+import frc.robot.util.io.Dashboard;
+import frc.robot.states.Superstructure.SuperstructureState;
 
 public class RobotState {
     private static RobotState INSTANCE;
@@ -19,6 +22,9 @@ public class RobotState {
     private Rotation2d navxOffset;
     private Rotation2d robotRotation2d;
     private SwerveModulePosition[] swerveModulePositions;
+    private ChassisSpeeds chassisSpeeds;
+
+    private SuperstructureState superstructureState;
 
     public static RobotState getInstance() {
         if (INSTANCE == null) {
@@ -35,13 +41,15 @@ public class RobotState {
         robotVisionPose2d = new Pose2d();
         navxOffset = new Rotation2d(0);
         robotRotation2d = new Rotation2d(0);
+        chassisSpeeds = new ChassisSpeeds();
     }  
 
-    public boolean hasValidState() {
+    public boolean hasValidSwerveState() {
         return swerveModulePositions != null;
     }
 
-    public void addDrivetrainState(DrivetrainState drivetrainState){
+    public void addDrivetrainState(DrivetrainState drivetrainState) {
+        this.chassisSpeeds = drivetrainState.getChassisSpeeds();
         this.swerveModulePositions = drivetrainState.getModulePositions();
         this.robotRotation2d = drivetrainState.getRotation2d();
     }
@@ -49,19 +57,30 @@ public class RobotState {
     /**
      * Adds an AprilTag vision tracked translation3d WITHOUT timestamp.
      */ 
-    public void addVisionPose2dUpdate(Pose2d robotVisionPose2d){
+    public void addVisionPose2dUpdate(Pose2d robotVisionPose2d) {
         this.robotVisionPose2d = robotVisionPose2d;
     }
 
-    public void updateRobotPose(Pose2d robotPose){
+    public void updateRobotPose(Pose2d robotPose) {
         this.robotPose = robotPose;
+    }
+
+    /*
+     *  Add Superstructure State
+     */
+    public void addSuperstructureState(SuperstructureState state) {
+        this.superstructureState = state;
+    }
+
+    public SuperstructureState getSuperstructureState() {
+        return superstructureState;
     }
 
     /**
      * Reset the RobotState's Initial Pose2d and set the NavX Offset. 
      * NavX offset is set when the robot has an inital rotation not facing where you want 0 (forwards) to be.
      */
-    public void reset(Pose2d initialStartingPose){
+    public void resetInitialPose(Pose2d initialStartingPose) {
         navxOffset = new Rotation2d();
         navxOffset = initialStartingPose.getRotation();
         initialPose = initialStartingPose;
@@ -72,7 +91,7 @@ public class RobotState {
      * 
      * @return Translation2d
      */
-    public Pose2d getVisionPose2d(){
+    public Pose2d getVisionPose2d() {
         return robotVisionPose2d;
     }
 
@@ -81,7 +100,7 @@ public class RobotState {
      * 
      * @return double
      */
-    public double getVisionDetectionTime(){
+    public double getVisionDetectionTime() {
         if(detectionTime == 0.0){
             return Timer.getFPGATimestamp();
         }
@@ -93,7 +112,7 @@ public class RobotState {
      * 
      * @return Rotation2d
      */
-    public Rotation2d getRotation2d(){
+    public Rotation2d getRotation2d() {
         return robotRotation2d.rotateBy(navxOffset);
     }
 
@@ -102,8 +121,17 @@ public class RobotState {
      * 
      * @return SwerveModulePosition[]
      */
-    public SwerveModulePosition[] getModulePositions(){
+    public SwerveModulePosition[] getModulePositions() {
         return swerveModulePositions;
+    }
+    
+    /**
+     * Returns the ChassisSpeeds of the chassis based off kinematics. This is robot relative
+     * 
+     * @return ChassisSpeeds
+     */
+    public ChassisSpeeds getChassisSpeeds() {
+        return chassisSpeeds;
     }
 
     /**
@@ -111,11 +139,16 @@ public class RobotState {
      * 
      * @return Pose2d
      */
-    public Pose2d getRobotPose(){
+    public Pose2d getRobotPose() {
         return robotPose;
     }
 
-    public Pose2d getInitialPose(){
+    /**
+     * Returns the initial Pose2d of the robot since last reset.
+     * 
+     * @return Pose2d
+     */
+    public Pose2d getInitialPose() {
         return initialPose;
     }
 
@@ -173,12 +206,12 @@ public class RobotState {
         return DriverStation.isTest();
     }
 
-    // public void outputRobotStateToDashboard(){
-    //     Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
-    //     Dashboard.getInstance().putData("Robot Position X Inches: ", Units.inchesToMeters(robotPose.getX()));
-    //     Dashboard.getInstance().putData("Robot Position Y Inches: ", Units.inchesToMeters(robotPose.getY()));
-    //     Dashboard.getInstance().putData("VISION Robot Position X Inches: ", Units.inchesToMeters(robotVisionPose2d.getX()));
-    //     Dashboard.getInstance().putData("VISION Robot Position Y Inches: ", Units.inchesToMeters(robotVisionPose2d.getY()));
-    //     Dashboard.getInstance().putData("Vision Rotational Value Degrees: ", robotVisionPose2d.getRotation().getDegrees());
-    // }   
+    public void output(){
+        Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
+        Dashboard.getInstance().putData("Robot Position X Inches: ", Units.inchesToMeters(robotPose.getX()));
+        Dashboard.getInstance().putData("Robot Position Y Inches: ", Units.inchesToMeters(robotPose.getY()));
+        Dashboard.getInstance().putData("VISION Robot Position X Inches: ", Units.inchesToMeters(robotVisionPose2d.getX()));
+        Dashboard.getInstance().putData("VISION Robot Position Y Inches: ", Units.inchesToMeters(robotVisionPose2d.getY()));
+        Dashboard.getInstance().putData("Vision Rotational Value Degrees: ", robotVisionPose2d.getRotation().getDegrees());
+    }   
 }

@@ -9,8 +9,8 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.AimingCalculator;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.util.AimingCalculator;
 
 public class DriveWhileMovingAimingCommand extends Command {
     protected final DrivetrainSubsystem drivetrain;

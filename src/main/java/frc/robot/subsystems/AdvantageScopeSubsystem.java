@@ -3,11 +3,11 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotState;
+import frc.robot.states.RobotState;
 
 public class AdvantageScopeSubsystem extends SubsystemBase {
     static IntakeSubsystem intakeSubsystem;
-    static ShooterSubsystem shooterSubsystem;
+    static ShamperSubsystem shamperSubsystem;
     static ClimberSubsystem climberSubsystem;
     static DrivetrainSubsystem drivetrainSubsystem;
     static MusicPlayerSubsystem musicPlayerSubsystem;
@@ -16,14 +16,14 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     
     public AdvantageScopeSubsystem (    
     IntakeSubsystem intakeSubsystem, 
-    ShooterSubsystem shooterSubsystem, 
+    ShamperSubsystem shamperSubsystem, 
     ClimberSubsystem climberSubsystem, 
     DrivetrainSubsystem drivetrainSubsystem,
     MusicPlayerSubsystem musicPlayerSubsystem,
     VisionSubsystem visionSubsystem) {
 
         AdvantageScopeSubsystem.intakeSubsystem = intakeSubsystem;
-        AdvantageScopeSubsystem.shooterSubsystem = shooterSubsystem;
+        AdvantageScopeSubsystem.shamperSubsystem = shamperSubsystem;
         AdvantageScopeSubsystem.climberSubsystem = climberSubsystem;
         AdvantageScopeSubsystem.drivetrainSubsystem = drivetrainSubsystem;
         AdvantageScopeSubsystem.musicPlayerSubsystem = musicPlayerSubsystem;
@@ -31,7 +31,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
       
         recordOneUnderBumberIntakeData();
 
-        recordShooterData();
+        recordShamperData();
 
         recordClimberData();
 
@@ -51,12 +51,12 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
     }
 
-    public static void recordShooterData () {
-        Logger.recordOutput(folder+"Shooter Upper Motor Speed", 
-        shooterSubsystem.getUpperShooterSpeed());
+    public static void recordShamperData () {
+        Logger.recordOutput(folder+"Shamper Upper Motor Speed", 
+        shamperSubsystem.getUpperShamperSpeed());
         
-        Logger.recordOutput(folder+"Shooter Lower Motor Speed", 
-        shooterSubsystem.getLowerShooterSpeed());
+        Logger.recordOutput(folder+"Shamper Lower Motor Speed", 
+        shamperSubsystem.getLowerShamperSpeed());
     }
 
     public static void recordClimberData () {
