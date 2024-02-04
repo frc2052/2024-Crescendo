@@ -4,14 +4,16 @@
 
 package frc.robot;
 
-import frc.robot.commands.climb.LowerClimberCommand;
-import frc.robot.commands.climb.RaiseClimberCommand;
+import frc.robot.commands.climb.ClimberRetractCommand;
+import frc.robot.commands.climb.ClimerExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileMovingAimingCommand;
 import frc.robot.commands.drive.DriveWhileStationaryAimingCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.music.PauseMusicPlayerCommand;
+import frc.robot.states.Superstructure;
+import frc.robot.states.Superstructure.SuperstructureState;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -25,6 +27,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
@@ -35,6 +38,8 @@ public class RobotContainer {
   private final MusicPlayerSubsystem musicPlayer;
   private final VisionSubsystem vision;
   private final AdvantageScopeSubsystem advantageScope;
+
+  private final Superstructure superstructure;
 
   private final Joystick translationJoystick;
   private final Joystick rotationJoystick;
@@ -55,6 +60,8 @@ public class RobotContainer {
     musicPlayer = new MusicPlayerSubsystem();
     vision = new VisionSubsystem();
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision);
+
+    superstructure = new Superstructure(shamper, climber);
 
     musicOn = true;
 
@@ -97,8 +104,8 @@ public class RobotContainer {
     JoystickButton raiseClimberButton = new JoystickButton(controlPanel, 12);
     JoystickButton lowerClimberButton = new JoystickButton(controlPanel, 11);
     
-    raiseClimberButton.whileTrue(new RaiseClimberCommand(climber));
-    lowerClimberButton.whileTrue(new LowerClimberCommand(climber));
+    raiseClimberButton.whileTrue(new ClimerExtendCommand(climber));
+    lowerClimberButton.whileTrue(new ClimberRetractCommand(climber));
     /*
      * Intake Button Bindings
      */
@@ -108,12 +115,20 @@ public class RobotContainer {
     intakeInButton.whileTrue(new IntakeInCommand(intake));
     intakeOutButton.whileTrue(new IntakeOutCommand(intake));
 
-    JoystickButton toggleMusicPlayerButton = new JoystickButton(controlPanel, 1);
+    JoystickButton toggleMusicPlayerButton = new JoystickButton(controlPanel, 2);
     toggleMusicPlayerButton.onTrue(toggleMusic());
 
-    JoystickButton ampScoreSetupButton = new JoystickButton(controlPanel, 7);
+    JoystickButton ampIdleButton = new JoystickButton(controlPanel, 7);
+    JoystickButton ampScoreButton = new JoystickButton(controlPanel, 1);
+    JoystickButton speakerIdleSetupButton = new JoystickButton(controlPanel, 5);
     JoystickButton speakerScoreSetupButton = new JoystickButton(controlPanel, 6);
-    JoystickButton shamperDefaultButton = new JoystickButton(controlPanel, 8);
+    JoystickButton shamperDefaultButton = new JoystickButton(controlPanel, 12);
+
+    ampIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
+    ampScoreButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_SCORE)));
+    speakerIdleSetupButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
+    speakerScoreSetupButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_SCORE)));
+    shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
   }
 
   public Command toggleMusic() {

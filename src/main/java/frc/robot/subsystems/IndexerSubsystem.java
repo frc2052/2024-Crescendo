@@ -14,7 +14,7 @@ public class IndexerSubsystem extends SubsystemBase {
   private final CANSparkMax indexerMotor;
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsystem() {
-    indexerMotor = new CANSparkMax(Constants.Indexer.MOTOR_ID, MotorType.kBrushless)
+    indexerMotor = new CANSparkMax(Constants.Indexer.MOTOR_ID, MotorType.kBrushless);
   }
 
   @Override

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.states.RobotState;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.util.AimingCalculator;
+import frc.robot.util.CalebAimingCalculator;
 
 public class DriveWhileOrbitingNoteCommand extends Command {
     protected final DrivetrainSubsystem drivetrain;

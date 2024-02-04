@@ -4,36 +4,36 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
-import frc.robot.Constants.FieldAndRobot;
-import frc.robot.Constants.Shamper;
 import frc.robot.states.RobotState;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class AimingCalculator {
+public class MaxAimingCalculator {
 
-    private Translation2d speakerLocation;
-    private double targetHeight;
-    private double distanceToSpeaker;
-    private Pose2d pose;
-    private Translation2d location;
+    private static Translation2d speakerLocation;
+    private static double targetHeight;
+    private static double distanceToSpeaker;
+    private static Pose2d pose;
+    private static Translation2d location;
 
-    private double xDistanceToSpeaker;
-    private double yDistanceToSpeaker;
+    private static double xDistanceToSpeaker;
+    private static double yDistanceToSpeaker;
 
-    private double angleToSpeaker;
+    private static double angleToSpeaker;
 
-    private double robotXVelocity;
-    private double robotYVelocity;
-    private double robotCombinedVelocity;
+    private static double robotXVelocity;
+    private static double robotYVelocity;
+    private static double robotCombinedVelocity;
 
-    private RobotState robotState = RobotState.getInstance();
+    private static DrivetrainSubsystem drivetrain;
 
-    private double velocityAngle;
-    private double differenceInAngle;
+    private static double velocityAngle;
+    private static double differenceInAngle;
 
-    private double noteSpeedAfterLaunch;
+    private static double noteSpeedAfterLaunch;
     
     
-    public AimingCalculator() {
+    public void MaxAimingCalculator(DrivetrainSubsystem drivetrain) {
+        MaxAimingCalculator.drivetrain = drivetrain;
 
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
@@ -44,22 +44,20 @@ public class AimingCalculator {
             speakerLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
         }
 
-        targetHeight = (Constants.FieldAndRobot.SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS - Constants.FieldAndRobot.SHAMPER_HIGHT_IN_METERS) + Constants.Shamper.SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS;
+        targetHeight = (Constants.FieldAndRobot.SPEAKER_TARGET_HEIGHT_OFF_GROUND_IN_METERS - Constants.FieldAndRobot.SHAMPER_HEIGHT_IN_METERS) + Constants.Shamper.SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS;
         speakerLocation.plus(new Translation2d(Constants.Shamper.SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.Shamper.SPEAKER_TARGET_Y_OFFSET_IN_METERS));
     }
 
-    // TODO: fix this mess
-
-    public void updateInformation() {
-        pose = robotState.getRobotPose();
+    public static void updateInformation() {
+        pose = RobotState.getInstance().getRobotPose();
         location = pose.getTranslation();
         distanceToSpeaker = location.getDistance(speakerLocation);
         xDistanceToSpeaker = speakerLocation.getX() - location.getX();
         yDistanceToSpeaker = speakerLocation.getY() - location.getY();
         angleToSpeaker = Math.atan(yDistanceToSpeaker / xDistanceToSpeaker);
 
-        robotXVelocity = robotState.getChassisSpeeds().vxMetersPerSecond;
-        robotYVelocity = robotState.getChassisSpeeds().vyMetersPerSecond;
+        robotXVelocity =  RobotState.getInstance().getChassisSpeeds().vxMetersPerSecond;
+        robotYVelocity =  RobotState.getInstance().getChassisSpeeds().vyMetersPerSecond;
 
         robotCombinedVelocity = Math.sqrt(Math.pow(robotXVelocity, 2) + Math.pow(robotYVelocity, 2));
 
@@ -76,7 +74,7 @@ public class AimingCalculator {
         noteSpeedAfterLaunch = Constants.FieldAndRobot.NOTE_SPEED_IN_METERS_PER_SECOND * Math.acos(Math.toDegrees(getMovingTargetRobotAngle()));
     }
 
-    public static double getStationaryTargetShamperAngle() { 
+    public static double getStationaryTargetShooterAngle() { 
         double angle;
         double horizontalVelocityNeeded;
         double verticalVelocityNeeded;
@@ -98,7 +96,7 @@ public class AimingCalculator {
         return angleToSpeaker;
     }
 
-    public static double getMovingTargetShamperAngle() {
+    public static double getMovingTargetShooterAngle() {
         double angle;
         double horizontalVelocityNeeded;
         double verticalVelocityNeeded;

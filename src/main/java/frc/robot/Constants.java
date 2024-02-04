@@ -100,8 +100,8 @@ public final class Constants {
     }
 
     public static class FieldAndRobot {
-        public static final double SHAMPER_HIGHT_IN_METERS = 0;
-        public static final double SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS = 0;
+        public static final double SHAMPER_HEIGHT_IN_METERS = 0;
+        public static final double SPEAKER_TARGET_HEIGHT_OFF_GROUND_IN_METERS = 0;
 
         public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(0, 0);
         public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(0, 0);

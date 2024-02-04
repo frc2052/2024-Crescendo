@@ -1,30 +1,28 @@
 package frc.robot.states;
 
-import java.util.ArrayList;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.shamper.ShamperAmpAngleCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
 import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeeds;
-import frc.robot.util.AimingCalculator;
-import frc.robot.subsystems.TrapArmSubsystem;
+import frc.robot.util.CalebAimingCalculator;
 
-public class Superstructure extends SubsystemBase{
+public class Superstructure extends SubsystemBase {
   private SuperstructureState state;
+  private RobotState robotState = RobotState.getInstance();
   
   private ShamperSubsystem shamper;
   private ClimberSubsystem climber;
 
-  public  Superstructure(ShamperSubsystem shamper, ClimberSubsystem climber){
+  public  Superstructure(ShamperSubsystem shamper, ClimberSubsystem climber) {
     this.shamper = shamper;
     this.climber = climber;
   }
 
-  public void setState(SuperstructureState state){
+  public void setState(SuperstructureState state) {
     this.state = state;
     switch(state){
       case DEFAULT:
@@ -51,14 +49,18 @@ public class Superstructure extends SubsystemBase{
     new ShamperShootCommand(shamper, ShamperSpeeds.SPEAKER_IDLE);
   }
 
-  //TODO: finish states
   private void setSpeakerIdle() {
     new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT);
     new ShamperShootCommand(shamper, ShamperSpeeds.SPEAKER_IDLE);
   }
   
   private void setSpeakerScoring() {
-    new ShamperAngleCommand(shamper, );
+    new ShamperAngleCommand(shamper, CalebAimingCalculator.calculateShamperAngle(
+      robotState.getRobotPose(), 
+      (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? Constants.FieldAndRobot.RED_SPEAKER_LOCATION : Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION,
+      robotState.getChassisSpeeds()
+      ).getShamperAngle()
+    );
     new ShamperShootCommand(shamper, ShamperSpeeds.SPEAKER_IDLE);
   }  
   
@@ -77,12 +79,29 @@ public class Superstructure extends SubsystemBase{
     new ShamperShootCommand(shamper, ShamperSpeeds.OFF);
   }
 
+  @Override
+  public void periodic() {
+    if(state.needsRefresh()){
+      setState(state);
+    }
+  }
+
   public enum SuperstructureState {
-    DEFAULT,
-    SPEAKER_IDLE,
-    SPEAKER_SCORE,
-    AMP_IDLE,
-    AMP_SCORE,
-    CLIMBING;
+    DEFAULT(false),
+    SPEAKER_IDLE(false),
+    SPEAKER_SCORE(true),
+    AMP_IDLE(false),
+    AMP_SCORE(false),
+    CLIMBING(false);
+
+    private boolean refreshRequired;
+
+    private SuperstructureState(boolean refreshRequired) {
+      this.refreshRequired = refreshRequired;
+    }
+
+    public boolean needsRefresh() {
+      return refreshRequired;
+    }
   }
 }
