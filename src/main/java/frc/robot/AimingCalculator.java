@@ -36,13 +36,13 @@ public class AimingCalculator {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             speakerLocation = (alliance.get() == DriverStation.Alliance.Red) ? 
-            Constants.FeildAndRobot.RED_SPEAKER_LOCATION : 
-            Constants.FeildAndRobot.BLUE_SPEAKER_LOCATION;
+            Constants.FieldAndRobot.RED_SPEAKER_LOCATION : 
+            Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
         } else {
-            speakerLocation = Constants.FeildAndRobot.RED_SPEAKER_LOCATION;
+            speakerLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
         }
 
-        targetHeight = (Constants.FeildAndRobot.SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS - Constants.FeildAndRobot.SHOOTER_HIGHT_IN_METERS) + Constants.VerticalShooter.SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS;
+        targetHeight = (Constants.FieldAndRobot.SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS - Constants.FieldAndRobot.SHOOTER_HIGHT_IN_METERS) + Constants.VerticalShooter.SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS;
         speakerLocation.plus(new Translation2d(Constants.VerticalShooter.SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.VerticalShooter.SPEAKER_TARGET_Y_OFFSET_IN_METERS));
     }
 
@@ -69,7 +69,7 @@ public class AimingCalculator {
 
         differenceInAngle = velocityAngle - angleToSpeaker;
 
-        noteSpeedAfterLaunch = Constants.FeildAndRobot.NOTE_SPEED_IN_METERS_PER_SECOND * Math.acos(Math.toDegrees(getMovingTargetRobotAngle()));
+        noteSpeedAfterLaunch = Constants.FieldAndRobot.NOTE_SPEED_IN_METERS_PER_SECOND * Math.acos(Math.toDegrees(getMovingTargetRobotAngle()));
     }
 
     public static double getStationaryTargetShooterAngle() { 
@@ -79,8 +79,8 @@ public class AimingCalculator {
         double timeUntilTrajectoryTargetHeight;
         
         //calculate velocities
-        verticalVelocityNeeded = Math.sqrt(2 * Constants.FeildAndRobot.GRAVITY_IN_METERS_PER_SECOND_SQUARED * targetHeight);
-        timeUntilTrajectoryTargetHeight = (verticalVelocityNeeded / Constants.FeildAndRobot.GRAVITY_IN_METERS_PER_SECOND_SQUARED);
+        verticalVelocityNeeded = Math.sqrt(2 * Constants.FieldAndRobot.GRAVITY_IN_METERS_PER_SECOND_SQUARED * targetHeight);
+        timeUntilTrajectoryTargetHeight = (verticalVelocityNeeded / Constants.FieldAndRobot.GRAVITY_IN_METERS_PER_SECOND_SQUARED);
         
         horizontalVelocityNeeded = distanceToSpeaker / timeUntilTrajectoryTargetHeight;
         
@@ -101,8 +101,8 @@ public class AimingCalculator {
         double timeUntilTrajectoryTargetHeight;
         double predictedNoteVelocity;
 
-        verticalVelocityNeeded = Math.sqrt(2 * Constants.FeildAndRobot.GRAVITY_IN_METERS_PER_SECOND_SQUARED * targetHeight);
-        timeUntilTrajectoryTargetHeight = (verticalVelocityNeeded / Constants.FeildAndRobot.GRAVITY_IN_METERS_PER_SECOND_SQUARED);
+        verticalVelocityNeeded = Math.sqrt(2 * Constants.FieldAndRobot.GRAVITY_IN_METERS_PER_SECOND_SQUARED * targetHeight);
+        timeUntilTrajectoryTargetHeight = (verticalVelocityNeeded / Constants.FieldAndRobot.GRAVITY_IN_METERS_PER_SECOND_SQUARED);
 
         predictedNoteVelocity = 2 * robotCombinedVelocity * Math.cos(differenceInAngle);
 

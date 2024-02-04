@@ -85,7 +85,7 @@ public final class Constants {
         public static final double SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
     }
 
-    public static class FeildAndRobot {
+    public static class FieldAndRobot {
 
         public static final double SHOOTER_HIGHT_IN_METERS = 0;
         public static final double SPEAKER_TARGET_HIGHT_OFF_GROUND_IN_METERS = 0;

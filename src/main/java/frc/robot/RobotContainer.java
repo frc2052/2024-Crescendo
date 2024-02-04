@@ -9,6 +9,7 @@ import frc.robot.commands.Climb.RaiseClimberCommand;
 import frc.robot.commands.Climb.LowerClimberCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileMovingAimingCommand;
+import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
 import frc.robot.commands.drive.DriveWhileStationaryAimingCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.Joystick;
@@ -39,7 +41,8 @@ public class RobotContainer {
   private final static ShooterSubsystem shooter = new ShooterSubsystem();
   private final static ClimberSubsystem climber = new ClimberSubsystem();
   private final static MusicPlayerSubsystem musicPlayer = new MusicPlayerSubsystem();
-  private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer);
+  private final static VisionSubsystem vision = new VisionSubsystem();
+  private final static AdvantageScopeSubsystem advantageScope = new AdvantageScopeSubsystem(intake, shooter, climber, drivetrain, musicPlayer, vision);
 
   private final Joystick translationJoystick;
   private final Joystick rotationJoystick;
@@ -47,6 +50,7 @@ public class RobotContainer {
 
   private JoystickButton staticAimButton;
   private JoystickButton motionAimButton;
+  private JoystickButton orbitNoteButton;
 
   private JoystickButton raiseClimberButton;
   private JoystickButton lowerClimberButton;
@@ -60,10 +64,15 @@ public class RobotContainer {
   private JoystickButton speakerScoreSetupButton;
   private JoystickButton shooterDefaultButton;
 
+
   private BooleanSupplier fieldCentricSupplier;
   private boolean musicOn;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    translationJoystick = new Joystick(0);
+    rotationJoystick = new Joystick(1);
+    controlPanel = new Joystick(2);
+
     fieldCentricSupplier = new BooleanSupplier() {
             public boolean getAsBoolean() {return true;}
         };
@@ -75,12 +84,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    translationJoystick = new Joystick(0);
-    rotationJoystick = new Joystick(1);
-    controlPanel = new Joystick(2);
 
     staticAimButton = new JoystickButton(translationJoystick, 0);
     motionAimButton = new JoystickButton(rotationJoystick, 0);
+    orbitNoteButton = new JoystickButton(rotationJoystick, 1);
 
     raiseClimberButton = new JoystickButton(controlPanel, 12);
     lowerClimberButton = new JoystickButton(controlPanel, 11);
@@ -112,8 +119,10 @@ public class RobotContainer {
     normalDrive();
     staticAimButton.onTrue(staticAimDrive());
     motionAimButton.onTrue(motionAimDrive());
+    orbitNoteButton.onTrue(orbitDrive());
     motionAimButton.onFalse(normalDrive());
     staticAimButton.onFalse(normalDrive());
+    orbitNoteButton.onFalse(normalDrive());
   }
 
   private Command staticAimDrive() {
@@ -131,6 +140,12 @@ public class RobotContainer {
   private Command normalDrive() {
     drivetrain.setDefaultCommand(
       new RunCommand(() -> new DriveCommand(() -> translationJoystick.getX(), () -> translationJoystick.getY(), () -> rotationJoystick.getDirectionDegrees(), fieldCentricSupplier, drivetrain)));
+    return null;
+  }
+
+  private Command orbitDrive() {
+    drivetrain.setDefaultCommand(
+      new RunCommand(() -> new DriveWhileOrbitingNoteCommand(() -> translationJoystick.getX(), () -> translationJoystick.getY(), fieldCentricSupplier, drivetrain, vision)));
     return null;
   }
 
