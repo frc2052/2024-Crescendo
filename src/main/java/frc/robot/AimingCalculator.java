@@ -30,8 +30,7 @@ public class AimingCalculator {
     private static double noteSpeedAfterLaunch;
     
     
-    public void AimingCalculator(DrivetrainSubsystem drivetrain) {
-        AimingCalculator.drivetrain = drivetrain;
+    public void AimingCalculator() {
 
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
@@ -108,13 +107,13 @@ public class AimingCalculator {
 
         horizontalVelocityNeeded = (distanceToSpeaker / timeUntilTrajectoryTargetHeight) - predictedNoteVelocity;
 
-        angle = Math.toDegrees(Math.asin(verticalVelocityNeeded / horizontalVelocityNeeded));
+        angle = Math.toDegrees(Math.asin(verticalVelocityNeeded / horizontalVelocityNeeded)) + Constants.Drivetrain.ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES;
         return angle;
     }
 
     public static double getMovingTargetRobotAngle() {
         double angle;
-        angle = Math.toDegrees(angleToSpeaker - ((robotCombinedVelocity * differenceInAngle) / noteSpeedAfterLaunch));
+        angle = Math.toDegrees(angleToSpeaker - ((robotCombinedVelocity * differenceInAngle) / noteSpeedAfterLaunch)) + Constants.Drivetrain.ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES;
         return angle;
     }
 }

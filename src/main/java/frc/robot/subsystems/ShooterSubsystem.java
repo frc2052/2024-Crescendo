@@ -87,6 +87,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   //run this in the perodic, if you don't it wont work.
   public void setShooterRotationAngle(double shooterGoalAngle) {
+    shooterGoalAngle = shooterGoalAngle + Constants.VerticalShooter.SHOOTER_ANGLE_OFFSET_IN_DEGREES;
+
     //for safty. don't want the robot breaking
     if (shooterGoalAngle < Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE) {
       shooterGoalAngle = Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE;
