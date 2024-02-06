@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.subsystems.ShamperSubsystem;
 
 public final class Constants {
     // TODO: Put in all the constants
@@ -158,7 +161,7 @@ public final class Constants {
     }
 
     public static class MusicPlayer {
-        public static final int[] INSTRAMENT_TALONFX_PORT_LIST = {0, 0, 0};
+        public static final TalonFX[] INSTRAMENT_TALONFX_PORT_LIST = {ShamperSubsystem.getUpperTalonFX(), ShamperSubsystem.getLowerTalonFX(), ShamperSubsystem.getRotationTalonFX()};
     }
 
     public static class Vision {

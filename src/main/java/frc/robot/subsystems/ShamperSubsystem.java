@@ -17,9 +17,9 @@ import frc.robot.Constants;
 
 public class ShamperSubsystem extends SubsystemBase {
 
-  private final TalonFX lowerMotor;
-  private final TalonFX upperMotor;
-  private final TalonFX rotationMotor;
+  private static TalonFX lowerMotor;
+  private static TalonFX upperMotor;
+  private static TalonFX rotationMotor;
   private final AnalogEncoder rotationEncoder;
 
   private ProfiledPIDController lowerMotorController;
@@ -143,5 +143,18 @@ public class ShamperSubsystem extends SubsystemBase {
     public int getUpperPCT() {
       return upperPercentOutput;
     }
+
+
   }
+     public static TalonFX getUpperTalonFX() {
+      return upperMotor;
+    }
+
+    public static TalonFX getLowerTalonFX() {
+      return lowerMotor;
+    }
+
+    public static TalonFX getRotationTalonFX() {
+      return rotationMotor;
+    } 
 }

@@ -12,6 +12,7 @@ import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.music.PauseMusicPlayerCommand;
+import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.states.Superstructure;
 import frc.robot.states.Superstructure.SuperstructureState;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
@@ -28,6 +29,7 @@ import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
@@ -64,6 +66,8 @@ public class RobotContainer {
     superstructure = new Superstructure(shamper, climber);
 
     musicOn = true;
+
+    if (musicOn) {new PlayActivationJingleCommand(musicPlayer);}
 
     drivetrain.setDefaultCommand(
       new DriveCommand(
