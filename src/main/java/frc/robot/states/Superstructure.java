@@ -1,6 +1,5 @@
 package frc.robot.states;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.shamper.ShamperAngleCommand;
@@ -8,13 +7,13 @@ import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeeds;
-import frc.robot.util.CalebAimingCalculator;
+import frc.robot.util.AimingCalculator;
 
 public class Superstructure extends SubsystemBase {
   private SuperstructureState state;
-  private RobotState robotState = RobotState.getInstance();
   
   private ShamperSubsystem shamper;
+
   private ClimberSubsystem climber;
 
   public  Superstructure(ShamperSubsystem shamper, ClimberSubsystem climber) {
@@ -55,12 +54,7 @@ public class Superstructure extends SubsystemBase {
   }
   
   private void setSpeakerScoring() {
-    new ShamperAngleCommand(shamper, CalebAimingCalculator.calculateShamperAngle(
-      robotState.getRobotPose(), 
-      (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? Constants.FieldAndRobot.RED_SPEAKER_LOCATION : Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION,
-      robotState.getChassisSpeeds()
-      ).getShamperAngle()
-    );
+    new ShamperAngleCommand(shamper, AimingCalculator.Calculation().getShamperAngle());
     new ShamperShootCommand(shamper, ShamperSpeeds.SPEAKER_IDLE);
   }  
   

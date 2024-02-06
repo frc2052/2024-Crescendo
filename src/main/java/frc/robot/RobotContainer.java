@@ -8,7 +8,7 @@ import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimerExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileMovingAimingCommand;
-import frc.robot.commands.drive.DriveWhileStationaryAimingCommand;
+import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.music.PauseMusicPlayerCommand;
@@ -86,19 +86,21 @@ public class RobotContainer {
     /*
      * 
      */
-    JoystickButton staticAimButton = new JoystickButton(translationJoystick, 0);
     JoystickButton motionAimButton = new JoystickButton(rotationJoystick, 0);
-
-    staticAimButton.whileTrue(new DriveWhileStationaryAimingCommand(
-        fieldCentricSupplier,
-        drivetrain
-    ));
+    JoystickButton orbitNoteButton = new JoystickButton(translationJoystick, 0);
 
     motionAimButton.whileTrue(new DriveWhileMovingAimingCommand(
       () -> translationJoystick.getX(), 
       () -> translationJoystick.getY(), 
       fieldCentricSupplier, 
       drivetrain
+    ));
+
+    orbitNoteButton.whileTrue(new DriveWhileOrbitingNoteCommand(
+      () -> translationJoystick.getX(), 
+      () -> translationJoystick.getY(), 
+      fieldCentricSupplier, 
+      drivetrain, vision
     ));
 
     JoystickButton raiseClimberButton = new JoystickButton(controlPanel, 12);

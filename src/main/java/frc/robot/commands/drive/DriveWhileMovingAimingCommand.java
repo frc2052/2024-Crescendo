@@ -10,7 +10,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.util.CalebAimingCalculator;
+import frc.robot.util.AimingCalculator;
 
 public class DriveWhileMovingAimingCommand extends Command {
     protected final DrivetrainSubsystem drivetrain;
@@ -38,7 +38,7 @@ public class DriveWhileMovingAimingCommand extends Command {
         DoubleSupplier rotationSupplier = new DoubleSupplier() {
             @Override
             public double getAsDouble() {
-                CalebAimingCalculator.calculateShamperAngle(null, null, null)
+                return AimingCalculator.Calculation().getRobotAngle();
             }
         };
         this.drivetrain = drivetrain;

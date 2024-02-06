@@ -10,6 +10,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.util.io.Dashboard;
+import frc.robot.Constants;
 import frc.robot.states.Superstructure.SuperstructureState;
 
 public class RobotState {
@@ -32,6 +33,16 @@ public class RobotState {
         }
 
         return INSTANCE;
+    }
+
+    public boolean isRedAlliance() {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            return (alliance.get() == DriverStation.Alliance.Red) ? 
+            true : false;
+        } else {
+            return false;
+        }
     }
 
     private RobotState() {

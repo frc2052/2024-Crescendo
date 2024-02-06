@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public final class Constants {
     // TODO: Put in all the constants
@@ -94,10 +95,6 @@ public final class Constants {
             public static final double CLIMB = 0;
         }
 
-        public static final double SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS = 0;
-        public static final double SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
-        public static final double SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
-
         public static final double SHOOTER_ANGLE_OFFSET_IN_DEGREES = 0;
     }
 
@@ -111,6 +108,12 @@ public final class Constants {
         public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
 
         public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 0;
+
+        public static final double SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS = 0;
+        public static final double RED_SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
+        public static final double RED_SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
+        public static final double BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
+        public static final double BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
     }
 
     public static class MusicPlayer {
