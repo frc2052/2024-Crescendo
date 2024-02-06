@@ -30,37 +30,37 @@ public class ShamperSubsystem extends SubsystemBase {
 
     lowerMotor = new TalonFX(Constants.Shamper.Motors.LOWER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(
-    Constants.Shamper.Motors.LOWER_MOTOR_KP,
-    Constants.Shamper.Motors.LOWER_MOTOR_KI,
-    Constants.Shamper.Motors.LOWER_MOTOR_KD, 
+    Constants.Shamper.LOWER_MOTOR_KP,
+    Constants.Shamper.LOWER_MOTOR_KI,
+    Constants.Shamper.LOWER_MOTOR_KD, 
     new TrapezoidProfile.Constraints(
-    Constants.Shamper.Motors.LOWER_MOTOR_MAX_VELOCITY,
-    Constants.Shamper.Motors.LOWER_MOTOR_MAX_ACCELERATION));
+    Constants.Shamper.LOWER_MOTOR_MAX_VELOCITY,
+    Constants.Shamper.LOWER_MOTOR_MAX_ACCELERATION));
 
     upperMotor = new TalonFX(Constants.Shamper.Motors.UPPER_MOTOR_ID);
     upperMotorController = new ProfiledPIDController(
-    Constants.Shamper.Motors.UPPER_MOTOR_KP,
-    Constants.Shamper.Motors.UPPER_MOTOR_KI,
-    Constants.Shamper.Motors.UPPER_MOTOR_KD,      
+    Constants.Shamper.UPPER_MOTOR_KP,
+    Constants.Shamper.UPPER_MOTOR_KI,
+    Constants.Shamper.UPPER_MOTOR_KD,      
     new TrapezoidProfile.Constraints(
-    Constants.Shamper.Motors.UPPER_MOTOR_MAX_VELOCITY,
-    Constants.Shamper.Motors.UPPER_MOTOR_MAX_ACCELERATION));
+    Constants.Shamper.UPPER_MOTOR_MAX_VELOCITY,
+    Constants.Shamper.UPPER_MOTOR_MAX_ACCELERATION));
 
     rotationMotor = new TalonFX(Constants.Shamper.Motors.PIVOT_MOTOR_ID);
     rotationMotorController = new ProfiledPIDController(
-    Constants.Shamper.Motors.PIVOT_MOTOR_KP,
-    Constants.Shamper.Motors.PIVOT_MOTOR_KI,
-    Constants.Shamper.Motors.PIVOT_MOTOR_KD,      
+    Constants.Shamper.PIVOT_MOTOR_KP,
+    Constants.Shamper.PIVOT_MOTOR_KI,
+    Constants.Shamper.PIVOT_MOTOR_KD,      
     new TrapezoidProfile.Constraints(
-    Constants.Shamper.Motors.PIVOT_MOTOR_MAX_VELOCITY,
-    Constants.Shamper.Motors.PIVOT_MOTOR_MAX_ACCELERATION));
+    Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
+    Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
 
     rotationEncoder = new AnalogEncoder(Constants.Shamper.Motors.PIVOT_ENCODER_ID);
     rotationEncoder.reset();
 
-    lowerMotor.setInverted(Constants.Shamper.Motors.LOWER_MOTOR_IS_INVERTED);
-    upperMotor.setInverted(Constants.Shamper.Motors.UPPER_MOTOR_IS_INVERTED);
-    rotationMotor.setInverted(Constants.Shamper.Motors.ROTATION_MOTOR_IS_INVERTED);
+    lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
+    upperMotor.setInverted(Constants.Shamper.UPPER_MOTOR_IS_INVERTED);
+    rotationMotor.setInverted(Constants.Shamper.ROTATION_MOTOR_IS_INVERTED);
   }
 
   public void stop() {
@@ -91,7 +91,7 @@ public class ShamperSubsystem extends SubsystemBase {
     
     rotationMotor.set(TalonFXControlMode.Position, rotationMotorController.calculate(
     ((getShamperAngle() / 360) * Constants.MotorConstants.FALCON500_TICKS_PER_ROTATION), 
-    ((shooterGoalAngle / 360) * Constants.MotorConstants.FALCON500_TICKS_PER_ROTATION) * Constants.Shamper.Motors.PIVOT_GEAR_RATIO));
+    ((shooterGoalAngle / 360) * Constants.MotorConstants.FALCON500_TICKS_PER_ROTATION) * Constants.Shamper.PIVOT_GEAR_RATIO));
 
   }
 
