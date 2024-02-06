@@ -97,6 +97,8 @@ public final class Constants {
         public static final double SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS = 0;
         public static final double SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
         public static final double SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
+
+        public static final double SHOOTER_ANGLE_OFFSET_IN_DEGREES = 0;
     }
 
     public static class FieldAndRobot {
@@ -113,6 +115,12 @@ public final class Constants {
 
     public static class MusicPlayer {
         public static final int[] INSTRAMENT_TALONFX_PORT_LIST = {0, 0, 0};
+    }
+
+    public static class Vision {
+        public static final double NOTE_DETECTION_CAMERA_X_OFFSET = 0;
+        public static final double NOTE_DETECTION_CAMERA_Y_OFFSET = 0;
+        public static final double NOTE_DETECTION_CAMERA_ROTATION_OFFSET = 0;
     }
 
     public static class Drivetrain {
@@ -151,6 +159,8 @@ public final class Constants {
             // Back right
             new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0)
         );
+
+        public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;
     }
 
     public static final class Elevator{

@@ -11,10 +11,9 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class VisionSubsystem extends SubsystemBase {
   private static PhotonCamera noteCamera;
@@ -36,9 +35,9 @@ public class VisionSubsystem extends SubsystemBase {
       target = cameraResult.getBestTarget();
       targetPose = new Pose2d(
         new Translation2d(
-          target.getAlternateCameraToTarget().getX(), 
-          target.getAlternateCameraToTarget().getY()), 
-          target.getAlternateCameraToTarget().getRotation().toRotation2d());
+          target.getAlternateCameraToTarget().getX() + Constants.Vision.NOTE_DETECTION_CAMERA_X_OFFSET, 
+          target.getAlternateCameraToTarget().getY() + Constants.Vision.NOTE_DETECTION_CAMERA_Y_OFFSET), 
+          new Rotation2d(Math.cos(target.getAlternateCameraToTarget().getRotation().getAngle() + Constants.Vision.NOTE_DETECTION_CAMERA_ROTATION_OFFSET), Math.sin(target.getAlternateCameraToTarget().getRotation().getAngle() + Constants.Vision.NOTE_DETECTION_CAMERA_ROTATION_OFFSET)));
     }
     // This method will be called once per scheduler run
   }

@@ -110,13 +110,13 @@ public class MaxAimingCalculator {
 
         horizontalVelocityNeeded = (distanceToSpeaker / timeUntilTrajectoryTargetHeight) - predictedNoteVelocity;
 
-        angle = Math.toDegrees(Math.asin(verticalVelocityNeeded / horizontalVelocityNeeded));
+        angle = Math.toDegrees(Math.asin(verticalVelocityNeeded / horizontalVelocityNeeded)) + Constants.Drivetrain.ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES;
         return angle;
     }
 
     public static double getMovingTargetRobotAngle() {
         double angle;
-        angle = Math.toDegrees(angleToSpeaker - ((robotCombinedVelocity * differenceInAngle) / noteSpeedAfterLaunch));
+        angle = Math.toDegrees(angleToSpeaker - ((robotCombinedVelocity * differenceInAngle) / noteSpeedAfterLaunch)) + Constants.Drivetrain.ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES;
         return angle;
     }
 }
