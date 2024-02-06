@@ -38,8 +38,7 @@ public class DriveWhileMovingAimingCommand extends Command {
         DoubleSupplier rotationSupplier = new DoubleSupplier() {
             @Override
             public double getAsDouble() {
-                CalebAimingCalculator.updateInformation();
-                return CalebAimingCalculator.getMovingTargetRobotAngle();
+                CalebAimingCalculator.calculateShamperAngle(null, null, null)
             }
         };
         this.drivetrain = drivetrain;

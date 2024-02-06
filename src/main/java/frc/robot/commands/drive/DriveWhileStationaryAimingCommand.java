@@ -37,8 +37,7 @@ public class DriveWhileStationaryAimingCommand extends Command {
 
             @Override
             public double getAsDouble() {
-                CalebAimingCalculator.updateInformation();
-                return CalebAimingCalculator.getStationaryTargetRobotAngle();
+                CalebAimingCalculator.calculateShamperAngle(null, null, null)
             }
         };
 
