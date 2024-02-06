@@ -38,7 +38,10 @@ public final class Constants {
         public static final int UPPER_SHOOTER_MOTOR_ID = 0;
         public static final int ROTATION_SHOOTER_MOTOR_ID = 0;
         public static final int ROTATION_ENCODER_ID = 0;
+        public static final int INDEX_MOTOR_ID = 0;
+        public static final int INDEXER_SENSOR_ID = 0;
 
+        public static final int INDEX_SPEED_TPS = 0;
         public static final int LOWER_SHOOTER_IDLE_SPEED_TPS = 0;
         public static final int LOWER_SHOOTER_SPEAKER_SPEED_TPS = 0;
         public static final int LOWER_SHOOTER_AMP_SPEED_TPS = 0;

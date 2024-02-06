@@ -24,6 +24,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final TalonFX lowerMotor;
   private final TalonFX upperMotor;
   private final TalonFX rotationMotor;
+  private final TalonFX indexMotor;
   private final AnalogEncoder rotationEncoder;
 
   private ProfiledPIDController lowerMotorController;
@@ -31,7 +32,6 @@ public class ShooterSubsystem extends SubsystemBase {
   private ProfiledPIDController rotationMotorController;
 
   public ShooterSubsystem() {
-
     lowerMotor = new TalonFX(Constants.VerticalShooter.UPPER_SHOOTER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(
     Constants.VerticalShooter.LOWER_SHOOTER_KP,
@@ -58,6 +58,8 @@ public class ShooterSubsystem extends SubsystemBase {
     new TrapezoidProfile.Constraints(
     Constants.VerticalShooter.ROTATION_SHOOTER_MAX_VELOCITY,
     Constants.VerticalShooter.ROTATION_SHOOTER_MAX_ACCELORATION));
+
+    indexMotor = new TalonFX(Constants.VerticalShooter.INDEX_MOTOR_ID);
 
     rotationEncoder = new AnalogEncoder(Constants.VerticalShooter.ROTATION_ENCODER_ID);
     rotationEncoder.reset();
@@ -123,8 +125,18 @@ public class ShooterSubsystem extends SubsystemBase {
     return lowerMotor.getSelectedSensorVelocity();
   }
 
-  
+  public void runIndexer() {
+    indexMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.INDEX_SPEED_TPS);
+  }
 
+  public void stopIndexer() {
+    indexMotor.set(TalonFXControlMode.Velocity, 0);
+  }
+
+  public boolean indexerRunning() {
+    return indexMotor.getSelectedSensorVelocity() != 0.01;
+  }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
