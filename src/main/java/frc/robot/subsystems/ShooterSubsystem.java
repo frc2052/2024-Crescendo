@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotState;
+
 
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -32,41 +32,41 @@ public class ShooterSubsystem extends SubsystemBase {
   private ProfiledPIDController rotationMotorController;
 
   public ShooterSubsystem() {
-    lowerMotor = new TalonFX(Constants.VerticalShooter.UPPER_SHOOTER_MOTOR_ID);
+    lowerMotor = new TalonFX(Constants.Shamper.UPPER_SHOOTER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(
-    Constants.VerticalShooter.LOWER_SHOOTER_KP,
-    Constants.VerticalShooter.LOWER_SHOOTER_KI,
-    Constants.VerticalShooter.LOWER_SHOOTER_KD, 
+    Constants.Shamper.LOWER_SHOOTER_KP,
+    Constants.Shamper.LOWER_SHOOTER_KI,
+    Constants.Shamper.LOWER_SHOOTER_KD, 
     new TrapezoidProfile.Constraints(
-    Constants.VerticalShooter.LOWER_SHOOTER_MAX_VELOCITY,
-    Constants.VerticalShooter.LOWER_SHOOTER_MAX_ACCELORATION));
+    Constants.Shamper.LOWER_SHOOTER_MAX_VELOCITY,
+    Constants.Shamper.LOWER_SHOOTER_MAX_ACCELORATION));
 
-    upperMotor = new TalonFX(Constants.VerticalShooter.LOWER_SHOOTER_MOTOR_ID);
+    upperMotor = new TalonFX(Constants.Shamper.LOWER_SHOOTER_MOTOR_ID);
     upperMotorController = new ProfiledPIDController(
-    Constants.VerticalShooter.UPPER_SHOOTER_KP,
-    Constants.VerticalShooter.UPPER_SHOOTER_KI,
-    Constants.VerticalShooter.UPPER_SHOOTER_KD,      
+    Constants.Shamper.UPPER_SHOOTER_KP,
+    Constants.Shamper.UPPER_SHOOTER_KI,
+    Constants.Shamper.UPPER_SHOOTER_KD,      
     new TrapezoidProfile.Constraints(
-    Constants.VerticalShooter.UPPER_SHOOTER_MAX_VELOCITY,
-    Constants.VerticalShooter.UPPER_SHOOTER_MAX_ACCELORATION));
+    Constants.Shamper.UPPER_SHOOTER_MAX_VELOCITY,
+    Constants.Shamper.UPPER_SHOOTER_MAX_ACCELORATION));
 
-    rotationMotor = new TalonFX(Constants.VerticalShooter.ROTATION_SHOOTER_MOTOR_ID);
+    rotationMotor = new TalonFX(Constants.Shamper.ROTATION_SHOOTER_MOTOR_ID);
     rotationMotorController = new ProfiledPIDController(
-    Constants.VerticalShooter.ROTATION_SHOOTER_KP,
-    Constants.VerticalShooter.ROTATION_SHOOTER_KI,
-    Constants.VerticalShooter.ROTATION_SHOOTER_KD,      
+    Constants.Shamper.ROTATION_SHOOTER_KP,
+    Constants.Shamper.ROTATION_SHOOTER_KI,
+    Constants.Shamper.ROTATION_SHOOTER_KD,      
     new TrapezoidProfile.Constraints(
-    Constants.VerticalShooter.ROTATION_SHOOTER_MAX_VELOCITY,
-    Constants.VerticalShooter.ROTATION_SHOOTER_MAX_ACCELORATION));
+    Constants.Shamper.ROTATION_SHOOTER_MAX_VELOCITY,
+    Constants.Shamper.ROTATION_SHOOTER_MAX_ACCELORATION));
 
-    indexMotor = new TalonFX(Constants.VerticalShooter.INDEX_MOTOR_ID);
+    indexMotor = new TalonFX(Constants.Shamper.INDEX_MOTOR_ID);
 
-    rotationEncoder = new AnalogEncoder(Constants.VerticalShooter.ROTATION_ENCODER_ID);
+    rotationEncoder = new AnalogEncoder(Constants.Shamper.ROTATION_ENCODER_ID);
     rotationEncoder.reset();
 
-    lowerMotor.setInverted(Constants.VerticalShooter.LOWER_MOTOR_IS_INVERTED);
-    upperMotor.setInverted(Constants.VerticalShooter.UPPER_MOTOR_IS_INVERTED);
-    rotationMotor.setInverted(Constants.VerticalShooter.ROTATION_MOTOR_IS_INVERTED);
+    lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
+    upperMotor.setInverted(Constants.Shamper.UPPER_MOTOR_IS_INVERTED);
+    rotationMotor.setInverted(Constants.Shamper.ROTATION_MOTOR_IS_INVERTED);
   }
 
   public void stop() {
@@ -89,18 +89,18 @@ public class ShooterSubsystem extends SubsystemBase {
 
   //run this in the perodic, if you don't it wont work.
   public void setShooterRotationAngle(double shooterGoalAngle) {
-    shooterGoalAngle = shooterGoalAngle + Constants.VerticalShooter.SHOOTER_ANGLE_OFFSET_IN_DEGREES;
+    shooterGoalAngle = shooterGoalAngle + Constants.Shamper.SHOOTER_ANGLE_OFFSET_IN_DEGREES;
 
     //for safty. don't want the robot breaking
-    if (shooterGoalAngle < Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE) {
-      shooterGoalAngle = Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE;
-    } else if (shooterGoalAngle > Constants.VerticalShooter.SHOOTER_MAXIMUM_ANGLE) {
-      shooterGoalAngle = Constants.VerticalShooter.SHOOTER_MAXIMUM_ANGLE;
+    if (shooterGoalAngle < Constants.Shamper.Angle.MINIMUM) {
+      shooterGoalAngle = Constants.Shamper.Angle.MINIMUM;
+    } else if (shooterGoalAngle > Constants.Shamper.Angle.MAXIMUM) {
+      shooterGoalAngle = Constants.Shamper.Angle.MAXIMUM;
     }
     //sets movement
     rotationMotor.set(TalonFXControlMode.Position, rotationMotorController.calculate(
-    ((getShooterAngle() / 360) * Constants.VerticalShooter.TICKS_PER_TALONFX_FULL_ROTION), 
-    ((shooterGoalAngle / 360) * Constants.VerticalShooter.TICKS_PER_TALONFX_FULL_ROTION) * Constants.VerticalShooter.ROTAION_MOTOR_TO_ACTUAL_ROTION_GEAR_RATIO));
+    ((getShooterAngle() / 360) * Constants.Shamper.TALONFX_TICS_PER_FULL_ROTATION), 
+    ((shooterGoalAngle / 360) * Constants.Shamper.TALONFX_TICS_PER_FULL_ROTATION) * Constants.Shamper.ROTAION_MOTOR_TO_ACTUAL_ROTION_GEAR_RATIO));
 
   }
 
@@ -109,9 +109,9 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean checkShooterAngleValidity(double testShooterAngle) {
-      if (testShooterAngle < Constants.VerticalShooter.SHOOTER_MINNIMUM_ANGLE) {
+      if (testShooterAngle < Constants.Shamper.Angle.MINIMUM) {
       return false;
-    } else if (testShooterAngle > Constants.VerticalShooter.SHOOTER_MAXIMUM_ANGLE) {
+    } else if (testShooterAngle > Constants.Shamper.Angle.MAXIMUM) {
       return false;
     }
     return true;
@@ -126,7 +126,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void runIndexer() {
-    indexMotor.set(TalonFXControlMode.Velocity, Constants.VerticalShooter.INDEX_SPEED_TPS);
+    indexMotor.set(TalonFXControlMode.Velocity, Constants.Shamper.INDEX_SPEED_TPS);
   }
 
   public void stopIndexer() {
@@ -144,9 +144,9 @@ public class ShooterSubsystem extends SubsystemBase {
   
   public static enum ShooterSpeeds {
     OFF(0, 0),
-    IDLING(Constants.VerticalShooter.LOWER_SHOOTER_IDLE_SPEED_TPS, Constants.VerticalShooter.UPPER_SHOOTER_IDLE_SPEED_TPS),
-    SPEAKER(Constants.VerticalShooter.LOWER_SHOOTER_SPEAKER_SPEED_TPS, Constants.VerticalShooter.UPPER_SHOOTER_SPEAKER_SPEED_TPS),
-    AMP(Constants.VerticalShooter.LOWER_SHOOTER_AMP_SPEED_TPS, Constants.VerticalShooter.UPPER_SHOOTER_AMP_SPEED_TPS);
+    IDLING(Constants.Shamper.LOWER_SHOOTER_IDLE_SPEED_TPS, Constants.Shamper.UPPER_SHOOTER_IDLE_SPEED_TPS),
+    SPEAKER(Constants.Shamper.LOWER_SHOOTER_SPEAKER_SPEED_TPS, Constants.Shamper.UPPER_SHOOTER_SPEAKER_SPEED_TPS),
+    AMP(Constants.Shamper.LOWER_SHOOTER_AMP_SPEED_TPS, Constants.Shamper.UPPER_SHOOTER_AMP_SPEED_TPS);
 
     private final int lowerTicksPerSecond;
     private final int upperTicksPerSecond;
