@@ -20,6 +20,7 @@ public class ShamperSubsystem extends SubsystemBase {
   private final TalonFX lowerMotor;
   private final TalonFX upperMotor;
   private final TalonFX rotationMotor;
+  private final TalonFX indexMotor;
   private final AnalogEncoder rotationEncoder;
 
   private ProfiledPIDController lowerMotorController;
@@ -54,6 +55,8 @@ public class ShamperSubsystem extends SubsystemBase {
     new TrapezoidProfile.Constraints(
     Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
     Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
+
+    indexMotor = new TalonFX(Constants.Shamper.INDEX_MOTOR_ID);
 
     rotationEncoder = new AnalogEncoder(Constants.Shamper.Motors.PIVOT_ENCODER_ID);
     rotationEncoder.reset();
@@ -115,6 +118,18 @@ public class ShamperSubsystem extends SubsystemBase {
   public double getLowerShamperSpeed() {
     return lowerMotor.getSelectedSensorVelocity();
   }  
+
+  public void runIndexer() {
+    indexMotor.set(TalonFXControlMode.Velocity, Constants.Shamper.INDEX_SPEED_TPS);
+  }
+
+  public void stopIndexer() {
+    indexMotor.set(TalonFXControlMode.Velocity, 0);
+  }
+
+  public boolean indexerRunning() {
+    return indexMotor.getSelectedSensorVelocity() != 0.01;
+  }
 
   @Override
   public void periodic() {
