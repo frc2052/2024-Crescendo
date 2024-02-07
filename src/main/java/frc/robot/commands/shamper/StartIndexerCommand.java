@@ -7,16 +7,16 @@ package frc.robot.commands.shamper;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShamperSubsystem;
 
 public class StartIndexerCommand extends Command {
-  ShooterSubsystem shooter;
+  ShamperSubsystem shamper;
   DigitalInput input;
 
-  public StartIndexerCommand(ShooterSubsystem shooter) {
+  public StartIndexerCommand(ShamperSubsystem shamper) {
     input = new DigitalInput(Constants.Shamper.INDEXER_SENSOR_ID);
-    this.shooter = shooter;
-    addRequirements(shooter);
+    this.shamper = shamper;
+    addRequirements(shamper);
   }
 
   @Override
@@ -25,14 +25,14 @@ public class StartIndexerCommand extends Command {
   @Override
   public void execute() {
     if (input.get()) {
-      shooter.stopIndexer();
-    } else if (!shooter.indexerRunning()) {
-      shooter.runIndexer();
+      shamper.stopIndexer();
+    } else if (!shamper.indexerRunning()) {
+      shamper.runIndexer();
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-    shooter.stopIndexer();
+    shamper.stopIndexer();
   }
 }
