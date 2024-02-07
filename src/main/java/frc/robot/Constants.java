@@ -162,7 +162,7 @@ public final class Constants {
     }
 
     public static class MusicPlayer {
-        public static final TalonFX[] INSTRAMENT_TALONFX_PORT_LIST = {ShamperSubsystem.getUpperTalonFX(), ShamperSubsystem.getLowerTalonFX(), ShamperSubsystem.getRotationTalonFX()};
+        public static final TalonFX[] INSTRUMENT_TALONFX_PORT_LIST = {ShamperSubsystem.getUpperTalonFX(), ShamperSubsystem.getLowerTalonFX(), ShamperSubsystem.getRotationTalonFX()};
     }
 
     public static class Vision {
