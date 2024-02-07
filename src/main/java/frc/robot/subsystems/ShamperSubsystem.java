@@ -158,5 +158,18 @@ public class ShamperSubsystem extends SubsystemBase {
     public int getUpperPCT() {
       return upperPercentOutput;
     }
+
+
   }
+     public static TalonFX getUpperTalonFX() {
+      return upperMotor;
+    }
+
+    public static TalonFX getLowerTalonFX() {
+      return lowerMotor;
+    }
+
+    public static TalonFX getRotationTalonFX() {
+      return rotationMotor;
+    } 
 }
