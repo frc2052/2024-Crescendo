@@ -9,14 +9,14 @@ import frc.robot.Constants;
 public class MusicPlayerSubsystem extends SubsystemBase{
 
     private final Orchestra musicPlayer;
-    private final TalonFX[] instramentList;
+    private final TalonFX[] instrumentList;
 
     public MusicPlayerSubsystem() {
         musicPlayer = new Orchestra();
-        instramentList = Constants.MusicPlayer.INSTRAMENT_TALONFX_PORT_LIST;
+        instramentList = Constants.MusicPlayer.INSTRUMENT_TALONFX_PORT_LIST;
 
         for (int i = 0; i < instramentList.length; i++) {
-            musicPlayer.addInstrument(instramentList[i]);
+            musicPlayer.addInstrument(instrumentList[i]);
         }
     }
 
