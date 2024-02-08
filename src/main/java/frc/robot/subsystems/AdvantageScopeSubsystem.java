@@ -3,88 +3,99 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotState;
+import frc.robot.states.RobotState;
 
 public class AdvantageScopeSubsystem extends SubsystemBase {
-    static IntakeSubsystem intake;
-    static ShooterSubsystem shooter;
-    static ClimberSubsystem climber;
-    static DrivetrainSubsystem drivetrain;
-    static MusicPlayerSubsystem musicPlayer;
+    static IntakeSubsystem intakeSubsystem;
+    static ShamperSubsystem shamperSubsystem;
+    static ClimberSubsystem climberSubsystem;
+    static DrivetrainSubsystem drivetrainSubsystem;
+    static MusicPlayerSubsystem musicPlayerSubsystem;
+    static VisionSubsystem visionSubsystem;
+    static String folder = "Data_";
     
     public AdvantageScopeSubsystem (    
-        IntakeSubsystem intake,
-        ShooterSubsystem shooter, 
-        ClimberSubsystem climber, 
-        DrivetrainSubsystem drivetrain,
-        MusicPlayerSubsystem musicPlayer
-    ) {
+    IntakeSubsystem intakeSubsystem, 
+    ShamperSubsystem shamperSubsystem, 
+    ClimberSubsystem climberSubsystem, 
+    DrivetrainSubsystem drivetrainSubsystem,
+    MusicPlayerSubsystem musicPlayerSubsystem,
+    VisionSubsystem visionSubsystem) {
 
-        AdvantageScopeSubsystem.intake = intake;
-        AdvantageScopeSubsystem.shooter = shooter;
-        AdvantageScopeSubsystem.climber = climber;
-        AdvantageScopeSubsystem.drivetrain = drivetrain;
-        AdvantageScopeSubsystem.musicPlayer = musicPlayer;
-    }    
+        AdvantageScopeSubsystem.intakeSubsystem = intakeSubsystem;
+        AdvantageScopeSubsystem.shamperSubsystem = shamperSubsystem;
+        AdvantageScopeSubsystem.climberSubsystem = climberSubsystem;
+        AdvantageScopeSubsystem.drivetrainSubsystem = drivetrainSubsystem;
+        AdvantageScopeSubsystem.musicPlayerSubsystem = musicPlayerSubsystem;
+        AdvantageScopeSubsystem.visionSubsystem = visionSubsystem;
+      
+        recordOneUnderBumberIntakeData();
 
-    public void recordData() {
-        recordIntakeData();
-
-        recordShooterData();
+        recordShamperData();
 
         recordClimberData();
 
         recordDrivetrainData();
 
         recordMusicPlayerData();
+
+        recordVisionData();
+    }    
+
+    public static void recordOneUnderBumberIntakeData () {
+        Logger.recordOutput(folder+"Under Bumper Intake Lower Motor Speed", 
+        intakeSubsystem.getLowerMotorSpeed());
+
+        Logger.recordOutput(folder+"Under Bumper Intake Upper Motor Speed", 
+        intakeSubsystem.getUpperMotorSpeed());
+
     }
 
-    public static void recordIntakeData () {
-        Logger.recordOutput("Under Bumper Intake Lower Motor Speed", 
-        intake.getLowerMotorSpeed());
-
-        Logger.recordOutput("Under Bumper Intake Upper Motor Speed", 
-        intake.getUpperMotorSpeed());
-
-    }
-
-    public static void recordShooterData () {
-        Logger.recordOutput("Vertical Shooter Upper Motor Speed", 
-        shooter.getUpperShooterSpeed());
+    public static void recordShamperData () {
+        Logger.recordOutput(folder+"Shamper Upper Motor Speed", 
+        shamperSubsystem.getUpperShamperSpeed());
         
-        Logger.recordOutput("Vertical Shooter Lower Motor Speed", 
-        shooter.getLowerShooterSpeed());
+        Logger.recordOutput(folder+"Shamper Lower Motor Speed", 
+        shamperSubsystem.getLowerShamperSpeed());
     }
 
     public static void recordClimberData () {
-        Logger.recordOutput("Climber Encoder Position", 
-        climber.getEncoderPosition());
+        Logger.recordOutput(folder+"Climber Encoder Position", 
+        climberSubsystem.getEncoderPosition());
     }
 
     public static void recordMusicPlayerData() {
-        Logger.recordOutput("Current Track Play Time",
-        musicPlayer.getCurrentPlayTime());
+        Logger.recordOutput(folder+"Current Track Play Time",
+        musicPlayerSubsystem.getCurrentPlayTime());
 
-        Logger.recordOutput("Is Music Player Playing", 
-        musicPlayer.isPlayerPLaying());
+        Logger.recordOutput(folder+"Is Music Player Playing", 
+        musicPlayerSubsystem.isPlayerPLaying());
     }
 
     public static void recordDrivetrainData () {
         double[] swerveArray = {
-            drivetrain.frontLeftModule.getState().angle.getDegrees(), 
-            drivetrain.frontLeftModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.frontLeftModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.frontLeftModule.getState().speedMetersPerSecond,
 
-            drivetrain.frontRightModule.getState().angle.getDegrees(), 
-            drivetrain.frontRightModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.frontRightModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.frontRightModule.getState().speedMetersPerSecond,
 
-            drivetrain.backLeftModule.getState().angle.getDegrees(), 
-            drivetrain.backLeftModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.backLeftModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.backLeftModule.getState().speedMetersPerSecond,
 
-            drivetrain.backRightModule.getState().angle.getDegrees(), 
-            drivetrain.backRightModule.getState().speedMetersPerSecond,
+            drivetrainSubsystem.backRightModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.backRightModule.getState().speedMetersPerSecond,
         };
-        Logger.recordOutput("Swerve Array", swerveArray);
+        Logger.recordOutput(folder+"Swerve Array", swerveArray);
 
-        Logger.recordOutput("Pose 2D", RobotState.getInstance().getRobotPose());
+        Logger.recordOutput(folder+"Pose 2D", RobotState.getInstance().getRobotPose());
+
+        //SmartDashboard.getNumber("");
+    }
+
+    public static void recordVisionData() {
+        Logger.recordOutput(folder+"Visions Has Target", visionSubsystem.hasTarget());
+
+        Logger.recordOutput(folder+"Best Note Pose2D", visionSubsystem.getBestNotePose());
     }
 }

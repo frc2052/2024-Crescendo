@@ -1,9 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
-
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
-package frc.robot.io;
+package frc.robot.util.io;
 
 import edu.wpi.first.networktables.BooleanTopic;
 import edu.wpi.first.networktables.DoubleArrayTopic;
@@ -83,7 +78,7 @@ public class Dashboard {
         return driveModeChooser.getSelected() == DriveMode.FIELD_CENTRIC;      
     }
 
-    // Create enums for Dashboard elements/parts here
+    // Enums for Dashboard elements:
     public static enum DriveMode {
         FIELD_CENTRIC,
         ROBOT_CENTRIC;

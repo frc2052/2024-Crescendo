@@ -1,9 +1,9 @@
-package frc.robot.subsystems;
+package frc.robot.util;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Constants;
-import frc.robot.RobotState;
+import frc.robot.states.RobotState;
 
 public class RobotStateEstimator{
     static RobotStateEstimator INSTANCE;
@@ -28,7 +28,7 @@ public class RobotStateEstimator{
      * Update the SwerveDrivePoseEstimator with values from RobotState
      */
     public void updateRobotPoseEstimator() {
-        if (!robotState.hasValidState()) {
+        if (!robotState.hasValidSwerveState()) {
             return;
         }
 
@@ -57,13 +57,13 @@ public class RobotStateEstimator{
     /**
      * Reset the position of SwerveDrivePoseEstimator and set the NavX Offset
      */
-    public void resetOdometry(Pose2d initialStartingPose){
-        robotState.reset(initialStartingPose);
+    public void resetOdometry(Pose2d pose){
+        robotState.resetInitialPose(pose);
 
         poseEstimator.resetPosition(
             robotState.getRotation2d(), 
             robotState.getModulePositions(),
-            initialStartingPose
+            pose
         );
     }
 }

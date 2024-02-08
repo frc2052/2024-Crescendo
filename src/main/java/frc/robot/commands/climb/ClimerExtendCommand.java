@@ -7,12 +7,12 @@ package frc.robot.commands.climb;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 
-public class LowerClimberCommand extends Command {
+public class ClimerExtendCommand extends Command {
   /** Creates a new RaiseClimberCommand. */
    
   private final ClimberSubsystem hook;
 
-  public LowerClimberCommand(ClimberSubsystem hook) {
+  public ClimerExtendCommand(ClimberSubsystem hook) {
       this.hook = hook;
       addRequirements(hook);
   }
@@ -20,7 +20,7 @@ public class LowerClimberCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hook.retract(false);
+    hook.extend(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

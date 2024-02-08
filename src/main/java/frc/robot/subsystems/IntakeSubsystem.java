@@ -15,33 +15,27 @@ public class IntakeSubsystem extends SubsystemBase {
   private final TalonFX lowerMotor;
 
   public IntakeSubsystem () {    
-    upperMotor = new TalonFX(Constants.OneUnderBumperIntake.UPPER_MOTOR_CHANNEL);
-    lowerMotor = new TalonFX(Constants.OneUnderBumperIntake.LOWER_MOTOR_CHANNEL);
+    upperMotor = new TalonFX(Constants.Intake.UPPER_MOTOR_ID);
+    lowerMotor = new TalonFX(Constants.Intake.LOWER_MOTOR_ID);
   }
 
-  public void setUpperMotorSpeed(double upperMotorSpeedTPS) {
-    upperMotor.set(ControlMode.Velocity, upperMotorSpeedTPS);
+  public void setUpperMotorSpeed(double upperMotorSpeedPCT) {
+    upperMotor.set(ControlMode.PercentOutput, upperMotorSpeedPCT);
   }
 
-  public void setLowerMotorSpeed(double lowerMotorSpeedTPS) {
-    lowerMotor.set(ControlMode.Velocity, lowerMotorSpeedTPS);
+  public void setLowerMotorSpeed(double lowerMotorSpeedPCT) {
+    lowerMotor.set(ControlMode.PercentOutput, lowerMotorSpeedPCT);
   }
 
-  public void intakeIn() {
+  public void intake(double upperMotorPCT, double lowerMotorPCT) {
     //reversed bottom motor
-    upperMotor.set(ControlMode.Velocity, Constants.OneUnderBumperIntake.INTAKE_IN_SPEED_TPS);
-    lowerMotor.set(ControlMode.Velocity, -Constants.OneUnderBumperIntake.INTAKE_IN_SPEED_TPS);
-  }
-
-  public void intakeOut() {
-    //reversed top motor
-    upperMotor.set(ControlMode.Velocity, -Constants.OneUnderBumperIntake.INTAKE_OUT_SPEED_TPS);
-    lowerMotor.set(ControlMode.Velocity, Constants.OneUnderBumperIntake.INTAKE_OUT_SPEED_TPS);
+    upperMotor.set(ControlMode.PercentOutput, upperMotorPCT);
+    lowerMotor.set(ControlMode.PercentOutput, lowerMotorPCT);
   }
 
   public void stop() {
-    upperMotor.set(ControlMode.Velocity, 0);
-    lowerMotor.set(ControlMode.Velocity, 0);
+    upperMotor.set(ControlMode.PercentOutput, 0);
+    lowerMotor.set(ControlMode.PercentOutput, 0);
   }
 
   public double getUpperMotorSpeed() {
