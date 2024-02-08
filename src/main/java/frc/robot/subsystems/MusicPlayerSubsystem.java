@@ -13,9 +13,9 @@ public class MusicPlayerSubsystem extends SubsystemBase{
 
     public MusicPlayerSubsystem() {
         musicPlayer = new Orchestra();
-        instramentList = Constants.MusicPlayer.INSTRUMENT_TALONFX_PORT_LIST;
+        instrumentList = Constants.MusicPlayer.INSTRUMENT_TALONFX_PORT_LIST;
 
-        for (int i = 0; i < instramentList.length; i++) {
+        for (int i = 0; i < instrumentList.length; i++) {
             musicPlayer.addInstrument(instrumentList[i]);
         }
     }

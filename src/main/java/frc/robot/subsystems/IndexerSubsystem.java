@@ -17,6 +17,10 @@ public class IndexerSubsystem extends SubsystemBase {
     indexerMotor = new CANSparkMax(Constants.Indexer.MOTOR_ID, MotorType.kBrushless);
   }
 
+  public double getIndexerSpeed() {
+    return indexerMotor.get();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
