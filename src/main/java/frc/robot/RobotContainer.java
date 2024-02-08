@@ -24,6 +24,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 
 import java.util.function.BooleanSupplier;
@@ -52,7 +53,8 @@ public class RobotContainer {
   private final Joystick controlPanel;
 
   private BooleanSupplier fieldCentricSupplier;
-  private boolean musicOn;
+  public static boolean musicOn;
+  public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     translationJoystick = new Joystick(0);
@@ -71,9 +73,9 @@ public class RobotContainer {
 
     superstructure = new Superstructure(shamper, climber);
 
-    musicOn = true;
+    robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
-    if (musicOn) {new PlayActivationJingleCommand(musicPlayer);}
+    musicOn = true;
 
     drivetrain.setDefaultCommand(
       new DriveCommand(

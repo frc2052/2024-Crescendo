@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.states.RobotState;
 
@@ -47,7 +48,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
     public static void recordIntakeData () {
         String intakeFolder = "intake_";
-        
+
         Logger.recordOutput(folder+intakeFolder+"Under Bumper Intake Lower Motor Speed", 
         intakeSubsystem.getLowerMotorSpeed());
 
@@ -124,5 +125,19 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         Logger.recordOutput(folder+visionFolder+"Visions Has Target", visionSubsystem.hasTarget());
 
         Logger.recordOutput(folder+visionFolder+"Best Note Pose2D", visionSubsystem.getBestNotePose());
+    }
+
+    public static void recordDriverStationData() {
+        String driverstationFolder = "Driver Station_";
+
+        Logger.recordOutput(folder+driverstationFolder+"Event Name", DriverStation.getEventName());
+
+        Logger.recordOutput(folder+driverstationFolder+"Game Specific Message", DriverStation.getGameSpecificMessage());
+
+        Logger.recordOutput(folder+driverstationFolder+"Match Number", DriverStation.getMatchNumber());
+
+        Logger.recordOutput(folder+driverstationFolder+"Match Time", DriverStation.getMatchTime());
+
+        Logger.recordOutput(folder+driverstationFolder+"Is Robot Enabled", DriverStation.isEnabled());
     }
 }
