@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -210,10 +212,14 @@ public final class Constants {
             // Back right
             new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0)
         );
+
+        public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;
     }
 
-    public static final class PiCamera1 {
+    public static final class PhotonCamera1 {
         // TODO: Add PiCamera offsets
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
+
         public static final double X_OFFSET_INCHES = 0;
         public static final double Y_OFFSET_INCHES = 0;
         public static final double Z_OFFSET_INCHES = 0;
@@ -222,13 +228,15 @@ public final class Constants {
         public static final double THETA_Y_OFFSET_DEGREES = 0.0; // pitch
         public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
 
-        public static final Transform3d PI_CAMERA_POSITION_METERS = new Transform3d(
+        public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
             new Translation3d(Units.inchesToMeters(X_OFFSET_INCHES), Units.inchesToMeters(Y_OFFSET_INCHES), Units.inchesToMeters(Z_OFFSET_INCHES)), 
             new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
         );
     }
-    public static final class PiCamera2 {
+    public static final class PhotonCamera2 {
         // TODO: Add PiCamera offsets
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
+
         public static final double X_OFFSET_INCHES = 0;
         public static final double Y_OFFSET_INCHES = 0;
         public static final double Z_OFFSET_INCHES = 0;
@@ -237,7 +245,7 @@ public final class Constants {
         public static final double THETA_Y_OFFSET_DEGREES = 0.0; // pitch
         public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
 
-        public static final Transform3d PI_CAMERA_POSITION_METERS = new Transform3d(
+        public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
             new Translation3d(Units.inchesToMeters(X_OFFSET_INCHES), Units.inchesToMeters(Y_OFFSET_INCHES), Units.inchesToMeters(Z_OFFSET_INCHES)), 
             new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
         );

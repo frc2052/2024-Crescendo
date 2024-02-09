@@ -10,6 +10,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.states.RobotState;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.util.RobotStateEstimator;
 
@@ -48,8 +49,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     RobotStateEstimator.getInstance().updateRobotPoseEstimator();
-    RobotState.getInstance().outputRobotStateToDashboard();
-    AprilTagSubsystem.getInstance().update();
+    RobotState.getInstance().output();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic

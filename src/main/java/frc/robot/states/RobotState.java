@@ -1,8 +1,10 @@
 package frc.robot.states;
 
+import com.team2052.lib.photonvision.EstimatedRobotPose;
 import com.team2052.lib.DrivetrainState;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -10,7 +12,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.util.io.Dashboard;
-import frc.robot.Constants;
 import frc.robot.states.Superstructure.SuperstructureState;
 
 public class RobotState {
@@ -18,7 +19,7 @@ public class RobotState {
 
     private Pose2d initialPose;
     private Pose2d robotPose;
-    private Pose2d robotVisionPose2d;
+    private Pose3d aprilTagVisionPose3d;
     private double detectionTime;
     private Rotation2d navxOffset;
     private Rotation2d robotRotation2d;
@@ -49,7 +50,7 @@ public class RobotState {
         initialPose = new Pose2d();
         robotPose = new Pose2d();
         detectionTime = 0.0;
-        robotVisionPose2d = new Pose2d();
+        aprilTagVisionPose3d = new Pose3d();
         navxOffset = new Rotation2d(0);
         robotRotation2d = new Rotation2d(0);
         chassisSpeeds = new ChassisSpeeds();
@@ -68,8 +69,9 @@ public class RobotState {
     /**
      * Adds an AprilTag vision tracked translation3d WITHOUT timestamp.
      */ 
-    public void addVisionPose2dUpdate(Pose2d robotVisionPose2d) {
-        this.robotVisionPose2d = robotVisionPose2d;
+    public void addAprilTagVisionUpdate(EstimatedRobotPose aprilTagVisionPose) {
+        this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
+        this.detectionTime = aprilTagVisionPose.timestampSeconds;
     }
 
     public void updateRobotPose(Pose2d robotPose) {
@@ -102,8 +104,8 @@ public class RobotState {
      * 
      * @return Translation2d
      */
-    public Pose2d getVisionPose2d() {
-        return robotVisionPose2d;
+    public Pose3d getVisionPose3d() {
+        return aprilTagVisionPose3d;
     }
 
     /**
@@ -114,8 +116,9 @@ public class RobotState {
     public double getVisionDetectionTime() {
         if(detectionTime == 0.0){
             return Timer.getFPGATimestamp();
+        } else {
+            return detectionTime;
         }
-        return detectionTime;
     }
 
     /**
@@ -221,8 +224,8 @@ public class RobotState {
         Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
         Dashboard.getInstance().putData("Robot Position X Inches: ", Units.inchesToMeters(robotPose.getX()));
         Dashboard.getInstance().putData("Robot Position Y Inches: ", Units.inchesToMeters(robotPose.getY()));
-        Dashboard.getInstance().putData("VISION Robot Position X Inches: ", Units.inchesToMeters(robotVisionPose2d.getX()));
-        Dashboard.getInstance().putData("VISION Robot Position Y Inches: ", Units.inchesToMeters(robotVisionPose2d.getY()));
-        Dashboard.getInstance().putData("Vision Rotational Value Degrees: ", robotVisionPose2d.getRotation().getDegrees());
+        Dashboard.getInstance().putData("VISION Robot Position X Inches: ", Units.inchesToMeters(aprilTagVisionPose3d.getX()));
+        Dashboard.getInstance().putData("VISION Robot Position Y Inches: ", Units.inchesToMeters(aprilTagVisionPose3d.getY()));
+        Dashboard.getInstance().putData("Vision Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
     }   
 }

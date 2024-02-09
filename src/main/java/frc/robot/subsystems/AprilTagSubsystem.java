@@ -3,20 +3,25 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.team2052.lib.PiCamera;
+import com.team2052.lib.photonvision.EstimatedRobotPose;
+import com.team2052.lib.photonvision.PhotonCamera;
+import com.team2052.lib.photonvision.PhotonPoseEstimator;
+import com.team2052.lib.photonvision.PhotonPoseEstimator.PoseStrategy;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotState;
+import frc.robot.states.RobotState;
 
-public class AprilTagSubsystem{
+public class AprilTagSubsystem extends SubsystemBase{
     public static AprilTagSubsystem INSTANCE;
 
     private RobotState robotState = RobotState.getInstance();
-    private List<PiCamera> cameras = new ArrayList<PiCamera> ();
-    //private PiCamera[] cameras = new PiCamera[2];
+    private List<PhotonCamera> cameras = new ArrayList<PhotonCamera> ();
+    private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    private PhotonCamera camera0 = new PhotonCamera(Constants.PhotonCamera1.CAMERA_NAME, Constants.PhotonCamera1.ROBOT_TO_CAMERA_METERS);
+    private PhotonCamera camera1 = new PhotonCamera(Constants.PhotonCamera2.CAMERA_NAME, Constants.PhotonCamera1.ROBOT_TO_CAMERA_METERS);
   
     public static AprilTagSubsystem getInstance(){
         if (INSTANCE == null){
@@ -27,28 +32,23 @@ public class AprilTagSubsystem{
     }
 
     private AprilTagSubsystem() {
-        cameras.add(new PiCamera("PiCamera1", Constants.PiCamera1.PI_CAMERA_POSITION_METERS));
-        cameras.add(new PiCamera("PiCamera2", Constants.PiCamera2.PI_CAMERA_POSITION_METERS));
+        cameras.add(camera0);
+        cameras.add(camera1);
     }
 
-    public void update() {
-        Translation2d totalTranslation = new Translation2d();
-        double totalRotationRadians = 0;
-        int totalNumCameras = 0;
-
-        for(int i = 0; i < cameras.size(); i++){
-            PiCamera camera = cameras.get(i);
-            if(camera.isValid()){
-                totalTranslation = totalTranslation.plus(camera.getEstimatedPosition().getTranslation());
-                totalRotationRadians += camera.getEstimatedPosition().getRotation().getRadians();
-                totalNumCameras++;
-            } else {
-                System.out.println(camera.getName() + " IS INVALID");
+    @Override
+    public void periodic() {
+        for(int i = 0; i <= cameras.size(); i++){
+            PhotonCamera camera = cameras.get(i);
+            var result = camera.getLatestResult();
+            boolean hasTargets = result.hasTargets();
+            if (hasTargets){
+                PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, camera.getRobotToCamera());
+                if (photonPoseEstimator.update().isPresent()) {
+                    EstimatedRobotPose estimatedPose = photonPoseEstimator.update().get();
+                    robotState.addAprilTagVisionUpdate(estimatedPose);
+                }
             }
         }
-
-        Translation2d averageTranslation2d = totalTranslation.div(totalNumCameras);
-        Rotation2d averageRotation2d = new Rotation2d(totalRotationRadians / totalNumCameras);
-        robotState.addVisionPose2dUpdate(new Pose2d(averageTranslation2d, averageRotation2d));
     }
 }

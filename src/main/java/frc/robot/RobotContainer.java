@@ -6,13 +6,11 @@ package frc.robot;
 
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimerExtendCommand;
-import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileMovingAimingCommand;
 import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.music.PauseMusicPlayerCommand;
-import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.states.Superstructure;
 import frc.robot.states.Superstructure.SuperstructureState;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
@@ -22,14 +20,12 @@ import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.util.io.Dashboard;
 
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
@@ -51,7 +47,18 @@ public class RobotContainer {
   private boolean musicOn;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    advantageScope.recordData();
+    drivetrain = new DrivetrainSubsystem();
+    intake = new IntakeSubsystem();
+    shamper = new ShamperSubsystem();
+    climber = new ClimberSubsystem();
+    musicPlayer = new MusicPlayerSubsystem();
+    vision = new VisionSubsystem();
+    advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision);
+    superstructure = new Superstructure(shamper, climber);
+
+    translationJoystick = new Joystick(0);
+    rotationJoystick = new Joystick(0);
+    controlPanel = new Joystick(0);
 
     // Configure the trigger bindings
     configureBindings();
