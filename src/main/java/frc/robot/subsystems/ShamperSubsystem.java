@@ -21,9 +21,9 @@ public class ShamperSubsystem extends SubsystemBase {
   private static TalonFX upperMotor;
   private static TalonFX rotationMotor;
   private final TalonFX indexMotor;
-  
+
   private final DutyCycleEncoder rotationEncoder;
-  private final DigitalInput limitSwitch;
+  private static DigitalInput limitSwitch;
   private static DigitalInput AmpHallEffectSensor;
   private static DigitalInput podiumHallEffectSensor;
 
