@@ -131,6 +131,18 @@ public class ShamperSubsystem extends SubsystemBase {
     return indexMotor.getSelectedSensorVelocity() != 0.01;
   }
 
+  public void manualUp() {
+    rotationMotor.set(TalonFXControlMode.Velocity, 100);
+  }
+
+  public void manualDown() {
+    rotationMotor.set(TalonFXControlMode.Velocity, -100);
+  }
+
+  public void stopManual() {
+    rotationMotor.set(TalonFXControlMode.Velocity, 0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

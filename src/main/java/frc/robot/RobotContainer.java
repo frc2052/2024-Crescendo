@@ -13,6 +13,7 @@ import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.music.PauseMusicPlayerCommand;
 import frc.robot.commands.music.PlayActivationJingleCommand;
+import frc.robot.commands.shamper.ShamperManualCommand;
 import frc.robot.states.Superstructure;
 import frc.robot.states.Superstructure.SuperstructureState;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
@@ -137,12 +138,16 @@ public class RobotContainer {
     JoystickButton speakerIdleSetupButton = new JoystickButton(controlPanel, 5);
     JoystickButton speakerScoreSetupButton = new JoystickButton(controlPanel, 6);
     JoystickButton shamperDefaultButton = new JoystickButton(controlPanel, 12);
+    JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 3);
+    JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 4);
 
     ampIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
     ampScoreButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_SCORE)));
     speakerIdleSetupButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
     speakerScoreSetupButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_SCORE)));
     shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
+    shamperManualUpButton.whileTrue(new ShamperManualCommand(shamper, true));
+    shamperManualDownButton.whileTrue(new ShamperManualCommand(shamper, false));
   }
 
   public Command toggleMusic() {
