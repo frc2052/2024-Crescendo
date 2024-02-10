@@ -79,6 +79,9 @@ public final class Constants {
         public static final int ROTATION_ENCODER_ID = 0;
         public static final int INDEX_MOTOR_ID = 0;
         public static final int INDEXER_SENSOR_ID = 0;
+        public static final int LIMIT_SWITCH_ID = 0;
+        public static final int AMP_HALL_EFFECT_ID = 0;
+        public static final int PODIUM_HALL_EFFECT_ID = 0;
 
         public static final int INDEX_SPEED_TPS = 0;
         public static final int LOWER_SHOOTER_IDLE_SPEED_TPS = 0;
@@ -111,34 +114,34 @@ public final class Constants {
 
         public static final double ROTAION_MOTOR_TO_ACTUAL_ROTION_GEAR_RATIO = 0;
 
-            public static final boolean UPPER_MOTOR_IS_INVERTED = false;
-            public static final boolean LOWER_MOTOR_IS_INVERTED = false;
-            public static final boolean ROTATION_MOTOR_IS_INVERTED = false;
+        public static final boolean UPPER_MOTOR_IS_INVERTED = false;
+        public static final boolean LOWER_MOTOR_IS_INVERTED = false;
+        public static final boolean ROTATION_MOTOR_IS_INVERTED = false;
             
-            public static final double PIVOT_GEAR_RATIO = 0; 
+        public static final double PIVOT_GEAR_RATIO = 0; 
             
-            public static final double UPPER_MOTOR_KP = 0;
-            public static final double UPPER_MOTOR_KI = 0;
-            public static final double UPPER_MOTOR_KD = 0;
+        public static final double UPPER_MOTOR_KP = 0;
+        public static final double UPPER_MOTOR_KI = 0;
+        public static final double UPPER_MOTOR_KD = 0;
 
-            public static final double LOWER_MOTOR_KP = 0;
-            public static final double LOWER_MOTOR_KI = 0;
-            public static final double LOWER_MOTOR_KD = 0;
+        public static final double LOWER_MOTOR_KP = 0;
+        public static final double LOWER_MOTOR_KI = 0;
+        public static final double LOWER_MOTOR_KD = 0;
 
-            public static final double PIVOT_MOTOR_KP = 0;
-            public static final double PIVOT_MOTOR_KI = 0;
-            public static final double PIVOT_MOTOR_KD = 0;
+        public static final double PIVOT_MOTOR_KP = 0;
+        public static final double PIVOT_MOTOR_KI = 0;
+        public static final double PIVOT_MOTOR_KD = 0;
             
-            public static final double UPPER_MOTOR_MAX_VELOCITY = 0;
-            public static final double LOWER_MOTOR_MAX_VELOCITY = 0;
+        public static final double UPPER_MOTOR_MAX_VELOCITY = 0;
+        public static final double LOWER_MOTOR_MAX_VELOCITY = 0;
 
-            public static final double UPPER_MOTOR_MAX_ACCELERATION = 0;
-            public static final double LOWER_MOTOR_MAX_ACCELERATION = 0;
+        public static final double UPPER_MOTOR_MAX_ACCELERATION = 0;
+        public static final double LOWER_MOTOR_MAX_ACCELERATION = 0;
 
-            public static final double PIVOT_MOTOR_MAX_VELOCITY = 0;
-            public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0;
+        public static final double PIVOT_MOTOR_MAX_VELOCITY = 0;
+        public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0;
         
-            public static final double TALONFX_TICS_PER_FULL_ROTATION = 0;
+        public static final double TALONFX_TICS_PER_FULL_ROTATION = 0;
 
         public static class Angle {
             public static final double MINIMUM  = 0;
@@ -149,6 +152,7 @@ public final class Constants {
         }
 
         public static final double SHOOTER_ANGLE_OFFSET_IN_DEGREES = 0;
+        public static final double SHAMPER_ENCODER_OFFSET_IN_DEGREES = 0;
     }
 
     public static class FieldAndRobot {
