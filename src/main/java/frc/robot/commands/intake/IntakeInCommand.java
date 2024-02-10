@@ -9,12 +9,10 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeInCommand extends Command {
     private final IntakeSubsystem intake;
     private final IndexerSubsystem indexer;
-    private final DigitalInput digitalInput;
 
     public IntakeInCommand(IntakeSubsystem intake, IndexerSubsystem indexer) {
         this.intake = intake;
         this.indexer = indexer;
-        digitalInput = new DigitalInput(Constants.Indexer.DIGITAL_INPUT_ID);
         addRequirements(indexer, intake);
     }
 
@@ -32,6 +30,6 @@ public class IntakeInCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return digitalInput.get();
+        return indexer.getNoteDetector();
     }
 }

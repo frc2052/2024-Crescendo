@@ -8,20 +8,32 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IndexerSubsystem extends SubsystemBase {
   private final CANSparkMax upperMotor;
   private final CANSparkFlex lowerMotor;
+  private final DigitalInput noteDetector;
+
+  private boolean noteDetected;
 
   public IndexerSubsystem() {
     upperMotor = new CANSparkMax(Constants.Indexer.LOWER_MOTOR_ID, MotorType.kBrushless);
     lowerMotor = new CANSparkFlex(Constants.Indexer.UPPER_MOTOR_ID, MotorType.kBrushless);
+    noteDetector = new DigitalInput(Constants.Indexer.DIGITAL_INPUT_ID);
 
     upperMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     lowerMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
   }
+
+  public void runIfNotTripped() {
+    if (!noteDetected) {
+      runMotors();
+    }
+  }
+  
 
   public void runMotors() {
     runUpperMotor();
@@ -57,7 +69,12 @@ public class IndexerSubsystem extends SubsystemBase {
     return lowerMotor.get();
   }
 
+  public boolean getNoteDetector() {
+    return noteDetector.get();
+  }
+
   @Override
   public void periodic() {
+    noteDetected = noteDetector.get();
   }
 }
