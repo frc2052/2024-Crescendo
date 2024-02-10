@@ -70,7 +70,13 @@ void blue() //turn it all blue
     }
     void green()
     {
-        pulse.init(CRGB(0,255,0))
+        pulse.init(CRGB(0,255,0));
+        pulse.update();
+    }
+    void knightkrawler()
+    {
+        pulse.init(CRGB(128,0,0))
+        pulse.update();
     }
 
 
@@ -147,6 +153,9 @@ void blue() //turn it all blue
             case 8:
                 green();
                 break;
+            case 9:
+                knightkrawler();
+                brea
         }
     }
     currentCode = code;
