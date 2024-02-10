@@ -15,6 +15,14 @@ import frc.robot.subsystems.ShamperSubsystem;
 public final class Constants {
     // TODO: Put in all the constants
 
+    public static final class LED {
+        public static final int CHANNEL_1_PIN = 0;
+        public static final int CHANNEL_2_PIN = 0;
+        public static final int CHANNEL_3_PIN = 0;
+        public static final int CHANNEL_4_PIN = 0;
+        public static final int CHANNEL_5_PIN = 0;
+    }
+    
     public static class MotorConstants {
         public static final double FALCON500_TICKS_PER_ROTATION = 2048;
     }
@@ -251,6 +259,8 @@ public final class Constants {
         public static final String DRIVE_MODE_KEY = "Drive Mode";
         public static final String AUTO_COMPILED_KEY = "Auto Compiled";
     }
+
+
 }
 
 

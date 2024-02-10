@@ -1,12 +1,14 @@
 package frc.robot.subsystems;
 
-import Constants.java;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.states.RobotState;
 
-public class LEDSubsystem extends SubsystemBase {
-     private static LEDSubsystem INSTANCE;
+public class LedSubsystem extends SubsystemBase {
+     private static LedSubsystem INSTANCE;
     
-    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3;
+    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4, codeChannel5;
     private LEDStatusMode currentStatusMode;
 
     private boolean disableLEDs;
@@ -14,13 +16,13 @@ public class LEDSubsystem extends SubsystemBase {
     
 
 
-    private LEDSubsystem() {
+    private LedSubsystem() {
         // DIO outputs
-        codeChannel1 = new DigitalOutput(Constants.LEDs.CHANNEL_1_PIN);
-        codeChannel2 = new DigitalOutput(Constants.LEDs.CHANNEL_2_PIN);
-        codeChannel3 = new DigitalOutput(Constants.LEDs.CHANNEL_3_PIN);
-        codeChannel4 = new DigitalOutput(Constants.LEDs.CHANNEL_4_PIN);
-        codeChannel5 = new DigitalOutput(Constants.LEDs.CHANNEL_5_PIN);
+        codeChannel1 = new DigitalOutput(Constants.LED.CHANNEL_1_PIN);
+        codeChannel2 = new DigitalOutput(Constants.LED.CHANNEL_2_PIN);
+        codeChannel3 = new DigitalOutput(Constants.LED.CHANNEL_3_PIN);
+        codeChannel4 = new DigitalOutput(Constants.LED.CHANNEL_4_PIN);
+        codeChannel5 = new DigitalOutput(Constants.LED.CHANNEL_5_PIN);
         
         robotDisabled = true;
         
@@ -29,9 +31,9 @@ public class LEDSubsystem extends SubsystemBase {
 
 }
 
-    public static LEDSubsystem getInstance() { 
+    public static LedSubsystem getInstance() { 
             if (INSTANCE == null) {
-            INSTANCE = new LEDSubsystem();
+            INSTANCE = new LedSubsystem();
         }
         return INSTANCE;
     }
@@ -43,9 +45,10 @@ public class LEDSubsystem extends SubsystemBase {
         neutral(2),
         red(3),
         blue(4),
+        OFF(5);
 
 
-         private final int code;
+        private final int code;
 
         private LEDStatusMode(int code) {
             this.code = code;
@@ -61,12 +64,12 @@ public class LEDSubsystem extends SubsystemBase {
         int code = 0;
         if(!disableLEDs) {
             if (robotDisabled) {
-                if  (DriverStation.getAlliance() == Alliance.Red) {
-                    currentStatusMode = LEDStatusMode.red
-                } else if (DriverStation.getAlliance() == Alliance.Blue) {
-                    currentStatusMode = LEDStatusMode.blue
+                if  (RobotState.getInstance().isRedAlliance()) {
+                    currentStatusMode = LEDStatusMode.red;
+                } else if (!RobotState.getInstance().isRedAlliance()) {
+                    currentStatusMode = LEDStatusMode.blue;
                 } else {
-                    currentStatusMode = LEDStatusMode.neutral
+                    currentStatusMode = LEDStatusMode.neutral;
                 }
             }
 
@@ -75,7 +78,6 @@ public class LEDSubsystem extends SubsystemBase {
             code = 2;
         }
 
-         Dashboard.getInstance().putData("Sending LED Code", code);
         codeChannel1.set((code & 1) > 0);   // 2^0
         codeChannel2.set((code & 2) > 0);   // 2^1
         codeChannel3.set((code & 4) > 0);   // 2^2
@@ -88,13 +90,11 @@ public class LEDSubsystem extends SubsystemBase {
                     if (!disableLEDs) {
             currentStatusMode = statusMode;
         }
-    }
 
         }
-
             public LEDStatusMode getLEDStatusMode(){
         return currentStatusMode;
-    }
+        }
 
     public void clearStatusMode() {
         currentStatusMode = LEDStatusMode.OFF;
@@ -121,6 +121,7 @@ public class LEDSubsystem extends SubsystemBase {
     public boolean getRobotDisabled(){
         return robotDisabled;
     }
+}
 
 
 
