@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -19,7 +21,8 @@ import frc.robot.Constants;
 public class ShamperSubsystem extends SubsystemBase {
   private static TalonFX lowerMotor;
   private static TalonFX upperMotor;
-  private static TalonFX rotationMotor;
+  private static CANSparkMax leftPivotMotor;
+  private static CANSparkMax rightPivotMotor;
   private final TalonFX indexMotor;
 
   private final DutyCycleEncoder rotationEncoder;
@@ -29,7 +32,8 @@ public class ShamperSubsystem extends SubsystemBase {
 
   private ProfiledPIDController lowerMotorController;
   private ProfiledPIDController upperMotorController;
-  private ProfiledPIDController rotationMotorController;
+  private ProfiledPIDController leftPivotMotorController;
+  private ProfiledPIDController rightPivotMotorController;
 
   private boolean limitSwitchTriggered;
 
@@ -53,8 +57,17 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.UPPER_MOTOR_MAX_VELOCITY,
     Constants.Shamper.UPPER_MOTOR_MAX_ACCELERATION));
 
-    rotationMotor = new TalonFX(Constants.Shamper.Motors.PIVOT_MOTOR_ID);
-    rotationMotorController = new ProfiledPIDController(
+    leftPivotMotor = new CANSparkMax(Constants.Shamper.LEFT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
+    leftPivotMotorController = new ProfiledPIDController(
+    Constants.Shamper.PIVOT_MOTOR_KP,
+    Constants.Shamper.PIVOT_MOTOR_KI,
+    Constants.Shamper.PIVOT_MOTOR_KD,      
+    new TrapezoidProfile.Constraints(
+    Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
+    Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
+
+    rightPivotMotor = new CANSparkMax(Constants.Shamper.RIGHT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
+    rightPivotMotorController = new ProfiledPIDController(
     Constants.Shamper.PIVOT_MOTOR_KP,
     Constants.Shamper.PIVOT_MOTOR_KI,
     Constants.Shamper.PIVOT_MOTOR_KD,      
@@ -68,7 +81,8 @@ public class ShamperSubsystem extends SubsystemBase {
 
     lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.Shamper.UPPER_MOTOR_IS_INVERTED);
-    rotationMotor.setInverted(Constants.Shamper.ROTATION_MOTOR_IS_INVERTED);
+    leftPivotMotor.setInverted(Constants.Shamper.LEFT_PIVOT_MOTOR_IS_INVERTED);
+    rightPivotMotor.setInverted(Constants.Shamper.RIGHT_PIVOT_MOTOR_IS_INVERTED);
 
     limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_ID);
     AmpHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_ID);
@@ -103,9 +117,15 @@ public class ShamperSubsystem extends SubsystemBase {
       shooterGoalAngle = Constants.Shamper.Angle.MAXIMUM;
     }
     if (!limitSwitchTriggered) {
-    rotationMotor.set(TalonFXControlMode.Position, rotationMotorController.calculate(
-    ((getShamperAngle() / 360) * Constants.MotorConstants.FALCON500_TICKS_PER_ROTATION), 
-    ((shooterGoalAngle / 360) * Constants.MotorConstants.FALCON500_TICKS_PER_ROTATION) * Constants.Shamper.PIVOT_GEAR_RATIO));
+    leftPivotMotor.set((!limitSwitchTriggered) ? 
+    (leftPivotMotorController.calculate(
+    ((getShamperAngle() / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) / 
+    ((shooterGoalAngle / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) * Constants.Shamper.PIVOT_GEAR_RATIO, 1)) : 0);
+
+    rightPivotMotor.set((!limitSwitchTriggered) ? 
+    (rightPivotMotorController.calculate(
+    ((getShamperAngle() / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) / 
+    ((shooterGoalAngle / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) * Constants.Shamper.PIVOT_GEAR_RATIO, 1)) : 0);
     }
   }
 
@@ -143,15 +163,20 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public void manualUp() {
-    rotationMotor.set(TalonFXControlMode.Velocity, 100);
+    leftPivotMotor.set(1);
+    rightPivotMotor.set(1);
   }
 
   public void manualDown() {
-    rotationMotor.set(TalonFXControlMode.Velocity, -100);
+    if (!limitSwitchTriggered) {
+      leftPivotMotor.set(-1);
+      rightPivotMotor.set(-1);
+    }
   }
 
   public void stopManual() {
-    rotationMotor.set(TalonFXControlMode.Velocity, 0);
+    leftPivotMotor.stopMotor();
+    rightPivotMotor.stopMotor();
   }
 
   @Override
@@ -194,10 +219,6 @@ public class ShamperSubsystem extends SubsystemBase {
   public static TalonFX getLowerTalonFX() {
     return lowerMotor;
   }
-
-  public static TalonFX getRotationTalonFX() {
-    return rotationMotor;
-  } 
 
   public static boolean isAtAmpLevel() {
     return !AmpHallEffectSensor.get();
