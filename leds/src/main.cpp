@@ -46,7 +46,7 @@ void coop() //activate to signal to human player to active Cooperation bonus
     }
 void neutral() //activate to stop signaling 
     {
-        FastLED.clear();
+        pulse.init(CRGB(255, 0, 255), 1000, 500)
     }
 void red() //turn it all red
     {
@@ -56,6 +56,10 @@ void red() //turn it all red
 void blue() //turn it all blue
     {
         pulse.init(CRGB(0,0,255), 1000, 500);
+        pulse.update();
+    }
+    void OFF() {
+        pulse.init(CRGB(0,0,0), 1000, 500);
         pulse.update();
     }
 
@@ -117,6 +121,15 @@ void blue() //turn it all blue
                 break;
             case 3:
                 neutral();
+                break;
+            case 4:
+                red();
+                break;
+            case 5:
+                blue();
+                break;
+            case 6:
+                OFF();
                 break;
             
         }
