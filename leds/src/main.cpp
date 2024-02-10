@@ -155,7 +155,7 @@ void blue() //turn it all blue
                 break;
             case 9:
                 knightkrawler();
-                brea
+                break;
         }
     }
     currentCode = code;

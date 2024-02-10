@@ -21,6 +21,9 @@ public final class Constants {
         public static final int CHANNEL_3_PIN = 0;
         public static final int CHANNEL_4_PIN = 0;
         public static final int CHANNEL_5_PIN = 0;
+        public static final int CHANNEL_6_PIN = 0;
+        public static final int CHANNEL_7_PIN = 0;
+        public static final int CHANNEL_8_PIN = 0;
     }
     
     public static class MotorConstants {
