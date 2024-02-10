@@ -18,10 +18,13 @@ import frc.robot.states.Superstructure.SuperstructureState;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
+import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 
 import java.util.function.BooleanSupplier;
@@ -40,6 +43,8 @@ public class RobotContainer {
   private final MusicPlayerSubsystem musicPlayer;
   private final VisionSubsystem vision;
   private final AdvantageScopeSubsystem advantageScope;
+  private final IndexerSubsystem indexer;
+  private final TrapArmSubsystem trapArm;
 
   private final Superstructure superstructure;
 
@@ -48,7 +53,8 @@ public class RobotContainer {
   private final Joystick controlPanel;
 
   private BooleanSupplier fieldCentricSupplier;
-  private boolean musicOn;
+  public static boolean musicOn;
+  public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     translationJoystick = new Joystick(0);
@@ -61,13 +67,15 @@ public class RobotContainer {
     climber = new ClimberSubsystem();
     musicPlayer = new MusicPlayerSubsystem();
     vision = new VisionSubsystem();
-    advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision);
+    indexer = new IndexerSubsystem();
+    trapArm = new TrapArmSubsystem();
+    advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
 
     superstructure = new Superstructure(shamper, climber);
 
-    musicOn = true;
+    robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
-    if (musicOn) {new PlayActivationJingleCommand(musicPlayer);}
+    musicOn = true;
 
     drivetrain.setDefaultCommand(
       new DriveCommand(

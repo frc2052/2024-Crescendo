@@ -17,9 +17,9 @@ import frc.robot.Constants;
 
 public class ShamperSubsystem extends SubsystemBase {
 
-  private final TalonFX lowerMotor;
-  private final TalonFX upperMotor;
-  private final TalonFX rotationMotor;
+  private static TalonFX lowerMotor;
+  private static TalonFX upperMotor;
+  private static TalonFX rotationMotor;
   private final TalonFX indexMotor;
   private final AnalogEncoder rotationEncoder;
 
