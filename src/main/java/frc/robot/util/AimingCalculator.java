@@ -6,7 +6,7 @@ import frc.robot.states.ShamperAndRotationState;
 
 public class AimingCalculator {
     
-    public static ShamperAndRotationState Calculation() {
+    public static ShamperAndRotationState calculation() {
         double robotAngle;
         double shamperAngle;
 
