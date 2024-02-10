@@ -1,14 +1,17 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.commands.music.PlayTeleopJingleCommand;
 import frc.robot.commands.music.PlayTwentySecondsLeftCommand;
+import frc.robot.states.RobotState;
 import frc.robot.subsystems.MusicPlayerSubsystem;
 
 public class RobotStatusCommunicator {
-    MusicPlayerSubsystem musicPlayer;
+    private RobotState robotState = RobotState.getInstance();
+    private MusicPlayerSubsystem musicPlayer;
     private boolean hasRunTwentySeconds;
     
     public RobotStatusCommunicator(MusicPlayerSubsystem musicPlayer) {
@@ -17,7 +20,7 @@ public class RobotStatusCommunicator {
     }
 
     public void onRobotInitiation() {
-        if (RobotContainer.musicOn) {
+        if (robotState.getMusicEnableStatus()) {
             new PlayActivationJingleCommand(musicPlayer);
         }
     }
@@ -27,7 +30,6 @@ public class RobotStatusCommunicator {
     }
 
     public void onRobotPeriodic() {
-
         if (DriverStation.getMatchTime() >= 180 && !hasRunTwentySeconds) {
             onTwentySecondsLeft();
             hasRunTwentySeconds = true;
@@ -35,13 +37,13 @@ public class RobotStatusCommunicator {
     }
 
     public void onRobotTeleop() {
-        if (RobotContainer.musicOn) {
+        if (robotState.getMusicEnableStatus()) {
             new PlayTeleopJingleCommand(musicPlayer);
         }
     }
 
     public void onTwentySecondsLeft() {
-        if (RobotContainer.musicOn) {
+        if (robotState.getMusicEnableStatus()) {
             new PlayTwentySecondsLeftCommand(musicPlayer);
         }
     }

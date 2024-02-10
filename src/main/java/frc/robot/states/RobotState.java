@@ -25,6 +25,7 @@ public class RobotState {
     private Rotation2d robotRotation2d;
     private SwerveModulePosition[] swerveModulePositions;
     private ChassisSpeeds chassisSpeeds;
+    private boolean musicEnabled;
 
     private SuperstructureState superstructureState;
 
@@ -164,6 +165,14 @@ public class RobotState {
      */
     public Pose2d getInitialPose() {
         return initialPose;
+    }
+
+    public boolean getMusicEnableStatus() {
+        return musicEnabled;
+    }    
+    
+    public void setMusicEnableStatus(boolean isEnabled) {
+        musicEnabled = isEnabled;
     }
 
     /**

@@ -21,7 +21,7 @@ public class AprilTagSubsystem extends SubsystemBase{
     private List<PhotonCamera> cameras = new ArrayList<PhotonCamera> ();
     private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     private PhotonCamera camera0 = new PhotonCamera(Constants.PhotonCamera1.CAMERA_NAME, Constants.PhotonCamera1.ROBOT_TO_CAMERA_METERS);
-    private PhotonCamera camera1 = new PhotonCamera(Constants.PhotonCamera2.CAMERA_NAME, Constants.PhotonCamera1.ROBOT_TO_CAMERA_METERS);
+    private PhotonCamera camera1 = new PhotonCamera(Constants.PhotonCamera2.CAMERA_NAME, Constants.PhotonCamera2.ROBOT_TO_CAMERA_METERS);
   
     public static AprilTagSubsystem getInstance(){
         if (INSTANCE == null){

@@ -11,15 +11,19 @@ import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.intake.IntakeOutCommand;
 import frc.robot.commands.music.PauseMusicPlayerCommand;
+import frc.robot.states.RobotState;
 import frc.robot.states.Superstructure;
 import frc.robot.states.Superstructure.SuperstructureState;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
+import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.util.RobotStatusCommunicator;
 
 import java.util.function.BooleanSupplier;
 
@@ -29,32 +33,38 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
+  private RobotState robotState = RobotState.getInstance();
   private final DrivetrainSubsystem drivetrain;
   private final IntakeSubsystem intake;
+  private final IndexerSubsystem indexer;
   private final ShamperSubsystem shamper;
   private final ClimberSubsystem climber;
   private final MusicPlayerSubsystem musicPlayer;
   private final VisionSubsystem vision;
+  private final TrapArmSubsystem trapArm;
   private final AdvantageScopeSubsystem advantageScope;
-
   private final Superstructure superstructure;
+  public final RobotStatusCommunicator robotStatusCommunicator;
 
   private final Joystick translationJoystick;
   private final Joystick rotationJoystick;
   private final Joystick controlPanel;
 
   private BooleanSupplier fieldCentricSupplier;
-  private boolean musicOn;
+  public boolean musicOn;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = new DrivetrainSubsystem();
     intake = new IntakeSubsystem();
+    indexer = new IndexerSubsystem();
     shamper = new ShamperSubsystem();
     climber = new ClimberSubsystem();
     musicPlayer = new MusicPlayerSubsystem();
     vision = new VisionSubsystem();
-    advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision);
+    trapArm = new TrapArmSubsystem();
+    advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
     superstructure = new Superstructure(shamper, climber);
+    robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     translationJoystick = new Joystick(0);
     rotationJoystick = new Joystick(0);
@@ -118,6 +128,7 @@ public class RobotContainer {
 
   public Command toggleMusic() {
     musicOn = !musicOn;
+    robotState.setMusicEnableStatus(musicOn);;
     if (!musicOn) {new PauseMusicPlayerCommand(musicPlayer);}
     return null;
   }
