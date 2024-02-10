@@ -42,6 +42,8 @@ public final class Constants {
 
         public static final double UPPER_SPEED_PCT = 0;
         public static final double LOWER_SPEED_PCT = 0;
+
+        public static final int DIGITAL_INPUT_ID = 0;
     }
   
     public static class Shamper {

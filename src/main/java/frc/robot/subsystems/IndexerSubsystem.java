@@ -23,6 +23,16 @@ public class IndexerSubsystem extends SubsystemBase {
     lowerMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
   }
 
+  public void runMotors() {
+    runUpperMotor();
+    runLowerMotor();
+  }
+
+  public void stopMotors() {
+    stopUpperMotor();
+    stopLowerMotor();
+  }
+
   public void runUpperMotor() {
     upperMotor.set(Constants.Indexer.UPPER_SPEED_PCT);
   }

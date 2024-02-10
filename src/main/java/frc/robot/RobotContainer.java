@@ -126,7 +126,7 @@ public class RobotContainer {
     JoystickButton intakeInButton = new JoystickButton(controlPanel, 10);
     JoystickButton intakeOutButton = new JoystickButton(controlPanel, 9);
     
-    intakeInButton.whileTrue(new IntakeInCommand(intake));
+    intakeInButton.whileTrue(new IntakeInCommand(intake, indexer));
     intakeOutButton.whileTrue(new IntakeOutCommand(intake));
 
     JoystickButton toggleMusicPlayerButton = new JoystickButton(controlPanel, 2);
