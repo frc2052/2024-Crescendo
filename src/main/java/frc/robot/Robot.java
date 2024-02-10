@@ -37,6 +37,7 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_robotContainer.robotStatusCommunicator.onRobotInitiation();
   }
 
   /**
@@ -55,11 +56,15 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    m_robotContainer.robotStatusCommunicator.onRobotPeriodic();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    //commented the next line out cause it has nothing in it and it doesn't need to be run for safty reasons yet, it won't do anything but im no idiot. I've seen what robots can do.
+    //m_robotContainer.robotStatusCommunicator.onRobotDisable();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -84,10 +89,11 @@ public class Robot extends LoggedRobot {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
-    // this line or comment it out.
+    // this line 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    m_robotContainer.robotStatusCommunicator.onRobotTeleop();
   }
 
   /** This function is called periodically during operator control. */

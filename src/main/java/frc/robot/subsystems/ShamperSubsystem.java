@@ -17,10 +17,10 @@ import frc.robot.Constants;
 
 public class ShamperSubsystem extends SubsystemBase {
 
-  private final static TalonFX lowerMotor = new TalonFX(Constants.Shamper.Motors.LOWER_MOTOR_ID);
-  private final static TalonFX upperMotor = new TalonFX(Constants.Shamper.Motors.UPPER_MOTOR_ID);
-  private final static TalonFX rotationMotor = new TalonFX(Constants.Shamper.Motors.PIVOT_MOTOR_ID);
-  private final static TalonFX indexMotor = new TalonFX(Constants.Shamper.INDEX_MOTOR_ID);
+  private static TalonFX lowerMotor;
+  private static TalonFX upperMotor;
+  private static TalonFX rotationMotor;
+  private final TalonFX indexMotor;
   private final AnalogEncoder rotationEncoder;
 
   private ProfiledPIDController lowerMotorController;
@@ -29,6 +29,7 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public ShamperSubsystem() {
 
+    lowerMotor = new TalonFX(Constants.Shamper.Motors.LOWER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(
     Constants.Shamper.LOWER_MOTOR_KP,
     Constants.Shamper.LOWER_MOTOR_KI,
@@ -37,6 +38,7 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.LOWER_MOTOR_MAX_VELOCITY,
     Constants.Shamper.LOWER_MOTOR_MAX_ACCELERATION));
 
+    upperMotor = new TalonFX(Constants.Shamper.Motors.UPPER_MOTOR_ID);
     upperMotorController = new ProfiledPIDController(
     Constants.Shamper.UPPER_MOTOR_KP,
     Constants.Shamper.UPPER_MOTOR_KI,
@@ -44,7 +46,8 @@ public class ShamperSubsystem extends SubsystemBase {
     new TrapezoidProfile.Constraints(
     Constants.Shamper.UPPER_MOTOR_MAX_VELOCITY,
     Constants.Shamper.UPPER_MOTOR_MAX_ACCELERATION));
-    
+
+    rotationMotor = new TalonFX(Constants.Shamper.Motors.PIVOT_MOTOR_ID);
     rotationMotorController = new ProfiledPIDController(
     Constants.Shamper.PIVOT_MOTOR_KP,
     Constants.Shamper.PIVOT_MOTOR_KI,
@@ -52,6 +55,8 @@ public class ShamperSubsystem extends SubsystemBase {
     new TrapezoidProfile.Constraints(
     Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
     Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
+
+    indexMotor = new TalonFX(Constants.Shamper.INDEX_MOTOR_ID);
 
     rotationEncoder = new AnalogEncoder(Constants.Shamper.Motors.PIVOT_ENCODER_ID);
     rotationEncoder.reset();
@@ -124,6 +129,18 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public boolean indexerRunning() {
     return indexMotor.getSelectedSensorVelocity() != 0.01;
+  }
+
+  public void manualUp() {
+    rotationMotor.set(TalonFXControlMode.Velocity, 100);
+  }
+
+  public void manualDown() {
+    rotationMotor.set(TalonFXControlMode.Velocity, -100);
+  }
+
+  public void stopManual() {
+    rotationMotor.set(TalonFXControlMode.Velocity, 0);
   }
 
   @Override
