@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.ShamperSubsystem;
 
 public final class Constants {
@@ -50,8 +49,13 @@ public final class Constants {
     }
 
     public static class Indexer {
-        public static final int MOTOR_ID = 0;
-        public static final double INDEX_SPEED_PCT = 0;
+        public static final int LOWER_MOTOR_ID = 0;
+        public static final int UPPER_MOTOR_ID = 0;
+
+        public static final double UPPER_SPEED_PCT = 0;
+        public static final double LOWER_SPEED_PCT = 0;
+
+        public static final int DIGITAL_INPUT_ID = 0;
     }
   
     public static class Shamper {
@@ -118,7 +122,7 @@ public final class Constants {
         public static final double PIVOT_MOTOR_KP = 0;
         public static final double PIVOT_MOTOR_KI = 0;
         public static final double PIVOT_MOTOR_KD = 0;
-            
+
         public static final double UPPER_MOTOR_MAX_VELOCITY = 0;
         public static final double LOWER_MOTOR_MAX_VELOCITY = 0;
 
@@ -127,7 +131,7 @@ public final class Constants {
 
         public static final double PIVOT_MOTOR_MAX_VELOCITY = 0;
         public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0;
-        
+
         public static final double TALONFX_TICS_PER_FULL_ROTATION = 0;
 
         public static class Angle {

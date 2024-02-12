@@ -57,12 +57,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
     }
 
-    public static void recordIndexerData() {
-        String indexerFolder = "indexer_";
-
-        Logger.recordOutput(folder+indexerFolder+"Indexer Speed", 
-        indexerSubsystem.getIndexerSpeed());
-    }
+    public static void recordIndexerData() {}
 
     public static void recordTrapArmData() {
         String trapArmFolder = "Trap Arm_";

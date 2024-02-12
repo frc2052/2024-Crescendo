@@ -23,7 +23,6 @@ public class ShamperSubsystem extends SubsystemBase {
   private static TalonFX upperMotor;
   private static CANSparkMax leftPivotMotor;
   private static CANSparkMax rightPivotMotor;
-  private final TalonFX indexMotor;
 
   private final DutyCycleEncoder rotationEncoder;
   private static DigitalInput limitSwitch;
@@ -74,8 +73,6 @@ public class ShamperSubsystem extends SubsystemBase {
     new TrapezoidProfile.Constraints(
     Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
     Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
-
-    indexMotor = new TalonFX(Constants.Shamper.INDEX_MOTOR_ID);
 
     rotationEncoder = new DutyCycleEncoder(Constants.Shamper.Motors.PIVOT_ENCODER_ID);
 
@@ -149,18 +146,6 @@ public class ShamperSubsystem extends SubsystemBase {
   public double getLowerShamperSpeed() {
     return lowerMotor.getSelectedSensorVelocity();
   }  
-
-  public void runIndexer() {
-    indexMotor.set(TalonFXControlMode.Velocity, Constants.Shamper.INDEX_SPEED_TPS);
-  }
-
-  public void stopIndexer() {
-    indexMotor.set(TalonFXControlMode.Velocity, 0);
-  }
-
-  public boolean indexerRunning() {
-    return indexMotor.getSelectedSensorVelocity() != 0.01;
-  }
 
   public void manualUp() {
     leftPivotMotor.set(1);

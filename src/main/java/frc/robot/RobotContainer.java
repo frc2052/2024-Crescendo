@@ -72,7 +72,7 @@ public class RobotContainer {
     trapArm = new TrapArmSubsystem();
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
 
-    superstructure = new Superstructure(shamper, climber);
+    superstructure = new Superstructure(shamper, climber, indexer);
 
     robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
@@ -127,7 +127,7 @@ public class RobotContainer {
     JoystickButton intakeInButton = new JoystickButton(controlPanel, 10);
     JoystickButton intakeOutButton = new JoystickButton(controlPanel, 9);
     
-    intakeInButton.whileTrue(new IntakeInCommand(intake));
+    intakeInButton.whileTrue(new IntakeInCommand(intake, indexer));
     intakeOutButton.whileTrue(new IntakeOutCommand(intake));
 
     JoystickButton toggleMusicPlayerButton = new JoystickButton(controlPanel, 2);
