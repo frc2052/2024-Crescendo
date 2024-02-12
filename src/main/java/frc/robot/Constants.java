@@ -14,7 +14,19 @@ import frc.robot.subsystems.ShamperSubsystem;
 public final class Constants {
     // TODO: Put in all the constants
 
+    public static final class LED {
+        public static final int CHANNEL_1_PIN = 0;
+        public static final int CHANNEL_2_PIN = 0;
+        public static final int CHANNEL_3_PIN = 0;
+        public static final int CHANNEL_4_PIN = 0;
+        public static final int CHANNEL_5_PIN = 0;
+        public static final int CHANNEL_6_PIN = 0;
+        public static final int CHANNEL_7_PIN = 0;
+        public static final int CHANNEL_8_PIN = 0;
+    }
+    
     public static class MotorConstants {
+        public static final double PIVOT_MOTOR_TICKS_PER_ROTATION = 0;
         public static final double FALCON500_TICKS_PER_ROTATION = 2048;
     }
 
@@ -71,10 +83,14 @@ public final class Constants {
     
         public static final int LOWER_SHOOTER_MOTOR_ID = 0;
         public static final int UPPER_SHOOTER_MOTOR_ID = 0;
-        public static final int ROTATION_SHOOTER_MOTOR_ID = 0;
+        public static final int LEFT_PIVOT_SHAMPER_MOTOR_ID = 0;
+        public static final int RIGHT_PIVOT_SHAMPER_MOTOR_ID = 0;
         public static final int ROTATION_ENCODER_ID = 0;
         public static final int INDEX_MOTOR_ID = 0;
         public static final int INDEXER_SENSOR_ID = 0;
+        public static final int LIMIT_SWITCH_ID = 0;
+        public static final int AMP_HALL_EFFECT_ID = 0;
+        public static final int PODIUM_HALL_EFFECT_ID = 0;
 
         public static final int INDEX_SPEED_TPS = 0;
         public static final int LOWER_SHOOTER_IDLE_SPEED_TPS = 0;
@@ -84,35 +100,17 @@ public final class Constants {
         public static final int UPPER_SHOOTER_SPEAKER_SPEED_TPS = 0;
         public static final int UPPER_SHOOTER_AMP_SPEED_TPS = 0;
 
-        public static final double UPPER_SHOOTER_KP = 0;
-        public static final double UPPER_SHOOTER_KI = 0;
-        public static final double UPPER_SHOOTER_KD = 0;
-
-        public static final double LOWER_SHOOTER_KP = 0;
-        public static final double LOWER_SHOOTER_KI = 0;
-        public static final double LOWER_SHOOTER_KD = 0;
-
         public static final double ROTATION_SHOOTER_KP = 0;
         public static final double ROTATION_SHOOTER_KI = 0;
         public static final double ROTATION_SHOOTER_KD = 0;
 
-        public static final double UPPER_SHOOTER_MAX_VELOCITY = 0;
-        public static final double UPPER_SHOOTER_MAX_ACCELORATION = 0;
-        
-        public static final double LOWER_SHOOTER_MAX_VELOCITY = 0;
-        public static final double LOWER_SHOOTER_MAX_ACCELORATION = 0;
-
-        public static final double ROTATION_SHOOTER_MAX_VELOCITY = 0;
-        public static final double ROTATION_SHOOTER_MAX_ACCELORATION = 0;
-
-        public static final double ROTAION_MOTOR_TO_ACTUAL_ROTION_GEAR_RATIO = 0;
-
         public static final boolean UPPER_MOTOR_IS_INVERTED = false;
         public static final boolean LOWER_MOTOR_IS_INVERTED = false;
-        public static final boolean ROTATION_MOTOR_IS_INVERTED = false;
-        
+        public static final boolean LEFT_PIVOT_MOTOR_IS_INVERTED = false;
+        public static final boolean RIGHT_PIVOT_MOTOR_IS_INVERTED = false;
+            
         public static final double PIVOT_GEAR_RATIO = 0; 
-        
+            
         public static final double UPPER_MOTOR_KP = 0;
         public static final double UPPER_MOTOR_KI = 0;
         public static final double UPPER_MOTOR_KD = 0;
@@ -124,7 +122,7 @@ public final class Constants {
         public static final double PIVOT_MOTOR_KP = 0;
         public static final double PIVOT_MOTOR_KI = 0;
         public static final double PIVOT_MOTOR_KD = 0;
-        
+
         public static final double UPPER_MOTOR_MAX_VELOCITY = 0;
         public static final double LOWER_MOTOR_MAX_VELOCITY = 0;
 
@@ -133,7 +131,7 @@ public final class Constants {
 
         public static final double PIVOT_MOTOR_MAX_VELOCITY = 0;
         public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0;
-    
+
         public static final double TALONFX_TICS_PER_FULL_ROTATION = 0;
 
         public static class Angle {
@@ -145,6 +143,7 @@ public final class Constants {
         }
 
         public static final double SHOOTER_ANGLE_OFFSET_IN_DEGREES = 0;
+        public static final double SHAMPER_ENCODER_OFFSET_IN_DEGREES = 0;
     }
 
     public static class FieldAndRobot {
@@ -166,7 +165,7 @@ public final class Constants {
     }
 
     public static class MusicPlayer {
-        public static final TalonFX[] INSTRUMENT_TALONFX_PORT_LIST = {ShamperSubsystem.getUpperTalonFX(), ShamperSubsystem.getLowerTalonFX(), ShamperSubsystem.getRotationTalonFX()};
+        public static final TalonFX[] INSTRUMENT_TALONFX_PORT_LIST = {ShamperSubsystem.getUpperTalonFX(), ShamperSubsystem.getLowerTalonFX()};
     }
 
     public static class Vision {
@@ -255,6 +254,8 @@ public final class Constants {
         public static final String DRIVE_MODE_KEY = "Drive Mode";
         public static final String AUTO_COMPILED_KEY = "Auto Compiled";
     }
+
+
 }
 
 

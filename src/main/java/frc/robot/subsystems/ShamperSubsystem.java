@@ -7,24 +7,34 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 
 public class ShamperSubsystem extends SubsystemBase {
-
   private static TalonFX lowerMotor;
   private static TalonFX upperMotor;
-  private static TalonFX rotationMotor;
-  private final AnalogEncoder rotationEncoder;
+  private static CANSparkMax leftPivotMotor;
+  private static CANSparkMax rightPivotMotor;
+
+  private final DutyCycleEncoder rotationEncoder;
+  private static DigitalInput limitSwitch;
+  private static DigitalInput AmpHallEffectSensor;
+  private static DigitalInput podiumHallEffectSensor;
 
   private ProfiledPIDController lowerMotorController;
   private ProfiledPIDController upperMotorController;
-  private ProfiledPIDController rotationMotorController;
+  private ProfiledPIDController leftPivotMotorController;
+  private ProfiledPIDController rightPivotMotorController;
+
+  private boolean limitSwitchTriggered;
 
   public ShamperSubsystem() {
 
@@ -46,8 +56,8 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.UPPER_MOTOR_MAX_VELOCITY,
     Constants.Shamper.UPPER_MOTOR_MAX_ACCELERATION));
 
-    rotationMotor = new TalonFX(Constants.Shamper.Motors.PIVOT_MOTOR_ID);
-    rotationMotorController = new ProfiledPIDController(
+    leftPivotMotor = new CANSparkMax(Constants.Shamper.LEFT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
+    leftPivotMotorController = new ProfiledPIDController(
     Constants.Shamper.PIVOT_MOTOR_KP,
     Constants.Shamper.PIVOT_MOTOR_KI,
     Constants.Shamper.PIVOT_MOTOR_KD,      
@@ -55,12 +65,27 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
     Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
 
-    rotationEncoder = new AnalogEncoder(Constants.Shamper.Motors.PIVOT_ENCODER_ID);
-    rotationEncoder.reset();
+    rightPivotMotor = new CANSparkMax(Constants.Shamper.RIGHT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
+    rightPivotMotorController = new ProfiledPIDController(
+    Constants.Shamper.PIVOT_MOTOR_KP,
+    Constants.Shamper.PIVOT_MOTOR_KI,
+    Constants.Shamper.PIVOT_MOTOR_KD,      
+    new TrapezoidProfile.Constraints(
+    Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
+    Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
+
+    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.Motors.PIVOT_ENCODER_ID);
 
     lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.Shamper.UPPER_MOTOR_IS_INVERTED);
-    rotationMotor.setInverted(Constants.Shamper.ROTATION_MOTOR_IS_INVERTED);
+    leftPivotMotor.setInverted(Constants.Shamper.LEFT_PIVOT_MOTOR_IS_INVERTED);
+    rightPivotMotor.setInverted(Constants.Shamper.RIGHT_PIVOT_MOTOR_IS_INVERTED);
+
+    limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_ID);
+    AmpHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_ID);
+    podiumHallEffectSensor = new DigitalInput(Constants.Shamper.PODIUM_HALL_EFFECT_ID);
+
+    limitSwitchTriggered = false;
   }
 
   public void stop() {
@@ -88,15 +113,21 @@ public class ShamperSubsystem extends SubsystemBase {
     } else if (shooterGoalAngle > Constants.Shamper.Angle.MAXIMUM) {
       shooterGoalAngle = Constants.Shamper.Angle.MAXIMUM;
     }
-    
-    rotationMotor.set(TalonFXControlMode.Position, rotationMotorController.calculate(
-    ((getShamperAngle() / 360) * Constants.MotorConstants.FALCON500_TICKS_PER_ROTATION), 
-    ((shooterGoalAngle / 360) * Constants.MotorConstants.FALCON500_TICKS_PER_ROTATION) * Constants.Shamper.PIVOT_GEAR_RATIO));
+    if (!limitSwitchTriggered) {
+    leftPivotMotor.set((!limitSwitchTriggered) ? 
+    (leftPivotMotorController.calculate(
+    ((getShamperAngle() / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) / 
+    ((shooterGoalAngle / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) * Constants.Shamper.PIVOT_GEAR_RATIO, 1)) : 0);
 
+    rightPivotMotor.set((!limitSwitchTriggered) ? 
+    (rightPivotMotorController.calculate(
+    ((getShamperAngle() / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) / 
+    ((shooterGoalAngle / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) * Constants.Shamper.PIVOT_GEAR_RATIO, 1)) : 0);
+    }
   }
 
   public double getShamperAngle() {
-    return rotationEncoder.get() * 360;
+    return rotationEncoder.getAbsolutePosition() * 360 + Constants.Shamper.SHAMPER_ENCODER_OFFSET_IN_DEGREES;
   }
 
   public boolean checkShamperAngleValidity(double testShamperAngle) {
@@ -116,9 +147,30 @@ public class ShamperSubsystem extends SubsystemBase {
     return lowerMotor.getSelectedSensorVelocity();
   }  
 
+  public void manualUp() {
+    leftPivotMotor.set(1);
+    rightPivotMotor.set(1);
+  }
+
+  public void manualDown() {
+    if (!limitSwitchTriggered) {
+      leftPivotMotor.set(-1);
+      rightPivotMotor.set(-1);
+    }
+  }
+
+  public void stopManual() {
+    leftPivotMotor.stopMotor();
+    rightPivotMotor.stopMotor();
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    if (!limitSwitch.get()) {
+      limitSwitchTriggered = true;
+    } else {
+      limitSwitchTriggered = false;
+    }
   }
   
   public static enum ShamperSpeeds {
@@ -143,18 +195,21 @@ public class ShamperSubsystem extends SubsystemBase {
     public int getUpperPCT() {
       return upperPercentOutput;
     }
-
-
   }
-     public static TalonFX getUpperTalonFX() {
-      return upperMotor;
-    }
 
-    public static TalonFX getLowerTalonFX() {
-      return lowerMotor;
-    }
+  public static TalonFX getUpperTalonFX() {
+    return upperMotor;
+  }
 
-    public static TalonFX getRotationTalonFX() {
-      return rotationMotor;
-    } 
+  public static TalonFX getLowerTalonFX() {
+    return lowerMotor;
+  }
+
+  public static boolean isAtAmpLevel() {
+    return !AmpHallEffectSensor.get();
+  }
+
+  public static boolean isAtPodiumLevel() {
+    return !podiumHallEffectSensor.get();
+  }
 }
