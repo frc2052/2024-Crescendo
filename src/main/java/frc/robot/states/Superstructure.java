@@ -58,7 +58,7 @@ public class Superstructure extends SubsystemBase {
   }
   
   private void setSpeakerScoring() {
-    new ShamperAngleCommand(shamper, AimingCalculator.Calculation().getShamperAngle());
+    new ShamperAngleCommand(shamper, AimingCalculator.calculate().getShamperAngle());
     new ShamperShootCommand(shamper, indexer, ShamperSpeeds.SPEAKER_IDLE);
   }  
   
