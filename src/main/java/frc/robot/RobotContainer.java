@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimerExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
@@ -33,7 +34,6 @@ import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
@@ -48,6 +48,8 @@ public class RobotContainer {
   private final TrapArmSubsystem trapArm;
 
   private final Superstructure superstructure;
+
+  private final AutoFactory autoFactory;
 
   private final Joystick translationJoystick;
   private final Joystick rotationJoystick;
@@ -77,6 +79,8 @@ public class RobotContainer {
     robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
+
+    autoFactory = new AutoFactory(() -> Dashboard.getInstance().getAuto());
 
     drivetrain.setDefaultCommand(
       new DriveCommand(
@@ -156,8 +160,17 @@ public class RobotContainer {
     return null;
   }
 
+  public void forceRecompile() {
+    autoFactory.recompile();
+  }
+
+  public void precompileAuto() {
+      if (autoFactory.recompileNeeded()) {
+          autoFactory.recompile();
+      }
+  }
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoFactory.getCompiledAuto();
   }
 }
