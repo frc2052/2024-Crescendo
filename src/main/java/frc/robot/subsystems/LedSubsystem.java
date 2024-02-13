@@ -50,7 +50,7 @@ public class LedSubsystem extends SubsystemBase {
         blue(4),
         OFF(5),
         rainbow(6),
-        green(7),
+        note(7),
         knightkrawler(8);
 
 
@@ -78,11 +78,14 @@ public class LedSubsystem extends SubsystemBase {
                     currentStatusMode = LEDStatusMode.neutral;
                 }
             }
+    
 
             code = currentStatusMode.code;
         } else {
             code = 2;
         }
+
+        
 
         codeChannel1.set((code & 1) > 0);   // 2^0
         codeChannel2.set((code & 2) > 0);   // 2^1
@@ -99,8 +102,19 @@ public class LedSubsystem extends SubsystemBase {
                     if (!disableLEDs) {
             currentStatusMode = statusMode;
         }
+        }
+
+        public void LEDIntake() {
+                    if (RobotState.getInstance().getNoteDetected()) {
+            currentStatusMode = LEDStatusMode.note;
+        }
+    
+        
 
         }
+        
+
+        
             public LEDStatusMode getLEDStatusMode(){
         return currentStatusMode;
         }
