@@ -216,7 +216,7 @@ public class SwerveModule {
          * [Motor free speed (RPM)] / 60 * [Drive reduction] * [Wheel diameter (m)] * pi
          * This is a measure of how fast the robot should be able to drive in a straight line.
          */
-        return SwerveConstants.SwerveModule.NEO_ROUNDS_PER_MINUTE / 60 * SwerveConstants.SwerveModule.DRIVE_REDUCTION * 
+        return SwerveConstants.SwerveModule.KRAKEN_ROUNDS_PER_MINUTE / 60 * SwerveConstants.SwerveModule.DRIVE_REDUCTION * 
             SwerveConstants.SwerveModule.WHEEL_DIAMETER_METERS * Math.PI;
     }
 

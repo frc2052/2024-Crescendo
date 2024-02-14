@@ -3,16 +3,27 @@ package frc.robot.commands.shamper;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.subsystems.ShamperSubsystem.ShamperSpeeds;
+import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
 public class ShamperShootCommand extends Command{
     private final ShamperSubsystem shamper;
-    private final ShamperSpeeds speeds;
+    private final ShamperSpeed goalSpeed;
+    private final ShamperSpeed endSpeed;
     private final IndexerSubsystem indexer;
 
-    public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, ShamperSpeeds speeds) {
+    public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, ShamperSpeed goalSpeed, ShamperSpeed endSpeed) {
         this.shamper = shamper;
-        this.speeds = speeds;
+        this.goalSpeed = goalSpeed;
+        this.endSpeed = endSpeed;
+        this.indexer = indexer;
+
+        addRequirements(shamper, indexer);
+    }
+
+    public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, ShamperSpeed goalSpeed) {
+        this.shamper = shamper;
+        this.goalSpeed = goalSpeed;
+        this.endSpeed = goalSpeed;
         this.indexer = indexer;
 
         addRequirements(shamper, indexer);
@@ -20,13 +31,13 @@ public class ShamperShootCommand extends Command{
 
     @Override
     public void initialize() {
-        indexer.runMotors();
-        shamper.setSpeed(speeds);
+        indexer.index();
+        shamper.setSpeed(goalSpeed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        indexer.stopMotors();
-        shamper.setSpeed(ShamperSpeeds.SPEAKER_IDLE);
+        indexer.stop();
+        shamper.setSpeed(endSpeed);
     }
 }

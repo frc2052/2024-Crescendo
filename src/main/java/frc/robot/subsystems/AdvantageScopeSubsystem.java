@@ -35,7 +35,9 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         AdvantageScopeSubsystem.visionSubsystem = visionSubsystem;
         AdvantageScopeSubsystem.indexerSubsystem = indexerSubsystem;
         AdvantageScopeSubsystem.trapArmSubsystem = trapArmSubsystem;
-      
+    }
+
+    public void startRecording() {
         recordIntakeData();
         recordShamperData();
         recordClimberData();
@@ -44,7 +46,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         recordVisionData();
         recordIndexerData();
         recordTrapArmData();
-    }    
+    }
 
     public static void recordIntakeData () {
         String intakeFolder = "intake_";

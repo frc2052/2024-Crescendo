@@ -12,45 +12,35 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.AimingCalculator;
 
-public class DriveWhileMovingAimingCommand extends Command {
+public class DriveWhileAimingCommand extends Command {
     protected final DrivetrainSubsystem drivetrain;
 
     private final DoubleSupplier xSupplier;
     private final DoubleSupplier ySupplier;
-    private final DoubleSupplier rotationSupplier;
     private final BooleanSupplier fieldCentricSupplier;
     
     private final SlewRateLimiter xLimiter;
     private final SlewRateLimiter yLimiter;
-    private final SlewRateLimiter rotationLimiter;
 
     /**
      * @param xSupplier supplier for forward velocity.
      * @param ySupplier supplier for sideways velocity.
      * @param rotationSupplier supplier for angular velocity.
      */
-    public DriveWhileMovingAimingCommand(
+    public DriveWhileAimingCommand(
         DoubleSupplier xSupplier, 
         DoubleSupplier ySupplier,
         BooleanSupplier fieldCentricSupplier,
         DrivetrainSubsystem drivetrain
     ) {
-        DoubleSupplier rotationSupplier = new DoubleSupplier() {
-            @Override
-            public double getAsDouble() {
-                return AimingCalculator.calculate().getRobotAngle();
-            }
-        };
         this.drivetrain = drivetrain;
 
         this.xSupplier = xSupplier;
         this.ySupplier = ySupplier;
-        this.rotationSupplier = rotationSupplier;
         this.fieldCentricSupplier = fieldCentricSupplier;
 
         xLimiter = new SlewRateLimiter(2);
         yLimiter = new SlewRateLimiter(2);
-        rotationLimiter = new SlewRateLimiter(5);
 
         addRequirements(drivetrain);
     }
@@ -63,13 +53,9 @@ public class DriveWhileMovingAimingCommand extends Command {
         return slewAxis(yLimiter, deadBand(-ySupplier.getAsDouble()));
     }
 
-    protected double getRotation() {
-        return slewAxis(rotationLimiter, deadBand(-rotationSupplier.getAsDouble()));
-    }
-
     @Override
     public void execute() {
-        drivetrain.drive(getX(), getY(), getRotation(), fieldCentricSupplier.getAsBoolean());
+        drivetrain.drive(getX(), getY(), AimingCalculator.calculate().getRobotAngle(), fieldCentricSupplier.getAsBoolean());
     }
 
     @Override

@@ -6,9 +6,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
 import com.team2052.lib.DrivetrainState;
 import com.team2052.swervemodule.SwerveModule;
 
@@ -70,20 +67,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         zeroGyro();
 
-        //TODO: can the reset happen in robotState?
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
             () -> robotState.getRobotPose(), // Robot pose supplier
             this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
             () -> robotState.getChassisSpeeds(), // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                    4.5, // Max module speed, in m/s
-                    0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-                    new ReplanningConfig() // Default path replanning config. See the API for the options here
-            ),
+            Constants.PathPlanner.HOLONOMIC_PATH_FOLLOWER_CONFIG,
             () -> {
               // Boolean supplier that controls when the path will be mirrored for the red alliance
               // This will flip the path being followed to the red side of the field.
@@ -96,8 +86,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
               return false;
             },
             this // Reference to this subsystem to set requirements
-    );
-  }
+        );
+    }
 
     private void resetPose (Pose2d pose) {
         RobotStateEstimator.getInstance().resetOdometry(pose);
@@ -143,9 +133,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
         drive(chassisSpeeds);
     }
 
-    /**
-     * Autonomous commands still require a drive method controlled via a ChassisSpeeds object
-     */
     public void drive(ChassisSpeeds chassisSpeeds) {
         currentChassisSpeeds = chassisSpeeds;
         SwerveModuleState[] swerveModuleStates = Constants.Drivetrain.kinematics.toSwerveModuleStates(chassisSpeeds);
@@ -208,12 +195,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
          * (a measure of how fast the robot can rotate in place).
          */
         
-        // return NeoSwerverModule.getMaxVelocityMetersPerSecond(ModuleConfiguration.MK4I_L3) / Math.hypot(
-        //     Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, 
-        //     Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0
-        // );
+        return SwerveModule.getMaxVelocityMetersPerSecond() / Math.hypot(
+            Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, 
+            Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0
+        );
 
-        return 6 * Math.PI;
+        //return 6 * Math.PI;
     }
 
     public void debug() {

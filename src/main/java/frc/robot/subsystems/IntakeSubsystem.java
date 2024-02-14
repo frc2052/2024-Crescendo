@@ -19,18 +19,14 @@ public class IntakeSubsystem extends SubsystemBase {
     lowerMotor = new TalonFX(Constants.Intake.LOWER_MOTOR_ID);
   }
 
-  public void setUpperMotorSpeed(double upperMotorSpeedPCT) {
-    upperMotor.set(ControlMode.PercentOutput, upperMotorSpeedPCT);
+  public void intake() {
+    upperMotor.set(ControlMode.PercentOutput, Constants.Intake.INTAKE_IN_SPEED_PCT);
+    lowerMotor.set(ControlMode.PercentOutput, -Constants.Intake.INTAKE_IN_SPEED_PCT);
   }
 
-  public void setLowerMotorSpeed(double lowerMotorSpeedPCT) {
-    lowerMotor.set(ControlMode.PercentOutput, lowerMotorSpeedPCT);
-  }
-
-  public void intake(double upperMotorPCT, double lowerMotorPCT) {
-    //reversed bottom motor
-    upperMotor.set(ControlMode.PercentOutput, upperMotorPCT);
-    lowerMotor.set(ControlMode.PercentOutput, lowerMotorPCT);
+  public void outtake(){
+    upperMotor.set(ControlMode.PercentOutput, -Constants.Intake.INTAKE_OUT_SPEED_PCT);
+    lowerMotor.set(ControlMode.PercentOutput, Constants.Intake.INTAKE_OUT_SPEED_PCT);
   }
 
   public void stop() {

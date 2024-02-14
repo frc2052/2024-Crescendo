@@ -5,10 +5,12 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-
 import frc.robot.subsystems.ShamperSubsystem;
 
 public final class Constants {
@@ -20,13 +22,9 @@ public final class Constants {
         public static final int CHANNEL_3_PIN = 0;
         public static final int CHANNEL_4_PIN = 0;
         public static final int CHANNEL_5_PIN = 0;
-        public static final int CHANNEL_6_PIN = 0;
-        public static final int CHANNEL_7_PIN = 0;
-        public static final int CHANNEL_8_PIN = 0;
     }
     
     public static class MotorConstants {
-        public static final double PIVOT_MOTOR_TICKS_PER_ROTATION = 0;
         public static final double FALCON500_TICKS_PER_ROTATION = 2048;
     }
 
@@ -59,28 +57,6 @@ public final class Constants {
     }
   
     public static class Shamper {
-        public static class Speed {
-            public static final int UPPER_SHAMPER_SPEAKER_SPEED_PCT = 0;
-            public static final int LOWER_SHAMPER_SPEAKER_SPEED_PCT = 0;
-
-            public static final int UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
-            public static final int LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
-
-            public static final int UPPER_SHAMPER_AMP_SPEED_PCT = 0;
-            public static final int LOWER_SHAMPER_AMP_SPEED_PCT = 0;
-            
-            public static final int UPPER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
-            public static final int LOWER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
-        }
-
-        public static class Motors {
-            public static final int LOWER_MOTOR_ID = 0;
-            public static final int UPPER_MOTOR_ID = 0;
-            public static final int PIVOT_MOTOR_ID = 0;
-            public static final int PIVOT_ENCODER_ID = 0;
-        }
-
-    
         public static final int LOWER_SHOOTER_MOTOR_ID = 0;
         public static final int UPPER_SHOOTER_MOTOR_ID = 0;
         public static final int LEFT_PIVOT_SHAMPER_MOTOR_ID = 0;
@@ -92,14 +68,6 @@ public final class Constants {
         public static final int AMP_HALL_EFFECT_ID = 0;
         public static final int PODIUM_HALL_EFFECT_ID = 0;
 
-        public static final int INDEX_SPEED_TPS = 0;
-        public static final int LOWER_SHOOTER_IDLE_SPEED_TPS = 0;
-        public static final int LOWER_SHOOTER_SPEAKER_SPEED_TPS = 0;
-        public static final int LOWER_SHOOTER_AMP_SPEED_TPS = 0;
-        public static final int UPPER_SHOOTER_IDLE_SPEED_TPS = 0;
-        public static final int UPPER_SHOOTER_SPEAKER_SPEED_TPS = 0;
-        public static final int UPPER_SHOOTER_AMP_SPEED_TPS = 0;
-
         public static final double ROTATION_SHOOTER_KP = 0;
         public static final double ROTATION_SHOOTER_KI = 0;
         public static final double ROTATION_SHOOTER_KD = 0;
@@ -109,7 +77,7 @@ public final class Constants {
         public static final boolean LEFT_PIVOT_MOTOR_IS_INVERTED = false;
         public static final boolean RIGHT_PIVOT_MOTOR_IS_INVERTED = false;
             
-        public static final double PIVOT_GEAR_RATIO = 0; 
+        public static final double PIVOT_GEAR_RATIO = 60 * (48 / 22); 
             
         public static final double UPPER_MOTOR_KP = 0;
         public static final double UPPER_MOTOR_KI = 0;
@@ -131,8 +99,25 @@ public final class Constants {
 
         public static final double PIVOT_MOTOR_MAX_VELOCITY = 0;
         public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0;
+        
+        public static final double PIVOT_MOTOR_MANUAL_UP_SPEED = 0;
+        public static final double PIVOT_MOTOR_MANUAL_DOWN_SPEED = -0;
+        
+        public static final double UPPER_SHAMPER_SPEAKER_SPEED_PCT = 0;
+        public static final double LOWER_SHAMPER_SPEAKER_SPEED_PCT = 0;
 
-        public static final double TALONFX_TICS_PER_FULL_ROTATION = 0;
+        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
+        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
+
+        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = 0;
+        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0;
+        
+        public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
+        public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
+        
+        public static final double INDEX_SPEED_TPS = 0;
+
+        public static final double TALONFX_TICKS_PER_FULL_ROTATION = 0;
 
         public static class Angle {
             public static final double MINIMUM  = 0;
@@ -142,8 +127,8 @@ public final class Constants {
             public static final double CLIMB = 0;
         }
 
-        public static final double SHOOTER_ANGLE_OFFSET_IN_DEGREES = 0;
-        public static final double SHAMPER_ENCODER_OFFSET_IN_DEGREES = 0;
+        public static final double ENCODER_OFFSET_DEGREES = 0;
+        public static final double DEAD_ZONE_DEGREES = 2;
     }
 
     public static class FieldAndRobot {
@@ -255,7 +240,35 @@ public final class Constants {
         public static final String AUTO_COMPILED_KEY = "Auto Compiled";
     }
 
+    public static final class PathPlanner {
+        public static final double TRANSLATION_KP = 5;
+        public static final double TRANSLATION_KI = 0;
+        public static final double TRANSLATION_KD = 0;
 
+        public static final double ROTATION_KP = 5;
+        public static final double ROTATION_KI = 0;
+        public static final double ROTATION_KD = 0;
+
+        public static final double MAX_MODULE_SPEED = 4.5;
+        public static final double DRIVE_BASE_RADIUS_METERS = Math.hypot(Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS, Drivetrain.DRIVETRAIN_WHEELBASE_METERS) / 2;
+
+        public static final HolonomicPathFollowerConfig HOLONOMIC_PATH_FOLLOWER_CONFIG = 
+            new HolonomicPathFollowerConfig(
+                    new PIDConstants( 
+                        TRANSLATION_KD, 
+                        TRANSLATION_KI, 
+                        TRANSLATION_KD
+                    ), // Translation PID constants
+                    new PIDConstants(
+                        ROTATION_KP, 
+                        ROTATION_KI, 
+                        ROTATION_KD
+                    ), // Rotation PID constants
+                    MAX_MODULE_SPEED, // Max module speed, in m/s
+                    DRIVE_BASE_RADIUS_METERS, // Drive base radius in meters. Distance from robot center to furthest module.
+                    new ReplanningConfig() // Default path replanning config. See the API for the options here
+            );
+    }
 }
 
 

@@ -17,8 +17,6 @@ public class IndexerSubsystem extends SubsystemBase {
   private final CANSparkFlex lowerMotor;
   private final DigitalInput noteDetector;
 
-  private boolean noteDetected;
-
   public IndexerSubsystem() {
     upperMotor = new CANSparkMax(Constants.Indexer.LOWER_MOTOR_ID, MotorType.kBrushless);
     lowerMotor = new CANSparkFlex(Constants.Indexer.UPPER_MOTOR_ID, MotorType.kBrushless);
@@ -28,36 +26,18 @@ public class IndexerSubsystem extends SubsystemBase {
     lowerMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
   }
 
-  public void runIfNotTripped() {
-    if (!noteDetected) {
-      runMotors();
-    }
-  }
-  
-
-  public void runMotors() {
-    runUpperMotor();
-    runLowerMotor();
-  }
-
-  public void stopMotors() {
-    stopUpperMotor();
-    stopLowerMotor();
-  }
-
-  public void runUpperMotor() {
+  public void index() {
     upperMotor.set(Constants.Indexer.UPPER_SPEED_PCT);
-  }
-
-  public void runLowerMotor() {
     lowerMotor.set(Constants.Indexer.LOWER_SPEED_PCT);
   }
 
-  public void stopUpperMotor() {
-    upperMotor.stopMotor();
+  public void reverse() {
+    upperMotor.set(-Constants.Indexer.UPPER_SPEED_PCT);
+    lowerMotor.set(-Constants.Indexer.LOWER_SPEED_PCT);
   }
 
-  public void stopLowerMotor() {
+  public void stop() {
+    upperMotor.stopMotor();
     lowerMotor.stopMotor();
   }
 
@@ -74,7 +54,5 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    noteDetected = noteDetector.get();
-  }
+  public void periodic() {}
 }

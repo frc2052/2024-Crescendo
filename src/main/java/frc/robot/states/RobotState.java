@@ -10,7 +10,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.util.io.Dashboard;
-import frc.robot.Constants;
 import frc.robot.states.Superstructure.SuperstructureState;
 
 public class RobotState {

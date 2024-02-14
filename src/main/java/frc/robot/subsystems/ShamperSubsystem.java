@@ -26,19 +26,18 @@ public class ShamperSubsystem extends SubsystemBase {
 
   private final DutyCycleEncoder rotationEncoder;
   private static DigitalInput limitSwitch;
-  private static DigitalInput AmpHallEffectSensor;
+  private static DigitalInput ampHallEffectSensor;
   private static DigitalInput podiumHallEffectSensor;
 
   private ProfiledPIDController lowerMotorController;
   private ProfiledPIDController upperMotorController;
   private ProfiledPIDController leftPivotMotorController;
-  private ProfiledPIDController rightPivotMotorController;
 
-  private boolean limitSwitchTriggered;
+  private double goalAngle;
 
   public ShamperSubsystem() {
 
-    lowerMotor = new TalonFX(Constants.Shamper.Motors.LOWER_MOTOR_ID);
+    lowerMotor = new TalonFX(Constants.Shamper.LOWER_SHOOTER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(
     Constants.Shamper.LOWER_MOTOR_KP,
     Constants.Shamper.LOWER_MOTOR_KI,
@@ -47,7 +46,7 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.LOWER_MOTOR_MAX_VELOCITY,
     Constants.Shamper.LOWER_MOTOR_MAX_ACCELERATION));
 
-    upperMotor = new TalonFX(Constants.Shamper.Motors.UPPER_MOTOR_ID);
+    upperMotor = new TalonFX(Constants.Shamper.UPPER_SHOOTER_MOTOR_ID);
     upperMotorController = new ProfiledPIDController(
     Constants.Shamper.UPPER_MOTOR_KP,
     Constants.Shamper.UPPER_MOTOR_KI,
@@ -66,77 +65,66 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
 
     rightPivotMotor = new CANSparkMax(Constants.Shamper.RIGHT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
-    rightPivotMotorController = new ProfiledPIDController(
-    Constants.Shamper.PIVOT_MOTOR_KP,
-    Constants.Shamper.PIVOT_MOTOR_KI,
-    Constants.Shamper.PIVOT_MOTOR_KD,      
-    new TrapezoidProfile.Constraints(
-    Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
-    Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
 
-    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.Motors.PIVOT_ENCODER_ID);
+    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_ID);
+    rotationEncoder.setPositionOffset(Constants.Shamper.ENCODER_OFFSET_DEGREES / 360);
 
     lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.Shamper.UPPER_MOTOR_IS_INVERTED);
     leftPivotMotor.setInverted(Constants.Shamper.LEFT_PIVOT_MOTOR_IS_INVERTED);
-    rightPivotMotor.setInverted(Constants.Shamper.RIGHT_PIVOT_MOTOR_IS_INVERTED);
+    rightPivotMotor.follow(leftPivotMotor, true);
 
     limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_ID);
-    AmpHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_ID);
+    ampHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_ID);
     podiumHallEffectSensor = new DigitalInput(Constants.Shamper.PODIUM_HALL_EFFECT_ID);
-
-    limitSwitchTriggered = false;
   }
 
-  public void stop() {
-    lowerMotor.set(TalonFXControlMode.PercentOutput, ShamperSpeeds.OFF.getLowerPCT());
-    upperMotor.set(TalonFXControlMode.PercentOutput, ShamperSpeeds.OFF.getUpperPCT());
+  public void stopShooter() {
+    lowerMotor.set(TalonFXControlMode.PercentOutput, ShamperSpeed.OFF.getLowerPCT());
+    upperMotor.set(TalonFXControlMode.PercentOutput, ShamperSpeed.OFF.getUpperPCT());
   }
 
-  public void setSpeed(ShamperSpeeds speeds) {
+  public void setSpeed(ShamperSpeed speeds) {
     lowerMotor.set(TalonFXControlMode.PercentOutput, lowerMotorController.calculate(getLowerShamperSpeed(), speeds.getLowerPCT()));
     upperMotor.set(TalonFXControlMode.PercentOutput, upperMotorController.calculate(getUpperShamperSpeed(), speeds.getUpperPCT()));
   }
 
-  public void setUpperShamperSpeed(double upperShamperMotorSpeedPCT) {
-    upperMotor.set(TalonFXControlMode.PercentOutput, upperMotorController.calculate(getUpperShamperSpeed(), upperShamperMotorSpeedPCT));
+  public void setAngle(double goalAngle) {
+    this.goalAngle = constrain(goalAngle);
+    leftPivotMotor.set(leftPivotMotorController.calculate(getShamperAngle() / 360, goalAngle / 360));
   }
 
-  public void setLowerShamperSpeed(double lowerShamperMotorSpeedPCT) {
-    lowerMotor.set(TalonFXControlMode.PercentOutput, lowerMotorController.calculate(getLowerShamperSpeed(), lowerShamperMotorSpeedPCT));
+  public void stopPivot() {
+    leftPivotMotor.set(0);
+    rightPivotMotor.set(0);
   }
 
-  public void setAngle(double shooterGoalAngle) {
-    // for safety. don't want the robot breaking
-    if (shooterGoalAngle < Constants.Shamper.Angle.MINIMUM) {
-      shooterGoalAngle = Constants.Shamper.Angle.MINIMUM;
-    } else if (shooterGoalAngle > Constants.Shamper.Angle.MAXIMUM) {
-      shooterGoalAngle = Constants.Shamper.Angle.MAXIMUM;
-    }
-    if (!limitSwitchTriggered) {
-    leftPivotMotor.set((!limitSwitchTriggered) ? 
-    (leftPivotMotorController.calculate(
-    ((getShamperAngle() / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) / 
-    ((shooterGoalAngle / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) * Constants.Shamper.PIVOT_GEAR_RATIO, 1)) : 0);
-
-    rightPivotMotor.set((!limitSwitchTriggered) ? 
-    (rightPivotMotorController.calculate(
-    ((getShamperAngle() / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) / 
-    ((shooterGoalAngle / 360) * Constants.MotorConstants.PIVOT_MOTOR_TICKS_PER_ROTATION) * Constants.Shamper.PIVOT_GEAR_RATIO, 1)) : 0);
+  public boolean atAngle() {
+    if (goalAngle == Constants.Shamper.Angle.AMP) {
+      return isAtAmpLevel();
+    } else if (goalAngle == Constants.Shamper.Angle.DEFAULT) {
+      return isAtPodiumLevel();
+    } else if (goalAngle == getShamperAngle()){
+      return true;
+    } else {
+      return Math.abs(
+          getShamperAngle() - goalAngle
+      ) <= Constants.Shamper.DEAD_ZONE_DEGREES;
     }
   }
 
   public double getShamperAngle() {
-    return rotationEncoder.getAbsolutePosition() * 360 + Constants.Shamper.SHAMPER_ENCODER_OFFSET_IN_DEGREES;
+    return rotationEncoder.getAbsolutePosition() * 360;
   }
 
-  public boolean checkShamperAngleValidity(double testShamperAngle) {
-      if (testShamperAngle < Constants.Shamper.Angle.MINIMUM) {
-      return false;
-    } else if (testShamperAngle > Constants.Shamper.Angle.MAXIMUM) {
-      return false;
+  public double constrain(double angle) {
+    if (angle < Constants.Shamper.Angle.MINIMUM) {
+      angle = Constants.Shamper.Angle.MINIMUM;
+    } else if (angle > Constants.Shamper.Angle.MAXIMUM) {
+      angle = Constants.Shamper.Angle.MAXIMUM;
     }
-    return true;
+    
+    return angle;
   }
 
   public double getUpperShamperSpeed() {
@@ -148,52 +136,25 @@ public class ShamperSubsystem extends SubsystemBase {
   }  
 
   public void manualUp() {
-    leftPivotMotor.set(1);
-    rightPivotMotor.set(1);
+      leftPivotMotor.set(Constants.Shamper.PIVOT_MOTOR_MANUAL_UP_SPEED);
   }
 
   public void manualDown() {
-    if (!limitSwitchTriggered) {
-      leftPivotMotor.set(-1);
-      rightPivotMotor.set(-1);
+    if (!shamperZeroed()) {
+      leftPivotMotor.set(Constants.Shamper.PIVOT_MOTOR_MANUAL_DOWN_SPEED);
     }
-  }
-
-  public void stopManual() {
-    leftPivotMotor.stopMotor();
-    rightPivotMotor.stopMotor();
   }
 
   @Override
   public void periodic() {
-    if (!limitSwitch.get()) {
-      limitSwitchTriggered = true;
+    if(shamperZeroed()){
+      rotationEncoder.reset();
+    }
+
+    if (atAngle()) {
+        stopPivot();
     } else {
-      limitSwitchTriggered = false;
-    }
-  }
-  
-  public static enum ShamperSpeeds {
-    OFF(0, 0),
-    SPEAKER_IDLE(Constants.Shamper.Speed.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT, Constants.Shamper.Speed.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT),
-    AMP_IDLE(Constants.Shamper.Speed.LOWER_SHAMPER_AMP_IDLE_SPEED_PCT, Constants.Shamper.Speed.UPPER_SHAMPER_AMP_IDLE_SPEED_PCT),
-    SPEAKER(Constants.Shamper.Speed.LOWER_SHAMPER_SPEAKER_SPEED_PCT, Constants.Shamper.Speed.UPPER_SHAMPER_SPEAKER_SPEED_PCT),
-    AMP(Constants.Shamper.Speed.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.Speed.UPPER_SHAMPER_AMP_SPEED_PCT);
-
-    private final int lowerPercentOutput;
-    private final int upperPercentOutput;
-
-    private ShamperSpeeds(int lowerPercentOutput, int upperPercentOutput) {
-      this.lowerPercentOutput = lowerPercentOutput;
-      this.upperPercentOutput = upperPercentOutput;
-    }
-
-    public int getLowerPCT() {
-      return lowerPercentOutput;
-    }
-
-    public int getUpperPCT() {
-      return upperPercentOutput;
+      setAngle(goalAngle);
     }
   }
 
@@ -205,11 +166,39 @@ public class ShamperSubsystem extends SubsystemBase {
     return lowerMotor;
   }
 
-  public static boolean isAtAmpLevel() {
-    return !AmpHallEffectSensor.get();
+  public boolean isAtAmpLevel() {
+    return !ampHallEffectSensor.get();
   }
 
-  public static boolean isAtPodiumLevel() {
+  public boolean isAtPodiumLevel() {
     return !podiumHallEffectSensor.get();
+  }
+
+  public boolean shamperZeroed() {
+    return !limitSwitch.get();
+  }
+
+  public static enum ShamperSpeed {
+    OFF(0, 0),
+    SPEAKER_IDLE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT),
+    AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_PCT),
+    SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_PCT),
+    AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_PCT);
+
+    private final double lowerPercentOutput;
+    private final double upperPercentOutput;
+
+    private ShamperSpeed(double lowerPercentOutput, double upperPercentOutput) {
+      this.lowerPercentOutput = lowerPercentOutput;
+      this.upperPercentOutput = upperPercentOutput;
+    }
+
+    public double getLowerPCT() {
+      return lowerPercentOutput;
+    }
+
+    public double getUpperPCT() {
+      return upperPercentOutput;
+    }
   }
 }

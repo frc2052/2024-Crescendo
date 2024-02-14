@@ -7,7 +7,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.TrapArm;
 
 public class TrapArmSubsystem extends SubsystemBase{
     private final TalonFX armMotor;

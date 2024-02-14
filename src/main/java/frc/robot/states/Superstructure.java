@@ -7,7 +7,7 @@ import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.subsystems.ShamperSubsystem.ShamperSpeeds;
+import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.AimingCalculator;
 
 public class Superstructure extends SubsystemBase {
@@ -15,13 +15,13 @@ public class Superstructure extends SubsystemBase {
   
   private ShamperSubsystem shamper;
 
-  private ClimberSubsystem climber;
+  //private ClimberSubsystem climber;
 
   private IndexerSubsystem indexer;
 
-  public  Superstructure(ShamperSubsystem shamper, ClimberSubsystem climber, IndexerSubsystem indexer) {
+  public  Superstructure(ShamperSubsystem shamper, IndexerSubsystem indexer) {
     this.shamper = shamper;
-    this.climber = climber;
+    //this.climber = climber;
     this.indexer = indexer;
   }
 
@@ -49,32 +49,32 @@ public class Superstructure extends SubsystemBase {
 
   private void setDefault() {
     new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeeds.SPEAKER_IDLE);
+    new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_IDLE);
   }
 
   private void setSpeakerIdle() {
-    new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeeds.SPEAKER_IDLE);
+    new ShamperAngleCommand(shamper, AimingCalculator.calculate().getShamperAngle());
+    new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_IDLE);
   }
   
   private void setSpeakerScoring() {
     new ShamperAngleCommand(shamper, AimingCalculator.calculate().getShamperAngle());
-    new ShamperShootCommand(shamper, indexer, ShamperSpeeds.SPEAKER_IDLE);
-  }  
+    new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_SCORE, ShamperSpeed.SPEAKER_IDLE);
+  }
   
   private void setAmpIdle() {
     new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeeds.AMP_IDLE);
+    new ShamperShootCommand(shamper, indexer, ShamperSpeed.AMP_IDLE);
   }  
 
   private void setAmpScore() {
     new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeeds.AMP);
+    new ShamperShootCommand(shamper, indexer, ShamperSpeed.AMP_SCORE, ShamperSpeed.SPEAKER_IDLE);
   }
 
   private void setClimbing() {
     new ShamperAngleCommand(shamper, Constants.Shamper.Angle.CLIMB);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeeds.OFF);
+    new ShamperShootCommand(shamper, indexer, ShamperSpeed.OFF);
   }
 
   @Override
@@ -86,7 +86,7 @@ public class Superstructure extends SubsystemBase {
 
   public enum SuperstructureState {
     DEFAULT(false),
-    SPEAKER_IDLE(false),
+    SPEAKER_IDLE(true),
     SPEAKER_SCORE(true),
     AMP_IDLE(false),
     AMP_SCORE(false),

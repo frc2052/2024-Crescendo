@@ -1,20 +1,19 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeOutCommand extends Command {
+public class OuttakeCommand extends Command {
     private final IntakeSubsystem intake;
 
-    public IntakeOutCommand(IntakeSubsystem intake) {
+    public OuttakeCommand(IntakeSubsystem intake) {
         this.intake = intake;
         addRequirements(intake);
     }
 
     @Override
-    public void initialize() {
-        intake.intake(-Constants.Intake.INTAKE_IN_SPEED_PCT, Constants.Intake.INTAKE_IN_SPEED_PCT);
+    public void execute() {
+        intake.intake();
     }
 
     @Override
