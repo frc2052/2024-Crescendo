@@ -74,7 +74,7 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
     Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
 
-    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.Motors.PIVOT_ENCODER_ID);
+    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_ID);
 
     lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.Shamper.UPPER_MOTOR_IS_INVERTED);
