@@ -24,6 +24,7 @@ public class RobotState {
     private Rotation2d robotRotation2d;
     private SwerveModulePosition[] swerveModulePositions;
     private ChassisSpeeds chassisSpeeds;
+    private boolean noteDetected;
 
     private SuperstructureState superstructureState;
 
@@ -53,6 +54,7 @@ public class RobotState {
         navxOffset = new Rotation2d(0);
         robotRotation2d = new Rotation2d(0);
         chassisSpeeds = new ChassisSpeeds();
+        noteDetected = false;
     }  
 
     public boolean hasValidSwerveState() {
@@ -74,6 +76,10 @@ public class RobotState {
 
     public void updateRobotPose(Pose2d robotPose) {
         this.robotPose = robotPose;
+    }
+
+    public void updateNoteDetected(boolean noteDetected) {
+        this.noteDetected = noteDetected;
     }
 
     /*
@@ -153,6 +159,12 @@ public class RobotState {
     public Pose2d getRobotPose() {
         return robotPose;
     }
+
+    public boolean getNoteDetected() {
+        return noteDetected;
+    }
+
+
 
     /**
      * Returns the initial Pose2d of the robot since last reset.

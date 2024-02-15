@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.states.RobotState;
 
 public class IndexerSubsystem extends SubsystemBase {
   private final CANSparkMax upperMotor;
@@ -76,5 +77,6 @@ public class IndexerSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     noteDetected = noteDetector.get();
+    RobotState.getInstance().updateNoteDetected(noteDetected);
   }
 }
