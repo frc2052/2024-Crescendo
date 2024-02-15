@@ -77,7 +77,7 @@ public class ShamperSubsystem extends SubsystemBase {
 
     indexMotor = new TalonFX(Constants.Shamper.INDEX_MOTOR_ID);
 
-    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.Motors.PIVOT_ENCODER_ID);
+    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_ID);
 
     lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.Shamper.UPPER_MOTOR_IS_INVERTED);
