@@ -129,6 +129,7 @@ public final class Constants {
 
         public static final double ENCODER_OFFSET_DEGREES = 0;
         public static final double DEAD_ZONE_DEGREES = 2;
+        public static final double DEAD_ZONE_SHOOTER_SPEED_PCT = 0.05;
     }
 
     public static class FieldAndRobot {

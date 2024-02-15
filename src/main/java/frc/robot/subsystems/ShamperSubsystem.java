@@ -14,6 +14,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -34,6 +35,7 @@ public class ShamperSubsystem extends SubsystemBase {
   private ProfiledPIDController leftPivotMotorController;
 
   private double goalAngle;
+  private ShamperSpeed goalSpeed;
 
   public ShamperSubsystem() {
 
@@ -84,9 +86,18 @@ public class ShamperSubsystem extends SubsystemBase {
     upperMotor.set(TalonFXControlMode.PercentOutput, ShamperSpeed.OFF.getUpperPCT());
   }
 
-  public void setSpeed(ShamperSpeed speeds) {
-    lowerMotor.set(TalonFXControlMode.PercentOutput, lowerMotorController.calculate(getLowerShamperSpeed(), speeds.getLowerPCT()));
-    upperMotor.set(TalonFXControlMode.PercentOutput, upperMotorController.calculate(getUpperShamperSpeed(), speeds.getUpperPCT()));
+  public void setSpeed(ShamperSpeed speeds) { 
+    goalSpeed = speeds;
+    lowerMotor.set(TalonFXControlMode.PercentOutput, lowerMotorController.calculate(getLowerShamperSpeed(), goalSpeed.getLowerPCT()));
+    upperMotor.set(TalonFXControlMode.PercentOutput, upperMotorController.calculate(getUpperShamperSpeed(), goalSpeed.getUpperPCT()));
+  }
+
+  public boolean atSpeed(TalonFX motor, double goalSpeed){
+    if((Math.abs(motor.getMotorOutputPercent()) - Math.abs(goalSpeed)) < Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_PCT){
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void setAngle(double goalAngle) {
@@ -145,19 +156,6 @@ public class ShamperSubsystem extends SubsystemBase {
     }
   }
 
-  @Override
-  public void periodic() {
-    if(shamperZeroed()){
-      rotationEncoder.reset();
-    }
-
-    if (atAngle()) {
-        stopPivot();
-    } else {
-      setAngle(goalAngle);
-    }
-  }
-
   public static TalonFX getUpperTalonFX() {
     return upperMotor;
   }
@@ -176,6 +174,31 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public boolean shamperZeroed() {
     return !limitSwitch.get();
+  }
+
+  @Override
+  public void periodic() {
+    if(shamperZeroed()){
+      rotationEncoder.reset();
+    }
+
+    if (atAngle()) {
+        stopPivot();
+    } else {
+      setAngle(goalAngle);
+    }
+
+    if(atSpeed(upperMotor, goalSpeed.getUpperPCT())) {
+      SmartDashboard.putBoolean("Upper Motor At Speed", true);
+    } else {
+      SmartDashboard.putBoolean("Upper Motor At Speed", false);
+    }
+
+    if(atSpeed(lowerMotor, goalSpeed.getLowerPCT())) {
+      SmartDashboard.putBoolean("Lower Motor At Speed", true);
+    } else {
+      SmartDashboard.putBoolean("Lower Motor At Speed", false);
+    }
   }
 
   public static enum ShamperSpeed {

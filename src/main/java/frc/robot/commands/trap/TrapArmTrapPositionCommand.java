@@ -5,7 +5,7 @@ import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem.TrapArmPositions;
 
 public class TrapArmTrapPositionCommand extends Command {
-    private static TrapArmSubsystem trapArm;
+    private TrapArmSubsystem trapArm;
 
     public TrapArmTrapPositionCommand(TrapArmSubsystem trapArm) {
         this.trapArm = trapArm;
