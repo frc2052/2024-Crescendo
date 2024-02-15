@@ -3,6 +3,7 @@
 #include "constants.h"
 #include "pulse.h"
 #include <WiFi.h>
+#include "rainbow.h"
 
 int PIN_ONE = 12;
 int PIN_TWO = 14;
@@ -21,6 +22,7 @@ unsigned long currentMillis;
 
 CRGB g_leds[NUM_LEDS]; //create our LED array object for all our LEDs
 Pulse pulse = Pulse();
+Rainbow rb = Rainbow();
 
 void setup()
 {
@@ -46,20 +48,34 @@ void coop() //activate to signal to human player to active Cooperation bonus
     }
 void neutral() //activate to stop signaling 
     {
-        pulse.init(CRGB(255, 0, 255), 1000, 500)
+        pulse.init(CRGB(255, 0, 255))
     }
 void red() //turn it all red
     {
-        pulse.init(CRGB(255, 0, 0), 1000, 500);
+        pulse.init(CRGB(255, 0, 0));
         pulse.update();
     }
 void blue() //turn it all blue
     {
-        pulse.init(CRGB(0,0,255), 1000, 500);
+        pulse.init(CRGB(0,0,255));
         pulse.update();
     }
     void OFF() {
-        pulse.init(CRGB(0,0,0), 1000, 500);
+        FastLED.clear();
+    }
+    void rainbow() 
+    {
+        rb.init(100);
+        rb.update();
+    }
+    void green()
+    {
+        pulse.init(CRGB(0,255,0));
+        pulse.update();
+    }
+    void knightkrawler()
+    {
+        pulse.init(CRGB(128,0,0))
         pulse.update();
     }
 
@@ -131,7 +147,15 @@ void blue() //turn it all blue
             case 6:
                 OFF();
                 break;
-            
+            case 7:
+                rainbow();
+                break;
+            case 8:
+                green();
+                break;
+            case 9:
+                knightkrawler();
+                break;
         }
     }
     currentCode = code;

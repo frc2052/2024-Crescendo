@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.ShamperSubsystem;
 
 public final class Constants {
@@ -21,6 +20,9 @@ public final class Constants {
         public static final int CHANNEL_3_PIN = 0;
         public static final int CHANNEL_4_PIN = 0;
         public static final int CHANNEL_5_PIN = 0;
+        public static final int CHANNEL_6_PIN = 0;
+        public static final int CHANNEL_7_PIN = 0;
+        public static final int CHANNEL_8_PIN = 0;
     }
     
     public static class MotorConstants {
@@ -47,8 +49,13 @@ public final class Constants {
     }
 
     public static class Indexer {
-        public static final int MOTOR_ID = 0;
-        public static final double INDEX_SPEED_PCT = 0;
+        public static final int LOWER_MOTOR_ID = 0;
+        public static final int UPPER_MOTOR_ID = 0;
+
+        public static final double UPPER_SPEED_PCT = 0;
+        public static final double LOWER_SPEED_PCT = 0;
+
+        public static final int DIGITAL_INPUT_ID = 0;
     }
   
     public static class Shamper {

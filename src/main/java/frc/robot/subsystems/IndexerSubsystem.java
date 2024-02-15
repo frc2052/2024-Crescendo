@@ -4,25 +4,77 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IndexerSubsystem extends SubsystemBase {
-  private final CANSparkMax indexerMotor;
-  /** Creates a new IndexerSubsystem. */
+  private final CANSparkMax upperMotor;
+  private final CANSparkFlex lowerMotor;
+  private final DigitalInput noteDetector;
+
+  private boolean noteDetected;
+
   public IndexerSubsystem() {
-    indexerMotor = new CANSparkMax(Constants.Indexer.MOTOR_ID, MotorType.kBrushless);
+    upperMotor = new CANSparkMax(Constants.Indexer.LOWER_MOTOR_ID, MotorType.kBrushless);
+    lowerMotor = new CANSparkFlex(Constants.Indexer.UPPER_MOTOR_ID, MotorType.kBrushless);
+    noteDetector = new DigitalInput(Constants.Indexer.DIGITAL_INPUT_ID);
+
+    upperMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    lowerMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
   }
 
-  public double getIndexerSpeed() {
-    return indexerMotor.get();
+  public void runIfNotTripped() {
+    if (!noteDetected) {
+      runMotors();
+    }
+  }
+  
+
+  public void runMotors() {
+    runUpperMotor();
+    runLowerMotor();
+  }
+
+  public void stopMotors() {
+    stopUpperMotor();
+    stopLowerMotor();
+  }
+
+  public void runUpperMotor() {
+    upperMotor.set(Constants.Indexer.UPPER_SPEED_PCT);
+  }
+
+  public void runLowerMotor() {
+    lowerMotor.set(Constants.Indexer.LOWER_SPEED_PCT);
+  }
+
+  public void stopUpperMotor() {
+    upperMotor.stopMotor();
+  }
+
+  public void stopLowerMotor() {
+    lowerMotor.stopMotor();
+  }
+
+  public double getUpperIndexerSpeed() {
+    return upperMotor.get();
+  }
+
+  public double getLowerIndexerSpeed() {
+    return lowerMotor.get();
+  }
+
+  public boolean getNoteDetector() {
+    return noteDetector.get();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    noteDetected = noteDetector.get();
   }
 }
