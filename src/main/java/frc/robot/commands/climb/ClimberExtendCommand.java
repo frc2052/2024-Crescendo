@@ -7,12 +7,12 @@ package frc.robot.commands.climb;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 
-public class ClimerExtendCommand extends Command {
+public class ClimberExtendCommand extends Command {
   /** Creates a new RaiseClimberCommand. */
    
   private final ClimberSubsystem hook;
 
-  public ClimerExtendCommand(ClimberSubsystem hook) {
+  public ClimberExtendCommand(ClimberSubsystem hook) {
       this.hook = hook;
       addRequirements(hook);
   }

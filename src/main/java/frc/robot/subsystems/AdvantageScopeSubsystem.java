@@ -37,7 +37,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         AdvantageScopeSubsystem.trapArmSubsystem = trapArmSubsystem;
     }
 
-    public void startRecording() {
+    public static void startRecording() {
         recordIntakeData();
         recordShamperData();
         recordClimberData();

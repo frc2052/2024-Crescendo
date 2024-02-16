@@ -58,33 +58,18 @@ public final class Constants {
     }
   
     public static class Shamper {
-        public static class Speed {
-            public static final int UPPER_SHAMPER_SPEAKER_SPEED_PCT = 0;
-            public static final int LOWER_SHAMPER_SPEAKER_SPEED_PCT = 0;
-
-            public static final int UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
-            public static final int LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
-
-            public static final int UPPER_SHAMPER_AMP_SPEED_PCT = 0;
-            public static final int LOWER_SHAMPER_AMP_SPEED_PCT = 0;
-            
-            public static final int UPPER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
-            public static final int LOWER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
-        }
-
-        public static class Motors {
-            public static final int LOWER_MOTOR_ID = 17;
-            public static final int UPPER_MOTOR_ID = 16;
-        }
-
+        public static final int LOWER_SHOOTER_MOTOR_ID = 17;
+        public static final int UPPER_SHOOTER_MOTOR_ID = 16;
         public static final int LEFT_PIVOT_SHAMPER_MOTOR_ID = 0; // is 18 or 19
         public static final int RIGHT_PIVOT_SHAMPER_MOTOR_ID = 0; // 20 or 21
-        public static final int ROTATION_ENCODER_ID = 0;
         public static final int INDEX_MOTOR_ID = 13;
-        public static final int INDEXER_SENSOR_ID = 0;
-        public static final int LIMIT_SWITCH_ID = 0;
-        public static final int AMP_HALL_EFFECT_ID = 0;
-        public static final int PODIUM_HALL_EFFECT_ID = 0;
+
+        // DIO pins
+        public static final int INDEXER_SENSOR_PIN = 0;
+        public static final int ROTATION_ENCODER_PIN = 0;
+        public static final int LIMIT_SWITCH_PIN = 0;
+        public static final int AMP_HALL_EFFECT_PIN = 0;
+        public static final int PODIUM_HALL_EFFECT_PIN = 0;
 
         public static final double ROTATION_SHOOTER_KP = 0;
         public static final double ROTATION_SHOOTER_KI = 0;

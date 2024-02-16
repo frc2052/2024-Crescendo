@@ -56,7 +56,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    noteDetected = noteDetector.get();
+    boolean noteDetected = noteDetector.get();
     RobotState.getInstance().updateNoteDetected(noteDetected);
   }
 }

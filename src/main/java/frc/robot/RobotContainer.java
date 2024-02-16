@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
-import frc.robot.commands.climb.ClimerExtendCommand;
+import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
@@ -77,6 +77,7 @@ public class RobotContainer {
     // trapArm = new TrapArmSubsystem();
     //advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
 
+    // superstructure = new Superstructure(shamper, climber, indexer);
     superstructure = new Superstructure(shamper, indexer);
 
     //robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);

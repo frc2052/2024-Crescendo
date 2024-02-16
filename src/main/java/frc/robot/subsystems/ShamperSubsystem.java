@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -17,7 +16,6 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
 
 public class ShamperSubsystem extends SubsystemBase {
   private static TalonFX lowerMotor;
@@ -68,7 +66,7 @@ public class ShamperSubsystem extends SubsystemBase {
 
     rightPivotMotor = new CANSparkMax(Constants.Shamper.RIGHT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
 
-    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_ID);
+    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_PIN);
     rotationEncoder.setPositionOffset(Constants.Shamper.ENCODER_OFFSET_DEGREES / 360);
 
     lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
@@ -76,9 +74,9 @@ public class ShamperSubsystem extends SubsystemBase {
     leftPivotMotor.setInverted(Constants.Shamper.LEFT_PIVOT_MOTOR_IS_INVERTED);
     rightPivotMotor.follow(leftPivotMotor, true);
 
-    limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_ID);
-    ampHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_ID);
-    podiumHallEffectSensor = new DigitalInput(Constants.Shamper.PODIUM_HALL_EFFECT_ID);
+    limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_PIN);
+    ampHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_PIN);
+    podiumHallEffectSensor = new DigitalInput(Constants.Shamper.PODIUM_HALL_EFFECT_PIN);
   }
 
   public void stopShooter() {

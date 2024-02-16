@@ -20,7 +20,7 @@ public class ClimberRetractCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hook.retract(false);
+    hook.retract(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
