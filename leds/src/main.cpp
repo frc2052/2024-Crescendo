@@ -68,7 +68,7 @@ void blue() //turn it all blue
         rb.init(100);
         rb.update();
     }
-    void green()
+    void note()
     {
         pulse.init(CRGB(0,255,0));
         pulse.update();
