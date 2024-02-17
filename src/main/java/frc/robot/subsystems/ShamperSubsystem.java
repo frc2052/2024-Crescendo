@@ -37,7 +37,7 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public ShamperSubsystem() {
 
-    lowerMotor = new TalonFX(Constants.Shamper.LOWER_SHOOTER_MOTOR_ID);
+    lowerMotor = new TalonFX(Constants.CAN.LOWER_SHOOTER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(
     Constants.Shamper.LOWER_MOTOR_KP,
     Constants.Shamper.LOWER_MOTOR_KI,
@@ -46,7 +46,7 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.LOWER_MOTOR_MAX_VELOCITY,
     Constants.Shamper.LOWER_MOTOR_MAX_ACCELERATION));
 
-    upperMotor = new TalonFX(Constants.Shamper.UPPER_SHOOTER_MOTOR_ID);
+    upperMotor = new TalonFX(Constants.CAN.UPPER_SHOOTER_MOTOR_ID);
     upperMotorController = new ProfiledPIDController(
     Constants.Shamper.UPPER_MOTOR_KP,
     Constants.Shamper.UPPER_MOTOR_KI,
@@ -55,7 +55,7 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.UPPER_MOTOR_MAX_VELOCITY,
     Constants.Shamper.UPPER_MOTOR_MAX_ACCELERATION));
 
-    leftPivotMotor = new CANSparkMax(Constants.Shamper.LEFT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
+    leftPivotMotor = new CANSparkMax(Constants.CAN.LEFT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
     leftPivotMotorController = new ProfiledPIDController(
     Constants.Shamper.PIVOT_MOTOR_KP,
     Constants.Shamper.PIVOT_MOTOR_KI,
@@ -64,7 +64,7 @@ public class ShamperSubsystem extends SubsystemBase {
     Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
     Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
 
-    rightPivotMotor = new CANSparkMax(Constants.Shamper.RIGHT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
+    rightPivotMotor = new CANSparkMax(Constants.CAN.RIGHT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
 
     rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_PIN);
     rotationEncoder.setPositionOffset(Constants.Shamper.ENCODER_OFFSET_DEGREES / 360);

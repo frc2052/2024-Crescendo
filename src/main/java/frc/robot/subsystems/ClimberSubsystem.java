@@ -11,48 +11,58 @@ import frc.robot.Constants;
 
 public class ClimberSubsystem extends SubsystemBase{
  
-    // Motor that controls the wenches for climbing.
-    private final TalonFX climberMotor;
+    private final TalonFX leftClimberMotor;
+    private final TalonFX rightClimberMotor;
 
     public ClimberSubsystem() {
-        climberMotor = new TalonFX(Constants.Climber.CLIMBER_MOTOR);
-        climberMotor.configFactoryDefault();
-        climberMotor.setNeutralMode(NeutralMode.Brake);
-        climberMotor.setInverted(true);
-        climberMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
-        climberMotor.setSelectedSensorPosition(0, 0, 10);
+        leftClimberMotor = new TalonFX(Constants.CAN.LEFT_CLIMBER_MOTOR);
+        rightClimberMotor = new TalonFX(Constants.CAN.RIGHT_CLIMBER_MOTOR);
+
+        leftClimberMotor.configFactoryDefault();
+        leftClimberMotor.setNeutralMode(NeutralMode.Brake);
+        leftClimberMotor.setInverted(true);
+        leftClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
+        leftClimberMotor.setSelectedSensorPosition(0, 0, 10);
+
+        rightClimberMotor.configFactoryDefault();
+        rightClimberMotor.setNeutralMode(NeutralMode.Brake);
+        rightClimberMotor.setInverted(true);
+        rightClimberMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
+        rightClimberMotor.setSelectedSensorPosition(0, 0, 10);
+
+        rightClimberMotor.follow(leftClimberMotor);
     }
 
     public void extend(boolean override) {
-        climberMotor.set(ControlMode.MotionMagic, Constants.Climber.CLIMBER_EXTENSION_HEIGHT_TICKS);
+        leftClimberMotor.set(ControlMode.MotionMagic, Constants.Climber.CLIMBER_EXTENSION_HEIGHT_TICKS);
     }
 
     public void retract(boolean override) {
-        climberMotor.set(ControlMode.MotionMagic, Constants.Climber.CLIMBER_RETRACTION_HEIGHT_TICKS);
+        leftClimberMotor.set(ControlMode.MotionMagic, Constants.Climber.CLIMBER_RETRACTION_HEIGHT_TICKS);
     }
 
     /**
      * Stops all climber motor activity.
      */
     public void stop() {
-        climberMotor.set(ControlMode.PercentOutput, 0);
+        leftClimberMotor.set(ControlMode.PercentOutput, 0);
     }
 
     public void zeroEncoder() {
-        climberMotor.setSelectedSensorPosition(0);
+        leftClimberMotor.setSelectedSensorPosition(0);
     }
 
     public double getEncoderPosition() {
-        return climberMotor.getSelectedSensorPosition();
+        return leftClimberMotor.getSelectedSensorPosition();
     }
 
     public boolean getEncoderIsAbove(double ticks) {
-        return climberMotor.getSelectedSensorPosition() >= ticks;
+        return leftClimberMotor.getSelectedSensorPosition() >= ticks;
     }
 
 @Override
 public void periodic() {
-    SmartDashboard.putNumber("Climber Height Ticks", climberMotor.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Climber Height Ticks", leftClimberMotor.getSelectedSensorPosition());
 }
 
 }

@@ -3,7 +3,7 @@ package frc.robot.util;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Constants;
-import frc.robot.states.RobotState;
+import frc.robot.RobotState;
 
 public class RobotStateEstimator{
     static RobotStateEstimator INSTANCE;

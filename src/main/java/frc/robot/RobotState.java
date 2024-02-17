@@ -1,6 +1,4 @@
-package frc.robot.states;
-
-import com.team2052.lib.DrivetrainState;
+package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -9,8 +7,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.util.io.Dashboard;
-import frc.robot.states.Superstructure.SuperstructureState;
+import frc.robot.util.states.DrivetrainState;
 
 public class RobotState {
     private static RobotState INSTANCE;

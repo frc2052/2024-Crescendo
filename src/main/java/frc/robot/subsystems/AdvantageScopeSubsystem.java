@@ -4,7 +4,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.states.RobotState;
+import frc.robot.RobotState;
 
 public class AdvantageScopeSubsystem extends SubsystemBase {
     static IntakeSubsystem intakeSubsystem;
@@ -49,20 +49,17 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     }
 
     public static void recordIntakeData () {
-        String intakeFolder = "intake_";
+        String intakeFolder = "Intake_";
 
-        Logger.recordOutput(folder+intakeFolder+"Under Bumper Intake Lower Motor Speed", 
-        intakeSubsystem.getLowerMotorSpeed());
-
-        Logger.recordOutput(folder+intakeFolder+"Under Bumper Intake Upper Motor Speed", 
-        intakeSubsystem.getUpperMotorSpeed());
+        Logger.recordOutput(folder+intakeFolder+"Intake Speed", 
+        intakeSubsystem.getIntakeMotorSpeed());
 
     }
 
     public static void recordIndexerData() {}
 
     public static void recordTrapArmData() {
-        String trapArmFolder = "Trap Arm_";
+        String trapArmFolder = "TrapArm_";
 
         Logger.recordOutput(folder+trapArmFolder+"Trap Arm Position", 
         trapArmSubsystem.getPosition());
@@ -117,9 +114,9 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     }
 
     public static void recordVisionData() {
-        String visionFolder = "Visopn_";
+        String visionFolder = "Vision_";
 
-        Logger.recordOutput(folder+visionFolder+"Visions Has Target", visionSubsystem.hasTarget());
+        Logger.recordOutput(folder+visionFolder+"Vision Has Target", visionSubsystem.hasTarget());
 
         Logger.recordOutput(folder+visionFolder+"Best Note Pose2D", visionSubsystem.getBestNotePose());
     }

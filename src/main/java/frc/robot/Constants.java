@@ -16,6 +16,72 @@ import frc.robot.subsystems.ShamperSubsystem;
 public final class Constants {
     // TODO: Put in all the constants
 
+    public static final class CAN {
+        // Swerve Module CAN
+        public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 1;
+        public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 2;
+        public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 3;
+
+        public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
+        public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 5;
+        public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 6;
+
+        public static final int BACK_LEFT_MODULE_STEER_MOTOR = 7;
+        public static final int BACK_LEFT_MODULE_STEER_ENCODER = 8;
+        public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 9;
+
+        public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 10;
+        public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11;
+        public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 12;
+        
+        // Intake CAN
+        public static final int INTAKE_MOTOR_ID = 13;
+
+        // Indexer Spark Flex/Vortex CAN
+        public static final int LOWER_INDEX_MOTOR_ID = 14;
+
+        // Shooter CAN
+        public static final int SHAMPER_INDEX_ID = 15;
+        public static final int UPPER_SHOOTER_MOTOR_ID = 16;
+        public static final int LOWER_SHOOTER_MOTOR_ID = 17;        
+
+        // Climber CAN
+        public static final int LEFT_CLIMBER_MOTOR = 18;
+        public static final int RIGHT_CLIMBER_MOTOR = 20;
+        
+        // Shamper Pivot CAN
+        public static final int LEFT_PIVOT_SHAMPER_MOTOR_ID = 19;
+        public static final int RIGHT_PIVOT_SHAMPER_MOTOR_ID = 21;
+
+    }
+
+    public static class Drivetrain {
+        // Left-to-right distance between drivetrain wheels
+        public static final double DRIVETRAIN_TRACKWIDTH_METERS = 24;
+        // Front-to-back distance between drivetrain wheels
+        public static final double DRIVETRAIN_WHEELBASE_METERS = 19;
+
+        
+        public static final double FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS = 2.76420367321;
+        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS = 3.28720367321;
+        public static final double BACK_LEFT_MODULE_STEER_OFFSET_RADIANS = 0.0412036732;
+        public static final double BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS = -0.39179632679;
+
+
+        public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+            // Front left
+            new Translation2d(Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            // Front right
+            new Translation2d(Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            // Back left
+            new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            // Back right
+            new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0)
+        );
+
+        public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;
+    }
+
     public static final class LED {
         public static final int CHANNEL_1_PIN = 0;
         public static final int CHANNEL_2_PIN = 0;
@@ -30,7 +96,6 @@ public final class Constants {
     }
 
     public static class Climber{
-        public static final int CLIMBER_MOTOR = 0;
         public static final int CLIMBER_EXTENSION_HEIGHT_TICKS = 0;
         public static final int CLIMBER_RETRACTION_HEIGHT_TICKS = 0;
         public static final int MAX_CLIMBER_HEIGHT_TICKS_VERTICAL = 0;
@@ -40,32 +105,21 @@ public final class Constants {
     }
 
     public static class Intake {
-        public static final int UPPER_MOTOR_ID = 15;
-        public static final int LOWER_MOTOR_ID = 14;
-
         public static final double INTAKE_IN_SPEED_PCT = 0.5;
         public static final double INTAKE_OUT_SPEED_PCT = 0.5;
     }
 
     public static class Indexer {
-        public static final int LOWER_MOTOR_ID = 0;
-        public static final int UPPER_MOTOR_ID = 0;
+        public static final double LOWER_INDEX_SPEED_PCT = 0.5;
+        public static final double UPPER_INDEX_SPEED_PCT = 0.5;
 
-        public static final double UPPER_SPEED_PCT = 0;
-        public static final double LOWER_SPEED_PCT = 0;
-
-        public static final int DIGITAL_INPUT_ID = 0;
+        // DIO
+        public static final int INDEXER_SENSOR_PIN = 0;
     }
   
     public static class Shamper {
-        public static final int LOWER_SHOOTER_MOTOR_ID = 17;
-        public static final int UPPER_SHOOTER_MOTOR_ID = 16;
-        public static final int LEFT_PIVOT_SHAMPER_MOTOR_ID = 0; // is 18 or 19
-        public static final int RIGHT_PIVOT_SHAMPER_MOTOR_ID = 0; // 20 or 21
-        public static final int INDEX_MOTOR_ID = 13;
 
         // DIO pins
-        public static final int INDEXER_SENSOR_PIN = 0;
         public static final int ROTATION_ENCODER_PIN = 0;
         public static final int LIMIT_SWITCH_PIN = 0;
         public static final int AMP_HALL_EFFECT_PIN = 0;
@@ -103,7 +157,7 @@ public final class Constants {
         public static final double LOWER_MOTOR_MAX_ACCELERATION = 10000;
         
         public static final double PIVOT_MOTOR_MANUAL_UP_SPEED = 0;
-        public static final double PIVOT_MOTOR_MANUAL_DOWN_SPEED = -0;
+        public static final double PIVOT_MOTOR_MANUAL_DOWN_SPEED = 0;
         
         public static final double UPPER_SHAMPER_SPEAKER_SPEED_PCT = 0;
         public static final double LOWER_SHAMPER_SPEAKER_SPEED_PCT = 0;
@@ -163,46 +217,6 @@ public final class Constants {
         public static final double NOTE_DETECTION_CAMERA_X_OFFSET = 0;
         public static final double NOTE_DETECTION_CAMERA_Y_OFFSET = 0;
         public static final double NOTE_DETECTION_CAMERA_ROTATION_OFFSET = 0;
-    }
-
-    public static class Drivetrain {
-        // Left-to-right distance between drivetrain wheels
-        public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0;
-        // Front-to-back distance between drivetrain wheels
-        public static final double DRIVETRAIN_WHEELBASE_METERS = 0;
-
-        public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 3;
-        public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 1;
-        public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 2;
-        public static final double FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS = 2.76420367321;
-
-        public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 6;
-        public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
-        public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 5;
-        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS = 3.28720367321;
-
-        public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 9;
-        public static final int BACK_LEFT_MODULE_STEER_MOTOR = 7;
-        public static final int BACK_LEFT_MODULE_STEER_ENCODER = 8;
-        public static final double BACK_LEFT_MODULE_STEER_OFFSET_RADIANS = 0.0412036732;
-
-        public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 12;
-        public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 10;
-        public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11;
-        public static final double BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS = -0.39179632679;
-
-        public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-            // Front left
-            new Translation2d(Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
-            // Front right
-            new Translation2d(Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
-            // Back left
-            new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
-            // Back right
-            new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0)
-        );
-
-        public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;
     }
 
     public static final class Elevator{

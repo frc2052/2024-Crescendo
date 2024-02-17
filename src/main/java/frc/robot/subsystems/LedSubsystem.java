@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.states.RobotState;
+import frc.robot.RobotState;
 
 public class LedSubsystem extends SubsystemBase {
      private static LedSubsystem INSTANCE;

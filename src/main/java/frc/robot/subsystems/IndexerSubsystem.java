@@ -11,7 +11,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.states.RobotState;
+import frc.robot.RobotState;
 
 public class IndexerSubsystem extends SubsystemBase {
   private final CANSparkMax upperMotor;
@@ -19,22 +19,22 @@ public class IndexerSubsystem extends SubsystemBase {
   private final DigitalInput noteDetector;
 
   public IndexerSubsystem() {
-    upperMotor = new CANSparkMax(Constants.Indexer.LOWER_MOTOR_ID, MotorType.kBrushless);
-    lowerMotor = new CANSparkFlex(Constants.Indexer.UPPER_MOTOR_ID, MotorType.kBrushless);
-    noteDetector = new DigitalInput(Constants.Indexer.DIGITAL_INPUT_ID);
+    upperMotor = new CANSparkMax(Constants.CAN.LOWER_INDEX_MOTOR_ID, MotorType.kBrushless);
+    lowerMotor = new CANSparkFlex(Constants.CAN.SHAMPER_INDEX_ID, MotorType.kBrushless);
+    noteDetector = new DigitalInput(Constants.Indexer.INDEXER_SENSOR_PIN);
 
     upperMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     lowerMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
   }
 
   public void index() {
-    upperMotor.set(Constants.Indexer.UPPER_SPEED_PCT);
-    lowerMotor.set(Constants.Indexer.LOWER_SPEED_PCT);
+    upperMotor.set(Constants.Indexer.UPPER_INDEX_SPEED_PCT);
+    lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
   }
 
   public void reverse() {
-    upperMotor.set(-Constants.Indexer.UPPER_SPEED_PCT);
-    lowerMotor.set(-Constants.Indexer.LOWER_SPEED_PCT);
+    upperMotor.set(-Constants.Indexer.UPPER_INDEX_SPEED_PCT);
+    lowerMotor.set(-Constants.Indexer.LOWER_INDEX_SPEED_PCT);
   }
 
   public void stop() {

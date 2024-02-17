@@ -1,8 +1,8 @@
 package frc.robot.util;
 
 import frc.robot.Constants;
-import frc.robot.states.RobotState;
-import frc.robot.states.ShamperAndRotationState;
+import frc.robot.RobotState;
+import frc.robot.util.states.ShamperAndRotationState;
 
 public class AimingCalculator {
     

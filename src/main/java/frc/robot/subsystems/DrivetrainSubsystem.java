@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.team2052.lib.DrivetrainState;
 import com.team2052.swervemodule.SwerveModule;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,8 +17,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.states.RobotState;
+import frc.robot.RobotState;
 import frc.robot.util.RobotStateEstimator;
+import frc.robot.util.states.DrivetrainState;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     private RobotState robotState = RobotState.getInstance();
@@ -36,30 +36,30 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public DrivetrainSubsystem() {
         frontLeftModule = new SwerveModule(
             "front left",
-            Constants.Drivetrain.FRONT_LEFT_MODULE_DRIVE_MOTOR,
-            Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_MOTOR,
-            Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_ENCODER,
+            Constants.CAN.FRONT_LEFT_MODULE_DRIVE_MOTOR,
+            Constants.CAN.FRONT_LEFT_MODULE_STEER_MOTOR,
+            Constants.CAN.FRONT_LEFT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS)
         );
         frontRightModule = new SwerveModule(
             "front right",
-            Constants.Drivetrain.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
-            Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_MOTOR,
-            Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_ENCODER,
+            Constants.CAN.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
+            Constants.CAN.FRONT_RIGHT_MODULE_STEER_MOTOR,
+            Constants.CAN.FRONT_RIGHT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS)
         );
         backLeftModule = new SwerveModule(
             "back left",
-            Constants.Drivetrain.BACK_LEFT_MODULE_DRIVE_MOTOR,
-            Constants.Drivetrain.BACK_LEFT_MODULE_STEER_MOTOR,
-            Constants.Drivetrain.BACK_LEFT_MODULE_STEER_ENCODER,
+            Constants.CAN.BACK_LEFT_MODULE_DRIVE_MOTOR,
+            Constants.CAN.BACK_LEFT_MODULE_STEER_MOTOR,
+            Constants.CAN.BACK_LEFT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.BACK_LEFT_MODULE_STEER_OFFSET_RADIANS)
         );
         backRightModule = new SwerveModule(
             "back right",
-            Constants.Drivetrain.BACK_RIGHT_MODULE_DRIVE_MOTOR,
-            Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_MOTOR,
-            Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_ENCODER,
+            Constants.CAN.BACK_RIGHT_MODULE_DRIVE_MOTOR,
+            Constants.CAN.BACK_RIGHT_MODULE_STEER_MOTOR,
+            Constants.CAN.BACK_RIGHT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS)
         );
 

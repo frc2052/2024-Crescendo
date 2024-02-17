@@ -1,4 +1,4 @@
-package frc.robot.states;
+package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -6,9 +6,6 @@ import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
 import frc.robot.commands.shamper.ShamperShootCommand;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.AimingCalculator;
 
