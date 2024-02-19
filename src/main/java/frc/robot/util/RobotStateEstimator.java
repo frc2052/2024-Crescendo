@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 
-public class RobotStateEstimator{
+public class RobotStateEstimator {
     static RobotStateEstimator INSTANCE;
     private RobotState robotState = RobotState.getInstance();
 
@@ -42,7 +42,7 @@ public class RobotStateEstimator{
         }
 
         poseEstimator.addVisionMeasurement(
-            robotState.getVisionPose2d(),
+            robotState.getVisionPose3d().toPose2d(),
             robotState.getVisionDetectionTime()
         );
         

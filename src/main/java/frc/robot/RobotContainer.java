@@ -28,7 +28,6 @@ import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.util.RobotStatusCommunicator;
-import frc.robot.util.io.Dashboard;
 
 import java.util.function.BooleanSupplier;
 
@@ -40,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
+  private RobotState robotState = RobotState.getInstance();
   private final DrivetrainSubsystem drivetrain;
   private final IntakeSubsystem intake;
   private final ShamperSubsystem shamper;
@@ -51,6 +51,7 @@ public class RobotContainer {
   // private final TrapArmSubsystem trapArm;
 
   private final Superstructure superstructure;
+  public final RobotStatusCommunicator robotStatusCommunicator;
 
   private final AutoFactory autoFactory;
 
@@ -59,16 +60,12 @@ public class RobotContainer {
   private final Joystick controlPanel;
 
   private BooleanSupplier fieldCentricSupplier;
-  public static boolean musicOn;
-  public RobotStatusCommunicator robotStatusCommunicator;
+  public boolean musicOn;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    translationJoystick = new Joystick(0);
-    rotationJoystick = new Joystick(1);
-    controlPanel = new Joystick(2);
-
     drivetrain = new DrivetrainSubsystem();
     intake = new IntakeSubsystem();
+    indexer = new IndexerSubsystem();
     shamper = new ShamperSubsystem();
     indexer = new IndexerSubsystem();
     // climber = new ClimberSubsystem();
@@ -156,8 +153,6 @@ public class RobotContainer {
     JoystickButton speakerIdleSetupButton = new JoystickButton(controlPanel, 5);
     JoystickButton speakerScoreSetupButton = new JoystickButton(controlPanel, 6);
     JoystickButton shamperDefaultButton = new JoystickButton(controlPanel, 12);
-    JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 3);
-    JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 4);
 
     ampIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
     ampScoreButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_SCORE)));
@@ -170,6 +165,7 @@ public class RobotContainer {
 
   // public Command toggleMusic() {
   //   musicOn = !musicOn;
+  //   robotState.setMusicEnableStatus(musicOn);;
   //   if (!musicOn) {new PauseMusicPlayerCommand(musicPlayer);}
   //   return null;
   // }
@@ -177,6 +173,7 @@ public class RobotContainer {
   public void forceRecompile() {
     autoFactory.recompile();
   }
+
 
   public void precompileAuto() {
       if (autoFactory.recompileNeeded()) {

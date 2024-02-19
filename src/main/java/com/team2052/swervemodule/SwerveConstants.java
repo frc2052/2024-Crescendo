@@ -12,7 +12,7 @@ public final class SwerveConstants {
     public static final int DRIVE_STALL_CURRENT_LIMIT_AMPS = 40;
     public static final int DRIVE_FREE_CURRENT_LIMIT_AMPS = 60;
     public static final double STEER_CURRENT_LIMIT_AMPS = 20.0;
-    public static final int CAN_TIMEOUT_MS = 250;
+    public static final double CAN_TIMEOUT_SECONDS = 0.25;
 
     public static final class SwerveModule {
         public static final int NEO_ROUNDS_PER_MINUTE = 5676;

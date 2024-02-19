@@ -33,6 +33,12 @@ public class DriveWhileAimingCommand extends Command {
         BooleanSupplier fieldCentricSupplier,
         DrivetrainSubsystem drivetrain
     ) {
+        DoubleSupplier rotationSupplier = new DoubleSupplier() {
+            @Override
+            public double getAsDouble() {
+                return AimingCalculator.calculation().getRobotAngle();
+            }
+        };
         this.drivetrain = drivetrain;
 
         this.xSupplier = xSupplier;
