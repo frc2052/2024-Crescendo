@@ -6,7 +6,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.commands.music.PlayTeleopJingleCommand;
 import frc.robot.commands.music.PlayTwentySecondsLeftCommand;
-import frc.robot.states.RobotState;
+import frc.robot.RobotState;
 import frc.robot.subsystems.MusicPlayerSubsystem;
 
 public class RobotStatusCommunicator {

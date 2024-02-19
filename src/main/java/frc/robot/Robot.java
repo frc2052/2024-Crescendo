@@ -10,8 +10,6 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.states.RobotState;
-import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.util.RobotStateEstimator;
 
 public class Robot extends LoggedRobot {

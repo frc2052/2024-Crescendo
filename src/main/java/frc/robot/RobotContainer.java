@@ -28,6 +28,7 @@ import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.util.RobotStatusCommunicator;
+import frc.robot.util.io.Dashboard;
 
 import java.util.function.BooleanSupplier;
 

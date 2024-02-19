@@ -36,7 +36,7 @@ public class DriveWhileAimingCommand extends Command {
         DoubleSupplier rotationSupplier = new DoubleSupplier() {
             @Override
             public double getAsDouble() {
-                return AimingCalculator.calculation().getRobotAngle();
+                return AimingCalculator.calculate().getRobotAngle();
             }
         };
         this.drivetrain = drivetrain;
