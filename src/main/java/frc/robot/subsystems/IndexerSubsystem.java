@@ -14,20 +14,28 @@ import frc.robot.Constants;
 import frc.robot.RobotState;
 
 public class IndexerSubsystem extends SubsystemBase {
-  private final CANSparkMax upperMotor;
   private final CANSparkFlex lowerMotor;
+  private final CANSparkMax upperMotor;
   private final DigitalInput noteDetector;
 
   public IndexerSubsystem() {
-    upperMotor = new CANSparkMax(Constants.CAN.LOWER_INDEX_MOTOR_ID, MotorType.kBrushless);
-    lowerMotor = new CANSparkFlex(Constants.CAN.SHAMPER_INDEX_ID, MotorType.kBrushless);
+    lowerMotor = new CANSparkFlex(Constants.CAN.LOWER_INDEX_MOTOR_ID, MotorType.kBrushless);
+    upperMotor = new CANSparkMax(Constants.CAN.SHAMPER_INDEX_ID, MotorType.kBrushless);
     noteDetector = new DigitalInput(Constants.Indexer.INDEXER_SENSOR_PIN);
 
     upperMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     lowerMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
   }
 
-  public void index() {
+  public void indexLower() {
+    lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
+  }
+
+  public void indexUpper() {
+    upperMotor.set(Constants.Indexer.UPPER_INDEX_SPEED_PCT);
+  }
+
+  public void indexAll() {
     upperMotor.set(Constants.Indexer.UPPER_INDEX_SPEED_PCT);
     lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
   }

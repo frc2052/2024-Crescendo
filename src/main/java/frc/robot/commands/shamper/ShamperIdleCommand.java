@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
-public class ShamperManualDownCommand extends Command {
+public class ShamperIdleCommand extends Command {
   private ShamperSubsystem shamper;
-  /** Creates a new ShamperManualCommand. */
-  public ShamperManualDownCommand(ShamperSubsystem shamper) {
+  private ShamperSpeed idleSpeed;
+  /** Creates a new ShamperIdleCommand. */
+  public ShamperIdleCommand(ShamperSubsystem shamper, ShamperSpeed idleSpeed) {
     this.shamper = shamper;
+    this.idleSpeed = idleSpeed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shamper);
   }
@@ -20,15 +22,13 @@ public class ShamperManualDownCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shamper.manualDown();
+    shamper.setShootSpeed(idleSpeed);
   }
-
-  // Called every time the scheduler runs while the command is scheduled.
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shamper.setSpeed(ShamperSpeed.OFF);
+    shamper.setShootSpeed(ShamperSpeed.OFF);
   }
 
   // Returns true when the command should end.

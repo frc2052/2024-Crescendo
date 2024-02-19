@@ -17,7 +17,7 @@ public class IntakeCommand extends Command {
     @Override
     public void execute() {
         intake.intake();
-        indexer.index();
+        indexer.indexAll();
     }
 
     @Override
@@ -26,8 +26,8 @@ public class IntakeCommand extends Command {
         indexer.stop();
     }
 
-    @Override
-    public boolean isFinished() {
-        return indexer.getNoteDetector();
-    }
+    // @Override
+    // public boolean isFinished() {
+    //     return indexer.getNoteDetector();
+    // }
 }

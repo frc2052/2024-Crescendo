@@ -29,6 +29,9 @@ public final class SwerveConstants {
         public static final double STEER_REDUCTION = (14.0 / 50.0) * (10.0 / 60.0);
         public static final boolean STEER_INVERTED = false;
 
+        public static final double drivePositionConversionFactor = Math.PI * SwerveConstants.SwerveModule.WHEEL_DIAMETER_METERS * 
+        SwerveConstants.SwerveModule.DRIVE_REDUCTION;
+
         // L2
         // public static final double WHEEL_DIAMETER_METERS = 0.10033;
         // public static final double DRIVE_REDUCTION = (14.0 / 50.0) * (27.0 / 17.0) * (15.0 / 45.0);

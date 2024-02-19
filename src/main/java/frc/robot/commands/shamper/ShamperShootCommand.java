@@ -31,13 +31,19 @@ public class ShamperShootCommand extends Command{
 
     @Override
     public void initialize() {
-        indexer.index();
-        shamper.setSpeed(goalSpeed);
+        shamper.setShootSpeed(goalSpeed);
+    }
+
+    @Override
+    public void execute() {
+        if(shamper.shooterAtSpeed()) {
+            indexer.indexAll();
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
         indexer.stop();
-        shamper.setSpeed(endSpeed);
+        shamper.setShootSpeed(endSpeed);
     }
 }

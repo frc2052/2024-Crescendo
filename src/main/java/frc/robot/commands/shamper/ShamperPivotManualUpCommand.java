@@ -6,13 +6,12 @@ package frc.robot.commands.shamper;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
-public class ShamperManualUpCommand extends Command {
+public class ShamperPivotManualUpCommand extends Command {
   private ShamperSubsystem shamper;
 
   /** Creates a new ShamperManualCommand. */
-  public ShamperManualUpCommand(ShamperSubsystem shamper) {
+  public ShamperPivotManualUpCommand(ShamperSubsystem shamper) {
     this.shamper = shamper;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shamper);
@@ -29,7 +28,7 @@ public class ShamperManualUpCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shamper.setSpeed(ShamperSpeed.OFF);
+    shamper.stopPivot();
   }
 
   // Returns true when the command should end.

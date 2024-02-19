@@ -64,7 +64,19 @@ public class SwerveModule {
      */
 
     driveMotor = new TalonFX(driveMotorChannel);
-    driveMotor.getConfigurator().apply(new TalonFXConfiguration());
+    // checkError("Failed to restore drive motor factory defaults", driveMotor.restoreFactoryDefaults());
+
+    // checkError(
+    //     "Failed to set drive motor periodic status frame rate",
+    //     driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100),
+    //     driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20),
+    //     driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20)
+    // );
+
+    // checkError(
+    //     "Failed to set drive motor idle mode",
+    //     driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake)
+    // );
 
     driveMotor.setNeutralMode(NeutralModeValue.Brake);
 
@@ -179,9 +191,7 @@ public class SwerveModule {
         );
 
         // Set the motor to our desired velocity as a percentage of our max velocity
-        driveMotor.set(
-            desiredState.speedMetersPerSecond / getMaxVelocityMetersPerSecond()
-        );
+        driveMotor.set(desiredState.speedMetersPerSecond / getMaxVelocityMetersPerSecond());
 
         steerMotor.getPIDController().setReference(
             desiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition
@@ -192,7 +202,7 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            driveMotor.getPosition().getValueAsDouble(),
+            driveMotor.getRotorPosition().getValueAsDouble() * SwerveConstants.SwerveModule.drivePositionConversionFactor,
             new Rotation2d(
                 steerMotor.getEncoder().getPosition()
             )

@@ -96,6 +96,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(), getNavx().getRotation2d()));
+        debug();
     }
 
     /**

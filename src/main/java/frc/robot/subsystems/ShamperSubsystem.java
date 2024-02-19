@@ -4,8 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -36,7 +35,8 @@ public class ShamperSubsystem extends SubsystemBase {
   private ShamperSpeed goalSpeed;
 
   public ShamperSubsystem() {
-
+    goalSpeed = ShamperSpeed.OFF;
+// TODO: make them coast
     lowerMotor = new TalonFX(Constants.CAN.LOWER_SHOOTER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(
     Constants.Shamper.LOWER_MOTOR_KP,
@@ -74,24 +74,55 @@ public class ShamperSubsystem extends SubsystemBase {
     leftPivotMotor.setInverted(Constants.Shamper.LEFT_PIVOT_MOTOR_IS_INVERTED);
     rightPivotMotor.follow(leftPivotMotor, true);
 
-    limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_PIN);
-    ampHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_PIN);
-    podiumHallEffectSensor = new DigitalInput(Constants.Shamper.PODIUM_HALL_EFFECT_PIN);
+    // limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_PIN);
+    // ampHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_PIN);
+    // podiumHallEffectSensor = new DigitalInput(Constants.Shamper.PODIUM_HALL_EFFECT_PIN);
   }
 
   public void stopShooter() {
-    lowerMotor.set(TalonFXControlMode.PercentOutput, ShamperSpeed.OFF.getLowerPCT());
-    upperMotor.set(TalonFXControlMode.PercentOutput, ShamperSpeed.OFF.getUpperPCT());
+    lowerMotor.set(ShamperSpeed.OFF.getLowerPCT());
+    upperMotor.set(ShamperSpeed.OFF.getUpperPCT());
   }
 
-  public void setSpeed(ShamperSpeed speeds) { 
+  public void setShootSpeed(ShamperSpeed speeds) { 
     goalSpeed = speeds;
-    lowerMotor.set(TalonFXControlMode.PercentOutput, lowerMotorController.calculate(getLowerShamperSpeed(), goalSpeed.getLowerPCT()));
-    upperMotor.set(TalonFXControlMode.PercentOutput, upperMotorController.calculate(getUpperShamperSpeed(), goalSpeed.getUpperPCT()));
+    lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), goalSpeed.getLowerPCT()));
+    upperMotor.set(-upperMotorController.calculate(getUpperShamperSpeed(), goalSpeed.getUpperPCT()));
+  }
+
+  public void setShootSpeed(double lowerSpeed, double upperSpeed) {
+    lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), contrainSpeed(lowerSpeed)));
+    upperMotor.set(-upperMotorController.calculate(getUpperShamperSpeed(), contrainSpeed(upperSpeed)));
+  }
+
+  public double contrainSpeed(double speed){
+    if(speed > 1){
+      speed = 1;
+    } else if (speed < -1){
+      speed = -1;
+    }
+
+    return speed;
   }
 
   public boolean atSpeed(TalonFX motor, double goalSpeed){
-    if((Math.abs(motor.getMotorOutputPercent()) - Math.abs(goalSpeed)) < Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_PCT){
+    if((Math.abs(motor.get()) - Math.abs(goalSpeed)) < Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_PCT){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean shooterAtSpeed(){
+    if((atSpeed(lowerMotor, goalSpeed.lowerPercentOutput)) && atSpeed(upperMotor, goalSpeed.upperPercentOutput)){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean shooterAtSpeed(double goalSpeed){
+    if((atSpeed(lowerMotor, goalSpeed)) && atSpeed(upperMotor, goalSpeed)){
       return true;
     } else {
       return false;
@@ -137,11 +168,11 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public double getUpperShamperSpeed() {
-    return upperMotor.getSelectedSensorVelocity();
+    return upperMotor.get();
   }
 
   public double getLowerShamperSpeed() {
-    return lowerMotor.getSelectedSensorVelocity();
+    return lowerMotor.get();
   }  
 
   public void manualUp() {
@@ -163,15 +194,18 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public boolean isAtAmpLevel() {
-    return !ampHallEffectSensor.get();
+    //return !ampHallEffectSensor.get();
+    return false;
   }
 
   public boolean isAtPodiumLevel() {
-    return !podiumHallEffectSensor.get();
+    //return !podiumHallEffectSensor.get();
+    return false;
   }
 
   public boolean shamperZeroed() {
-    return !limitSwitch.get();
+    //return !limitSwitch.get();
+    return false;
   }
 
   @Override
@@ -180,11 +214,11 @@ public class ShamperSubsystem extends SubsystemBase {
       rotationEncoder.reset();
     }
 
-    if (atAngle()) {
-        stopPivot();
-    } else {
-      setAngle(goalAngle);
-    }
+    // if (atAngle()) {
+    //     stopPivot();
+    // } else {
+    //   setAngle(goalAngle);
+    // }
 
     if(atSpeed(upperMotor, goalSpeed.getUpperPCT())) {
       SmartDashboard.putBoolean("Upper Motor At Speed", true);
@@ -200,18 +234,20 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public static enum ShamperSpeed {
-    OFF(0, 0),
-    SPEAKER_IDLE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT),
-    AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_PCT),
-    SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_PCT),
-    AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_PCT);
+    OFF(0, 0, true),
+    SPEAKER_IDLE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT, true),
+    AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_PCT, true),
+    SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_PCT, false),
+    AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_PCT, false);
 
     private final double lowerPercentOutput;
     private final double upperPercentOutput;
+    private final boolean isIdle;
 
-    private ShamperSpeed(double lowerPercentOutput, double upperPercentOutput) {
+    private ShamperSpeed(double lowerPercentOutput, double upperPercentOutput, boolean isIdle) {
       this.lowerPercentOutput = lowerPercentOutput;
       this.upperPercentOutput = upperPercentOutput;
+      this.isIdle = isIdle;
     }
 
     public double getLowerPCT() {
@@ -220,6 +256,10 @@ public class ShamperSubsystem extends SubsystemBase {
 
     public double getUpperPCT() {
       return upperPercentOutput;
+    }
+
+    public boolean isIdle() {
+      return isIdle;
     }
   }
 }

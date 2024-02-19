@@ -12,29 +12,38 @@ import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.OuttakeCommand;
-import frc.robot.commands.music.PauseMusicPlayerCommand;
-import frc.robot.commands.music.PlayActivationJingleCommand;
-import frc.robot.commands.shamper.ShamperManualDownCommand;
-import frc.robot.commands.shamper.ShamperManualUpCommand;
-import frc.robot.subsystems.AdvantageScopeSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
+//import frc.robot.commands.music.PauseMusicPlayerCommand;
+//import frc.robot.commands.music.PlayActivationJingleCommand;
+import frc.robot.commands.shamper.ShamperManualShootCommand;
+import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
+import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
+import frc.robot.commands.shamper.ShamperShootCommand;
+import frc.robot.commands.shamper.ShamperStopCommand;
+//import frc.robot.subsystems.AdvantageScopeSubsystem;
+//import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.MusicPlayerSubsystem;
+//import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.TrapArmSubsystem;
+//import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
-import frc.robot.util.RobotStatusCommunicator;
+//import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 
 import java.util.function.BooleanSupplier;
 
+import javax.swing.JOptionPane;
+
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -51,8 +60,7 @@ public class RobotContainer {
   // private final AdvantageScopeSubsystem advantageScope;
   // private final TrapArmSubsystem trapArm;
 
-  private final Superstructure superstructure;
-  public final RobotStatusCommunicator robotStatusCommunicator;
+  // private final Superstructure superstructure;
 
   private final AutoFactory autoFactory;
 
@@ -60,29 +68,32 @@ public class RobotContainer {
   private final Joystick rotationJoystick;
   private final Joystick controlPanel;
 
-  private BooleanSupplier fieldCentricSupplier;
-  public boolean musicOn;
+  public static boolean musicOn;
+  //public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = new DrivetrainSubsystem();
     intake = new IntakeSubsystem();
     indexer = new IndexerSubsystem();
     shamper = new ShamperSubsystem();
-    indexer = new IndexerSubsystem();
-    // climber = new ClimberSubsystem();
+    //climber = new ClimberSubsystem();
     // musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     // trapArm = new TrapArmSubsystem();
-    //advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
+    // advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
 
-    // superstructure = new Superstructure(shamper, climber, indexer);
-    superstructure = new Superstructure(shamper, indexer);
+    //superstructure = new Superstructure(shamper, climber, indexer);
+    // superstructure = new Superstructure(shamper, indexer);
 
-    //robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
+    // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
 
     autoFactory = new AutoFactory(() -> Dashboard.getInstance().getAuto());
+
+    translationJoystick = new Joystick(0);
+    rotationJoystick = new Joystick(1);
+    controlPanel = new Joystick(2);
 
     drivetrain.setDefaultCommand(
       new DriveCommand(
@@ -92,38 +103,39 @@ public class RobotContainer {
           translationJoystick::getX,
           // Rotation velocity supplier.
           rotationJoystick::getX,
-          Dashboard.getInstance()::isFieldCentric,
+          () ->false,
+          //Dashboard.getInstance()::isFieldCentric,
           drivetrain
       )
     );
 
-    NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer));
-    NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake));
-    NamedCommands.registerCommand("Default Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.DEFAULT)));
-    NamedCommands.registerCommand("Speaker Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
-    NamedCommands.registerCommand("Speaker Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_SCORE)));
-    NamedCommands.registerCommand("Amp Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_IDLE)));
-    NamedCommands.registerCommand("Amp Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_SCORE)));
+    // NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer));
+    // NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake, indexer));
+    // NamedCommands.registerCommand("Default Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.DEFAULT)));
+    // NamedCommands.registerCommand("Speaker Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
+    // NamedCommands.registerCommand("Speaker Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_SCORE)));
+    // NamedCommands.registerCommand("Amp Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_IDLE)));
+    // NamedCommands.registerCommand("Amp Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_SCORE)));
 
     //advantageScope.startRecording();
 
-    configureBindings();
+    configureButtonBindings();
   }
 
-  private void configureBindings() {
+  private void configureButtonBindings() {
 
     /*
-     * 
+     * Drive Commands
      */
-    JoystickButton motionAimButton = new JoystickButton(rotationJoystick, 0);
+    // JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 1);
     // JoystickButton orbitNoteButton = new JoystickButton(translationJoystick, 0);
 
-    motionAimButton.whileTrue(new DriveWhileAimingCommand(
-      () -> translationJoystick.getX(), 
-      () -> translationJoystick.getY(), 
-      fieldCentricSupplier, 
-      drivetrain
-    ));
+    // driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(
+    //   () -> translationJoystick.getX(), 
+    //   () -> translationJoystick.getY(), 
+    //   fieldCentricSupplier, 
+    //   drivetrain
+    // ));
 
     // orbitNoteButton.whileTrue(new DriveWhileOrbitingNoteCommand(
     //   () -> translationJoystick.getX(), 
@@ -132,36 +144,72 @@ public class RobotContainer {
     //   drivetrain, vision
     // ));
 
+
+    /*
+     *  Climber Button Bindings
+     */
     // JoystickButton raiseClimberButton = new JoystickButton(controlPanel, 12);
     // JoystickButton lowerClimberButton = new JoystickButton(controlPanel, 11);
     
-    // raiseClimberButton.whileTrue(new ClimerExtendCommand(climber));
+    // raiseClimberButton.whileTrue(new ClimberExtendCommand(climber));
     // lowerClimberButton.whileTrue(new ClimberRetractCommand(climber));
     /*
      * Intake Button Bindings
      */
-    JoystickButton intakeInButton = new JoystickButton(controlPanel, 10);
-    JoystickButton intakeOutButton = new JoystickButton(controlPanel, 9);
+    JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
+    JoystickButton intakeOutButton = new JoystickButton(translationJoystick, 11);
     
     intakeInButton.whileTrue(new IntakeCommand(intake, indexer));
-    intakeOutButton.whileTrue(new OuttakeCommand(intake));
+    intakeOutButton.whileTrue(new OuttakeCommand(intake, indexer));
 
+    /*
+     *  Manual Shamper Button Bindings
+     */
+    // JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 3);
+    // JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 4);
+    JoystickButton shamperManualShotButton = new JoystickButton(rotationJoystick, 1);
+    JoystickButton indexPlsBUtton = new JoystickButton(rotationJoystick, 2);
+
+    indexPlsBUtton.onTrue(new InstantCommand(() -> indexer.indexAll()));
+
+    // ShuffleboardTab tab = Shuffleboard.getTab("test");
+    // GenericEntry shootSpeedPct = tab.add("ShootSpeed", 0).getEntry();
+    
+    // shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
+    // shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
+    shamperManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, indexer, 1)).onFalse(new ShamperStopCommand(shamper));
+
+    /*
+     *  Superstructure Position Button Bindings
+     */
+
+    // JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
+    // JoystickButton shamperAmpIdleButton = new JoystickButton(rotationJoystick, 2);
+    // JoystickButton shamperSpeakerIdleAimButon = new JoystickButton(rotationJoystick, 3);
+    // JoystickButton shamperPodiumIdleButton = new JoystickButton(rotationJoystick, 4);
+    // JoystickButton shamperDefaultButton = new JoystickButton(rotationJoystick, 5);
+
+    // shamperAmpIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
+    // shamperSpeakerIdleAimButon.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
+    // shamperPodiumIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.PODIUM_IDLE)));
+    
+    // shamperShootButton.onTrue(new InstantCommand(() -> {
+    //   if(superstructure.getState() == SuperstructureState.AMP_IDLE) {
+    //     superstructure.setState(SuperstructureState.AMP_SCORE);
+    //   } else if (superstructure.getState() == SuperstructureState.SPEAKER_IDLE) {
+    //     superstructure.setState(SuperstructureState.SPEAKER_SCORE);
+    //   } else if (superstructure.getState() == SuperstructureState.PODIUM_IDLE) {
+    //     superstructure.setState(SuperstructureState.PODIUM_SCORE);
+    //   }
+    // })).onFalse(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
+
+    // shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
+    
+    /*
+     * Music Player Toggle
+     */
     // JoystickButton toggleMusicPlayerButton = new JoystickButton(controlPanel, 2);
     // toggleMusicPlayerButton.onTrue(toggleMusic());
-
-    JoystickButton ampIdleButton = new JoystickButton(controlPanel, 7);
-    JoystickButton ampScoreButton = new JoystickButton(controlPanel, 1);
-    JoystickButton speakerIdleSetupButton = new JoystickButton(controlPanel, 5);
-    JoystickButton speakerScoreSetupButton = new JoystickButton(controlPanel, 6);
-    JoystickButton shamperDefaultButton = new JoystickButton(controlPanel, 12);
-
-    ampIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
-    ampScoreButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_SCORE)));
-    speakerIdleSetupButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
-    speakerScoreSetupButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_SCORE)));
-    shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
-    shamperManualUpButton.whileTrue(new ShamperManualUpCommand(shamper));
-    shamperManualDownButton.whileTrue(new ShamperManualDownCommand(shamper));
   }
 
   // public Command toggleMusic() {

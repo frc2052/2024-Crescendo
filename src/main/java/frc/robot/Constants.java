@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -25,21 +25,21 @@ public final class Constants {
 
     public static final class CAN {
         // Swerve Module CAN
-        public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 1;
-        public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 2;
-        public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 3;
+        public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 10;
+        public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 11;
+        public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 12;
 
-        public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
-        public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 5;
-        public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 6;
+        public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 1;
+        public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 2;
+        public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3;
 
         public static final int BACK_LEFT_MODULE_STEER_MOTOR = 7;
         public static final int BACK_LEFT_MODULE_STEER_ENCODER = 8;
         public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 9;
 
-        public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 10;
-        public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11;
-        public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 12;
+        public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;
+        public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 5;
+        public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 6;
         
         // Intake CAN
         public static final int INTAKE_MOTOR_ID = 13;
@@ -48,17 +48,17 @@ public final class Constants {
         public static final int LOWER_INDEX_MOTOR_ID = 14;
 
         // Shooter CAN
-        public static final int SHAMPER_INDEX_ID = 15;
-        public static final int UPPER_SHOOTER_MOTOR_ID = 16;
+        public static final int SHAMPER_INDEX_ID = 16;
+        public static final int UPPER_SHOOTER_MOTOR_ID = 15;
         public static final int LOWER_SHOOTER_MOTOR_ID = 17;        
 
         // Climber CAN
-        public static final int LEFT_CLIMBER_MOTOR = 18;
-        public static final int RIGHT_CLIMBER_MOTOR = 20;
+        public static final int LEFT_CLIMBER_MOTOR = 19;
+        public static final int RIGHT_CLIMBER_MOTOR = 21;
         
         // Shamper Pivot CAN
-        public static final int LEFT_PIVOT_SHAMPER_MOTOR_ID = 19;
-        public static final int RIGHT_PIVOT_SHAMPER_MOTOR_ID = 21;
+        public static final int LEFT_PIVOT_SHAMPER_MOTOR_ID = 18;
+        public static final int RIGHT_PIVOT_SHAMPER_MOTOR_ID = 20;
 
     }
 
@@ -109,16 +109,19 @@ public final class Constants {
         public static final int MIN_CLIMBER_HEIGHT_TICKS = 0;
         public static final int WINCH_CIRCUMFERENCE_INCHES = 0;
         public static final int TICKS_PER_WINCH_ROTATION = 0;
+
+        public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
+        public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
     }
 
     public static class Intake {
-        public static final double INTAKE_IN_SPEED_PCT = 0.5;
-        public static final double INTAKE_OUT_SPEED_PCT = 0.5;
+        public static final double INTAKE_IN_SPEED_PCT = -1;
+        public static final double INTAKE_OUT_SPEED_PCT = 1;
     }
 
     public static class Indexer {
-        public static final double LOWER_INDEX_SPEED_PCT = 0.5;
-        public static final double UPPER_INDEX_SPEED_PCT = 0.5;
+        public static final double LOWER_INDEX_SPEED_PCT = 1;
+        public static final double UPPER_INDEX_SPEED_PCT = 1;
 
         // DIO
         public static final int INDEXER_SENSOR_PIN = 0;
@@ -127,7 +130,7 @@ public final class Constants {
     public static class Shamper {
 
         // DIO pins
-        public static final int ROTATION_ENCODER_PIN = 0;
+        public static final int ROTATION_ENCODER_PIN = 1;
         public static final int LIMIT_SWITCH_PIN = 0;
         public static final int AMP_HALL_EFFECT_PIN = 0;
         public static final int PODIUM_HALL_EFFECT_PIN = 0;
