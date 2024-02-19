@@ -23,7 +23,7 @@ public class ShamperShootCommand extends Command{
     public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, ShamperSpeed goalSpeed) {
         this.shamper = shamper;
         this.goalSpeed = goalSpeed;
-        this.endSpeed = goalSpeed;
+        this.endSpeed = ShamperSpeed.OFF;
         this.indexer = indexer;
 
         addRequirements(shamper, indexer);
@@ -36,7 +36,7 @@ public class ShamperShootCommand extends Command{
 
     @Override
     public void execute() {
-        if(shamper.shooterAtSpeed()) {
+        if(shamper.shooterAtSpeed(goalSpeed.getLowerPCT(), goalSpeed.getUpperPCT())) {
             indexer.indexAll();
         }
     }

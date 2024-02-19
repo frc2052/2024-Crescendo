@@ -113,16 +113,8 @@ public class ShamperSubsystem extends SubsystemBase {
     }
   }
 
-  public boolean shooterAtSpeed(){
-    if((atSpeed(lowerMotor, goalSpeed.lowerPercentOutput)) && atSpeed(upperMotor, goalSpeed.upperPercentOutput)){
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public boolean shooterAtSpeed(double goalSpeed){
-    if((atSpeed(lowerMotor, goalSpeed)) && atSpeed(upperMotor, goalSpeed)){
+  public boolean shooterAtSpeed(double lowerGoalSpeed, double upperGoalSpeed){
+    if((atSpeed(lowerMotor, lowerGoalSpeed)) && atSpeed(upperMotor, upperGoalSpeed)){
       return true;
     } else {
       return false;

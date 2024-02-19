@@ -75,15 +75,26 @@ public final class Constants {
         public static final double BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS = -0.39179632679;
 
 
+        // public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+        //     // Front left
+        //     new Translation2d(Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+        //     // Front right
+        //     new Translation2d(Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+        //     // Back left
+        //     new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+        //     // Back right
+        //     new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0)
+        // );
+
         public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             // Front left
-            new Translation2d(Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            new Translation2d(-0.302, 0.298),
             // Front right
-            new Translation2d(Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            new Translation2d(0.302,  0.298),
             // Back left
-            new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+            new Translation2d(-0.302, -0.178),
             // Back right
-            new Translation2d(-Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0)
+            new Translation2d(0.302, -0.178)
         );
 
         public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;
@@ -232,12 +243,12 @@ public final class Constants {
         // TODO: Add PiCamera offsets
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
 
-        public static final double X_OFFSET_INCHES = 0;
-        public static final double Y_OFFSET_INCHES = 0;
-        public static final double Z_OFFSET_INCHES = 0;
+        public static final double X_OFFSET_INCHES = 10.189;
+        public static final double Y_OFFSET_INCHES = 13.314;
+        public static final double Z_OFFSET_INCHES = 10.315;
 
         public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll
-        public static final double THETA_Y_OFFSET_DEGREES = 0.0; // pitch
+        public static final double THETA_Y_OFFSET_DEGREES = -29.536; // pitch
         public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(

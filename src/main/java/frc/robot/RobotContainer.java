@@ -171,14 +171,10 @@ public class RobotContainer {
     JoystickButton indexPlsBUtton = new JoystickButton(rotationJoystick, 2);
 
     indexPlsBUtton.onTrue(new InstantCommand(() -> indexer.indexAll()));
-
-    // ShuffleboardTab tab = Shuffleboard.getTab("test");
-    // GenericEntry shootSpeedPct = tab.add("ShootSpeed", 0).getEntry();
     
     // shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
     // shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
-    shamperManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, indexer, 1)).onFalse(new ShamperStopCommand(shamper));
-
+    shamperManualShotButton.whileTrue(new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_SCORE)).onFalse(new ShamperStopCommand(shamper));
     /*
      *  Superstructure Position Button Bindings
      */
