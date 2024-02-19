@@ -64,9 +64,9 @@ public final class Constants {
 
     public static class Drivetrain {
         // Left-to-right distance between drivetrain wheels
-        public static final double DRIVETRAIN_TRACKWIDTH_METERS = 24;
+        public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
         // Front-to-back distance between drivetrain wheels
-        public static final double DRIVETRAIN_WHEELBASE_METERS = 19;
+        public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(19);
 
         
         public static final double FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS = 2.76420367321;
@@ -88,11 +88,22 @@ public final class Constants {
 
         public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             // Front left
-            new Translation2d(-0.302, 0.298),
+            new Translation2d(0.302, -0.298),
             // Front right
             new Translation2d(0.302,  0.298),
             // Back left
             new Translation2d(-0.302, -0.178),
+            // Back right
+            new Translation2d(-0.302, 0.178)
+        );
+
+        public static final SwerveDriveKinematics kinematics1 = new SwerveDriveKinematics(
+            // Front left
+            new Translation2d(-0.302, 0.298),
+            // Back left
+            new Translation2d(-0.302, -0.178),
+            // Front right
+            new Translation2d(0.302,  0.298),
             // Back right
             new Translation2d(0.302, -0.178)
         );
@@ -120,6 +131,8 @@ public final class Constants {
         public static final int MIN_CLIMBER_HEIGHT_TICKS = 0;
         public static final int WINCH_CIRCUMFERENCE_INCHES = 0;
         public static final int TICKS_PER_WINCH_ROTATION = 0;
+
+        public static final double CLIMBER_MOTOR_PCT = 1;
 
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
@@ -150,7 +163,7 @@ public final class Constants {
         public static final double ROTATION_SHOOTER_KI = 0;
         public static final double ROTATION_SHOOTER_KD = 0;
 
-        public static final boolean UPPER_MOTOR_IS_INVERTED = false;
+        public static final boolean UPPER_MOTOR_IS_INVERTED = true;
         public static final boolean LOWER_MOTOR_IS_INVERTED = false;
         public static final boolean LEFT_PIVOT_MOTOR_IS_INVERTED = false;
         public static final boolean RIGHT_PIVOT_MOTOR_IS_INVERTED = false;
@@ -180,7 +193,7 @@ public final class Constants {
         public static final double PIVOT_MOTOR_MANUAL_UP_SPEED = 0;
         public static final double PIVOT_MOTOR_MANUAL_DOWN_SPEED = 0;
         
-        public static final double UPPER_SHAMPER_SPEAKER_SPEED_PCT = 0;
+        public static final double UPPER_SHAMPER_SPEAKER_SPEED_PCT = -1;
         public static final double LOWER_SHAMPER_SPEAKER_SPEED_PCT = 0;
 
         public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;

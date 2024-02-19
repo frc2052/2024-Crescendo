@@ -53,7 +53,7 @@ public class Superstructure extends SubsystemBase {
 
   private void setDefault() {
     new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeed.OFF);
+    new ShamperShootCommand(shamper, ShamperSpeed.OFF);
     new ClimberRetractCommand(climber);
   }
 
@@ -65,7 +65,7 @@ public class Superstructure extends SubsystemBase {
 
   private void setPodiumScoring() {
     new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_SCORE);
+    new ShamperShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE);
     new ClimberRetractCommand(climber);
   }
 
@@ -77,7 +77,7 @@ public class Superstructure extends SubsystemBase {
   
   private void setSpeakerScoring() {
     new ShamperAngleCommand(shamper, AimingCalculator.calculate().getShamperAngle());
-    new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_SCORE, ShamperSpeed.SPEAKER_IDLE);
+    new ShamperShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE, ShamperSpeed.SPEAKER_IDLE);
     new ClimberRetractCommand(climber);
   }
   
@@ -89,13 +89,13 @@ public class Superstructure extends SubsystemBase {
 
   private void setAmpScore() {
     new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeed.AMP_SCORE, ShamperSpeed.SPEAKER_IDLE);
+    new ShamperShootCommand(shamper, ShamperSpeed.AMP_SCORE, ShamperSpeed.SPEAKER_IDLE);
     new ClimberRetractCommand(climber);
   }
 
   private void setClimbing() {
     new ShamperAngleCommand(shamper, Constants.Shamper.Angle.CLIMB);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeed.OFF);
+    new ShamperShootCommand(shamper, ShamperSpeed.OFF);
     new ClimberExtendCommand(climber);
   }
 

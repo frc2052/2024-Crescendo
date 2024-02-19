@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
@@ -120,20 +121,20 @@ public class SwerveModule {
 
     checkError(
         "Failed to set drive motor idle mode",
-        steerMotor.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        steerMotor.setIdleMode(IdleMode.kBrake)
     );
 
     steerMotor.setInverted(SwerveConstants.SwerveModule.STEER_INVERTED);
 
-    checkError(
-        "Failed to enable steer motor voltage compensation",
-        steerMotor.enableVoltageCompensation(SwerveConstants.MAX_VOLTAGE_VOLTS)
-    );
+    // checkError(
+    //     "Failed to enable steer motor voltage compensation",
+    //     steerMotor.enableVoltageCompensation(SwerveConstants.MAX_VOLTAGE_VOLTS)
+    // );
 
-    checkError(
-        "Failed to set steer motor current limit",
-        steerMotor.setSmartCurrentLimit((int) SwerveConstants.STEER_CURRENT_LIMIT_AMPS)
-    );
+    // checkError(
+    //     "Failed to set steer motor current limit",
+    //     steerMotor.setSmartCurrentLimit((int) SwerveConstants.STEER_CURRENT_LIMIT_AMPS)
+    // );
 
     // Drive Motor encoder initialization
     RelativeEncoder steerEncoder = steerMotor.getEncoder();

@@ -30,18 +30,18 @@ public class ClimberSubsystem extends SubsystemBase{
     }
 
     public void extend(boolean override) {
-        //leftClimberMotor.set(Constants.Climber.CLIMBER_EXTENSION_HEIGHT_TICKS);
+        leftClimberMotor.set(Constants.Climber.CLIMBER_MOTOR_PCT);
     }
 
     public void retract(boolean override) {
-        //leftClimberMotor.set(ControlMode.MotionMagic, Constants.Climber.CLIMBER_RETRACTION_HEIGHT_TICKS);
+        leftClimberMotor.set(-Constants.Climber.CLIMBER_MOTOR_PCT);
     }
 
     /**
      * Stops all climber motor activity.
      */
     public void stop() {
-        //leftClimberMotor.set(ControlMode.PercentOutput, 0);
+        leftClimberMotor.set(0);
     }
 
     public void zeroEncoder() {

@@ -44,7 +44,7 @@ public class DriveCommand extends Command {
 
         xLimiter = new SlewRateLimiter(2);
         yLimiter = new SlewRateLimiter(2);
-        rotationLimiter = new SlewRateLimiter(5);
+        rotationLimiter = new SlewRateLimiter(2);
 
         addRequirements(drivetrain);
     }
@@ -61,9 +61,14 @@ public class DriveCommand extends Command {
         return slewAxis(rotationLimiter, deadBand(-rotationSupplier.getAsDouble()));
     }
 
+    // @Override
+    // public void execute() {
+    //     drivetrain.drive(getX(), getY(), getRotation(), fieldCentricSupplier.getAsBoolean());
+    // }
+
     @Override
     public void execute() {
-        drivetrain.drive(getX(), getY(), getRotation(), fieldCentricSupplier.getAsBoolean());
+        drivetrain.drive(getX(), -getY(), -getRotation(), false);
     }
 
     @Override

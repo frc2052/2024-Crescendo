@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -36,7 +38,7 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public ShamperSubsystem() {
     goalSpeed = ShamperSpeed.OFF;
-// TODO: make them coast
+
     lowerMotor = new TalonFX(Constants.CAN.LOWER_SHOOTER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(
     Constants.Shamper.LOWER_MOTOR_KP,
@@ -69,8 +71,15 @@ public class ShamperSubsystem extends SubsystemBase {
     rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_PIN);
     rotationEncoder.setPositionOffset(Constants.Shamper.ENCODER_OFFSET_DEGREES / 360);
 
+    lowerMotor.getConfigurator().apply(new TalonFXConfiguration());
+    upperMotor.getConfigurator().apply(new TalonFXConfiguration());
+
     lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.Shamper.UPPER_MOTOR_IS_INVERTED);
+
+    lowerMotor.setNeutralMode(NeutralModeValue.Coast);
+    upperMotor.setNeutralMode(NeutralModeValue.Coast);
+    
     leftPivotMotor.setInverted(Constants.Shamper.LEFT_PIVOT_MOTOR_IS_INVERTED);
     rightPivotMotor.follow(leftPivotMotor, true);
 
@@ -86,13 +95,15 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public void setShootSpeed(ShamperSpeed speeds) { 
     goalSpeed = speeds;
-    lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), goalSpeed.getLowerPCT()));
-    upperMotor.set(-upperMotorController.calculate(getUpperShamperSpeed(), goalSpeed.getUpperPCT()));
+    // lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), contrainSpeed(goalSpeed.getLowerPCT())));
+    // upperMotor.set(upperMotorController.calculate(getUpperShamperSpeed(), contrainSpeed(goalSpeed.getUpperPCT())));
+    lowerMotor.set(contrainSpeed(goalSpeed.getLowerPCT()));
+    upperMotor.set(contrainSpeed(goalSpeed.getUpperPCT()));
   }
 
   public void setShootSpeed(double lowerSpeed, double upperSpeed) {
     lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), contrainSpeed(lowerSpeed)));
-    upperMotor.set(-upperMotorController.calculate(getUpperShamperSpeed(), contrainSpeed(upperSpeed)));
+    upperMotor.set(upperMotorController.calculate(getUpperShamperSpeed(), contrainSpeed(upperSpeed)));
   }
 
   public double contrainSpeed(double speed){
@@ -205,6 +216,8 @@ public class ShamperSubsystem extends SubsystemBase {
     if(shamperZeroed()){
       rotationEncoder.reset();
     }
+
+    System.out.println(lowerMotor.get());
 
     // if (atAngle()) {
     //     stopPivot();

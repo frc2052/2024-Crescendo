@@ -10,6 +10,7 @@ import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
+import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.OuttakeCommand;
 //import frc.robot.commands.music.PauseMusicPlayerCommand;
@@ -19,6 +20,7 @@ import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
 import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
 import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.commands.shamper.ShamperStopCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.AdvantageScopeSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -54,7 +56,7 @@ public class RobotContainer {
   private final IntakeSubsystem intake;
   private final ShamperSubsystem shamper;
   private final IndexerSubsystem indexer;
-  // private final ClimberSubsystem climber;
+  private final ClimberSubsystem climber;
   // private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
   // private final AdvantageScopeSubsystem advantageScope;
@@ -76,7 +78,7 @@ public class RobotContainer {
     intake = new IntakeSubsystem();
     indexer = new IndexerSubsystem();
     shamper = new ShamperSubsystem();
-    //climber = new ClimberSubsystem();
+    climber = new ClimberSubsystem();
     // musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     // trapArm = new TrapArmSubsystem();
@@ -157,10 +159,12 @@ public class RobotContainer {
      * Intake Button Bindings
      */
     JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
-    JoystickButton intakeOutButton = new JoystickButton(translationJoystick, 11);
+    JoystickButton climberDownButton = new JoystickButton(translationJoystick, 11);
+    JoystickButton climberUpButton = new JoystickButton(translationJoystick, 10);
     
-    intakeInButton.whileTrue(new IntakeCommand(intake, indexer));
-    intakeOutButton.whileTrue(new OuttakeCommand(intake, indexer));
+    intakeInButton.whileTrue(new IntakeCommand(intake));
+    climberDownButton.whileTrue(new ClimberRetractCommand(climber));
+    climberUpButton.whileTrue(new ClimberExtendCommand(climber));
 
     /*
      *  Manual Shamper Button Bindings
@@ -168,13 +172,13 @@ public class RobotContainer {
     // JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 3);
     // JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 4);
     JoystickButton shamperManualShotButton = new JoystickButton(rotationJoystick, 1);
-    JoystickButton indexPlsBUtton = new JoystickButton(rotationJoystick, 2);
+    JoystickButton indexButton = new JoystickButton(rotationJoystick, 2);
 
-    indexPlsBUtton.onTrue(new InstantCommand(() -> indexer.indexAll()));
+    indexButton.whileTrue(new IndexerIndexCommand(indexer));
     
     // shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
     // shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
-    shamperManualShotButton.whileTrue(new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_SCORE)).onFalse(new ShamperStopCommand(shamper));
+    shamperManualShotButton.whileTrue(new ShamperShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE)).onFalse(new ShamperStopCommand(shamper));
     /*
      *  Superstructure Position Button Bindings
      */

@@ -6,24 +6,22 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends Command {
     private final IntakeSubsystem intake;
-    private final IndexerSubsystem indexer;
 
-    public IntakeCommand(IntakeSubsystem intake, IndexerSubsystem indexer) {
+    public IntakeCommand(IntakeSubsystem intake) {
         this.intake = intake;
-        this.indexer = indexer;
-        addRequirements(indexer, intake);
+        addRequirements(intake);
     }
 
     @Override
     public void execute() {
         intake.intake();
-        indexer.indexAll();
+        //indexer.indexAll();
     }
 
     @Override
     public void end(boolean interrupted) {
         intake.stop();
-        indexer.stop();
+        //indexer.stop();
     }
 
     // @Override
