@@ -9,33 +9,33 @@ public class ShamperShootCommand extends Command{
     private final ShamperSubsystem shamper;
     private final ShamperSpeed goalSpeed;
     private final ShamperSpeed endSpeed;
-    // private final IndexerSubsystem indexer;
+    private final IndexerSubsystem indexer;
 
-    public ShamperShootCommand(ShamperSubsystem shamper, ShamperSpeed goalSpeed, ShamperSpeed endSpeed) {
+    public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, ShamperSpeed goalSpeed, ShamperSpeed endSpeed) {
         this.shamper = shamper;
         this.goalSpeed = goalSpeed;
         this.endSpeed = endSpeed;
-        // this.indexer = indexer;
+        this.indexer = indexer;
 
         addRequirements(shamper);
     }
 
-    public ShamperShootCommand(ShamperSubsystem shamper, ShamperSpeed goalSpeed) {
+    public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, ShamperSpeed goalSpeed) {
         this.shamper = shamper;
         this.goalSpeed = goalSpeed;
         this.endSpeed = ShamperSpeed.OFF;
-        // this.indexer = indexer;
+        this.indexer = indexer;
 
         addRequirements(shamper);
     }
 
     @Override
     public void initialize() {
-        shamper.setShootSpeed(goalSpeed);
     }
 
     @Override
     public void execute() {
+        shamper.setShootSpeed(goalSpeed);
         // if(shamper.shooterAtSpeed(goalSpeed.getLowerPCT(), goalSpeed.getUpperPCT())) {
         //     indexer.indexAll();
         // }

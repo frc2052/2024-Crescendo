@@ -1,40 +1,41 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.shamper;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
-public class ShamperManualShootCommand extends Command {
-  private ShamperSubsystem shamper;
-  private IndexerSubsystem indexer;
-  private double goalSpeed;
-  /** Creates a new ShamperManualShootCommand. */
-    public ShamperManualShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, double goalSpeed) {
+public class ShamperManualShootCommand extends Command{
+    private final ShamperSubsystem shamper;
+    private final ShamperSpeed goalSpeed;
+    private final ShamperSpeed endSpeed;
+
+    public ShamperManualShootCommand(ShamperSubsystem shamper, ShamperSpeed goalSpeed, ShamperSpeed endSpeed) {
         this.shamper = shamper;
         this.goalSpeed = goalSpeed;
-        this.indexer = indexer;
+        this.endSpeed = endSpeed;
 
-        addRequirements(shamper, indexer);
+        addRequirements(shamper);
+    }
+
+    public ShamperManualShootCommand(ShamperSubsystem shamper, ShamperSpeed goalSpeed) {
+        this.shamper = shamper;
+        this.goalSpeed = goalSpeed;
+        this.endSpeed = ShamperSpeed.OFF;
+
+        addRequirements(shamper);
     }
 
     @Override
     public void initialize() {
-        shamper.setShootSpeed(goalSpeed, goalSpeed);
     }
 
     @Override
     public void execute() {
-
+        shamper.setShootSpeed(goalSpeed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        indexer.stop();
-        shamper.setShootSpeed(ShamperSpeed.OFF);
+        shamper.setShootSpeed(endSpeed);
     }
 }

@@ -21,6 +21,9 @@ import frc.robot.subsystems.ShamperSubsystem;
 
 public final class Constants {
 
+    public static final double ROBOT_LENGTH_METERS = Units.inchesToMeters(29.25);
+    public static final double ROBOT_WIDTH_METERS = Units.inchesToMeters(29.5);
+
     // TODO: Put in all the constants
 
     public static final class CAN {
@@ -97,17 +100,6 @@ public final class Constants {
             new Translation2d(-0.302, 0.178)
         );
 
-        public static final SwerveDriveKinematics kinematics1 = new SwerveDriveKinematics(
-            // Front left
-            new Translation2d(-0.302, 0.298),
-            // Back left
-            new Translation2d(-0.302, -0.178),
-            // Front right
-            new Translation2d(0.302,  0.298),
-            // Back right
-            new Translation2d(0.302, -0.178)
-        );
-
         public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;
     }
 
@@ -132,7 +124,7 @@ public final class Constants {
         public static final int WINCH_CIRCUMFERENCE_INCHES = 0;
         public static final int TICKS_PER_WINCH_ROTATION = 0;
 
-        public static final double CLIMBER_MOTOR_PCT = 1;
+        public static final double CLIMBER_MOTOR_PCT = 0.5;
 
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
@@ -145,6 +137,7 @@ public final class Constants {
 
     public static class Indexer {
         public static final double LOWER_INDEX_SPEED_PCT = 1;
+        public static final double UPPER_LOAD_SPEED_PCT = 0.3;
         public static final double UPPER_INDEX_SPEED_PCT = 1;
 
         // DIO
@@ -193,13 +186,13 @@ public final class Constants {
         public static final double PIVOT_MOTOR_MANUAL_UP_SPEED = 0;
         public static final double PIVOT_MOTOR_MANUAL_DOWN_SPEED = 0;
         
-        public static final double UPPER_SHAMPER_SPEAKER_SPEED_PCT = -1;
-        public static final double LOWER_SHAMPER_SPEAKER_SPEED_PCT = 0;
+        public static final double UPPER_SHAMPER_SPEAKER_SPEED_PCT = 1;
+        public static final double LOWER_SHAMPER_SPEAKER_SPEED_PCT = 1;
 
         public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
         public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
 
-        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = 0;
+        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1;
         public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0;
         
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
@@ -207,25 +200,27 @@ public final class Constants {
         
         public static final double INDEX_SPEED_TPS = 0;
 
-        public static final double TALONFX_TICKS_PER_FULL_ROTATION = 0;
-        public static final double PIVOT_MOTOR_MAX_VELOCITY = 3000;
-        public static final double PIVOT_MOTOR_MAX_ACCELERATION = 3000;
+        public static final double PIVOT_MOTOR_MANUAL_VELOCITY = 0.25;
+        public static final double PIVOT_MOTOR_MAX_VELOCITY = 0.25;
+        public static final double PIVOT_MOTOR_LEVEL_2_VELOCITY = 0.05;
+        public static final double PIVOT_MOTOR_LEVEL_1_VELOCITY = 0.05;
+        public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0;
 
         public static class Angle {
-            public static final double MINIMUM  = 0;
-            public static final double MAXIMUM = 0;
-            public static final double DEFAULT = 0;
-            public static final double AMP = 0;
-            public static final double CLIMB = 0;
+            public static final double MINIMUM  = 12;
+            public static final double MAXIMUM = 124;
+            public static final double DEFAULT = 30;
+            public static final double AMP = 122;
+            public static final double SUB = 14;
         }
 
         public static final double ENCODER_OFFSET_DEGREES = 0;
-        public static final double DEAD_ZONE_DEGREES = 2;
+        public static final double DEAD_ZONE_DEGREES = 1;
         public static final double DEAD_ZONE_SHOOTER_SPEED_PCT = 0.05;
     }
 
     public static class FieldAndRobot {
-        public static final double SHAMPER_HEIGHT_IN_METERS = 0;
+        public static final double SHAMPER_HEIGHT_IN_METERS = Units.inchesToMeters(17);
         public static final double SPEAKER_TARGET_HEIGHT_OFF_GROUND_IN_METERS = 1.98;
 
         //got from cad model
@@ -234,7 +229,7 @@ public final class Constants {
 
         public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
 
-        public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 0.01; //0 will cause an error
+        public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 10; //0 will cause an error
 
         public static final double SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS = 0;
         public static final double RED_SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;

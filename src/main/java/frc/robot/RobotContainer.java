@@ -11,8 +11,10 @@ import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
+import frc.robot.commands.indexer.IndexerLoadCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.OuttakeCommand;
+import frc.robot.commands.shamper.ShamperAngleCommand;
 //import frc.robot.commands.music.PauseMusicPlayerCommand;
 //import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.commands.shamper.ShamperManualShootCommand;
@@ -62,7 +64,7 @@ public class RobotContainer {
   // private final AdvantageScopeSubsystem advantageScope;
   // private final TrapArmSubsystem trapArm;
 
-  // private final Superstructure superstructure;
+  //private final Superstructure superstructure;
 
   private final AutoFactory autoFactory;
 
@@ -85,7 +87,7 @@ public class RobotContainer {
     // advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
 
     //superstructure = new Superstructure(shamper, climber, indexer);
-    // superstructure = new Superstructure(shamper, indexer);
+    //superstructure = new Superstructure(shamper, indexer, intake);
 
     // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
@@ -158,7 +160,10 @@ public class RobotContainer {
     /*
      * Intake Button Bindings
      */
-    JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
+    JoystickButton resetPivotOverride = new JoystickButton(rotationJoystick, 6);
+    resetPivotOverride.onTrue(new InstantCommand(() -> shamper.resetOverride()));
+
+    JoystickButton intakeInButton = new JoystickButton(rotationJoystick, 1);
     JoystickButton climberDownButton = new JoystickButton(translationJoystick, 11);
     JoystickButton climberUpButton = new JoystickButton(translationJoystick, 10);
     
@@ -169,37 +174,50 @@ public class RobotContainer {
     /*
      *  Manual Shamper Button Bindings
      */
-    // JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 3);
-    // JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 4);
-    JoystickButton shamperManualShotButton = new JoystickButton(rotationJoystick, 1);
-    JoystickButton indexButton = new JoystickButton(rotationJoystick, 2);
+    JoystickButton shamperManualUpButton = new JoystickButton(translationJoystick, 3);
+    JoystickButton shamperManualDownButton = new JoystickButton(translationJoystick, 4);
+    // JoystickButton shamperAMPAngleButton = new JoystickButton(translationJoystick, 5);
+    JoystickButton shamperDEFAULTAngleButton = new JoystickButton(translationJoystick, 3);
+    // JoystickButton shamperAMPManualShotButton = new JoystickButton(rotationJoystick, 2);
+    JoystickButton shamperDEFAULTManualShotButton = new JoystickButton(translationJoystick, 1);
+    JoystickButton loadButton = new JoystickButton(rotationJoystick, 4);
+    JoystickButton indexButton = new JoystickButton(rotationJoystick, 3);
 
+    loadButton.whileTrue(new IndexerLoadCommand(indexer));
     indexButton.whileTrue(new IndexerIndexCommand(indexer));
     
-    // shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
-    // shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
-    shamperManualShotButton.whileTrue(new ShamperShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE)).onFalse(new ShamperStopCommand(shamper));
+    shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
+    shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
+    // shamperAMPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
+    shamperDEFAULTAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
+    // shamperAMPManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.AMP_SCORE)).onFalse(new ShamperStopCommand(shamper));
+    shamperDEFAULTManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE)).onFalse(new ShamperStopCommand(shamper));
     /*
      *  Superstructure Position Button Bindings
      */
 
     // JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
-    // JoystickButton shamperAmpIdleButton = new JoystickButton(rotationJoystick, 2);
-    // JoystickButton shamperSpeakerIdleAimButon = new JoystickButton(rotationJoystick, 3);
-    // JoystickButton shamperPodiumIdleButton = new JoystickButton(rotationJoystick, 4);
+    // JoystickButton shamperAmpIdleButton = new JoystickButton(rotationJoystick, 4);
+    // JoystickButton superstructureIntakeButton = new JoystickButton(rotationJoystick, 2);
+    // // JoystickButton shamperSpeakerIdleAimButon = new JoystickButton(rotationJoystick, 3);
+    // JoystickButton shamperPodiumIdleButton = new JoystickButton(rotationJoystick, 3);
     // JoystickButton shamperDefaultButton = new JoystickButton(rotationJoystick, 5);
 
     // shamperAmpIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
-    // shamperSpeakerIdleAimButon.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
+    // // shamperSpeakerIdleAimButon.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
+    // superstructureIntakeButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.INTAKE)));
     // shamperPodiumIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.PODIUM_IDLE)));
+    // shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
     
     // shamperShootButton.onTrue(new InstantCommand(() -> {
     //   if(superstructure.getState() == SuperstructureState.AMP_IDLE) {
     //     superstructure.setState(SuperstructureState.AMP_SCORE);
-    //   } else if (superstructure.getState() == SuperstructureState.SPEAKER_IDLE) {
-    //     superstructure.setState(SuperstructureState.SPEAKER_SCORE);
+    //   // } else if (superstructure.getState() == SuperstructureState.SPEAKER_IDLE) {
+    //   //   superstructure.setState(SuperstructureState.SPEAKER_SCORE);
     //   } else if (superstructure.getState() == SuperstructureState.PODIUM_IDLE) {
     //     superstructure.setState(SuperstructureState.PODIUM_SCORE);
+    //   } else {
+    //     System.out.println("WASN'T IDLING*********");
     //   }
     // })).onFalse(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
 

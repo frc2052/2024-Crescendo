@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -36,8 +37,11 @@ public class ShamperSubsystem extends SubsystemBase {
   private double goalAngle;
   private ShamperSpeed goalSpeed;
 
+  private boolean override;
+
   public ShamperSubsystem() {
     goalSpeed = ShamperSpeed.OFF;
+    goalAngle = Constants.Shamper.Angle.DEFAULT;
 
     lowerMotor = new TalonFX(Constants.CAN.LOWER_SHOOTER_MOTOR_ID);
     lowerMotorController = new ProfiledPIDController(
@@ -70,6 +74,7 @@ public class ShamperSubsystem extends SubsystemBase {
 
     rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_PIN);
     rotationEncoder.setPositionOffset(Constants.Shamper.ENCODER_OFFSET_DEGREES / 360);
+    rotationEncoder.setDistancePerRotation(360);
 
     lowerMotor.getConfigurator().apply(new TalonFXConfiguration());
     upperMotor.getConfigurator().apply(new TalonFXConfiguration());
@@ -79,9 +84,15 @@ public class ShamperSubsystem extends SubsystemBase {
 
     lowerMotor.setNeutralMode(NeutralModeValue.Coast);
     upperMotor.setNeutralMode(NeutralModeValue.Coast);
+
+    leftPivotMotor.restoreFactoryDefaults();
     
     leftPivotMotor.setInverted(Constants.Shamper.LEFT_PIVOT_MOTOR_IS_INVERTED);
-    rightPivotMotor.follow(leftPivotMotor, true);
+    rightPivotMotor.setInverted(Constants.Shamper.RIGHT_PIVOT_MOTOR_IS_INVERTED);
+    rightPivotMotor.follow(leftPivotMotor, false);
+
+    leftPivotMotor.setIdleMode(IdleMode.kBrake);
+    rightPivotMotor.setIdleMode(IdleMode.kBrake);
 
     // limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_PIN);
     // ampHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_PIN);
@@ -133,8 +144,18 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public void setAngle(double goalAngle) {
-    this.goalAngle = constrain(goalAngle);
-    leftPivotMotor.set(leftPivotMotorController.calculate(getShamperAngle() / 360, goalAngle / 360));
+    System.out.println("Setting Angle " + goalAngle);
+//    this.goalAngle = goalAngle;
+  }
+
+  public void runPivot(double pct) {
+    pct = contrainSpeed(pct);
+    //rightPivotMotor.set(pct);
+    if(getShamperAngle() > Constants.Shamper.Angle.MINIMUM && getShamperAngle() < Constants.Shamper.Angle.MAXIMUM) {
+      leftPivotMotor.set(pct);
+    } else {
+      leftPivotMotor.stopMotor();
+    }
   }
 
   public void stopPivot() {
@@ -142,25 +163,15 @@ public class ShamperSubsystem extends SubsystemBase {
     rightPivotMotor.set(0);
   }
 
-  public boolean atAngle() {
-    if (goalAngle == Constants.Shamper.Angle.AMP) {
-      return isAtAmpLevel();
-    } else if (goalAngle == Constants.Shamper.Angle.DEFAULT) {
-      return isAtPodiumLevel();
-    } else if (goalAngle == getShamperAngle()){
-      return true;
-    } else {
-      return Math.abs(
-          getShamperAngle() - goalAngle
-      ) <= Constants.Shamper.DEAD_ZONE_DEGREES;
-    }
+  public boolean isAtGoalAngle() {
+    return Math.abs(getShamperAngle() - goalAngle) < Constants.Shamper.DEAD_ZONE_DEGREES;
   }
 
   public double getShamperAngle() {
-    return rotationEncoder.getAbsolutePosition() * 360;
+    return Math.abs(rotationEncoder.getDistance() - 360);
   }
 
-  public double constrain(double angle) {
+  public double constrainAngle(double angle) {
     if (angle < Constants.Shamper.Angle.MINIMUM) {
       angle = Constants.Shamper.Angle.MINIMUM;
     } else if (angle > Constants.Shamper.Angle.MAXIMUM) {
@@ -179,13 +190,15 @@ public class ShamperSubsystem extends SubsystemBase {
   }  
 
   public void manualUp() {
-      leftPivotMotor.set(Constants.Shamper.PIVOT_MOTOR_MANUAL_UP_SPEED);
+    this.goalAngle = this.goalAngle + 1;
   }
 
   public void manualDown() {
-    if (!shamperZeroed()) {
-      leftPivotMotor.set(Constants.Shamper.PIVOT_MOTOR_MANUAL_DOWN_SPEED);
-    }
+    this.goalAngle = this.goalAngle -1;
+  }
+
+  public void resetOverride(){
+    override = false;
   }
 
   public static TalonFX getUpperTalonFX() {
@@ -213,17 +226,22 @@ public class ShamperSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(shamperZeroed()){
-      rotationEncoder.reset();
-    }
-
-    System.out.println(lowerMotor.get());
-
-    // if (atAngle()) {
-    //     stopPivot();
-    // } else {
-    //   setAngle(goalAngle);
+    // if(shamperZeroed()){
+    //   rotationEncoder.reset();
     // }
+    System.out.println(goalAngle);
+    if (goalAngle > Constants.Shamper.Angle.MINIMUM || goalAngle < Constants.Shamper.Angle.MAXIMUM) {
+      if (isAtGoalAngle()) {
+        stopPivot();
+        //System.out.println("At Goal of " + this.goalAngle);
+      } else if (Math.abs(getShamperAngle() - goalAngle) > 10) {
+        leftPivotMotor.set(Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
+        //System.out.println("Go Fast " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
+      } else {
+        leftPivotMotor.set(Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
+        //System.out.println("Go Slow " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
+      }
+    }
 
     if(atSpeed(upperMotor, goalSpeed.getUpperPCT())) {
       SmartDashboard.putBoolean("Upper Motor At Speed", true);

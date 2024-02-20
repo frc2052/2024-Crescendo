@@ -35,6 +35,11 @@ public class IndexerSubsystem extends SubsystemBase {
     upperMotor.set(Constants.Indexer.UPPER_INDEX_SPEED_PCT);
   }
 
+  public void loadAll() {
+    upperMotor.set(Constants.Indexer.UPPER_LOAD_SPEED_PCT);
+    lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
+  }
+
   public void indexAll() {
     upperMotor.set(Constants.Indexer.UPPER_INDEX_SPEED_PCT);
     lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
@@ -59,12 +64,13 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public boolean getNoteDetector() {
-    return noteDetector.get();
+    return !noteDetector.get();
   }
 
   @Override
   public void periodic() {
-    boolean noteDetected = noteDetector.get();
+    boolean noteDetected = getNoteDetector();
     RobotState.getInstance().updateNoteDetected(noteDetected);
+    //System.out.println(noteDetected);
   }
 }
