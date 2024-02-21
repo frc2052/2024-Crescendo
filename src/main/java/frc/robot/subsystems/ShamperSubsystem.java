@@ -184,6 +184,10 @@ public class ShamperSubsystem extends SubsystemBase {
   public double getShamperAngle() {
     // % is "mod", mod will always give remander when dividing by 360
     // subtracting 360 to reverse the angle and getting the absolute value so it is positive
+
+    SmartDashboard.putNumber("RAW ENCODER GET", rotationEncoder.get());
+    SmartDashboard.putNumber("RAW ENCODER DISTANCE", rotationEncoder.getDistance());
+
     return Math.abs((rotationEncoder.getDistance() % 360) - 360);
   }
 
@@ -242,10 +246,7 @@ public class ShamperSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // if(shamperZeroed()){
-    //   rotationEncoder.reset();
-    // }
-    //System.out.println(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
+    System.out.println(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
     //stopPivot();
     SmartDashboard.putNumber("Shamper Current Angle:  ", getShamperAngle());
     SmartDashboard.putNumber("Shamper Current Goal Angle: ", goalAngle);

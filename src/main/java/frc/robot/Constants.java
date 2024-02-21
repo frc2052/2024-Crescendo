@@ -126,7 +126,7 @@ public final class Constants {
         public static final int WINCH_CIRCUMFERENCE_INCHES = 0;
         public static final int TICKS_PER_WINCH_ROTATION = 0;
 
-        public static final double CLIMBER_MOTOR_PCT = 0.7;
+        public static final double CLIMBER_MOTOR_PCT = 0.5;
 
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
@@ -214,6 +214,7 @@ public final class Constants {
             public static final double DEFAULT = 30;
             public static final double AMP = 122;
             public static final double SUB = 14;
+            public static final double TRAP = 95;
         }
 
         public static final double ENCODER_OFFSET_DEGREES = 0;

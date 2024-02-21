@@ -180,10 +180,11 @@ public class RobotContainer {
     /*
      *  Manual Shamper Button Bindings
      */
-    // JoystickButton shamperManualUpButton = new JoystickButton(translationJoystick, 3);
-    // JoystickButton shamperManualDownButton = new JoystickButton(translationJoystick, 4);
+    JoystickButton shamperManualUpButton = new JoystickButton(translationJoystick, 3);
+    JoystickButton shamperManualDownButton = new JoystickButton(translationJoystick, 4);
     JoystickButton shamperAMPAngleButton = new JoystickButton(controlPanel, 8);
     JoystickButton shamperDEFAULTAngleButton = new JoystickButton(controlPanel, 7);
+    JoystickButton shamperTRAPAngleButton = new JoystickButton(controlPanel, 5);
     // JoystickButton shamperAMPManualShotButton = new JoystickButton(rotationJoystick, 2);
     JoystickButton shamperDEFAULTManualShotButton = new JoystickButton(translationJoystick, 1);
     JoystickButton loadButton = new JoystickButton(rotationJoystick, 4);
@@ -192,10 +193,11 @@ public class RobotContainer {
     loadButton.whileTrue(new IndexerLoadCommand(indexer));
     indexButton.whileTrue(new IndexerIndexCommand(indexer));
     
-    // shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
-    // shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
+    shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
+    shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
     shamperAMPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
     shamperDEFAULTAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
+    shamperTRAPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
     // shamperAMPManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.AMP_SCORE)).onFalse(new ShamperStopCommand(shamper));
     shamperDEFAULTManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE)).onFalse(new ShamperStopCommand(shamper));
     /*
