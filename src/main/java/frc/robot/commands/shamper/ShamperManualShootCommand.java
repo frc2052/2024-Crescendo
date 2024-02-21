@@ -1,8 +1,11 @@
 package frc.robot.commands.shamper;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.RobotState;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.util.calculator.ShootingAngleCalculator;
 
 public class ShamperManualShootCommand extends Command{
     private final ShamperSubsystem shamper;
@@ -27,15 +30,17 @@ public class ShamperManualShootCommand extends Command{
 
     @Override
     public void initialize() {
+        shamper.setShootSpeed(goalSpeed);
     }
 
     @Override
     public void execute() {
-        shamper.setShootSpeed(goalSpeed);
+        shamper.setAngle(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
     }
 
     @Override
     public void end(boolean interrupted) {
         shamper.setShootSpeed(endSpeed);
+        shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
     }
 }

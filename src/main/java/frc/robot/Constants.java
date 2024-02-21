@@ -18,6 +18,8 @@ import edu.wpi.first.math.util.Units;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.ShamperSubsystem;
+import frc.robot.util.calculator.ShootAngleConfig;
+import frc.robot.util.calculator.ShootingAngleCalculator;
 
 public final class Constants {
 

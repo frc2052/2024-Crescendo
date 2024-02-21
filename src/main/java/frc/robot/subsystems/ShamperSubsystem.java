@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
@@ -39,27 +42,15 @@ public class ShamperSubsystem extends SubsystemBase {
 
   private boolean override;
 
+  private final VelocityVoltage shooterVelocity;
+
   public ShamperSubsystem() {
     goalSpeed = ShamperSpeed.OFF;
     goalAngle = Constants.Shamper.Angle.DEFAULT;
 
     lowerMotor = new TalonFX(Constants.CAN.LOWER_SHOOTER_MOTOR_ID);
-    lowerMotorController = new ProfiledPIDController(
-    Constants.Shamper.LOWER_MOTOR_KP,
-    Constants.Shamper.LOWER_MOTOR_KI,
-    Constants.Shamper.LOWER_MOTOR_KD, 
-    new TrapezoidProfile.Constraints(
-    Constants.Shamper.LOWER_MOTOR_MAX_VELOCITY,
-    Constants.Shamper.LOWER_MOTOR_MAX_ACCELERATION));
 
     upperMotor = new TalonFX(Constants.CAN.UPPER_SHOOTER_MOTOR_ID);
-    upperMotorController = new ProfiledPIDController(
-    Constants.Shamper.UPPER_MOTOR_KP,
-    Constants.Shamper.UPPER_MOTOR_KI,
-    Constants.Shamper.UPPER_MOTOR_KD,      
-    new TrapezoidProfile.Constraints(
-    Constants.Shamper.UPPER_MOTOR_MAX_VELOCITY,
-    Constants.Shamper.UPPER_MOTOR_MAX_ACCELERATION));
 
     leftPivotMotor = new CANSparkMax(Constants.CAN.LEFT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
     leftPivotMotorController = new ProfiledPIDController(
@@ -76,8 +67,18 @@ public class ShamperSubsystem extends SubsystemBase {
     rotationEncoder.setPositionOffset(Constants.Shamper.ENCODER_OFFSET_DEGREES / 360);
     rotationEncoder.setDistancePerRotation(360);
 
-    lowerMotor.getConfigurator().apply(new TalonFXConfiguration());
-    upperMotor.getConfigurator().apply(new TalonFXConfiguration());
+    
+    shooterVelocity = new VelocityVoltage(0);
+
+    // robot init, set slot 0 gains
+    Slot0Configs slot0Configs = new Slot0Configs();
+    slot0Configs.kV = 0.12;
+    slot0Configs.kP = 0.11;
+    slot0Configs.kI = 0.48;
+    slot0Configs.kD = 0.01;
+    
+    lowerMotor.getConfigurator().apply(slot0Configs, 0.050);
+    upperMotor.getConfigurator().apply(slot0Configs, 0.050);
 
     lowerMotor.setInverted(Constants.Shamper.LOWER_MOTOR_IS_INVERTED);
     upperMotor.setInverted(Constants.Shamper.UPPER_MOTOR_IS_INVERTED);
@@ -100,16 +101,18 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public void stopShooter() {
-    lowerMotor.set(ShamperSpeed.OFF.getLowerPCT());
-    upperMotor.set(ShamperSpeed.OFF.getUpperPCT());
+    lowerMotor.set(ShamperSpeed.OFF.getLowerRPS());
+    upperMotor.set(ShamperSpeed.OFF.getUpperRPS());
   }
 
   public void setShootSpeed(ShamperSpeed speeds) { 
     goalSpeed = speeds;
     // lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), contrainSpeed(goalSpeed.getLowerPCT())));
     // upperMotor.set(upperMotorController.calculate(getUpperShamperSpeed(), contrainSpeed(goalSpeed.getUpperPCT())));
-    lowerMotor.set(contrainSpeed(goalSpeed.getLowerPCT()));
-    upperMotor.set(contrainSpeed(goalSpeed.getUpperPCT()));
+    shooterVelocity.Slot = 0;
+    lowerMotor.setControl(shooterVelocity.withVelocity(goalSpeed.getLowerRPS()));
+    lowerMotor.set(contrainSpeed(goalSpeed.getLowerRPS()));
+    upperMotor.set(contrainSpeed(goalSpeed.getUpperRPS()));
   }
 
   public void setShootSpeed(double lowerSpeed, double upperSpeed) {
@@ -128,7 +131,7 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public boolean atSpeed(TalonFX motor, double goalSpeed){
-    if((Math.abs(motor.get()) - Math.abs(goalSpeed)) < Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_PCT){
+    if((Math.abs(motor.getVelocity().getValueAsDouble()) - Math.abs(goalSpeed)) < Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_PCT){
       return true;
     } else {
       return false;
@@ -145,7 +148,7 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public void setAngle(double goalAngle) {
     System.out.println("Setting Angle " + goalAngle);
-//    this.goalAngle = goalAngle;
+    this.goalAngle = goalAngle;
   }
 
   public void runPivot(double pct) {
@@ -243,13 +246,13 @@ public class ShamperSubsystem extends SubsystemBase {
       }
     }
 
-    if(atSpeed(upperMotor, goalSpeed.getUpperPCT())) {
+    if(atSpeed(upperMotor, goalSpeed.getUpperRPS())) {
       SmartDashboard.putBoolean("Upper Motor At Speed", true);
     } else {
       SmartDashboard.putBoolean("Upper Motor At Speed", false);
     }
 
-    if(atSpeed(lowerMotor, goalSpeed.getLowerPCT())) {
+    if(atSpeed(lowerMotor, goalSpeed.getLowerRPS())) {
       SmartDashboard.putBoolean("Lower Motor At Speed", true);
     } else {
       SmartDashboard.putBoolean("Lower Motor At Speed", false);
@@ -273,11 +276,11 @@ public class ShamperSubsystem extends SubsystemBase {
       this.isIdle = isIdle;
     }
 
-    public double getLowerPCT() {
+    public double getLowerRPS() {
       return lowerPercentOutput;
     }
 
-    public double getUpperPCT() {
+    public double getUpperRPS() {
       return upperPercentOutput;
     }
 
