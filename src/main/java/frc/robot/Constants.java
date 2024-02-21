@@ -126,7 +126,7 @@ public final class Constants {
         public static final int WINCH_CIRCUMFERENCE_INCHES = 0;
         public static final int TICKS_PER_WINCH_ROTATION = 0;
 
-        public static final double CLIMBER_MOTOR_PCT = 0.5;
+        public static final double CLIMBER_MOTOR_PCT = 0.7;
 
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
@@ -253,8 +253,8 @@ public final class Constants {
         // TODO: Add PiCamera offsets
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
 
-        public static final double X_OFFSET_INCHES = 10.189;
-        public static final double Y_OFFSET_INCHES = 13.314;
+        public static final double X_OFFSET_INCHES = 13.314;
+        public static final double Y_OFFSET_INCHES = 10.189;
         public static final double Z_OFFSET_INCHES = 10.315;
 
         public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll

@@ -34,8 +34,9 @@ public class ShamperManualShootCommand extends Command{
     }
 
     @Override
-    public void execute() {
-        shamper.setAngle(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
+    public void execute(){
+
+        //shamper.setAngle(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
     }
 
     @Override

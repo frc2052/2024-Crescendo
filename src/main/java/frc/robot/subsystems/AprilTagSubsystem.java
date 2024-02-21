@@ -47,6 +47,7 @@ public class AprilTagSubsystem extends SubsystemBase{
                 if (photonPoseEstimator.update().isPresent()) {
                     EstimatedRobotPose estimatedPose = photonPoseEstimator.update().get();
                     robotState.addAprilTagVisionUpdate(estimatedPose);
+                    System.out.println("added pose X: " + estimatedPose.estimatedPose.getX());
                 }
             }
         }

@@ -1,9 +1,13 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.RobotState;
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.indexer.IndexerLoadCommand;
@@ -14,6 +18,7 @@ import frc.robot.commands.shamper.ShamperIdleCommand;
 import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.AimingCalculator;
+import frc.robot.util.calculator.ShootingAngleCalculator;
 
 public class Superstructure extends SubsystemBase {
   private SuperstructureState state;
@@ -58,52 +63,79 @@ public class Superstructure extends SubsystemBase {
   }
 
   private void setDefault() {
-    new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeed.OFF);
+    SequentialCommandGroup setDefaultPositionCommand = new SequentialCommandGroup(
+      new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT),
+      new ShamperShootCommand(shamper, indexer, ShamperSpeed.OFF)
+    );
+    
+    setDefaultPositionCommand.schedule();
   }
 
   private void setIntake(){
-    new IntakeCommand(intake);
-    new IndexerLoadCommand(indexer);
+    SequentialCommandGroup setIntakePositionCommand = new SequentialCommandGroup(
+      new IntakeCommand(intake),
+      new IndexerLoadCommand(indexer) 
+    );
+
+    setIntakePositionCommand.schedule();
   }
 
   private void setPodiumIdle() {
-    new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT);
-    new ShamperIdleCommand(shamper, ShamperSpeed.SPEAKER_IDLE);
+    SequentialCommandGroup setPodiumIdlePositionCommand = new SequentialCommandGroup(
+      new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT),
+      new ShamperIdleCommand(shamper, ShamperSpeed.SPEAKER_IDLE)
+    );
+
+    setPodiumIdlePositionCommand.schedule();
   }
 
   private void setPodiumScoring() {
-    new SequentialCommandGroup(
+    SequentialCommandGroup setPodiumScoringCommand = new SequentialCommandGroup(
       new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT),
-      new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_SCORE),
-      new WaitCommand(1),
-      new IndexerIndexCommand(indexer)
+      new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_SCORE)
     );
+
+    setPodiumScoringCommand.schedule();
   }
 
   private void setSpeakerIdle() {
-    new ShamperAngleCommand(shamper, AimingCalculator.calculate().getShamperAngle());
-    new ShamperIdleCommand(shamper, ShamperSpeed.SPEAKER_IDLE);
+    SequentialCommandGroup setSpeakerIdleCommand = new SequentialCommandGroup(
+      new ShamperAngleCommand(shamper, ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees()),
+      new ShamperIdleCommand(shamper, ShamperSpeed.SPEAKER_IDLE)
+    );
+
+    setSpeakerIdleCommand.schedule();
   }
   
   private void setSpeakerScoring() {
-    new ShamperAngleCommand(shamper, AimingCalculator.calculate().getShamperAngle());
-    new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_SCORE, ShamperSpeed.SPEAKER_IDLE);
+    SequentialCommandGroup setSpeakerScoringCommand = new SequentialCommandGroup(
+      new ShamperAngleCommand(shamper, ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees()),
+      new ShamperShootCommand(shamper, indexer, ShamperSpeed.SPEAKER_SCORE, ShamperSpeed.SPEAKER_IDLE)
+    );
+
+    setSpeakerScoringCommand.schedule();
   }
   
   private void setAmpIdle() {
-    new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP);
-    new ShamperIdleCommand(shamper, ShamperSpeed.AMP_IDLE);
+    SequentialCommandGroup setAmpIdleCommand = new SequentialCommandGroup(
+      new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP),
+      new ShamperIdleCommand(shamper, ShamperSpeed.AMP_IDLE)
+    );
+    
+    setAmpIdleCommand.schedule();
   }  
 
   private void setAmpScore() {
-    new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeed.AMP_SCORE, ShamperSpeed.SPEAKER_IDLE);
+    SequentialCommandGroup setAmpScoreCommand = new SequentialCommandGroup(
+      new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP),
+      new ShamperShootCommand(shamper, indexer, ShamperSpeed.AMP_SCORE, ShamperSpeed.SPEAKER_IDLE)
+    );
+
+    setAmpScoreCommand.schedule();
   }
 
   private void setClimbing() {
-    new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB);
-    new ShamperShootCommand(shamper, indexer, ShamperSpeed.OFF);
+    // no
   }
 
   @Override
@@ -112,7 +144,7 @@ public class Superstructure extends SubsystemBase {
       setState(state);
     }
     
-    System.out.println(Math.toDegrees(AimingCalculator.calculateStill().getShamperAngle()));
+    System.out.println(Math.toDegrees(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees()));
   }
 
   public enum SuperstructureState {

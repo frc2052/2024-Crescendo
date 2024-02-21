@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotState;
+import frc.robot.util.calculator.ShootingAngleCalculator;
 
 public class ShamperSubsystem extends SubsystemBase {
   private static TalonFX lowerMotor;
@@ -152,12 +154,21 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public void runPivot(double pct) {
-    pct = contrainSpeed(pct);
-    //rightPivotMotor.set(pct);
+    pct = constrainPivotSpeed(pct);
+
     if(getShamperAngle() > Constants.Shamper.Angle.MINIMUM && getShamperAngle() < Constants.Shamper.Angle.MAXIMUM) {
       leftPivotMotor.set(pct);
     } else {
       leftPivotMotor.stopMotor();
+    }
+  }
+
+  public double constrainPivotSpeed(double speed) {
+    if (Math.abs(speed) > Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY){
+      speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, speed);
+      return speed;
+    } else {
+      return speed;
     }
   }
 
@@ -171,7 +182,9 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public double getShamperAngle() {
-    return Math.abs(rotationEncoder.getDistance() - 360);
+    // % is "mod", mod will always give remander when dividing by 360
+    // subtracting 360 to reverse the angle and getting the absolute value so it is positive
+    return Math.abs((rotationEncoder.getDistance() % 360) - 360);
   }
 
   public double constrainAngle(double angle) {
@@ -232,18 +245,29 @@ public class ShamperSubsystem extends SubsystemBase {
     // if(shamperZeroed()){
     //   rotationEncoder.reset();
     // }
-    System.out.println(goalAngle);
-    if (goalAngle > Constants.Shamper.Angle.MINIMUM || goalAngle < Constants.Shamper.Angle.MAXIMUM) {
+    //System.out.println(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
+    //stopPivot();
+    SmartDashboard.putNumber("Shamper Current Angle:  ", getShamperAngle());
+    SmartDashboard.putNumber("Shamper Current Goal Angle: ", goalAngle);
+
+
+
+    if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
       if (isAtGoalAngle()) {
         stopPivot();
-        //System.out.println("At Goal of " + this.goalAngle);
+        System.out.println("At Goal of " + this.goalAngle);
       } else if (Math.abs(getShamperAngle() - goalAngle) > 10) {
-        leftPivotMotor.set(Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
+        double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle));
+        runPivot(speed);
         //System.out.println("Go Fast " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
       } else {
-        leftPivotMotor.set(Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
+        double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle));
+        runPivot(speed);
         //System.out.println("Go Slow " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
       }
+    } else {
+      System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
+      stopPivot();
     }
 
     if(atSpeed(upperMotor, goalSpeed.getUpperRPS())) {

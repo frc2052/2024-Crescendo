@@ -22,6 +22,7 @@ import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
 import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
 import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.commands.shamper.ShamperStopCommand;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.AdvantageScopeSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
@@ -59,6 +60,7 @@ public class RobotContainer {
   private final ShamperSubsystem shamper;
   private final IndexerSubsystem indexer;
   private final ClimberSubsystem climber;
+  //private final AprilTagSubsystem aprilTag;
   // private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
   // private final AdvantageScopeSubsystem advantageScope;
@@ -81,6 +83,7 @@ public class RobotContainer {
     indexer = new IndexerSubsystem();
     shamper = new ShamperSubsystem();
     climber = new ClimberSubsystem();
+    //aprilTag = AprilTagSubsystem.getInstance();
     // musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     // trapArm = new TrapArmSubsystem();
@@ -107,7 +110,7 @@ public class RobotContainer {
           translationJoystick::getX,
           // Rotation velocity supplier.
           rotationJoystick::getX,
-          () ->false,
+          () -> true,
           //Dashboard.getInstance()::isFieldCentric,
           drivetrain
       )
@@ -131,6 +134,9 @@ public class RobotContainer {
     /*
      * Drive Commands
      */
+
+    JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
+    zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroGyro()));
     // JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 1);
     // JoystickButton orbitNoteButton = new JoystickButton(translationJoystick, 0);
 
@@ -174,10 +180,10 @@ public class RobotContainer {
     /*
      *  Manual Shamper Button Bindings
      */
-    JoystickButton shamperManualUpButton = new JoystickButton(translationJoystick, 3);
-    JoystickButton shamperManualDownButton = new JoystickButton(translationJoystick, 4);
-    // JoystickButton shamperAMPAngleButton = new JoystickButton(translationJoystick, 5);
-    JoystickButton shamperDEFAULTAngleButton = new JoystickButton(translationJoystick, 3);
+    // JoystickButton shamperManualUpButton = new JoystickButton(translationJoystick, 3);
+    // JoystickButton shamperManualDownButton = new JoystickButton(translationJoystick, 4);
+    JoystickButton shamperAMPAngleButton = new JoystickButton(controlPanel, 8);
+    JoystickButton shamperDEFAULTAngleButton = new JoystickButton(controlPanel, 7);
     // JoystickButton shamperAMPManualShotButton = new JoystickButton(rotationJoystick, 2);
     JoystickButton shamperDEFAULTManualShotButton = new JoystickButton(translationJoystick, 1);
     JoystickButton loadButton = new JoystickButton(rotationJoystick, 4);
@@ -186,9 +192,9 @@ public class RobotContainer {
     loadButton.whileTrue(new IndexerLoadCommand(indexer));
     indexButton.whileTrue(new IndexerIndexCommand(indexer));
     
-    shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
-    shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
-    // shamperAMPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
+    // shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
+    // shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
+    shamperAMPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
     shamperDEFAULTAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
     // shamperAMPManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.AMP_SCORE)).onFalse(new ShamperStopCommand(shamper));
     shamperDEFAULTManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE)).onFalse(new ShamperStopCommand(shamper));

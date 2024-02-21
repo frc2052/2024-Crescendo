@@ -54,7 +54,7 @@ public class ShootingAngleCalculator {
         if (lowerDistanceConfig == null) {
             return shootAngleLookup.get(0);
         } else if (upperDistanceConfig == null){
-            return shootAngleLookup.get(shootAngleLookup.size());
+            return shootAngleLookup.get(shootAngleLookup.size() - 1);
         }
 
         // deltaInches is the difference between the lower and upper pre-measured inches values.
