@@ -4,46 +4,34 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-  private final TalonFX upperMotor;
-  private final TalonFX lowerMotor;
+  private final CANSparkMax intakeMotor;
 
   public IntakeSubsystem () {    
-    upperMotor = new TalonFX(Constants.Intake.UPPER_MOTOR_ID);
-    lowerMotor = new TalonFX(Constants.Intake.LOWER_MOTOR_ID);
+    intakeMotor = new CANSparkMax(Constants.CAN.INTAKE_MOTOR_ID, MotorType.kBrushless);
   }
 
-  public void setUpperMotorSpeed(double upperMotorSpeedPCT) {
-    upperMotor.set(ControlMode.PercentOutput, upperMotorSpeedPCT);
+  public void intake() {
+    intakeMotor.set(Constants.Intake.INTAKE_IN_SPEED_PCT);
   }
 
-  public void setLowerMotorSpeed(double lowerMotorSpeedPCT) {
-    lowerMotor.set(ControlMode.PercentOutput, lowerMotorSpeedPCT);
-  }
-
-  public void intake(double upperMotorPCT, double lowerMotorPCT) {
-    //reversed bottom motor
-    upperMotor.set(ControlMode.PercentOutput, upperMotorPCT);
-    lowerMotor.set(ControlMode.PercentOutput, lowerMotorPCT);
+  public void outtake(){
+    intakeMotor.set(Constants.Intake.INTAKE_OUT_SPEED_PCT);
   }
 
   public void stop() {
-    upperMotor.set(ControlMode.PercentOutput, 0);
-    lowerMotor.set(ControlMode.PercentOutput, 0);
+    intakeMotor.set(0);
   }
 
-  public double getUpperMotorSpeed() {
-    return upperMotor.getSelectedSensorVelocity();
-  }
-  
-  public double getLowerMotorSpeed() {
-    return lowerMotor.getSelectedSensorVelocity();
+  public double getIntakeMotorSpeed() {
+    return intakeMotor.get();
   }
 
   @Override

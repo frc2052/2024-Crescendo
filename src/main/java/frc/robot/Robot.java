@@ -12,12 +12,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.util.RobotStateEstimator;
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
@@ -31,11 +25,9 @@ public class Robot extends LoggedRobot {
   public void robotInit() {
     Logger.addDataReceiver(new NT4Publisher()); // Publish AdvantageKit data to NetworkTables
     Logger.start(); //Start AdvantageKit Logger
-    
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
+
     m_robotContainer = new RobotContainer();
-    m_robotContainer.robotStatusCommunicator.onRobotInitiation();
+    // m_robotContainer.robotStatusCommunicator.onRobotInitiation();
   }
 
   /**
@@ -48,23 +40,25 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     RobotStateEstimator.getInstance().updateRobotPoseEstimator();
+    RobotState.getInstance().output();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    m_robotContainer.robotStatusCommunicator.onRobotPeriodic();
+    // m_robotContainer.robotStatusCommunicator.onRobotPeriodic();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    //commented the next line out cause it has nothing in it and it doesn't need to be run for safty reasons yet, it won't do anything but im no idiot. I've seen what robots can do.
     //m_robotContainer.robotStatusCommunicator.onRobotDisable();
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    m_robotContainer.precompileAuto();
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -90,7 +84,7 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.robotStatusCommunicator.onRobotTeleop();
+    // m_robotContainer.robotStatusCommunicator.onRobotTeleop();
   }
 
   /** This function is called periodically during operator control. */

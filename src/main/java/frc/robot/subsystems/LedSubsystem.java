@@ -3,12 +3,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.states.RobotState;
+import frc.robot.RobotState;
 
 public class LedSubsystem extends SubsystemBase {
      private static LedSubsystem INSTANCE;
     
-    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4, codeChannel5, codeChannel6, codeChannel7, codeChannel8;
+    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4, codeChannel5;
     private LEDStatusMode currentStatusMode;
 
     private boolean disableLEDs;
@@ -23,9 +23,6 @@ public class LedSubsystem extends SubsystemBase {
         codeChannel3 = new DigitalOutput(Constants.LED.CHANNEL_3_PIN);
         codeChannel4 = new DigitalOutput(Constants.LED.CHANNEL_4_PIN);
         codeChannel5 = new DigitalOutput(Constants.LED.CHANNEL_5_PIN);
-        codeChannel6 = new DigitalOutput(Constants.LED.CHANNEL_6_PIN);
-        codeChannel7 = new DigitalOutput(Constants.LED.CHANNEL_7_PIN);
-        codeChannel8 = new DigitalOutput(Constants.LED.CHANNEL_8_PIN);
         
         robotDisabled = true;
         
@@ -92,9 +89,6 @@ public class LedSubsystem extends SubsystemBase {
         codeChannel3.set((code & 4) > 0);   // 2^2
         codeChannel4.set((code & 8) > 0);   // 2^3
         codeChannel5.set((code & 16) > 0);  // 2^4
-        codeChannel6.set((code & 32) > 0);
-        codeChannel7.set((code & 64) > 0);
-        codeChannel8.set((code & 128) > 0); 
 
         }
 

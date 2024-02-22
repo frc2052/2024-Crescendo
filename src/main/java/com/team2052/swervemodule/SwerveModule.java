@@ -2,13 +2,19 @@ package com.team2052.swervemodule;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
@@ -19,7 +25,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveModule {
-   private final CANSparkMax driveMotor;
+   private final TalonFX driveMotor;
    private final CANSparkMax steerMotor;
    private final CANcoder canCoder;
    private String debugName;
@@ -48,7 +54,7 @@ public class SwerveModule {
             "Failed to configure CANCoder",
             canCoder.getConfigurator().apply(
                 canCoderConfiguration,
-                SwerveConstants.CAN_TIMEOUT_MS
+                SwerveConstants.CAN_TIMEOUT_SECONDS
             )
         );
 
@@ -58,50 +64,46 @@ public class SwerveModule {
      * Drive Motor Initialization
      */
 
-    driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
-    checkError("Failed to restore drive motor factory defaults", driveMotor.restoreFactoryDefaults());
+    driveMotor = new TalonFX(driveMotorChannel);
+    // checkError("Failed to restore drive motor factory defaults", driveMotor.restoreFactoryDefaults());
 
-    checkError(
-        "Failed to set drive motor periodic status frame rate",
-        driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100),
-        driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20),
-        driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20)
-    );
+    // checkError(
+    //     "Failed to set drive motor periodic status frame rate",
+    //     driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100),
+    //     driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20),
+    //     driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20)
+    // );
 
-    checkError(
-        "Failed to set drive motor idle mode",
-        driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake)
-    );
+    // checkError(
+    //     "Failed to set drive motor idle mode",
+    //     driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake)
+    // );
+
+    driveMotor.setNeutralMode(NeutralModeValue.Brake);
 
     driveMotor.setInverted(SwerveConstants.SwerveModule.DRIVE_INVERTED);
 
-    checkError(
-        "Failed to enable drive motor voltage compensation",
-        driveMotor.enableVoltageCompensation(SwerveConstants.MAX_VOLTAGE_VOLTS)
-    );
+    // current limiting?
 
-    checkError(
-        "Failed to set steer motor current limit",
-        driveMotor.setSmartCurrentLimit(
-            SwerveConstants.DRIVE_STALL_CURRENT_LIMIT_AMPS, 
-            SwerveConstants.DRIVE_FREE_CURRENT_LIMIT_AMPS
-        )
-    );
+    // VoltageConfigs driveVoltageConfig = new VoltageConfigs();
+    // driveVoltageConfig.withPeakForwardVoltage(SwerveConstants.MAX_VOLTAGE_VOLTS);
+    // driveVoltageConfig.withPeakReverseVoltage(SwerveConstants.MAX_VOLTAGE_VOLTS);
 
-    // Drive Motor encoder initialization
-    RelativeEncoder driveEncoder = driveMotor.getEncoder();
+    // CurrentLimitsConfigs driveCurrentLimitConfig = new CurrentLimitsConfigs();
+    // driveCurrentLimitConfig.withStatorCurrentLimit(SwerveConstants.DRIVE_STALL_CURRENT_LIMIT_AMPS);
+    // driveCurrentLimitConfig.withSupplyCurrentLimit(SwerveConstants.DRIVE_FREE_CURRENT_LIMIT_AMPS);
+    // checkError(
+    //     "Failed to enable drive motor voltage compensation",
+    //     driveMotor.getConfigurator().apply(driveVoltageConfig, SwerveConstants.CAN_TIMEOUT_SECONDS)
+    // );
 
-    // Conversion factor for switching between ticks and meters in terms of meters per tick
-    double drivePositionConversionFactor = Math.PI * SwerveConstants.SwerveModule.WHEEL_DIAMETER_METERS * 
-        SwerveConstants.SwerveModule.DRIVE_REDUCTION;
-    
-    checkError(
-        "Failed to set drive motor encoder conversion factors",
-        // Set the position conversion factor so the encoder will automatically convert ticks to meters
-        driveEncoder.setPositionConversionFactor(drivePositionConversionFactor),
-        // Velocity of the encoder in meters per second
-        driveEncoder.setVelocityConversionFactor(drivePositionConversionFactor / 60.0)
-    );
+    // checkError(
+    //     "Failed to set steer motor current limit",
+    //     driveMotor.getConfigurator().apply(
+    //         driveCurrentLimitConfig,
+    //         SwerveConstants.CAN_TIMEOUT_SECONDS
+    //     )
+    // );
 
     /*
      * Steer Motor Initialization
@@ -119,20 +121,20 @@ public class SwerveModule {
 
     checkError(
         "Failed to set drive motor idle mode",
-        steerMotor.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        steerMotor.setIdleMode(IdleMode.kBrake)
     );
 
     steerMotor.setInverted(SwerveConstants.SwerveModule.STEER_INVERTED);
 
-    checkError(
-        "Failed to enable steer motor voltage compensation",
-        steerMotor.enableVoltageCompensation(SwerveConstants.MAX_VOLTAGE_VOLTS)
-    );
+    // checkError(
+    //     "Failed to enable steer motor voltage compensation",
+    //     steerMotor.enableVoltageCompensation(SwerveConstants.MAX_VOLTAGE_VOLTS)
+    // );
 
-    checkError(
-        "Failed to set steer motor current limit",
-        steerMotor.setSmartCurrentLimit((int) SwerveConstants.STEER_CURRENT_LIMIT_AMPS)
-    );
+    // checkError(
+    //     "Failed to set steer motor current limit",
+    //     steerMotor.setSmartCurrentLimit((int) SwerveConstants.STEER_CURRENT_LIMIT_AMPS)
+    // );
 
     // Drive Motor encoder initialization
     RelativeEncoder steerEncoder = steerMotor.getEncoder();
@@ -174,7 +176,7 @@ public class SwerveModule {
         // Both encoder values are automatically in units of meters per second and
         // radians because of the position and velocity conversion factors
         return new SwerveModuleState(
-            driveMotor.getEncoder().getVelocity(),
+            driveMotor.getVelocity().getValueAsDouble(),
             new Rotation2d(
                 steerMotor.getEncoder().getPosition() % (2.0 * Math.PI)
             )
@@ -190,9 +192,7 @@ public class SwerveModule {
         );
 
         // Set the motor to our desired velocity as a percentage of our max velocity
-        driveMotor.set(
-            desiredState.speedMetersPerSecond / getMaxVelocityMetersPerSecond()
-        );
+        driveMotor.set(desiredState.speedMetersPerSecond / getMaxVelocityMetersPerSecond());
 
         steerMotor.getPIDController().setReference(
             desiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition
@@ -203,7 +203,7 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            driveMotor.getEncoder().getPosition(),
+            driveMotor.getRotorPosition().getValueAsDouble() * SwerveConstants.SwerveModule.drivePositionConversionFactor,
             new Rotation2d(
                 steerMotor.getEncoder().getPosition()
             )
@@ -216,7 +216,7 @@ public class SwerveModule {
          * [Motor free speed (RPM)] / 60 * [Drive reduction] * [Wheel diameter (m)] * pi
          * This is a measure of how fast the robot should be able to drive in a straight line.
          */
-        return SwerveConstants.SwerveModule.NEO_ROUNDS_PER_MINUTE / 60 * SwerveConstants.SwerveModule.DRIVE_REDUCTION * 
+        return SwerveConstants.SwerveModule.KRAKEN_ROUNDS_PER_MINUTE / 60 * SwerveConstants.SwerveModule.DRIVE_REDUCTION * 
             SwerveConstants.SwerveModule.WHEEL_DIAMETER_METERS * Math.PI;
     }
 

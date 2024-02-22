@@ -1,4 +1,4 @@
-package frc.robot.states;
+package frc.robot.util.states;
 
 public class ShamperAndRotationState {
     private double shamperAngle;

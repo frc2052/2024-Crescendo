@@ -4,79 +4,103 @@
 
 package frc.robot;
 
+import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
-import frc.robot.commands.climb.ClimerExtendCommand;
+import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
-import frc.robot.commands.drive.DriveWhileMovingAimingCommand;
+import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
-import frc.robot.commands.intake.IntakeInCommand;
-import frc.robot.commands.intake.IntakeOutCommand;
-import frc.robot.commands.music.PauseMusicPlayerCommand;
-import frc.robot.commands.music.PlayActivationJingleCommand;
-import frc.robot.commands.shamper.ShamperManualCommand;
-import frc.robot.states.Superstructure;
-import frc.robot.states.Superstructure.SuperstructureState;
-import frc.robot.subsystems.AdvantageScopeSubsystem;
+import frc.robot.commands.indexer.IndexerIndexCommand;
+import frc.robot.commands.indexer.IndexerLoadCommand;
+import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.OuttakeCommand;
+import frc.robot.commands.shamper.ShamperAngleCommand;
+//import frc.robot.commands.music.PauseMusicPlayerCommand;
+//import frc.robot.commands.music.PlayActivationJingleCommand;
+import frc.robot.commands.shamper.ShamperManualShootCommand;
+import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
+import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
+import frc.robot.commands.shamper.ShamperShootCommand;
+import frc.robot.commands.shamper.ShamperStopCommand;
+import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
+//import frc.robot.subsystems.AdvantageScopeSubsystem;
+//import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.MusicPlayerSubsystem;
+//import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.subsystems.TrapArmSubsystem;
+import frc.robot.subsystems.Superstructure;
+//import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.util.RobotStatusCommunicator;
+import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
+//import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 
 import java.util.function.BooleanSupplier;
 
+import javax.swing.JOptionPane;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
+  private RobotState robotState = RobotState.getInstance();
   private final DrivetrainSubsystem drivetrain;
   private final IntakeSubsystem intake;
   private final ShamperSubsystem shamper;
-  private final ClimberSubsystem climber;
-  private final MusicPlayerSubsystem musicPlayer;
-  private final VisionSubsystem vision;
-  private final AdvantageScopeSubsystem advantageScope;
   private final IndexerSubsystem indexer;
-  private final TrapArmSubsystem trapArm;
+  private final ClimberSubsystem climber;
+  private final AprilTagSubsystem aprilTag;
+  // private final MusicPlayerSubsystem musicPlayer;
+  // private final VisionSubsystem vision;
+  // private final AdvantageScopeSubsystem advantageScope;
+  // private final TrapArmSubsystem trapArm;
 
-  private final Superstructure superstructure;
+  //private final Superstructure superstructure;
+
+  private final AutoFactory autoFactory;
 
   private final Joystick translationJoystick;
   private final Joystick rotationJoystick;
   private final Joystick controlPanel;
 
-  private BooleanSupplier fieldCentricSupplier;
   public static boolean musicOn;
-  public RobotStatusCommunicator robotStatusCommunicator;
+  //public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    drivetrain = new DrivetrainSubsystem();
+    intake = new IntakeSubsystem();
+    indexer = new IndexerSubsystem();
+    shamper = new ShamperSubsystem();
+    climber = new ClimberSubsystem();
+    aprilTag = AprilTagSubsystem.getInstance();
+    // musicPlayer = new MusicPlayerSubsystem();
+    // vision = new VisionSubsystem();
+    // trapArm = new TrapArmSubsystem();
+    // advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
+
+    //superstructure = new Superstructure(shamper, climber, indexer);
+    //superstructure = new Superstructure(shamper, indexer, intake);
+
+    // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
+
+    musicOn = true;
+
+    autoFactory = new AutoFactory(() -> Dashboard.getInstance().getAuto());
+
     translationJoystick = new Joystick(0);
     rotationJoystick = new Joystick(1);
     controlPanel = new Joystick(2);
-
-    drivetrain = new DrivetrainSubsystem();
-    intake = new IntakeSubsystem();
-    shamper = new ShamperSubsystem();
-    climber = new ClimberSubsystem();
-    musicPlayer = new MusicPlayerSubsystem();
-    vision = new VisionSubsystem();
-    indexer = new IndexerSubsystem();
-    trapArm = new TrapArmSubsystem();
-    advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
-
-    superstructure = new Superstructure(shamper, climber, indexer);
-
-    robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
-
-    musicOn = true;
 
     drivetrain.setDefaultCommand(
       new DriveCommand(
@@ -86,78 +110,151 @@ public class RobotContainer {
           translationJoystick::getX,
           // Rotation velocity supplier.
           rotationJoystick::getX,
-          Dashboard.getInstance()::isFieldCentric,
+          () -> true,
+          //Dashboard.getInstance()::isFieldCentric,
           drivetrain
       )
     );
 
-    configureBindings();
+    // NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer));
+    // NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake, indexer));
+    // NamedCommands.registerCommand("Default Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.DEFAULT)));
+    // NamedCommands.registerCommand("Speaker Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
+    // NamedCommands.registerCommand("Speaker Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_SCORE)));
+    // NamedCommands.registerCommand("Amp Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_IDLE)));
+    // NamedCommands.registerCommand("Amp Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_SCORE)));
+
+    //advantageScope.startRecording();
+
+    configureButtonBindings();
   }
 
-  private void configureBindings() {
+  private void configureButtonBindings() {
 
     /*
-     * 
+     * Drive Commands
      */
-    JoystickButton motionAimButton = new JoystickButton(rotationJoystick, 0);
-    JoystickButton orbitNoteButton = new JoystickButton(translationJoystick, 0);
 
-    motionAimButton.whileTrue(new DriveWhileMovingAimingCommand(
-      () -> translationJoystick.getX(), 
-      () -> translationJoystick.getY(), 
-      fieldCentricSupplier, 
-      drivetrain
-    ));
+    JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
+    zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroGyro()));
+    // JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 1);
+    // JoystickButton orbitNoteButton = new JoystickButton(translationJoystick, 0);
 
-    orbitNoteButton.whileTrue(new DriveWhileOrbitingNoteCommand(
-      () -> translationJoystick.getX(), 
-      () -> translationJoystick.getY(), 
-      fieldCentricSupplier, 
-      drivetrain, vision
-    ));
+    // driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(
+    //   () -> translationJoystick.getX(), 
+    //   () -> translationJoystick.getY(), 
+    //   fieldCentricSupplier, 
+    //   drivetrain
+    // ));
 
-    JoystickButton raiseClimberButton = new JoystickButton(controlPanel, 12);
-    JoystickButton lowerClimberButton = new JoystickButton(controlPanel, 11);
+    // orbitNoteButton.whileTrue(new DriveWhileOrbitingNoteCommand(
+    //   () -> translationJoystick.getX(), 
+    //   () -> translationJoystick.getY(), 
+    //   fieldCentricSupplier, 
+    //   drivetrain, vision
+    // ));
+
+
+    /*
+     *  Climber Button Bindings
+     */
+    // JoystickButton raiseClimberButton = new JoystickButton(controlPanel, 12);
+    // JoystickButton lowerClimberButton = new JoystickButton(controlPanel, 11);
     
-    raiseClimberButton.whileTrue(new ClimerExtendCommand(climber));
-    lowerClimberButton.whileTrue(new ClimberRetractCommand(climber));
+    // raiseClimberButton.whileTrue(new ClimberExtendCommand(climber));
+    // lowerClimberButton.whileTrue(new ClimberRetractCommand(climber));
     /*
      * Intake Button Bindings
      */
-    JoystickButton intakeInButton = new JoystickButton(controlPanel, 10);
-    JoystickButton intakeOutButton = new JoystickButton(controlPanel, 9);
+
+    JoystickButton intakeInButton = new JoystickButton(rotationJoystick, 1);
+    JoystickButton climberDownButton = new JoystickButton(translationJoystick, 11);
+    JoystickButton climberUpButton = new JoystickButton(translationJoystick, 10);
     
-    intakeInButton.whileTrue(new IntakeInCommand(intake, indexer));
-    intakeOutButton.whileTrue(new IntakeOutCommand(intake));
+    intakeInButton.whileTrue(new IntakeCommand(intake));
+    climberDownButton.whileTrue(new ClimberRetractCommand(climber));
+    climberUpButton.whileTrue(new ClimberExtendCommand(climber));
 
-    JoystickButton toggleMusicPlayerButton = new JoystickButton(controlPanel, 2);
-    toggleMusicPlayerButton.onTrue(toggleMusic());
+    /*
+     *  Manual Shamper Button Bindings
+     */
+    JoystickButton shamperManualUpButton = new JoystickButton(translationJoystick, 3);
+    JoystickButton shamperManualDownButton = new JoystickButton(translationJoystick, 4);
+    JoystickButton shamperAMPAngleButton = new JoystickButton(controlPanel, 8);
+    JoystickButton shamperDEFAULTAngleButton = new JoystickButton(controlPanel, 7);
+    JoystickButton shamperTRAPAngleButton = new JoystickButton(controlPanel, 5);
+    // JoystickButton shamperAMPManualShotButton = new JoystickButton(rotationJoystick, 2);
+    JoystickButton shamperDEFAULTManualShotButton = new JoystickButton(translationJoystick, 1);
+    JoystickButton loadButton = new JoystickButton(rotationJoystick, 4);
+    JoystickButton indexButton = new JoystickButton(rotationJoystick, 3);
 
-    JoystickButton ampIdleButton = new JoystickButton(controlPanel, 7);
-    JoystickButton ampScoreButton = new JoystickButton(controlPanel, 1);
-    JoystickButton speakerIdleSetupButton = new JoystickButton(controlPanel, 5);
-    JoystickButton speakerScoreSetupButton = new JoystickButton(controlPanel, 6);
-    JoystickButton shamperDefaultButton = new JoystickButton(controlPanel, 12);
-    JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 3);
-    JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 4);
+    loadButton.whileTrue(new IndexerLoadCommand(indexer));
+    indexButton.whileTrue(new IndexerIndexCommand(indexer));
+    
+    shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
+    shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
+    shamperAMPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
+    shamperDEFAULTAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
+    shamperTRAPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
+    // shamperAMPManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.AMP_SCORE)).onFalse(new ShamperStopCommand(shamper));
+    shamperDEFAULTManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE)).onFalse(new ShamperStopCommand(shamper));
+    /*
+     *  Superstructure Position Button Bindings
+     */
 
-    ampIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
-    ampScoreButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_SCORE)));
-    speakerIdleSetupButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
-    speakerScoreSetupButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_SCORE)));
-    shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
-    shamperManualUpButton.whileTrue(new ShamperManualCommand(shamper, true));
-    shamperManualDownButton.whileTrue(new ShamperManualCommand(shamper, false));
+    // JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
+    // JoystickButton shamperAmpIdleButton = new JoystickButton(rotationJoystick, 4);
+    // JoystickButton superstructureIntakeButton = new JoystickButton(rotationJoystick, 2);
+    // // JoystickButton shamperSpeakerIdleAimButon = new JoystickButton(rotationJoystick, 3);
+    // JoystickButton shamperPodiumIdleButton = new JoystickButton(rotationJoystick, 3);
+    // JoystickButton shamperDefaultButton = new JoystickButton(rotationJoystick, 5);
+
+    // shamperAmpIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
+    // // shamperSpeakerIdleAimButon.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
+    // superstructureIntakeButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.INTAKE)));
+    // shamperPodiumIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.PODIUM_IDLE)));
+    // shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
+    
+    // shamperShootButton.onTrue(new InstantCommand(() -> {
+    //   if(superstructure.getState() == SuperstructureState.AMP_IDLE) {
+    //     superstructure.setState(SuperstructureState.AMP_SCORE);
+    //   // } else if (superstructure.getState() == SuperstructureState.SPEAKER_IDLE) {
+    //   //   superstructure.setState(SuperstructureState.SPEAKER_SCORE);
+    //   } else if (superstructure.getState() == SuperstructureState.PODIUM_IDLE) {
+    //     superstructure.setState(SuperstructureState.PODIUM_SCORE);
+    //   } else {
+    //     System.out.println("WASN'T IDLING*********");
+    //   }
+    // })).onFalse(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
+
+    // shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
+    
+    /*
+     * Music Player Toggle
+     */
+    // JoystickButton toggleMusicPlayerButton = new JoystickButton(controlPanel, 2);
+    // toggleMusicPlayerButton.onTrue(toggleMusic());
   }
 
-  public Command toggleMusic() {
-    musicOn = !musicOn;
-    if (!musicOn) {new PauseMusicPlayerCommand(musicPlayer);}
-    return null;
+  // public Command toggleMusic() {
+  //   musicOn = !musicOn;
+  //   robotState.setMusicEnableStatus(musicOn);;
+  //   if (!musicOn) {new PauseMusicPlayerCommand(musicPlayer);}
+  //   return null;
+  // }
+
+  public void forceRecompile() {
+    autoFactory.recompile();
   }
 
+
+  public void precompileAuto() {
+      if (autoFactory.recompileNeeded()) {
+          autoFactory.recompile();
+      }
+  }
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoFactory.getCompiledAuto();
   }
 }

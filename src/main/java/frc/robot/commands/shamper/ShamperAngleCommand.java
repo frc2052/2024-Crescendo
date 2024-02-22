@@ -18,4 +18,9 @@ public class ShamperAngleCommand extends Command {
     public void initialize() {
         shamper.setAngle(angle);
     }
+
+    @Override
+    public boolean isFinished() {
+        return shamper.isAtGoalAngle();
+    }
 }

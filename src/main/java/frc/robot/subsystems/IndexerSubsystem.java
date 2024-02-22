@@ -11,54 +11,47 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.states.RobotState;
+import frc.robot.RobotState;
 
 public class IndexerSubsystem extends SubsystemBase {
-  private final CANSparkMax upperMotor;
   private final CANSparkFlex lowerMotor;
+  private final CANSparkMax upperMotor;
   private final DigitalInput noteDetector;
 
-  private boolean noteDetected;
-
   public IndexerSubsystem() {
-    upperMotor = new CANSparkMax(Constants.Indexer.LOWER_MOTOR_ID, MotorType.kBrushless);
-    lowerMotor = new CANSparkFlex(Constants.Indexer.UPPER_MOTOR_ID, MotorType.kBrushless);
-    noteDetector = new DigitalInput(Constants.Indexer.DIGITAL_INPUT_ID);
+    lowerMotor = new CANSparkFlex(Constants.CAN.LOWER_INDEX_MOTOR_ID, MotorType.kBrushless);
+    upperMotor = new CANSparkMax(Constants.CAN.SHAMPER_INDEX_ID, MotorType.kBrushless);
+    noteDetector = new DigitalInput(Constants.Indexer.INDEXER_SENSOR_PIN);
 
     upperMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     lowerMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
   }
 
-  public void runIfNotTripped() {
-    if (!noteDetected) {
-      runMotors();
-    }
-  }
-  
-
-  public void runMotors() {
-    runUpperMotor();
-    runLowerMotor();
+  public void indexLower() {
+    lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
   }
 
-  public void stopMotors() {
-    stopUpperMotor();
-    stopLowerMotor();
+  public void indexUpper() {
+    upperMotor.set(Constants.Indexer.UPPER_INDEX_SPEED_PCT);
   }
 
-  public void runUpperMotor() {
-    upperMotor.set(Constants.Indexer.UPPER_SPEED_PCT);
+  public void loadAll() {
+    upperMotor.set(Constants.Indexer.UPPER_LOAD_SPEED_PCT);
+    lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
   }
 
-  public void runLowerMotor() {
-    lowerMotor.set(Constants.Indexer.LOWER_SPEED_PCT);
+  public void indexAll() {
+    upperMotor.set(Constants.Indexer.UPPER_INDEX_SPEED_PCT);
+    lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
   }
 
-  public void stopUpperMotor() {
+  public void reverse() {
+    upperMotor.set(-Constants.Indexer.UPPER_INDEX_SPEED_PCT);
+    lowerMotor.set(-Constants.Indexer.LOWER_INDEX_SPEED_PCT);
+  }
+
+  public void stop() {
     upperMotor.stopMotor();
-  }
-
-  public void stopLowerMotor() {
     lowerMotor.stopMotor();
   }
 
@@ -71,12 +64,13 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public boolean getNoteDetector() {
-    return noteDetector.get();
+    return !noteDetector.get();
   }
 
   @Override
   public void periodic() {
-    noteDetected = noteDetector.get();
+    boolean noteDetected = getNoteDetector();
     RobotState.getInstance().updateNoteDetected(noteDetected);
+    //System.out.println(noteDetected);
   }
 }

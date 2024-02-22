@@ -6,10 +6,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
-import com.team2052.lib.DrivetrainState;
 import com.team2052.swervemodule.SwerveModule;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -21,8 +17,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.states.RobotState;
+import frc.robot.RobotState;
 import frc.robot.util.RobotStateEstimator;
+import frc.robot.util.states.DrivetrainState;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     private RobotState robotState = RobotState.getInstance();
@@ -39,30 +36,30 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public DrivetrainSubsystem() {
         frontLeftModule = new SwerveModule(
             "front left",
-            Constants.Drivetrain.FRONT_LEFT_MODULE_DRIVE_MOTOR,
-            Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_MOTOR,
-            Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_ENCODER,
+            Constants.CAN.FRONT_LEFT_MODULE_DRIVE_MOTOR,
+            Constants.CAN.FRONT_LEFT_MODULE_STEER_MOTOR,
+            Constants.CAN.FRONT_LEFT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS)
         );
         frontRightModule = new SwerveModule(
             "front right",
-            Constants.Drivetrain.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
-            Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_MOTOR,
-            Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_ENCODER,
+            Constants.CAN.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
+            Constants.CAN.FRONT_RIGHT_MODULE_STEER_MOTOR,
+            Constants.CAN.FRONT_RIGHT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS)
         );
         backLeftModule = new SwerveModule(
             "back left",
-            Constants.Drivetrain.BACK_LEFT_MODULE_DRIVE_MOTOR,
-            Constants.Drivetrain.BACK_LEFT_MODULE_STEER_MOTOR,
-            Constants.Drivetrain.BACK_LEFT_MODULE_STEER_ENCODER,
+            Constants.CAN.BACK_LEFT_MODULE_DRIVE_MOTOR,
+            Constants.CAN.BACK_LEFT_MODULE_STEER_MOTOR,
+            Constants.CAN.BACK_LEFT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.BACK_LEFT_MODULE_STEER_OFFSET_RADIANS)
         );
         backRightModule = new SwerveModule(
             "back right",
-            Constants.Drivetrain.BACK_RIGHT_MODULE_DRIVE_MOTOR,
-            Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_MOTOR,
-            Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_ENCODER,
+            Constants.CAN.BACK_RIGHT_MODULE_DRIVE_MOTOR,
+            Constants.CAN.BACK_RIGHT_MODULE_STEER_MOTOR,
+            Constants.CAN.BACK_RIGHT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS)
         );
 
@@ -70,20 +67,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         zeroGyro();
 
-        //TODO: can the reset happen in robotState?
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
             () -> robotState.getRobotPose(), // Robot pose supplier
             this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
             () -> robotState.getChassisSpeeds(), // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                    4.5, // Max module speed, in m/s
-                    0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-                    new ReplanningConfig() // Default path replanning config. See the API for the options here
-            ),
+            Constants.PathPlanner.HOLONOMIC_PATH_FOLLOWER_CONFIG,
             () -> {
               // Boolean supplier that controls when the path will be mirrored for the red alliance
               // This will flip the path being followed to the red side of the field.
@@ -96,8 +86,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
               return false;
             },
             this // Reference to this subsystem to set requirements
-    );
-  }
+        );
+    }
 
     private void resetPose (Pose2d pose) {
         RobotStateEstimator.getInstance().resetOdometry(pose);
@@ -105,7 +95,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(), getNavx().getRotation2d()));
+        // currentChassisSpeeds = new ChassisSpeeds(navx.getVelocityX(), navx.getVelocityY)
+        robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(), navx.getRotation2d()));
+        debug();
     }
 
     /**
@@ -143,10 +135,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         drive(chassisSpeeds);
     }
 
-    /**
-     * Autonomous commands still require a drive method controlled via a ChassisSpeeds object
-     */
     public void drive(ChassisSpeeds chassisSpeeds) {
+        // TODO: read navx values for chassis speeds instead
         currentChassisSpeeds = chassisSpeeds;
         SwerveModuleState[] swerveModuleStates = Constants.Drivetrain.kinematics.toSwerveModuleStates(chassisSpeeds);
         setModuleStates(swerveModuleStates);
@@ -208,12 +198,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
          * (a measure of how fast the robot can rotate in place).
          */
         
-        // return NeoSwerverModule.getMaxVelocityMetersPerSecond(ModuleConfiguration.MK4I_L3) / Math.hypot(
-        //     Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, 
-        //     Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0
-        // );
+        return SwerveModule.getMaxVelocityMetersPerSecond() / Math.hypot(
+            Constants.Drivetrain.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, 
+            Constants.Drivetrain.DRIVETRAIN_WHEELBASE_METERS / 2.0
+        );
 
-        return 6 * Math.PI;
+        //return 6 * Math.PI;
     }
 
     public void debug() {
