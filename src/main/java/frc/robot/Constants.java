@@ -251,36 +251,35 @@ public final class Constants {
         public static final double NOTE_DETECTION_CAMERA_ROTATION_OFFSET = 0;
     }
     public static final class PhotonCamera1 {
-        // TODO: Add PiCamera offsets
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
 
-        public static final double X_OFFSET_INCHES = 13.314;
-        public static final double Y_OFFSET_INCHES = 10.189;
-        public static final double Z_OFFSET_INCHES = 10.315;
+        public static final double X_OFFSET_M = 0.29;
+        public static final double Y_OFFSET_M = 0.26;
+        public static final double Z_OFFSET_M = 0.25;
 
         public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll
         public static final double THETA_Y_OFFSET_DEGREES = -29.536; // pitch
         public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
-            new Translation3d(Units.inchesToMeters(X_OFFSET_INCHES), Units.inchesToMeters(Y_OFFSET_INCHES), Units.inchesToMeters(Z_OFFSET_INCHES)), 
+            new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 
             new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
         );
     }
     public static final class PhotonCamera2 {
-        // TODO: Add PiCamera offsets
+        // TODO: make offsets more precise than caleb's eyeballing
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
 
-        public static final double X_OFFSET_INCHES = 0;
-        public static final double Y_OFFSET_INCHES = 0;
-        public static final double Z_OFFSET_INCHES = 0;
+        public static final double X_OFFSET_M = 0.01;
+        public static final double Y_OFFSET_M = -0.40;
+        public static final double Z_OFFSET_M = 0.31;
 
         public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll
-        public static final double THETA_Y_OFFSET_DEGREES = 0.0; // pitch
+        public static final double THETA_Y_OFFSET_DEGREES = -15; // pitch
         public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
-            new Translation3d(Units.inchesToMeters(X_OFFSET_INCHES), Units.inchesToMeters(Y_OFFSET_INCHES), Units.inchesToMeters(Z_OFFSET_INCHES)), 
+            new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 
             new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
         );
     }

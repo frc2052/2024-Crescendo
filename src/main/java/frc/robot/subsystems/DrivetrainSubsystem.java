@@ -95,7 +95,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(), getNavx().getRotation2d()));
+        // currentChassisSpeeds = new ChassisSpeeds(navx.getVelocityX(), navx.getVelocityY)
+        robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(), navx.getRotation2d()));
         debug();
     }
 
@@ -135,6 +136,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void drive(ChassisSpeeds chassisSpeeds) {
+        // TODO: read navx values for chassis speeds instead
         currentChassisSpeeds = chassisSpeeds;
         SwerveModuleState[] swerveModuleStates = Constants.Drivetrain.kinematics.toSwerveModuleStates(chassisSpeeds);
         setModuleStates(swerveModuleStates);

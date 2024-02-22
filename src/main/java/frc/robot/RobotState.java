@@ -243,10 +243,10 @@ public class RobotState {
 
     public void output(){
         Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
-        Dashboard.getInstance().putData("Robot Position X Inches: ", Units.inchesToMeters(robotPose.getX()));
-        Dashboard.getInstance().putData("Robot Position Y Inches: ", Units.inchesToMeters(robotPose.getY()));
-        Dashboard.getInstance().putData("VISION Robot Position X Inches: ", Units.inchesToMeters(aprilTagVisionPose3d.getX()));
-        Dashboard.getInstance().putData("VISION Robot Position Y Inches: ", Units.inchesToMeters(aprilTagVisionPose3d.getY()));
-        Dashboard.getInstance().putData("Vision Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
+        Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
+        Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));
+        Dashboard.getInstance().putData("VISION Robot Position X : ", (aprilTagVisionPose3d.getX()));
+        Dashboard.getInstance().putData("VISION Robot Position Y : ", (aprilTagVisionPose3d.getY()));
+        Dashboard.getInstance().putData("VISION Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
     }   
 }

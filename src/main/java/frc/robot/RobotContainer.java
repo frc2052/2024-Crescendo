@@ -60,7 +60,7 @@ public class RobotContainer {
   private final ShamperSubsystem shamper;
   private final IndexerSubsystem indexer;
   private final ClimberSubsystem climber;
-  //private final AprilTagSubsystem aprilTag;
+  private final AprilTagSubsystem aprilTag;
   // private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
   // private final AdvantageScopeSubsystem advantageScope;
@@ -83,7 +83,7 @@ public class RobotContainer {
     indexer = new IndexerSubsystem();
     shamper = new ShamperSubsystem();
     climber = new ClimberSubsystem();
-    //aprilTag = AprilTagSubsystem.getInstance();
+    aprilTag = AprilTagSubsystem.getInstance();
     // musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     // trapArm = new TrapArmSubsystem();
@@ -166,8 +166,6 @@ public class RobotContainer {
     /*
      * Intake Button Bindings
      */
-    JoystickButton resetPivotOverride = new JoystickButton(rotationJoystick, 6);
-    resetPivotOverride.onTrue(new InstantCommand(() -> shamper.resetOverride()));
 
     JoystickButton intakeInButton = new JoystickButton(rotationJoystick, 1);
     JoystickButton climberDownButton = new JoystickButton(translationJoystick, 11);

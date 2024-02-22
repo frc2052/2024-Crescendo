@@ -246,7 +246,7 @@ public class ShamperSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
+    //System.out.println(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
     //stopPivot();
     SmartDashboard.putNumber("Shamper Current Angle:  ", getShamperAngle());
     SmartDashboard.putNumber("Shamper Current Goal Angle: ", goalAngle);
