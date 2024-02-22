@@ -1,46 +1,48 @@
-// package frc.robot.subsystems;
+package frc.robot.subsystems;
 
-// import com.ctre.phoenix.motorcontrol.can.TalonFX;
-// import com.ctre.phoenix.music.Orchestra;
 
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// import frc.robot.Constants;
 
-// public class MusicPlayerSubsystem extends SubsystemBase{
+import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.hardware.TalonFX;
 
-//     private final Orchestra musicPlayer;
-//     private final TalonFX[] instrumentList;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
-//     public MusicPlayerSubsystem() {
-//         musicPlayer = new Orchestra();
-//         instrumentList = Constants.MusicPlayer.INSTRUMENT_TALONFX_PORT_LIST;
+public class MusicPlayerSubsystem extends SubsystemBase{
 
-//         for (int i = 0; i < instrumentList.length; i++) {
-//             musicPlayer.addInstrument(instrumentList[i]);
-//         }
-//     }
+    private final Orchestra musicPlayer;
+    private final TalonFX[] instrumentList;
 
-//     public void loadMusic(String filepath) {
-//         musicPlayer.loadMusic(filepath);
-//     }
+    public MusicPlayerSubsystem() {
+        musicPlayer = new Orchestra();
+        instrumentList = Constants.MusicPlayer.INSTRUMENT_TALONFX_PORT_LIST;
 
-//     public void playLoadedTrack() {
-//         musicPlayer.play();
-//     }
+        for (int i = 0; i < instrumentList.length; i++) {
+            musicPlayer.addInstrument(instrumentList[i]);
+        }
+    }
 
-//     public void pauseMusic() {
-//         musicPlayer.pause();
-//     }
+    public void loadMusic(String filepath) {
+        musicPlayer.loadMusic(filepath);
+    }
 
-//     public void stopMusic() {
-//         musicPlayer.stop();
-//     }
+    public void playLoadedTrack() {
+        musicPlayer.play();
+    }
 
-//     public int getCurrentPlayTime() {
-//         return musicPlayer.getCurrentTime();
-//     }
+    public void pauseMusic() {
+        musicPlayer.pause();
+    }
 
-//     public boolean isPlayerPLaying() {
-//         return musicPlayer.isPlaying();
-//     }
-// }
+    public void stopMusic() {
+        musicPlayer.stop();
+    }
+
+    public double getCurrentPlayTime() {
+        return musicPlayer.getCurrentTime();
+    }
+
+    public boolean isPlayerPLaying() {
+        return musicPlayer.isPlaying();
+    }
+}
