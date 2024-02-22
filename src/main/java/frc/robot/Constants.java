@@ -116,6 +116,7 @@ public final class Constants {
     public static class MotorConstants {
         public static final double PIVOT_MOTOR_TICKS_PER_ROTATION = 42;
         public static final double FALCON500_TICKS_PER_ROTATION = 2048;
+        public static final double FALCON500_MAX_RPM = 6380;
     }
 
     public static class Climber{
@@ -126,7 +127,7 @@ public final class Constants {
         public static final int WINCH_CIRCUMFERENCE_INCHES = 0;
         public static final int TICKS_PER_WINCH_ROTATION = 0;
 
-        public static final double CLIMBER_MOTOR_PCT = 0.5;
+        public static final double CLIMBER_MOTOR_PCT = 1;
 
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
@@ -139,7 +140,7 @@ public final class Constants {
 
     public static class Indexer {
         public static final double LOWER_INDEX_SPEED_PCT = 1;
-        public static final double UPPER_LOAD_SPEED_PCT = 0.3;
+        public static final double UPPER_LOAD_SPEED_PCT = 0.7;
         public static final double UPPER_INDEX_SPEED_PCT = 1;
 
         // DIO
@@ -185,17 +186,14 @@ public final class Constants {
         public static final double UPPER_MOTOR_MAX_ACCELERATION = 10000;
         public static final double LOWER_MOTOR_MAX_ACCELERATION = 10000;
         
-        public static final double PIVOT_MOTOR_MANUAL_UP_SPEED = 0;
-        public static final double PIVOT_MOTOR_MANUAL_DOWN_SPEED = 0;
-        
-        public static final double UPPER_SHAMPER_SPEAKER_SPEED_PCT = 1;
-        public static final double LOWER_SHAMPER_SPEAKER_SPEED_PCT = 1;
+        public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = .15 * 6380 / 60;
+        public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = .15 * 6380 / 60;
 
         public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
         public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
 
-        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1;
-        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0;
+        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -6380 / 60;
+        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.75 * (6380 / 60);
         
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
         public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
@@ -203,9 +201,9 @@ public final class Constants {
         public static final double INDEX_SPEED_TPS = 0;
 
         public static final double PIVOT_MOTOR_MANUAL_VELOCITY = 0.25;
-        public static final double PIVOT_MOTOR_MAX_VELOCITY = 0.25;
-        public static final double PIVOT_MOTOR_LEVEL_2_VELOCITY = 0.05;
-        public static final double PIVOT_MOTOR_LEVEL_1_VELOCITY = 0.05;
+        public static final double PIVOT_MOTOR_MAX_VELOCITY = 0.5;
+        public static final double PIVOT_MOTOR_LEVEL_2_VELOCITY = 0.1;
+        public static final double PIVOT_MOTOR_LEVEL_1_VELOCITY = 0.1;
         public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0;
 
         public static class Angle {
@@ -219,7 +217,8 @@ public final class Constants {
 
         public static final double ENCODER_OFFSET_DEGREES = 0;
         public static final double DEAD_ZONE_DEGREES = 1;
-        public static final double DEAD_ZONE_SHOOTER_SPEED_PCT = 0.05;
+        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 1.06;
+        public static final double SHOOTER_TOLERANCE_PERCENT = 0.01;
     }
 
     public static class FieldAndRobot {

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.team2052.lib.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -242,6 +244,7 @@ public class RobotState {
     }
 
     public void output(){
+        Logger.recordOutput("Vision Pose", aprilTagVisionPose3d);
         Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
         Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
         Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));

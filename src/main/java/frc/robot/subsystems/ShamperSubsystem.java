@@ -4,8 +4,11 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -76,8 +79,8 @@ public class ShamperSubsystem extends SubsystemBase {
     Slot0Configs slot0Configs = new Slot0Configs();
     slot0Configs.kV = 0.12;
     slot0Configs.kP = 0.11;
-    slot0Configs.kI = 0.48;
-    slot0Configs.kD = 0.01;
+    slot0Configs.kI = 0.000;
+    slot0Configs.kD = 0.0;
     
     lowerMotor.getConfigurator().apply(slot0Configs, 0.050);
     upperMotor.getConfigurator().apply(slot0Configs, 0.050);
@@ -113,8 +116,7 @@ public class ShamperSubsystem extends SubsystemBase {
     // upperMotor.set(upperMotorController.calculate(getUpperShamperSpeed(), contrainSpeed(goalSpeed.getUpperPCT())));
     shooterVelocity.Slot = 0;
     lowerMotor.setControl(shooterVelocity.withVelocity(goalSpeed.getLowerRPS()));
-    lowerMotor.set(contrainSpeed(goalSpeed.getLowerRPS()));
-    upperMotor.set(contrainSpeed(goalSpeed.getUpperRPS()));
+    upperMotor.setControl(shooterVelocity.withVelocity(goalSpeed.getLowerRPS()));
   }
 
   public void setShootSpeed(double lowerSpeed, double upperSpeed) {
@@ -132,16 +134,15 @@ public class ShamperSubsystem extends SubsystemBase {
     return speed;
   }
 
-  public boolean atSpeed(TalonFX motor, double goalSpeed){
-    if((Math.abs(motor.getVelocity().getValueAsDouble()) - Math.abs(goalSpeed)) < Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_PCT){
-      return true;
-    } else {
-      return false;
-    }
+  public boolean motorAtSpeed(TalonFX motor, double goalSpeed){
+    boolean motorAtSpeed = motor.getVelocity().getValueAsDouble() > goalSpeed - Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_RPS
+    && motor.getVelocity().getValueAsDouble() < goalSpeed + Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_RPS;
+
+    return motorAtSpeed;
   }
 
   public boolean shooterAtSpeed(double lowerGoalSpeed, double upperGoalSpeed){
-    if((atSpeed(lowerMotor, lowerGoalSpeed)) && atSpeed(upperMotor, upperGoalSpeed)){
+    if((motorAtSpeed(lowerMotor, lowerGoalSpeed)) && motorAtSpeed(upperMotor, upperGoalSpeed)){
       return true;
     } else {
       return false;
@@ -188,7 +189,13 @@ public class ShamperSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RAW ENCODER GET", rotationEncoder.get());
     SmartDashboard.putNumber("RAW ENCODER DISTANCE", rotationEncoder.getDistance());
 
-    return Math.abs((rotationEncoder.getDistance() % 360) - 360);
+    double angle = rotationEncoder.getAbsolutePosition() % 1.0;
+    if (angle < 0) {
+      angle += 1;
+    }
+
+    return 360 - (angle * 360);
+    // return Math.abs((rotationEncoder.getDistance() % 360) - 360);
   }
 
   public double constrainAngle(double angle) {
@@ -248,8 +255,12 @@ public class ShamperSubsystem extends SubsystemBase {
   public void periodic() {
     //System.out.println(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
     //stopPivot();
+    Logger.recordOutput("upperSpeed", upperMotor.getVelocity().getValueAsDouble());
+    Logger.recordOutput("upperGoal", goalSpeed.getUpperRPS());
     SmartDashboard.putNumber("Shamper Current Angle:  ", getShamperAngle());
     SmartDashboard.putNumber("Shamper Current Goal Angle: ", goalAngle);
+    SmartDashboard.putBoolean("Shamper Shooter At Speed ", shooterAtSpeed(goalSpeed.getLowerRPS(), goalSpeed.getUpperRPS()));
+    SmartDashboard.putNumber("Upper Shooter At Speed ", upperMotor.getVelocity().getValueAsDouble());
 
 
 
@@ -270,43 +281,31 @@ public class ShamperSubsystem extends SubsystemBase {
       System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
       stopPivot();
     }
-
-    if(atSpeed(upperMotor, goalSpeed.getUpperRPS())) {
-      SmartDashboard.putBoolean("Upper Motor At Speed", true);
-    } else {
-      SmartDashboard.putBoolean("Upper Motor At Speed", false);
-    }
-
-    if(atSpeed(lowerMotor, goalSpeed.getLowerRPS())) {
-      SmartDashboard.putBoolean("Lower Motor At Speed", true);
-    } else {
-      SmartDashboard.putBoolean("Lower Motor At Speed", false);
-    }
   }
 
   public static enum ShamperSpeed {
     OFF(0, 0, true),
     SPEAKER_IDLE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT, true),
     AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_PCT, true),
-    SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_PCT, false),
+    SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_RPS, false),
     AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_PCT, false);
 
-    private final double lowerPercentOutput;
-    private final double upperPercentOutput;
+    private final double lowerRPS;
+    private final double upperRPS;
     private final boolean isIdle;
 
-    private ShamperSpeed(double lowerPercentOutput, double upperPercentOutput, boolean isIdle) {
-      this.lowerPercentOutput = lowerPercentOutput;
-      this.upperPercentOutput = upperPercentOutput;
+    private ShamperSpeed(double lowerRPS, double upperRPS, boolean isIdle) {
+      this.lowerRPS = lowerRPS;
+      this.upperRPS = upperRPS;
       this.isIdle = isIdle;
     }
 
     public double getLowerRPS() {
-      return lowerPercentOutput;
+      return lowerRPS;
     }
 
     public double getUpperRPS() {
-      return upperPercentOutput;
+      return upperRPS;
     }
 
     public boolean isIdle() {
