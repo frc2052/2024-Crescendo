@@ -27,7 +27,7 @@ public class Robot extends LoggedRobot {
     Logger.start(); //Start AdvantageKit Logger
 
     m_robotContainer = new RobotContainer();
-    // m_robotContainer.robotStatusCommunicator.onRobotInitiation();
+    m_robotContainer.robotStatusCommunicator.onRobotInitiation();
   }
 
   /**
@@ -46,7 +46,7 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    // m_robotContainer.robotStatusCommunicator.onRobotPeriodic();
+    m_robotContainer.robotStatusCommunicator.onRobotPeriodic();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -84,7 +84,7 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    // m_robotContainer.robotStatusCommunicator.onRobotTeleop();
+    m_robotContainer.robotStatusCommunicator.onRobotTeleop();
   }
 
   /** This function is called periodically during operator control. */

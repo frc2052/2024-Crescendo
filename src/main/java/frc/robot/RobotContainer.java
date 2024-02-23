@@ -15,8 +15,6 @@ import frc.robot.commands.indexer.IndexerLoadCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.OuttakeCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
-//import frc.robot.commands.music.PauseMusicPlayerCommand;
-//import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.commands.shamper.ShamperManualShootCommand;
 import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
 import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
@@ -24,18 +22,19 @@ import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.commands.shamper.ShamperStopCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
-//import frc.robot.subsystems.AdvantageScopeSubsystem;
+import frc.robot.subsystems.AdvantageScopeSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
-//import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.Superstructure;
 //import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.util.RobotStatusCommunicator;
 //import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 
@@ -61,9 +60,9 @@ public class RobotContainer {
   private final IndexerSubsystem indexer;
   private final ClimberSubsystem climber;
   private final AprilTagSubsystem aprilTag;
-  // private final MusicPlayerSubsystem musicPlayer;
+  private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
-  // private final AdvantageScopeSubsystem advantageScope;
+  private final AdvantageScopeSubsystem advantageScope;
   // private final TrapArmSubsystem trapArm;
 
   //private final Superstructure superstructure;
@@ -75,7 +74,7 @@ public class RobotContainer {
   private final Joystick controlPanel;
 
   public static boolean musicOn;
-  //public RobotStatusCommunicator robotStatusCommunicator;
+  public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = new DrivetrainSubsystem();
@@ -84,15 +83,15 @@ public class RobotContainer {
     shamper = new ShamperSubsystem();
     climber = new ClimberSubsystem();
     aprilTag = AprilTagSubsystem.getInstance();
-    // musicPlayer = new MusicPlayerSubsystem();
+    musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     // trapArm = new TrapArmSubsystem();
-    // advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
+    advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, indexer);
 
     //superstructure = new Superstructure(shamper, climber, indexer);
     //superstructure = new Superstructure(shamper, indexer, intake);
 
-    // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
+    robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
 
