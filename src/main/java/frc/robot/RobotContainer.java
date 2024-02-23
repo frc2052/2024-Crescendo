@@ -6,22 +6,19 @@ package frc.robot;
 
 import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
+import frc.robot.commands.climb.ClimberSlowRetractCommand;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
-import frc.robot.commands.drive.DriveWhileOrbitingNoteCommand;
-import frc.robot.commands.indexer.IndexerIndexCommand;
-import frc.robot.commands.indexer.IndexerLoadCommand;
 import frc.robot.commands.intake.IntakeCommand;
-import frc.robot.commands.intake.OuttakeCommand;
+import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
-//import frc.robot.commands.music.PauseMusicPlayerCommand;
-//import frc.robot.commands.music.PlayActivationJingleCommand;
-import frc.robot.commands.shamper.ShamperManualShootCommand;
+import frc.robot.commands.shamper.ShamperDefaultCommand;
 import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
 import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
+//import frc.robot.commands.music.PauseMusicPlayerCommand;
+//import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.commands.shamper.ShamperShootCommand;
-import frc.robot.commands.shamper.ShamperStopCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
@@ -31,11 +28,11 @@ import frc.robot.subsystems.IndexerSubsystem;
 //import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.subsystems.Superstructure;
+// import frc.robot.subsystems.Superstructure;
 //import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
-import frc.robot.subsystems.Superstructure.SuperstructureState;
+// import frc.robot.subsystems.Superstructure.SuperstructureState;
 //import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 
@@ -52,6 +49,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
   private RobotState robotState = RobotState.getInstance();
@@ -116,6 +114,8 @@ public class RobotContainer {
       )
     );
 
+    shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
+
     // NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer));
     // NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake, indexer));
     // NamedCommands.registerCommand("Default Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.DEFAULT)));
@@ -138,7 +138,6 @@ public class RobotContainer {
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
     zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroGyro()));
     JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
-    // JoystickButton orbitNoteButton = new JoystickButton(translationJoystick, 0);
 
     driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(
       () -> translationJoystick.getX(), 
@@ -147,57 +146,60 @@ public class RobotContainer {
       drivetrain
     ));
 
-    // orbitNoteButton.whileTrue(new DriveWhileOrbitingNoteCommand(
-    //   () -> translationJoystick.getX(), 
-    //   () -> translationJoystick.getY(), 
-    //   fieldCentricSupplier, 
-    //   drivetrain, vision
-    // ));
-
-
     /*
      *  Climber Button Bindings
      */
-    // JoystickButton raiseClimberButton = new JoystickButton(controlPanel, 12);
-    // JoystickButton lowerClimberButton = new JoystickButton(controlPanel, 11);
-    
-    // raiseClimberButton.whileTrue(new ClimberExtendCommand(climber));
-    // lowerClimberButton.whileTrue(new ClimberRetractCommand(climber));
+    JoystickButton climberRetractButton = new JoystickButton(controlPanel, 6);
+    JoystickButton climberExtendButton = new JoystickButton(controlPanel, 1);
+    JoystickButton climberManualRetractSlow = new JoystickButton(controlPanel, 4);
+
+    climberRetractButton.whileTrue(new ClimberRetractCommand(climber));
+    climberExtendButton.whileTrue(new ClimberExtendCommand(climber));
+    climberManualRetractSlow.whileTrue(new ClimberSlowRetractCommand(climber));
+
     /*
      * Intake Button Bindings
      */
 
-    JoystickButton intakeInButton = new JoystickButton(rotationJoystick, 1);
-    JoystickButton climberDownButton = new JoystickButton(translationJoystick, 11);
-    JoystickButton climberUpButton = new JoystickButton(translationJoystick, 10);
+    JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
     
     intakeInButton.whileTrue(new IntakeCommand(intake));
-    climberDownButton.whileTrue(new ClimberRetractCommand(climber));
-    climberUpButton.whileTrue(new ClimberExtendCommand(climber));
 
     /*
-     *  Manual Shamper Button Bindings
+     *  Shooter Button Bindings
      */
-    JoystickButton shamperManualUpButton = new JoystickButton(translationJoystick, 3);
-    JoystickButton shamperManualDownButton = new JoystickButton(translationJoystick, 4);
-    JoystickButton shamperAMPAngleButton = new JoystickButton(controlPanel, 8);
-    JoystickButton shamperDEFAULTAngleButton = new JoystickButton(controlPanel, 7);
-    JoystickButton shamperTRAPAngleButton = new JoystickButton(controlPanel, 5);
-    // JoystickButton shamperAMPManualShotButton = new JoystickButton(rotationJoystick, 2);
-    JoystickButton shamperDEFAULTManualShotButton = new JoystickButton(translationJoystick, 1);
-    JoystickButton loadButton = new JoystickButton(rotationJoystick, 4);
-    JoystickButton indexButton = new JoystickButton(rotationJoystick, 3);
 
-    loadButton.whileTrue(new IndexerLoadCommand(indexer));
-    indexButton.whileTrue(new IndexerIndexCommand(indexer));
-    
-    shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
-    shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
-    shamperAMPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
-    shamperDEFAULTAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
-    shamperTRAPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
-    // shamperAMPManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.AMP_SCORE)).onFalse(new ShamperStopCommand(shamper));
-    shamperDEFAULTManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.TRAP)).onFalse(new ShamperStopCommand(shamper));
+    JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
+    JoystickButton shamperAmpShootButton = new JoystickButton(controlPanel, 11);
+
+    shamperShootButton.onTrue(new ShamperShootCommand(shamper, indexer));
+    shamperAmpShootButton.onTrue(new ShamperAmpCommand(shamper, indexer));
+
+    /*
+     *  Shamper Angle Button Bindings
+     */
+
+     JoystickButton shamper90Button = new JoystickButton(controlPanel, 8);
+     Trigger shamperPodiumButton = new Trigger(() -> controlPanel.getY() < -0.5);
+     Trigger shamperSubwooferButton = new Trigger(() -> controlPanel.getX() > 0.5);
+     Trigger shamperAmpButton = new Trigger(() -> controlPanel.getX() < -0.5);
+     JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 7);
+     JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 5);
+
+     shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
+     shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
+     shamperSubwooferButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
+     shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
+     shamperManualUpButton.onTrue(new ShamperPivotManualUpCommand(shamper));
+     shamperManualDownButton.onTrue(new ShamperPivotManualDownCommand(shamper));
+
+
+    /*
+     * Trap Button Bindings
+     */
+
+    JoystickButton trapReleaseButton = new JoystickButton(controlPanel, 3);
+
     /*
      *  Superstructure Position Button Bindings
      */

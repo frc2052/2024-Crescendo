@@ -7,12 +7,12 @@ package frc.robot.commands.climb;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 
-public class ClimberRetractCommand extends Command {
+public class ClimberSlowRetractCommand extends Command {
   /** Creates a new RaiseClimberCommand. */
    
   private final ClimberSubsystem climber;
 
-  public ClimberRetractCommand(ClimberSubsystem climber) {
+  public ClimberSlowRetractCommand(ClimberSubsystem climber) {
       this.climber = climber;
       addRequirements(climber);
   }
@@ -20,7 +20,7 @@ public class ClimberRetractCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climber.retract(false);
+    climber.retractSlow(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,7 +36,6 @@ public class ClimberRetractCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return climber.getEncoderPosition() < 0;
     return false;
   }
 }

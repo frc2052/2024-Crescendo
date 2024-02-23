@@ -13,7 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.subsystems.Superstructure.SuperstructureState;
+// import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.util.AimingCalculator;
 import frc.robot.util.io.Dashboard;
 import frc.robot.util.states.DrivetrainState;
@@ -31,8 +31,9 @@ public class RobotState {
     private ChassisSpeeds chassisSpeeds;
     private boolean noteDetected;
     private boolean musicEnabled;
+    private boolean isClimbing;
 
-    private SuperstructureState superstructureState;
+    // private SuperstructureState superstructureState;
 
     public static RobotState getInstance() {
         if (INSTANCE == null) {
@@ -89,16 +90,24 @@ public class RobotState {
         this.noteDetected = noteDetected;
     }
 
+    public void updateIsClimbing(boolean isClimbing) {
+        this.isClimbing = isClimbing;
+    }
+    
+    public boolean getIsClimbing(){
+        return isClimbing;
+    }
+
     /*
      *  Add Superstructure State
      */
-    public void addSuperstructureState(SuperstructureState state) {
-        this.superstructureState = state;
-    }
+    // public void addSuperstructureState(SuperstructureState state) {
+    //     this.superstructureState = state;
+    // }
 
-    public SuperstructureState getSuperstructureState() {
-        return superstructureState;
-    }
+    // public SuperstructureState getSuperstructureState() {
+    //     return superstructureState;
+    // }
 
     /**
      * Reset the RobotState's Initial Pose2d and set the NavX Offset. 

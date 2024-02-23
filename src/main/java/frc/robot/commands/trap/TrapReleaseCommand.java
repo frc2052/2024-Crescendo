@@ -2,33 +2,34 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.shamper;
+package frc.robot.commands.trap;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.subsystems.TrapArmSubsystem;
 
-public class ShamperIdleCommand extends Command {
-  private ShamperSubsystem shamper;
-  private ShamperSpeed idleSpeed;
-  /** Creates a new ShamperIdleCommand. */
-  public ShamperIdleCommand(ShamperSubsystem shamper, ShamperSpeed idleSpeed) {
-    this.shamper = shamper;
-    this.idleSpeed = idleSpeed;
+public class TrapReleaseCommand extends Command {
+  private TrapArmSubsystem trapArm;
+  /** Creates a new TrapReleaseCommand. */
+  public TrapReleaseCommand(TrapArmSubsystem trapArm) {
+    this.trapArm = trapArm;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shamper);
+    addRequirements(trapArm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shamper.setShootSpeed(idleSpeed);
+    trapArm.open();
   }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shamper.setShootSpeed(ShamperSpeed.OFF);
+    trapArm.close();
   }
 
   // Returns true when the command should end.

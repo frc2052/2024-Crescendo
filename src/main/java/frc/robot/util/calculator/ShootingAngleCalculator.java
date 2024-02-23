@@ -3,8 +3,6 @@ package frc.robot.util.calculator;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.wpi.first.math.geometry.Pose2d;
-
 public class ShootingAngleCalculator {
     private static ShootingAngleCalculator INSTANCE;
 
@@ -32,17 +30,17 @@ public class ShootingAngleCalculator {
         shootAngleLookup.add(new ShootAngleConfig(600, 24.25, 1));
     }
 
-    public ShootAngleConfig getShooterConfig(Pose2d robotPose) {
+    public ShootAngleConfig getShooterConfig(double distancecm) {
         // Lower bound of the estimated shooter configuration given the distance from the target.
         ShootAngleConfig lowerDistanceConfig = null;
         // Upper bound of the estimated shooter configuration given the distance from the target.
         ShootAngleConfig upperDistanceConfig = null;
 
         // convert current pose meters to centimeters
-        double distanceX = robotPose.getX() / 100;
+        distancecm = distancecm / 100;
         
         for(int i = 0; i < shootAngleLookup.size(); i++){
-            if (distanceX < shootAngleLookup.get(i).getDistanceCentimeters()){
+            if (distancecm < shootAngleLookup.get(i).getDistanceCentimeters()){
                 lowerDistanceConfig = shootAngleLookup.get(i);
             } else {
                 upperDistanceConfig = shootAngleLookup.get(i);
@@ -60,7 +58,7 @@ public class ShootingAngleCalculator {
         // deltaInches is the difference between the lower and upper pre-measured inches values.
         double deltaInches = upperDistanceConfig.getDistanceCentimeters() - lowerDistanceConfig.getDistanceCentimeters();
         // offsetInches is the difference between our actual current distance inches and the upper distance inches.
-        double offsetInches = upperDistanceConfig.getDistanceCentimeters() - distanceX;
+        double offsetInches = upperDistanceConfig.getDistanceCentimeters() - distancecm;
 
         double pct = offsetInches / deltaInches;
 
@@ -75,7 +73,7 @@ public class ShootingAngleCalculator {
         double offsetBottomMotorVelocityTicksPerSecond = deltaBottomMotorVelocityTicksPerSecond * pct;
 
         return new ShootAngleConfig(
-            distanceX,
+            distancecm,
             // Add the final offsets to our lower distance so the bottom shooter cofniguration can safely be assumed.
             upperDistanceConfig.getShooterSpeedPercent() - offsetBottomMotorVelocityTicksPerSecond,
             // Add the final offsets to our lower distance so the top shooter cofniguration can safely be assumed.

@@ -58,18 +58,18 @@ public class DriveWhileAimingCommand extends Command {
     }
 
     private double getRotation() {
-        double goalAngleDegrees = AimingCalculator.calculateStill(RobotState.getInstance().getRobotPose());
-        double deltaDegrees = goalAngleDegrees - RobotState.getInstance().getRotation2d360().getDegrees();
+        double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
+        double deltaDegrees = RobotState.getInstance().getRotation2d360().getDegrees() - goalAngleDegrees;
         Logger.recordOutput("goal angle", goalAngleDegrees);
         Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
 
         //return 0;
         if (Math.abs(deltaDegrees) > 90) {
-            return Math.copySign(0.5, -deltaDegrees);
+            return Math.copySign(0.5, deltaDegrees);
         } else if (Math.abs(deltaDegrees) > 45){
-            return Math.copySign(0.25, -deltaDegrees);
+            return Math.copySign(0.25, deltaDegrees);
         } else if (Math.abs(deltaDegrees) > 5){
-            return Math.copySign(0.1, -deltaDegrees);
+            return Math.copySign(0.1, deltaDegrees);
         } else {
             return 0;
         }

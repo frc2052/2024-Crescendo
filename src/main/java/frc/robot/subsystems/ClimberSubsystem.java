@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -7,6 +9,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotState;
 
 public class ClimberSubsystem extends SubsystemBase{
  
@@ -27,9 +30,14 @@ public class ClimberSubsystem extends SubsystemBase{
 
     public void extend(boolean override) {
         leftClimberMotor.set(Constants.Climber.CLIMBER_MOTOR_PCT);
+        RobotState.getInstance().updateIsClimbing(true);
     }
 
     public void retract(boolean override) {
+        leftClimberMotor.set(-Constants.Climber.CLIMBER_MOTOR_PCT);
+    }
+
+    public void retractSlow(boolean override) {
         leftClimberMotor.set(-Constants.Climber.CLIMBER_MOTOR_PCT);
     }
 
@@ -45,8 +53,7 @@ public class ClimberSubsystem extends SubsystemBase{
     }
 
     public double getEncoderPosition() {
-        //return leftClimberMotor.getSelectedSensorPosition();
-        return 0;
+        return leftClimberMotor.getEncoder().getPosition();
     }
 
     public boolean getEncoderIsAbove(double ticks) {
@@ -56,7 +63,7 @@ public class ClimberSubsystem extends SubsystemBase{
 
 @Override
 public void periodic() {
-    //SmartDashboard.putNumber("Climber Height Ticks", leftClimberMotor.getSelectedSensorPosition());
+    Logger.recordOutput("Climber Encoder Value", leftClimberMotor.getEncoder().getPosition());
 }
 
 }

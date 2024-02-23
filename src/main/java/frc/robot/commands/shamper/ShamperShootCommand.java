@@ -1,29 +1,20 @@
 package frc.robot.commands.shamper;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotState;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.util.AimingCalculator;
+import frc.robot.util.calculator.ShootAngleConfig;
+import frc.robot.util.calculator.ShootingAngleCalculator;
 
 public class ShamperShootCommand extends Command{
     private final ShamperSubsystem shamper;
-    private final ShamperSpeed goalSpeed;
-    private final ShamperSpeed endSpeed;
     private final IndexerSubsystem indexer;
 
-    public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, ShamperSpeed goalSpeed, ShamperSpeed endSpeed) {
+    public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer) {
         this.shamper = shamper;
-        this.goalSpeed = goalSpeed;
-        this.endSpeed = endSpeed;
-        this.indexer = indexer;
-
-        addRequirements(shamper);
-    }
-
-    public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, ShamperSpeed goalSpeed) {
-        this.shamper = shamper;
-        this.goalSpeed = goalSpeed;
-        this.endSpeed = ShamperSpeed.OFF;
         this.indexer = indexer;
 
         addRequirements(shamper);
@@ -35,14 +26,17 @@ public class ShamperShootCommand extends Command{
 
     @Override
     public void execute() {
-        shamper.setShootSpeed(goalSpeed);
-        // if(shamper.shooterAtSpeed(goalSpeed.getLowerPCT(), goalSpeed.getUpperPCT())) {
-        //     indexer.indexAll();
-        // }
+        ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToSpeaker(RobotState.getInstance().getRobotPose()));
+        shamper.setShootSpeed(config.getShooterSpeedPercent(), config.getShooterSpeedPercent());
+        shamper.setAngle(config.getShooterSpeedPercent());
+        if(shamper.shooterAtSpeed(config.getShooterSpeedPercent(), config.getShooterSpeedPercent()) && shamper.isAtGoalAngle()) {
+            indexer.indexAll();
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
-        shamper.setShootSpeed(endSpeed);
+        shamper.setShootSpeed(ShamperSpeed.OFF);
+        indexer.stop();
     }
 }

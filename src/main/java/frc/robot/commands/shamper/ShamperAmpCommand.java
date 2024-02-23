@@ -5,18 +5,20 @@
 package frc.robot.commands.shamper;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
+import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
-public class ShamperAngleCommand extends Command {
+public class ShamperAmpCommand extends Command {
   private ShamperSubsystem shamper;
-  private double goalAngle;
-  /** Creates a new ShamperAngleCommand. */
-  public ShamperAngleCommand(ShamperSubsystem shamper, double goalAngle) {
+  private IndexerSubsystem indexer;
+  /** Creates a new ShamperAmpCommand. */
+  public ShamperAmpCommand(ShamperSubsystem shamper, IndexerSubsystem indexer) {
     this.shamper = shamper;
-    this.goalAngle = goalAngle;
+    this.indexer = indexer;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shamper);
+    addRequirements(shamper, indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -26,12 +28,19 @@ public class ShamperAngleCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shamper.setAngle(goalAngle);
+    shamper.setAngle(Constants.Shamper.Angle.AMP);
+    shamper.setShootSpeed(ShamperSpeed.AMP_SCORE);
+    if(shamper.shooterAtSpeed(ShamperSpeed.AMP_SCORE.getLowerRPS(), ShamperSpeed.AMP_SCORE.getUpperRPS()) && shamper.isAtGoalAngle()) {
+      indexer.indexAll();
+  }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    shamper.setShootSpeed(ShamperSpeed.OFF);
+    indexer.stop();
+  }
 
   // Returns true when the command should end.
   @Override

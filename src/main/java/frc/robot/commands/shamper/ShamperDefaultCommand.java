@@ -5,16 +5,15 @@
 package frc.robot.commands.shamper;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.Constants;
+import frc.robot.RobotState;
 import frc.robot.subsystems.ShamperSubsystem;
 
-public class ShamperAngleCommand extends Command {
+public class ShamperDefaultCommand extends Command {
   private ShamperSubsystem shamper;
-  private double goalAngle;
-  /** Creates a new ShamperAngleCommand. */
-  public ShamperAngleCommand(ShamperSubsystem shamper, double goalAngle) {
+  /** Creates a new ShamperDefaultCommand. */
+  public ShamperDefaultCommand(ShamperSubsystem shamper) {
     this.shamper = shamper;
-    this.goalAngle = goalAngle;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shamper);
   }
@@ -26,7 +25,9 @@ public class ShamperAngleCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shamper.setAngle(goalAngle);
+    if(!RobotState.getInstance().getIsClimbing() && !RobotState.getInstance().getNoteDetected() && shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT) {
+      shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
+    }
   }
 
   // Called once the command ends or is interrupted.

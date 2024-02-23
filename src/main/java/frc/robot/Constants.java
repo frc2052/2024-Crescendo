@@ -67,6 +67,10 @@ public final class Constants {
 
     }
 
+    public static class Trap {
+        public static final int TRAP_DIO_PIN = 0;
+    }
+
     public static class Drivetrain {
         // Left-to-right distance between drivetrain wheels
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
@@ -128,6 +132,7 @@ public final class Constants {
         public static final int TICKS_PER_WINCH_ROTATION = 0;
 
         public static final double CLIMBER_MOTOR_PCT = 1;
+        public static final double CLIMBER_MOTOR_PCT_SLOW = 0.25;
 
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
