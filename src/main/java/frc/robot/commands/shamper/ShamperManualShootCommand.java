@@ -42,6 +42,6 @@ public class ShamperManualShootCommand extends Command{
     @Override
     public void end(boolean interrupted) {
         shamper.setShootSpeed(endSpeed);
-        shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
+        //shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
     }
 }

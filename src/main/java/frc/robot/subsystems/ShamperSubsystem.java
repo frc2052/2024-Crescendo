@@ -159,6 +159,10 @@ public class ShamperSubsystem extends SubsystemBase {
 
     if(getShamperAngle() > Constants.Shamper.Angle.MINIMUM && getShamperAngle() < Constants.Shamper.Angle.MAXIMUM) {
       leftPivotMotor.set(pct);
+    } else if (getShamperAngle() < Constants.Shamper.Angle.MINIMUM && pct > 0) { // If we are below the minimum but trying to go up it's fine
+      leftPivotMotor.set(pct);      
+    } else if (getShamperAngle() > Constants.Shamper.Angle.MAXIMUM && pct < 0) {// If we are above the maximum but trying to go down it's fine
+      leftPivotMotor.set(pct);      
     } else {
       leftPivotMotor.stopMotor();
     }
@@ -267,7 +271,7 @@ public class ShamperSubsystem extends SubsystemBase {
     if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
       if (isAtGoalAngle()) {
         stopPivot();
-        System.out.println("At Goal of " + this.goalAngle);
+        //System.out.println("At Goal of " + this.goalAngle);
       } else if (Math.abs(getShamperAngle() - goalAngle) > 10) {
         double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle));
         runPivot(speed);
@@ -285,10 +289,11 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public static enum ShamperSpeed {
     OFF(0, 0, true),
-    SPEAKER_IDLE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT, true),
-    AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_PCT, true),
+    SPEAKER_IDLE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS, true),
+    AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_RPS, true),
     SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_RPS, false),
-    AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_PCT, false);
+    AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_RPS, false),
+    TRAP(Constants.Shamper.UPPER_SHAMPER_TRAP_SPEED_RPS, Constants.Shamper.LOWER_SHAMPER_TRAP_SPEED_RPS, false);
 
     private final double lowerRPS;
     private final double upperRPS;

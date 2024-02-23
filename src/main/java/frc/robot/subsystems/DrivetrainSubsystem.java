@@ -129,7 +129,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
 
         if (fieldCentric) {
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, robotState.getRotation2d());
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d().unaryMinus());
         }
 
         drive(chassisSpeeds);
@@ -151,6 +151,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void zeroGyro() {
+        System.out.println("zeroing gyro");
         navx.reset();
     }
 

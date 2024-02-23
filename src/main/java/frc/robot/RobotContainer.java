@@ -24,7 +24,7 @@ import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.commands.shamper.ShamperStopCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
-//import frc.robot.subsystems.AdvantageScopeSubsystem;
+import frc.robot.subsystems.AdvantageScopeSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -63,7 +63,7 @@ public class RobotContainer {
   private final AprilTagSubsystem aprilTag;
   // private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
-  // private final AdvantageScopeSubsystem advantageScope;
+  private final AdvantageScopeSubsystem advantageScope;
   // private final TrapArmSubsystem trapArm;
 
   //private final Superstructure superstructure;
@@ -87,7 +87,7 @@ public class RobotContainer {
     // musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     // trapArm = new TrapArmSubsystem();
-    // advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, musicPlayer, vision, indexer, trapArm);
+    advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, indexer);
 
     //superstructure = new Superstructure(shamper, climber, indexer);
     //superstructure = new Superstructure(shamper, indexer, intake);
@@ -137,15 +137,15 @@ public class RobotContainer {
 
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
     zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroGyro()));
-    // JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 1);
+    JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
     // JoystickButton orbitNoteButton = new JoystickButton(translationJoystick, 0);
 
-    // driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(
-    //   () -> translationJoystick.getX(), 
-    //   () -> translationJoystick.getY(), 
-    //   fieldCentricSupplier, 
-    //   drivetrain
-    // ));
+    driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(
+      () -> translationJoystick.getX(), 
+      () -> translationJoystick.getY(), 
+      () -> true, 
+      drivetrain
+    ));
 
     // orbitNoteButton.whileTrue(new DriveWhileOrbitingNoteCommand(
     //   () -> translationJoystick.getX(), 
@@ -197,7 +197,7 @@ public class RobotContainer {
     shamperDEFAULTAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
     shamperTRAPAngleButton.whileTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
     // shamperAMPManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.AMP_SCORE)).onFalse(new ShamperStopCommand(shamper));
-    shamperDEFAULTManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE)).onFalse(new ShamperStopCommand(shamper));
+    shamperDEFAULTManualShotButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.TRAP)).onFalse(new ShamperStopCommand(shamper));
     /*
      *  Superstructure Position Button Bindings
      */

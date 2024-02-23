@@ -178,25 +178,23 @@ public final class Constants {
         public static final double PIVOT_MOTOR_KP = 0.2;
         public static final double PIVOT_MOTOR_KI = 0.002;
         public static final double PIVOT_MOTOR_KD = 1;
-            
-        //all of these in TPS, calculated using free speed
-        public static final double UPPER_MOTOR_MAX_VELOCITY = 200000; 
-        public static final double LOWER_MOTOR_MAX_VELOCITY = 200000;
 
-        public static final double UPPER_MOTOR_MAX_ACCELERATION = 10000;
-        public static final double LOWER_MOTOR_MAX_ACCELERATION = 10000;
+        public static final double SHOOTER_MAX_VELOCITY_RPS = 100;
         
-        public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = .15 * 6380 / 60;
-        public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = .15 * 6380 / 60;
+        public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
-        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
+        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0;
+        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0;
 
-        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -6380 / 60;
-        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.75 * (6380 / 60);
+        public static final double UPPER_SHAMPER_AMP_SPEED_RPS = -0.9 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_AMP_SPEED_RPS = 0.75 * SHOOTER_MAX_VELOCITY_RPS;
         
-        public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
-        public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
+        public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
+        public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
+
+        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.1 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.1 * SHOOTER_MAX_VELOCITY_RPS;
         
         public static final double INDEX_SPEED_TPS = 0;
 
@@ -226,8 +224,8 @@ public final class Constants {
         public static final double SPEAKER_TARGET_HEIGHT_OFF_GROUND_IN_METERS = 1.98;
 
         //got from cad model
-        public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(19.546, 6.014);
-        public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(3.009, 6.014);
+        public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(651.157), Units.inchesToMeters(218.416));
+        public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(0.066), Units.inchesToMeters(218.415));
 
         public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
 
@@ -253,7 +251,7 @@ public final class Constants {
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
 
         public static final double X_OFFSET_M = 0.29;
-        public static final double Y_OFFSET_M = 0.26;
+        public static final double Y_OFFSET_M = -0.26;
         public static final double Z_OFFSET_M = 0.25;
 
         public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll

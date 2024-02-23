@@ -13,6 +13,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.util.AimingCalculator;
 import frc.robot.util.io.Dashboard;
 import frc.robot.util.states.DrivetrainState;
 
@@ -244,7 +245,12 @@ public class RobotState {
     }
 
     public void output(){
+        Dashboard.getInstance().putData("AIMING DEGREES", AimingCalculator.calculateStill(robotPose));
         Logger.recordOutput("Vision Pose", aprilTagVisionPose3d);
+        Logger.recordOutput("Robot Position X : ", (robotPose.getX()));
+        Logger.recordOutput("Robot Position Y : ", (robotPose.getY()));
+        Logger.recordOutput("Rotation Degrees", robotRotation2d.getDegrees());
+        Logger.recordOutput("ROBOT POSE2D", robotPose);
         Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
         Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
         Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));
