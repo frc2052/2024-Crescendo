@@ -101,4 +101,53 @@ public class AimingCalculator {
         double robotTargetAngle = angleToSpeaker.rotateBy(new Rotation2d(Math.PI)).unaryMinus().getDegrees();
         return robotTargetAngle;
     }
+
+    public static double calculate(Pose2d robotPose){
+        double xDistance = 0;
+        double yDistance = 0;
+        double angleToSpeakerRobotRelativeDegrees = 0;
+        double angleToSpeakerFieldRelativeDegrees = 0;
+        
+
+        angleToSpeakerRobotRelativeDegrees = Units.radiansToDegrees(Math.atan(xDistance / yDistance));
+
+        // blue alliance
+        if(!RobotState.getInstance().isRedAlliance()) {
+            Translation2d speakerLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
+            xDistance = Math.abs(speakerLocation.getX() - robotPose.getX());
+            yDistance = Math.abs(speakerLocation.getY() - robotPose.getY());
+
+            // to the right of speaker
+            if(robotPose.getY() > speakerLocation.getY()) {
+                angleToSpeakerFieldRelativeDegrees = 90 + angleToSpeakerRobotRelativeDegrees;
+            }
+
+            // to the left of the speaker
+            if(robotPose.getY() > speakerLocation.getY()) {
+                angleToSpeakerFieldRelativeDegrees = 270 - angleToSpeakerRobotRelativeDegrees;
+            }
+        }
+        
+        // red alliance
+        if(RobotState.getInstance().isRedAlliance()) {
+            Translation2d speakerLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
+            xDistance = Math.abs(speakerLocation.getX() - robotPose.getX());
+            yDistance = Math.abs(speakerLocation.getY() - robotPose.getY());
+
+            // to the right of the speaker
+            if(robotPose.getY() < speakerLocation.getY()) {
+                angleToSpeakerFieldRelativeDegrees = 90 + angleToSpeakerRobotRelativeDegrees;
+            }
+
+            // to the left of the speaker
+            if(robotPose.getY() > speakerLocation.getY()) {
+                angleToSpeakerFieldRelativeDegrees = 270 - angleToSpeakerRobotRelativeDegrees;
+            }
+
+        }
+
+        Logger.recordOutput("ANGLE TO SPEAKER ROBOT RELATIVE", angleToSpeakerRobotRelativeDegrees);
+        Logger.recordOutput("ANGLE TO SPEAKER FIELD RELATIVE", angleToSpeakerFieldRelativeDegrees);
+        return angleToSpeakerFieldRelativeDegrees;
+    }
 }
