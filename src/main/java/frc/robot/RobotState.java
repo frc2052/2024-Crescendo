@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.Logger;
 
 import com.team2052.lib.photonvision.EstimatedRobotPose;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -136,7 +137,19 @@ public class RobotState {
      * 
      * @return Rotation2d
      */
-    public Rotation2d getRotation2d() {
+    public Rotation2d getRotation2d180() {
+        double rotationDegrees = MathUtil.inputModulus(robotRotation2d.getDegrees(), -180, 180);
+
+        return Rotation2d.fromDegrees(rotationDegrees);
+    }
+
+    public Rotation2d getRotation2d360() {
+        double rotationDegrees = MathUtil.inputModulus(robotRotation2d.getDegrees(), 0, 360);
+
+        return Rotation2d.fromDegrees(rotationDegrees);
+    }
+
+    public Rotation2d getRotation2dRaw() {
         return robotRotation2d.rotateBy(navxOffset);
     }
 

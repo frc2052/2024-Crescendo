@@ -35,7 +35,7 @@ public class RobotStateEstimator {
         if(poseEstimator == null){
             poseEstimator = new SwerveDrivePoseEstimator(
                 Constants.Drivetrain.kinematics, 
-                robotState.getRotation2d(), 
+                robotState.getRotation2dRaw(), 
                 robotState.getModulePositions(),
                 new Pose2d()
             );
@@ -47,7 +47,7 @@ public class RobotStateEstimator {
         );
         
         poseEstimator.update(
-            robotState.getRotation2d(), 
+            robotState.getRotation2dRaw(), 
             robotState.getModulePositions()
         );
 
@@ -61,7 +61,7 @@ public class RobotStateEstimator {
         robotState.resetInitialPose(pose);
 
         poseEstimator.resetPosition(
-            robotState.getRotation2d(), 
+            robotState.getRotation2dRaw(), 
             robotState.getModulePositions(),
             pose
         );

@@ -7,7 +7,10 @@ package frc.robot.commands.drive;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotState;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -55,11 +58,20 @@ public class DriveWhileAimingCommand extends Command {
     }
 
     private double getRotation() {
-        double goalAngle = AimingCalculator.calculateStill(RobotState.getInstance().getRobotPose());
-        if (Math.abs(goalAngle - RobotState.getInstance().getRotation2d().getRadians()) > 20) {
-            return Math.copySign(0.25, goalAngle);
+        double goalAngleDegrees = AimingCalculator.calculateStill(RobotState.getInstance().getRobotPose());
+        double deltaDegrees = goalAngleDegrees - RobotState.getInstance().getRotation2d360().getDegrees();
+        Logger.recordOutput("goal angle", goalAngleDegrees);
+        Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
+
+        //return 0;
+        if (Math.abs(deltaDegrees) > 90) {
+            return Math.copySign(0.5, -deltaDegrees);
+        } else if (Math.abs(deltaDegrees) > 45){
+            return Math.copySign(0.25, -deltaDegrees);
+        } else if (Math.abs(deltaDegrees) > 5){
+            return Math.copySign(0.1, -deltaDegrees);
         } else {
-            return Math.copySign(0.1, goalAngle);
+            return 0;
         }
     }
 
