@@ -129,19 +129,21 @@ public class AimingCalculator {
             }
         } else { // red alliance
             Translation2d speakerLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
-            xDistance = Math.abs(speakerLocation.getX() - robotPose.getX());
-            yDistance = Math.abs(speakerLocation.getY() - robotPose.getY());
+            xDistance = speakerLocation.getX() - robotPose.getX();
+            yDistance = speakerLocation.getY() - robotPose.getY();
 
-            angleToSpeakerRobotRelativeDegrees = Units.radiansToDegrees(Math.atan(yDistance / yDistance));
+            angleToSpeakerRobotRelativeDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
 
-            // to the right of the speaker
+            // to the right of speaker
             if(robotPose.getY() < speakerLocation.getY()) {
-                angleToSpeakerFieldRelativeDegrees = 90 + angleToSpeakerRobotRelativeDegrees;
+                angleToSpeakerFieldRelativeDegrees = 180 + angleToSpeakerRobotRelativeDegrees;
             }
 
             // to the left of the speaker
             if(robotPose.getY() > speakerLocation.getY()) {
-                angleToSpeakerFieldRelativeDegrees = 270 - angleToSpeakerRobotRelativeDegrees;
+                angleToSpeakerFieldRelativeDegrees = 172 - angleToSpeakerRobotRelativeDegrees;
+                
+                //angleToSpeakerFieldRelativeDegrees2 = Math.abs(new Rotation2d(Math.toRadians(90 + angleToSpeakerRobotRelativeDegrees)).unaryMinus().getDegrees());
             }
 
         }
