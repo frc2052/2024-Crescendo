@@ -37,7 +37,7 @@ public class RobotStateEstimator {
                 Constants.Drivetrain.kinematics, 
                 robotState.getRotation2dRaw(), 
                 robotState.getModulePositions(),
-                new Pose2d()
+                robotState.getInitialPose()
             );
         }
 

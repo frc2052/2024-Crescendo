@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
-public class ShamperAmpCommand extends Command {
+public class ShamperTrapCommand extends Command {
   private ShamperSubsystem shamper;
   /** Creates a new ShamperAmpCommand. */
-  public ShamperAmpCommand(ShamperSubsystem shamper) {
+  public ShamperTrapCommand(ShamperSubsystem shamper) {
     this.shamper = shamper;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shamper);
@@ -24,7 +24,7 @@ public class ShamperAmpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shamper.setShootSpeedPct(ShamperSpeed.AMP_SCORE.getLower(), ShamperSpeed.AMP_SCORE.getUpper());
+    shamper.setShootSpeedPct(ShamperSpeed.TRAP.getLower(), ShamperSpeed.TRAP.getUpper());
   }
 
   // Called once the command ends or is interrupted.

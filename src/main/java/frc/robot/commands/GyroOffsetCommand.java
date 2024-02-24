@@ -2,19 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.shamper;
+package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.RobotState;
+import frc.robot.util.RobotStateEstimator;
 
-public class ShamperAmpCommand extends Command {
-  private ShamperSubsystem shamper;
-  /** Creates a new ShamperAmpCommand. */
-  public ShamperAmpCommand(ShamperSubsystem shamper) {
-    this.shamper = shamper;
+public class GyroOffsetCommand extends Command {
+  /** Creates a new GyroOffsetCommand. */
+  public GyroOffsetCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shamper);
   }
 
   // Called when the command is initially scheduled.
@@ -24,14 +24,13 @@ public class ShamperAmpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shamper.setShootSpeedPct(ShamperSpeed.AMP_SCORE.getLower(), ShamperSpeed.AMP_SCORE.getUpper());
+    RobotState.getInstance().addNavXOffset(177.28);
+    //RobotStateEstimator.getInstance().resetOdometry(new Pose2d(1.33, 7.026501927468906, new Rotation2d(Units.degreesToRadians(-126.78843142290575))));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    shamper.stopShooter();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

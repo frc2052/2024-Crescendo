@@ -83,7 +83,7 @@ public class RobotState {
     }
 
     public void updateRobotPose(Pose2d robotPose) {
-        this.robotPose = robotPose;
+        this.robotPose = new Pose2d(robotPose.getTranslation(), robotRotation2d);
     }
 
     public void updateNoteDetected(boolean noteDetected) {
@@ -160,6 +160,10 @@ public class RobotState {
 
     public Rotation2d getRotation2dRaw() {
         return robotRotation2d.rotateBy(navxOffset);
+    }
+
+    public void addNavXOffset(double offset){
+        this.navxOffset = new Rotation2d(Units.degreesToRadians(offset));
     }
 
     /**
@@ -270,10 +274,11 @@ public class RobotState {
         Logger.recordOutput("Vision Pose", aprilTagVisionPose3d);
         Logger.recordOutput("Robot Position X : ", (robotPose.getX()));
         Logger.recordOutput("Robot Position Y : ", (robotPose.getY()));
-        Logger.recordOutput("Rotation Degrees", robotRotation2d.getDegrees());
         Logger.recordOutput("ROBOT POSE2D", robotPose);
         Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateDistanceToSpeaker(robotPose));
+        Logger.recordOutput("RAW GYRO", robotRotation2d.getDegrees());
         Logger.recordOutput("NOTE DETECTOR", noteDetected);
+        Logger.recordOutput("auto gyro method angle", robotPose.getRotation().getDegrees());
         Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
         Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
         Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));

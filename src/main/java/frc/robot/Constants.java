@@ -188,11 +188,11 @@ public final class Constants {
 
         public static final double SHOOTER_MAX_VELOCITY_RPS = 100;
         
-        public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0;
-        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0;
+        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.45 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.45 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1;
         public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.75;

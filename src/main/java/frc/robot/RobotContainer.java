@@ -7,6 +7,8 @@ package frc.robot;
 import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimberSlowRetractCommand;
+import frc.robot.commands.GyroOffsetCommand;
+import frc.robot.commands.auto.drive.AimToSpeakerCommand;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
@@ -22,6 +24,7 @@ import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
 //import frc.robot.commands.music.PauseMusicPlayerCommand;
 //import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.commands.shamper.ShamperShootCommand;
+import frc.robot.commands.shamper.ShamperTrapCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
@@ -38,13 +41,8 @@ import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 // import frc.robot.subsystems.Superstructure.SuperstructureState;
 //import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
-
-import java.util.function.BooleanSupplier;
-
-import javax.swing.JOptionPane;
-
 import com.pathplanner.lib.auto.NamedCommands;
-
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -117,7 +115,11 @@ public class RobotContainer {
       )
     );
 
-    //shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
+    shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
+
+    NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
+    NamedCommands.registerCommand("Adjust Angle and Score", new ShamperShootCommand(shamper, indexer));
+    NamedCommands.registerCommand("Gyro Offset", new GyroOffsetCommand());
 
     // NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer));
     // NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake, indexer));
@@ -183,10 +185,12 @@ public class RobotContainer {
     JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
     JoystickButton shamperAmpShootButton = new JoystickButton(controlPanel, 11);
     JoystickButton shamperManualShootButton = new JoystickButton(controlPanel, 12);
+    JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
 
     shamperShootButton.whileTrue(new ShamperShootCommand(shamper, indexer));
-    shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
+    shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper));
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
+    shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper));
 
     /*
      *  Shamper Angle Button Bindings
@@ -269,7 +273,6 @@ public class RobotContainer {
       }
   }
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return autoFactory.getCompiledAuto();
+    return null; //new PathPlannerAuto("Center Starting");
   }
 }

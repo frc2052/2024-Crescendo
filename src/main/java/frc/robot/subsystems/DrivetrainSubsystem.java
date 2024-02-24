@@ -96,7 +96,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // currentChassisSpeeds = new ChassisSpeeds(navx.getVelocityX(), navx.getVelocityY)
-        robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(), navx.getRotation2d()));
+        robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(),  navx.getRotation2d().unaryMinus()));
         debug();
     }
 
@@ -129,7 +129,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
 
         if (fieldCentric) {
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d().unaryMinus());
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, RobotState.getInstance().getRotation2dRaw().unaryMinus());
         }
 
         drive(chassisSpeeds);
