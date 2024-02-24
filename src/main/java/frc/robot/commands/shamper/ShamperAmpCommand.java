@@ -28,18 +28,13 @@ public class ShamperAmpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shamper.setAngle(Constants.Shamper.Angle.AMP);
-    shamper.setShootSpeed(ShamperSpeed.AMP_SCORE);
-    if(shamper.shooterAtSpeed(ShamperSpeed.AMP_SCORE.getLowerRPS(), ShamperSpeed.AMP_SCORE.getUpperRPS()) && shamper.isAtGoalAngle()) {
-      indexer.indexAll();
-  }
+    shamper.setShootSpeedPct(ShamperSpeed.AMP_SCORE.getLower(), ShamperSpeed.AMP_SCORE.getUpper());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shamper.setShootSpeed(ShamperSpeed.OFF);
-    indexer.stop();
+    shamper.stopShooter();
   }
 
   // Returns true when the command should end.

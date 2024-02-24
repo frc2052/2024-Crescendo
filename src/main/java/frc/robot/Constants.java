@@ -147,6 +147,8 @@ public final class Constants {
         public static final double LOWER_INDEX_SPEED_PCT = 1;
         public static final double UPPER_LOAD_SPEED_PCT = 0.7;
         public static final double UPPER_INDEX_SPEED_PCT = 1;
+        
+        public static final double UPPER_OUTTAKE_SPEED_PCT = 1;
 
         // DIO
         public static final int INDEXER_SENSOR_PIN = 0;
@@ -156,7 +158,7 @@ public final class Constants {
 
         // DIO pins
         public static final int ROTATION_ENCODER_PIN = 1;
-        public static final int LIMIT_SWITCH_PIN = 0;
+        public static final int LIMIT_SWITCH_PIN = 2;
         public static final int AMP_HALL_EFFECT_PIN = 0;
         public static final int PODIUM_HALL_EFFECT_PIN = 0;
 
@@ -192,8 +194,8 @@ public final class Constants {
         public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0;
         public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0;
 
-        public static final double UPPER_SHAMPER_AMP_SPEED_RPS = -0.85 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_AMP_SPEED_RPS = 0.75 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1;
+        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.75;
         
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
         public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;

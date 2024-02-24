@@ -12,6 +12,7 @@ import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.OuttakeCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
 import frc.robot.commands.shamper.ShamperDefaultCommand;
@@ -142,8 +143,8 @@ public class RobotContainer {
     JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
 
     driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(
-      () -> translationJoystick.getX(), 
       () -> translationJoystick.getY(), 
+      () -> translationJoystick.getX(), 
       () -> true, 
       drivetrain
     ));
@@ -164,8 +165,10 @@ public class RobotContainer {
      */
 
     JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
+    JoystickButton outtakeButton = new JoystickButton(translationJoystick, 3);
     
     intakeInButton.whileTrue(new IntakeCommand(intake, indexer, shamper));
+    outtakeButton.whileTrue(new OuttakeCommand(intake, indexer, shamper));
 
     /*
      *  Index Button Binding
