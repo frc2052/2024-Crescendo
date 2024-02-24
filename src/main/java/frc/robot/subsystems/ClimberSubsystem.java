@@ -38,7 +38,7 @@ public class ClimberSubsystem extends SubsystemBase{
     }
 
     public void retractSlow(boolean override) {
-        leftClimberMotor.set(-Constants.Climber.CLIMBER_MOTOR_PCT);
+        leftClimberMotor.set(-Constants.Climber.CLIMBER_MOTOR_PCT_SLOW);
     }
 
     /**

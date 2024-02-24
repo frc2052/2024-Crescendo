@@ -186,13 +186,13 @@ public final class Constants {
 
         public static final double SHOOTER_MAX_VELOCITY_RPS = 100;
         
-        public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0;
         public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0;
 
-        public static final double UPPER_SHAMPER_AMP_SPEED_RPS = -0.9 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_AMP_SPEED_RPS = -0.85 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_AMP_SPEED_RPS = 0.75 * SHOOTER_MAX_VELOCITY_RPS;
         
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
@@ -214,13 +214,13 @@ public final class Constants {
             public static final double MAXIMUM = 124;
             public static final double DEFAULT = 30;
             public static final double AMP = 122;
-            public static final double SUB = 14;
+            public static final double SUB = 53;
             public static final double TRAP = 95;
         }
 
         public static final double ENCODER_OFFSET_DEGREES = 0;
         public static final double DEAD_ZONE_DEGREES = 1;
-        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 1.06;
+        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 2;
         public static final double SHOOTER_TOLERANCE_PERCENT = 0.01;
     }
 

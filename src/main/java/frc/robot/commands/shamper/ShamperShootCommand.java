@@ -1,5 +1,7 @@
 package frc.robot.commands.shamper;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotState;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -27,16 +29,18 @@ public class ShamperShootCommand extends Command{
     @Override
     public void execute() {
         ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToSpeaker(RobotState.getInstance().getRobotPose()));
-        shamper.setShootSpeed(config.getShooterSpeedPercent(), config.getShooterSpeedPercent());
-        shamper.setAngle(config.getShooterSpeedPercent());
-        if(shamper.shooterAtSpeed(config.getShooterSpeedPercent(), config.getShooterSpeedPercent()) && shamper.isAtGoalAngle()) {
+        Logger.recordOutput("shoot speed calculated", config.getShooterSpeedVelocityRPS());
+        Logger.recordOutput("angle calculated", config.getAngleDegrees());
+        shamper.setShootSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS());
+        shamper.setAngle(config.getAngleDegrees());
+        if(shamper.shooterAtSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS()) && shamper.isAtGoalAngle()) {
             indexer.indexAll();
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        shamper.setShootSpeed(ShamperSpeed.OFF);
+        shamper.stopShooter();
         indexer.stop();
     }
 }

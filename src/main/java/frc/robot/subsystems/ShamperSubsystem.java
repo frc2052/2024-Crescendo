@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.util.AimingCalculator;
 
 public class ShamperSubsystem extends SubsystemBase {
   private static TalonFX lowerMotor;
@@ -100,11 +101,6 @@ public class ShamperSubsystem extends SubsystemBase {
     // podiumHallEffectSensor = new DigitalInput(Constants.Shamper.PODIUM_HALL_EFFECT_PIN);
   }
 
-  public void stopShooter() {
-    lowerMotor.set(ShamperSpeed.OFF.getLowerRPS());
-    upperMotor.set(ShamperSpeed.OFF.getUpperRPS());
-  }
-
   public void setShootSpeed(ShamperSpeed speeds) { 
     goalSpeed = speeds;
     // lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), contrainSpeed(goalSpeed.getLowerPCT())));
@@ -115,8 +111,9 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public void setShootSpeed(double lowerSpeed, double upperSpeed) {
-    lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), contrainSpeed(lowerSpeed)));
-    upperMotor.set(upperMotorController.calculate(getUpperShamperSpeed(), contrainSpeed(upperSpeed)));
+    shooterVelocity.Slot = 0;
+    lowerMotor.setControl(shooterVelocity.withVelocity(lowerSpeed));
+    upperMotor.setControl(shooterVelocity.withVelocity(upperSpeed));
   }
 
   public double contrainSpeed(double speed){
@@ -131,7 +128,8 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public boolean motorAtSpeed(TalonFX motor, double goalSpeed){
     boolean motorAtSpeed = motor.getVelocity().getValueAsDouble() > goalSpeed - Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_RPS
-    && motor.getVelocity().getValueAsDouble() < goalSpeed + Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_RPS;
+    && motor.getVelocity().getValueAsDouble() < goalSpeed + Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_RPS
+    && goalSpeed != 0;
 
     return motorAtSpeed;
   }
@@ -144,13 +142,18 @@ public class ShamperSubsystem extends SubsystemBase {
     }
   }
 
+  public void stopShooter(){
+    upperMotor.set(0);
+    lowerMotor.set(0);
+  }
+
   public void setAngle(double goalAngle) {
-    System.out.println("Setting Angle " + goalAngle);
+    //System.out.println("Setting Angle " + goalAngle);
     this.goalAngle = goalAngle;
   }
 
   public void runPivot(double pct) {
-    pct = constrainPivotSpeed(pct);
+    pct = constrainPivotSpeed(pct); 
 
     if(getShamperAngle() > Constants.Shamper.Angle.MINIMUM && getShamperAngle() < Constants.Shamper.Angle.MAXIMUM) {
       leftPivotMotor.set(pct);
@@ -216,11 +219,13 @@ public class ShamperSubsystem extends SubsystemBase {
   }  
 
   public void manualUp() {
+    System.out.println("MANUAL UP: " + goalAngle);
     this.goalAngle = this.goalAngle + 1;
   }
 
   public void manualDown() {
-    this.goalAngle = this.goalAngle -1;
+    System.out.println("MANUAL DOWN: " + goalAngle);
+    this.goalAngle = this.goalAngle - 1;
   }
 
   public void resetOverride(){
@@ -254,14 +259,12 @@ public class ShamperSubsystem extends SubsystemBase {
   public void periodic() {
     //System.out.println(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
     //stopPivot();
-    Logger.recordOutput("upperSpeed", upperMotor.getVelocity().getValueAsDouble());
     Logger.recordOutput("upperGoal", goalSpeed.getUpperRPS());
-    SmartDashboard.putNumber("Shamper Current Angle:  ", getShamperAngle());
-    SmartDashboard.putNumber("Shamper Current Goal Angle: ", goalAngle);
-    SmartDashboard.putBoolean("Shamper Shooter At Speed ", shooterAtSpeed(goalSpeed.getLowerRPS(), goalSpeed.getUpperRPS()));
-    SmartDashboard.putNumber("Upper Shooter At Speed ", upperMotor.getVelocity().getValueAsDouble());
-
-
+    Logger.recordOutput("Shamper Current Angle:  ", getShamperAngle());
+    Logger.recordOutput("Shamper Current Goal Angle: ", goalAngle);
+    Logger.recordOutput("Shamper Shooter At Speed ", shooterAtSpeed(goalSpeed.getLowerRPS(), goalSpeed.getUpperRPS()));
+    Logger.recordOutput("Upper Shooter Speed ", upperMotor.getVelocity().getValueAsDouble());
+    Logger.recordOutput("Lower Shooter Speed ", lowerMotor.getVelocity().getValueAsDouble());
 
     if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
       if (isAtGoalAngle()) {

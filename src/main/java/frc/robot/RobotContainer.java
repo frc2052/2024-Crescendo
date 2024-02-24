@@ -10,10 +10,12 @@ import frc.robot.commands.climb.ClimberSlowRetractCommand;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
+import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
 import frc.robot.commands.shamper.ShamperDefaultCommand;
+import frc.robot.commands.shamper.ShamperManualShootCommand;
 import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
 import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
 //import frc.robot.commands.music.PauseMusicPlayerCommand;
@@ -114,7 +116,7 @@ public class RobotContainer {
       )
     );
 
-    shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
+    //shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
 
     // NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer));
     // NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake, indexer));
@@ -163,17 +165,25 @@ public class RobotContainer {
 
     JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
     
-    intakeInButton.whileTrue(new IntakeCommand(intake));
+    intakeInButton.whileTrue(new IntakeCommand(intake, indexer, shamper));
 
+    /*
+     *  Index Button Binding
+     */
+
+    JoystickButton indexManualButton = new JoystickButton(controlPanel, 10);
+    indexManualButton.whileTrue(new IndexerIndexCommand(indexer));
     /*
      *  Shooter Button Bindings
      */
 
     JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
     JoystickButton shamperAmpShootButton = new JoystickButton(controlPanel, 11);
+    JoystickButton shamperManualShootButton = new JoystickButton(controlPanel, 12);
 
-    shamperShootButton.onTrue(new ShamperShootCommand(shamper, indexer));
-    shamperAmpShootButton.onTrue(new ShamperAmpCommand(shamper, indexer));
+    shamperShootButton.whileTrue(new ShamperShootCommand(shamper, indexer));
+    shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
+    shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
 
     /*
      *  Shamper Angle Button Bindings

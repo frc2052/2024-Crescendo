@@ -2,6 +2,7 @@ package frc.robot.util.calculator;
 
 import java.util.ArrayList;
 import java.util.List;
+import frc.robot.Constants;
 
 public class ShootingAngleCalculator {
     private static ShootingAngleCalculator INSTANCE;
@@ -22,62 +23,75 @@ public class ShootingAngleCalculator {
     }
 
     public void setupShootAngleLookup(){
-        shootAngleLookup.add(new ShootAngleConfig(90, 53, 1));
-        shootAngleLookup.add(new ShootAngleConfig(200, 39, 1));
-        shootAngleLookup.add(new ShootAngleConfig(300, 33, 1));
-        shootAngleLookup.add(new ShootAngleConfig(400, 29, 1));
-        shootAngleLookup.add(new ShootAngleConfig(500, 26.5, 1));
-        shootAngleLookup.add(new ShootAngleConfig(600, 24.25, 1));
+        shootAngleLookup.add(new ShootAngleConfig(100, 55, 0.7 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(150, 53, 0.7 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(200, 44, 0.7 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(250, 38, 0.8 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(300, 35, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(350, 32, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(400, 30, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(450, 28, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(500, 28, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(550, 26, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(600, 25, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
     }
 
-    public ShootAngleConfig getShooterConfig(double distancecm) {
+    public ShootAngleConfig getShooterConfig(double distanceMeters) {
         // Lower bound of the estimated shooter configuration given the distance from the target.
         ShootAngleConfig lowerDistanceConfig = null;
         // Upper bound of the estimated shooter configuration given the distance from the target.
         ShootAngleConfig upperDistanceConfig = null;
 
         // convert current pose meters to centimeters
-        distancecm = distancecm / 100;
+        double distancecm = distanceMeters * 100;
         
         for(int i = 0; i < shootAngleLookup.size(); i++){
             if (distancecm < shootAngleLookup.get(i).getDistanceCentimeters()){
                 lowerDistanceConfig = shootAngleLookup.get(i);
+                System.out.println("Dictionary " + i);
+                break;
             } else {
                 upperDistanceConfig = shootAngleLookup.get(i);
-                break;
             }
         }
 
         // Returns a default shooter configuration if either of the bounds are null
         if (lowerDistanceConfig == null) {
+            System.out.println("No Lower Config");
             return shootAngleLookup.get(0);
         } else if (upperDistanceConfig == null){
+            System.out.println("No Upper Config");
             return shootAngleLookup.get(shootAngleLookup.size() - 1);
         }
 
         // deltaInches is the difference between the lower and upper pre-measured inches values.
-        double deltaInches = upperDistanceConfig.getDistanceCentimeters() - lowerDistanceConfig.getDistanceCentimeters();
+        double deltacm = upperDistanceConfig.getDistanceCentimeters() - lowerDistanceConfig.getDistanceCentimeters();
         // offsetInches is the difference between our actual current distance inches and the upper distance inches.
-        double offsetInches = upperDistanceConfig.getDistanceCentimeters() - distancecm;
+        double offsetcm = upperDistanceConfig.getDistanceCentimeters() - distancecm;
 
-        double pct = offsetInches / deltaInches;
+        double pct = offsetcm / deltacm;
 
         // Calculate the difference between the two top motor velocities from the lookup table entries.
-        double deltaTopMotorVelocityTicksPerSecond = upperDistanceConfig.getShooterSpeedPercent() - lowerDistanceConfig.getShooterSpeedPercent();
+        double deltaTopMotorVelocityTicksPerSecond = upperDistanceConfig.getShooterSpeedVelocityRPS() - lowerDistanceConfig.getShooterSpeedVelocityRPS();
         // Multiple the difference of top motor velocities by the percentage of offsetInches and deltaInches. 
         double offsetTopMotorVelocityTicksPerSecond = deltaTopMotorVelocityTicksPerSecond * pct;
 
         // Calculate the difference between the two bottom motor velocities from the lookup table entries.
-        double deltaBottomMotorVelocityTicksPerSecond = upperDistanceConfig.getShooterSpeedPercent() - lowerDistanceConfig.getShooterSpeedPercent();
+        double deltaBottomMotorVelocityTicksPerSecond = upperDistanceConfig.getShooterSpeedVelocityRPS() - lowerDistanceConfig.getShooterSpeedVelocityRPS();
         // Multiple the difference of bottom motor velocities by the percentage of offsetInches and deltaInches. 
         double offsetBottomMotorVelocityTicksPerSecond = deltaBottomMotorVelocityTicksPerSecond * pct;
+
+        
+        double deltaAngle = upperDistanceConfig.getAngleDegrees() - lowerDistanceConfig.getAngleDegrees();
+
+        double offsetAngle = deltaAngle * pct;
 
         return new ShootAngleConfig(
             distancecm,
             // Add the final offsets to our lower distance so the bottom shooter cofniguration can safely be assumed.
-            upperDistanceConfig.getShooterSpeedPercent() - offsetBottomMotorVelocityTicksPerSecond,
+            upperDistanceConfig.getAngleDegrees() - offsetAngle,
             // Add the final offsets to our lower distance so the top shooter cofniguration can safely be assumed.
-            upperDistanceConfig.getShooterSpeedPercent() - offsetTopMotorVelocityTicksPerSecond
+            upperDistanceConfig.getShooterSpeedVelocityRPS() - offsetTopMotorVelocityTicksPerSecond
         );
     }
 }
