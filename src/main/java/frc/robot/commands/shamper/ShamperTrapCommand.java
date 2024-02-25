@@ -24,7 +24,7 @@ public class ShamperTrapCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shamper.setShootSpeedPct(ShamperSpeed.TRAP.getLower(), ShamperSpeed.TRAP.getUpper());
+    shamper.setShootSpeed(ShamperSpeed.TRAP.getLower(), ShamperSpeed.TRAP.getUpper());
   }
 
   // Called once the command ends or is interrupted.

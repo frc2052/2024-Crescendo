@@ -104,9 +104,8 @@ public class AimingCalculator {
     public static double calculateAngle(Pose2d robotPose){
         double xDistance = 0;
         double yDistance = 0;
-        double angleToSpeakerRobotRelativeDegrees = 0;
+        double speakerToRobotDegrees = 0;
         double angleToSpeakerFieldRelativeDegrees = 0;
-        double angleToSpeakerFieldRelativeDegrees2 = 0;
 
         // blue alliance
         if(!RobotState.getInstance().isRedAlliance()) {
@@ -114,16 +113,16 @@ public class AimingCalculator {
             xDistance = speakerLocation.getX() - robotPose.getX();
             yDistance = speakerLocation.getY() - robotPose.getY();
 
-            angleToSpeakerRobotRelativeDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
+            speakerToRobotDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
 
             // to the right of speaker
             if(robotPose.getY() > speakerLocation.getY()) {
-                angleToSpeakerFieldRelativeDegrees = 180 + angleToSpeakerRobotRelativeDegrees;
+                angleToSpeakerFieldRelativeDegrees = 185 + speakerToRobotDegrees;
             }
 
             // to the left of the speaker
             if(robotPose.getY() < speakerLocation.getY()) {
-                angleToSpeakerFieldRelativeDegrees = 172 - angleToSpeakerRobotRelativeDegrees;
+                angleToSpeakerFieldRelativeDegrees = 180 - speakerToRobotDegrees;
                 
                 //angleToSpeakerFieldRelativeDegrees2 = Math.abs(new Rotation2d(Math.toRadians(90 + angleToSpeakerRobotRelativeDegrees)).unaryMinus().getDegrees());
             }
@@ -132,25 +131,24 @@ public class AimingCalculator {
             xDistance = speakerLocation.getX() - robotPose.getX();
             yDistance = speakerLocation.getY() - robotPose.getY();
 
-            angleToSpeakerRobotRelativeDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
+            speakerToRobotDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
 
             // to the right of speaker
             if(robotPose.getY() < speakerLocation.getY()) {
-                angleToSpeakerFieldRelativeDegrees = 180 + angleToSpeakerRobotRelativeDegrees;
+                angleToSpeakerFieldRelativeDegrees = 180 + speakerToRobotDegrees;
             }
 
             // to the left of the speaker
             if(robotPose.getY() > speakerLocation.getY()) {
-                angleToSpeakerFieldRelativeDegrees = 172 - angleToSpeakerRobotRelativeDegrees;
+                angleToSpeakerFieldRelativeDegrees = 172 - speakerToRobotDegrees;
                 
                 //angleToSpeakerFieldRelativeDegrees2 = Math.abs(new Rotation2d(Math.toRadians(90 + angleToSpeakerRobotRelativeDegrees)).unaryMinus().getDegrees());
             }
 
         }
-        Logger.recordOutput("NEW ANGLE TO SPEAKER FIELD RELATIVE", angleToSpeakerFieldRelativeDegrees2);
-        Logger.recordOutput("ANGLE TO SPEAKER ROBOT RELATIVE", angleToSpeakerRobotRelativeDegrees);
+        Logger.recordOutput("ANGLE TO SPEAKER ROBOT RELATIVE", speakerToRobotDegrees);
         Logger.recordOutput("ANGLE TO SPEAKER FIELD RELATIVE", angleToSpeakerFieldRelativeDegrees);
-        return angleToSpeakerFieldRelativeDegrees;
+        return Math.copySign(angleToSpeakerFieldRelativeDegrees, robotPose.getRotation().getDegrees());
     }
 
     public static double calculateDistanceToSpeaker(Pose2d robotPose) {

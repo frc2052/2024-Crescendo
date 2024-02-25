@@ -77,7 +77,7 @@ public class DriveWhileAimingCommand extends Command {
 
     @Override
     public void execute() {
-        drivetrain.drive(-getX(), getY(), getRotation(), true);
+        drivetrain.drive(getX(), -getY(), getRotation(), true);
     }
 
     @Override

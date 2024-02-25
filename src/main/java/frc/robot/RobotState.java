@@ -83,7 +83,7 @@ public class RobotState {
     }
 
     public void updateRobotPose(Pose2d robotPose) {
-        this.robotPose = new Pose2d(robotPose.getTranslation(), robotRotation2d);
+        this.robotPose = new Pose2d(robotPose.getTranslation(), getRotation2d360());
     }
 
     public void updateNoteDetected(boolean noteDetected) {
@@ -97,17 +97,6 @@ public class RobotState {
     public boolean getIsClimbing(){
         return isClimbing;
     }
-
-    /*
-     *  Add Superstructure State
-     */
-    // public void addSuperstructureState(SuperstructureState state) {
-    //     this.superstructureState = state;
-    // }
-
-    // public SuperstructureState getSuperstructureState() {
-    //     return superstructureState;
-    // }
 
     /**
      * Reset the RobotState's Initial Pose2d and set the NavX Offset. 
@@ -153,7 +142,7 @@ public class RobotState {
     }
 
     public Rotation2d getRotation2d360() {
-        double rotationDegrees = MathUtil.inputModulus(robotRotation2d.getDegrees(), 0, 360);
+        double rotationDegrees = MathUtil.inputModulus(getRotation2dRaw().getDegrees(), 0, 360);
 
         return Rotation2d.fromDegrees(rotationDegrees);
     }
@@ -285,5 +274,9 @@ public class RobotState {
         Dashboard.getInstance().putData("VISION Robot Position X : ", (aprilTagVisionPose3d.getX()));
         Dashboard.getInstance().putData("VISION Robot Position Y : ", (aprilTagVisionPose3d.getY()));
         Dashboard.getInstance().putData("VISION Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
+        
+        double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
+        Logger.recordOutput("goal angle",  Math.copySign(goalAngleDegrees, robotPose.getRotation().getDegrees()));
+        Logger.recordOutput("measured angle", robotRotation2d.getDegrees() % 360);
     }   
 }

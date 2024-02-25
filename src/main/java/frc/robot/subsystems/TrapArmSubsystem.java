@@ -1,21 +1,22 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class TrapArmSubsystem extends SubsystemBase{
-    private final DigitalOutput trapArm;
+    private final Relay trapArm;
 
     public TrapArmSubsystem() {
-        trapArm = new DigitalOutput(Constants.Trap.TRAP_DIO_PIN);
+        trapArm = new Relay(Constants.Trap.TRAP_RELAY_PIN);
+        trapArm.set(Relay.Value.kOff);
     }
 
     public void open(){
-        trapArm.set(true);
+        trapArm.set(Relay.Value.kForward);
     }
 
     public void close(){
-        trapArm.set(false);
+        trapArm.set(Relay.Value.kOff);
     }
 }

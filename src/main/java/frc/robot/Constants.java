@@ -68,7 +68,7 @@ public final class Constants {
     }
 
     public static class Trap {
-        public static final int TRAP_DIO_PIN = 0;
+        public static final int TRAP_RELAY_PIN = 0;
     }
 
     public static class Drivetrain {
@@ -191,11 +191,11 @@ public final class Constants {
         public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.45 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.45 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1;
-        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.75;
+        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.35;
         
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
         public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
@@ -214,6 +214,7 @@ public final class Constants {
         public static class Angle {
             public static final double MINIMUM  = 12;
             public static final double MAXIMUM = 124;
+            public static final double CLIMB = 13;
             public static final double DEFAULT = 30;
             public static final double AMP = 122;
             public static final double SUB = 53;

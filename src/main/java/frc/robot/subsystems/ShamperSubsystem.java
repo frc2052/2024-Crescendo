@@ -160,10 +160,6 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public void runPivot(double pct) {
     pct = constrainPivotSpeed(pct); 
-    if(pct < 0 && shamperZeroed()) {
-      System.out.println("***TRYING TO LOWER SHAMPER WHILE ZEROED***");
-      return;
-    }
     if(getShamperAngle() > Constants.Shamper.Angle.MINIMUM && getShamperAngle() < Constants.Shamper.Angle.MAXIMUM) {
       leftPivotMotor.set(pct);
     } else if (getShamperAngle() < Constants.Shamper.Angle.MINIMUM && pct > 0) { // If we are below the minimum but trying to go up it's fine
@@ -173,6 +169,10 @@ public class ShamperSubsystem extends SubsystemBase {
     } else {
       leftPivotMotor.stopMotor();
     }
+  }
+
+  public double getPivotSpeed(){
+    return leftPivotMotor.get();
   }
 
   public double constrainPivotSpeed(double speed) {
@@ -273,6 +273,11 @@ public class ShamperSubsystem extends SubsystemBase {
     Logger.recordOutput("Shamper Shooter At Speed ", shooterAtSpeed(goalSpeed.getLower(), goalSpeed.getUpper()));
     Logger.recordOutput("Upper Shooter Speed ", upperMotor.getVelocity().getValueAsDouble());
     Logger.recordOutput("Lower Shooter Speed ", lowerMotor.getVelocity().getValueAsDouble());
+    
+    if(getPivotSpeed() < 0 && shamperZeroed()) {
+      System.out.println("***TRYING TO LOWER SHAMPER WHILE ZEROED***");
+      stopPivot();
+    }
 
     if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
       if (isAtGoalAngle()) {

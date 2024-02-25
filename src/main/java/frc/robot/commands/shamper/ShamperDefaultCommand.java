@@ -22,15 +22,15 @@ public class ShamperDefaultCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
+    // shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!RobotState.getInstance().getIsClimbing() && !RobotState.getInstance().getNoteDetected() && shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT) {
-      shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
-    }
+    // if(!RobotState.getInstance().getIsClimbing() && !RobotState.getInstance().getNoteDetected() && shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT) {
+    //   shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
+    // }
   }
 
   // Called once the command ends or is interrupted.
