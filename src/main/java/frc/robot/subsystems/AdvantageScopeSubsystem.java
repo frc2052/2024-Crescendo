@@ -94,14 +94,14 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
             drivetrainSubsystem.frontLeftModule.getState().angle.getDegrees(), 
             drivetrainSubsystem.frontLeftModule.getState().speedMetersPerSecond,
 
-            drivetrainSubsystem.frontRightModule.getState().angle.getDegrees(), 
-            drivetrainSubsystem.frontRightModule.getState().speedMetersPerSecond,
-
             drivetrainSubsystem.backLeftModule.getState().angle.getDegrees(), 
             drivetrainSubsystem.backLeftModule.getState().speedMetersPerSecond,
 
             drivetrainSubsystem.backRightModule.getState().angle.getDegrees(), 
             drivetrainSubsystem.backRightModule.getState().speedMetersPerSecond,
+
+            drivetrainSubsystem.frontRightModule.getState().angle.getDegrees(), 
+            drivetrainSubsystem.frontRightModule.getState().speedMetersPerSecond,
         };
         Logger.recordOutput(folder+drivetrainFolder+"Swerve Array", swerveArray);
 

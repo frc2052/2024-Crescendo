@@ -138,16 +138,13 @@ public class SwerveModule {
 
     // Drive Motor encoder initialization
     RelativeEncoder steerEncoder = steerMotor.getEncoder();
-
-    // Conversion factor for switching between ticks and radians in terms of radians per tick
-    double steerPositionConversionFactor = 2.0 * Math.PI * SwerveConstants.SwerveModule.STEER_REDUCTION;
     
     checkError(
         "Failed to set drive motor encoder conversion factors",
         // Set the position conversion factor so the encoder will automatically convert ticks to radians
-        steerEncoder.setPositionConversionFactor(steerPositionConversionFactor),
+        steerEncoder.setPositionConversionFactor(SwerveConstants.SwerveModule.steerPositionConversionFactor),
         // Velocity of the encoder in radians per second
-        steerEncoder.setVelocityConversionFactor(steerPositionConversionFactor / 60.0)
+        steerEncoder.setVelocityConversionFactor(SwerveConstants.SwerveModule.steerPositionConversionFactor / 60.0)
     );
 
     checkError(

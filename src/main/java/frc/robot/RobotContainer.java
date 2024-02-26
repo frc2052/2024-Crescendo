@@ -107,9 +107,9 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(
       new DriveCommand(
           // Forward velocity supplier.
-          translationJoystick::getY,
-          // Sideways velocity supplier.
           translationJoystick::getX,
+          // Sideways velocity supplier.
+          translationJoystick::getY,
           // Rotation velocity supplier.
           rotationJoystick::getX,
           () -> true,

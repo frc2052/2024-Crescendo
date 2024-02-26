@@ -41,13 +41,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
             Constants.CAN.FRONT_LEFT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS)
         );
-        frontRightModule = new SwerveModule(
-            "front right",
-            Constants.CAN.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
-            Constants.CAN.FRONT_RIGHT_MODULE_STEER_MOTOR,
-            Constants.CAN.FRONT_RIGHT_MODULE_STEER_ENCODER,
-            new Rotation2d(Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS)
-        );
         backLeftModule = new SwerveModule(
             "back left",
             Constants.CAN.BACK_LEFT_MODULE_DRIVE_MOTOR,
@@ -61,6 +54,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
             Constants.CAN.BACK_RIGHT_MODULE_STEER_MOTOR,
             Constants.CAN.BACK_RIGHT_MODULE_STEER_ENCODER,
             new Rotation2d(Constants.Drivetrain.BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS)
+        );
+        frontRightModule = new SwerveModule(
+            "front right",
+            Constants.CAN.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
+            Constants.CAN.FRONT_RIGHT_MODULE_STEER_MOTOR,
+            Constants.CAN.FRONT_RIGHT_MODULE_STEER_ENCODER,
+            new Rotation2d(Constants.Drivetrain.FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS)
         );
 
         navx = new AHRS(SPI.Port.kMXP, (byte) 200);
@@ -166,26 +166,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
             swerveModuleStates[0].speedMetersPerSecond, 
             hasVelocity ? swerveModuleStates[0].angle : frontLeftModule.getState().angle
         );
-        frontRightModule.setState(
-            swerveModuleStates[1].speedMetersPerSecond, 
-            hasVelocity ? swerveModuleStates[1].angle : frontRightModule.getState().angle
-        );
         backLeftModule.setState(
-            swerveModuleStates[2].speedMetersPerSecond, 
-            hasVelocity ? swerveModuleStates[2].angle : backLeftModule.getState().angle
+            swerveModuleStates[1].speedMetersPerSecond, 
+            hasVelocity ? swerveModuleStates[1].angle : backLeftModule.getState().angle
         );
         backRightModule.setState(
+            swerveModuleStates[2].speedMetersPerSecond, 
+            hasVelocity ? swerveModuleStates[2].angle : backRightModule.getState().angle
+        );
+        frontRightModule.setState(
             swerveModuleStates[3].speedMetersPerSecond, 
-            hasVelocity ? swerveModuleStates[3].angle : backRightModule.getState().angle
+            hasVelocity ? swerveModuleStates[3].angle : frontRightModule.getState().angle
         );
     }
 
     public SwerveModulePosition[] getModulePositions() {
         return new SwerveModulePosition[] {
             frontLeftModule.getPosition(),
-            frontRightModule.getPosition(),
             backLeftModule.getPosition(),
-            backRightModule.getPosition()
+            backRightModule.getPosition(),
+            frontRightModule.getPosition()
         };
     }
 
@@ -209,8 +209,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void debug() {
         frontLeftModule.debug();
-        frontRightModule.debug();   
         backLeftModule.debug();
         backRightModule.debug();
+        frontRightModule.debug();   
     }
 }
