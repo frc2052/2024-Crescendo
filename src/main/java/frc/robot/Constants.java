@@ -99,13 +99,13 @@ public final class Constants {
 
         public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             // Front left
-            new Translation2d(0.302, 0.298),
+            new Translation2d(-0.302, 0.298),
             // Back left
-            new Translation2d(-0.302, 0.178),
+            new Translation2d(0.302, 0.178),
             // Back right
-            new Translation2d(-0.302, -0.178),
+            new Translation2d(0.302, -0.178),
             // Front right
-            new Translation2d(0.302,  -0.298)
+            new Translation2d(-0.302,  -0.298)
         );
 
         public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;

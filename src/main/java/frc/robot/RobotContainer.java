@@ -284,6 +284,6 @@ public class RobotContainer {
       }
   }
   public Command getAutonomousCommand() {
-    return null; //new PathPlannerAuto("Center Starting");
+    return new PathPlannerAuto("Center Starting");
   }
 }
