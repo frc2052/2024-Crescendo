@@ -120,6 +120,9 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
     NamedCommands.registerCommand("Adjust Angle and Score", new ShamperShootCommand(shamper, indexer));
+    NamedCommands.registerCommand("Manual Angle", new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
+    NamedCommands.registerCommand("Manual Shoot", new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_IDLE));
+    NamedCommands.registerCommand("Manual Index", new IndexerIndexCommand(indexer));
     // NamedCommands.registerCommand("Gyro Offset", new GyroOffsetCommand());
 
     // NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer));
