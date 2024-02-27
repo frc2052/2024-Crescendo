@@ -107,9 +107,9 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(
       new DriveCommand(
           // Forward velocity supplier.
-          translationJoystick::getX,
-          // Sideways velocity supplier.
           translationJoystick::getY,
+          // Sideways velocity supplier.
+          translationJoystick::getX,
           // Rotation velocity supplier.
           rotationJoystick::getX,
           () -> true,
@@ -285,5 +285,9 @@ public class RobotContainer {
   }
   public Command getAutonomousCommand() {
     return new PathPlannerAuto("Center Starting");
+  }
+
+  public void resetGyro(){
+    drivetrain.zeroGyro();
   }
 }

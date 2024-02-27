@@ -20,7 +20,7 @@
         "y": 7.026501927468906
       },
       "prevControl": {
-        "x": 3.546121504118932,
+        "x": 2.637097645376729,
         "y": 7.026501927468906
       },
       "nextControl": null,
@@ -28,30 +28,24 @@
       "linkedName": "turn"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0.0,
-      "rotateFast": true
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 0.5,
     "maxAcceleration": 0.2,
-    "maxAngularVelocity": 100.0,
-    "maxAngularAcceleration": 100.0
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 32.90524292298775,
+    "rotation": -85.66768601681146,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -2.5094165349526194,
+    "rotation": 0.0,
     "velocity": 0
   },
   "useDefaultConstraints": true
