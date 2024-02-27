@@ -83,7 +83,8 @@ public class RobotState {
     }
 
     public void updateRobotPose(Pose2d robotPose) {
-        this.robotPose = new Pose2d(robotPose.getTranslation(), getRotation2d360());
+        //this.robotPose = new Pose2d(robotPose.getTranslation(), getRotation2d360());
+        this.robotPose = robotPose;
     }
 
     public void updateNoteDetected(boolean noteDetected) {
@@ -104,7 +105,7 @@ public class RobotState {
      */
     public void resetInitialPose(Pose2d initialStartingPose) {
         navxOffset = new Rotation2d();
-        navxOffset = initialStartingPose.getRotation();
+        // navxOffset = initialStartingPose.getRotation();
         initialPose = initialStartingPose;
     }
 
@@ -136,7 +137,7 @@ public class RobotState {
      * @return Rotation2d
      */
     public Rotation2d getRotation2d180() {
-        double rotationDegrees = MathUtil.inputModulus(robotRotation2d.getDegrees(), -180, 180);
+        double rotationDegrees = MathUtil.inputModulus(getRotation2dRaw().getDegrees(), -180, 180);
 
         return Rotation2d.fromDegrees(rotationDegrees);
     }
@@ -180,6 +181,10 @@ public class RobotState {
      */
     public Pose2d getRobotPose() {
         return robotPose;
+    }
+
+    public Pose2d getRobotPoseAuto(){
+        return new Pose2d(robotPose.getTranslation(), getRotation2d180());
     }
 
     public boolean getNoteDetected() {
@@ -264,6 +269,7 @@ public class RobotState {
         Logger.recordOutput("Robot Position X : ", (robotPose.getX()));
         Logger.recordOutput("Robot Position Y : ", (robotPose.getY()));
         Logger.recordOutput("ROBOT POSE2D", robotPose);
+        Logger.recordOutput("Auto Pose", getRobotPoseAuto());
         Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateDistanceToSpeaker(robotPose));
         Logger.recordOutput("RAW GYRO", robotRotation2d.getDegrees());
         Logger.recordOutput("NOTE DETECTOR", noteDetected);

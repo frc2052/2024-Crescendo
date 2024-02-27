@@ -50,15 +50,15 @@ public class DriveCommand extends Command {
     }
 
     protected double getX() {
-        return slewAxis(xLimiter, deadBand(xSupplier.getAsDouble()));
+        return slewAxis(xLimiter, deadBand(-xSupplier.getAsDouble()));
     }
 
     protected double getY() {
-        return slewAxis(yLimiter, deadBand(ySupplier.getAsDouble()));
+        return slewAxis(yLimiter, deadBand(-ySupplier.getAsDouble()));
     }
 
     protected double getRotation() {
-        return slewAxis(rotationLimiter, deadBand(rotationSupplier.getAsDouble()));
+        return slewAxis(rotationLimiter, deadBand(-rotationSupplier.getAsDouble()));
     }
 
     // @Override

@@ -1,12 +1,6 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.33,
-      "y": 7.026501927468906
-    },
-    "rotation": -2.030064997136543
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
@@ -14,7 +8,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center Starting"
+            "pathName": "Center Starting Red"
           }
         }
       ]

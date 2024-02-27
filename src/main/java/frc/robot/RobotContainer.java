@@ -9,6 +9,7 @@ import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimberSlowRetractCommand;
 import frc.robot.commands.GyroOffsetCommand;
 import frc.robot.commands.auto.drive.AimToSpeakerCommand;
+import frc.robot.commands.auto.drive.BasicAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
@@ -119,7 +120,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
     NamedCommands.registerCommand("Adjust Angle and Score", new ShamperShootCommand(shamper, indexer));
-    NamedCommands.registerCommand("Gyro Offset", new GyroOffsetCommand());
+    // NamedCommands.registerCommand("Gyro Offset", new GyroOffsetCommand());
 
     // NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer));
     // NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake, indexer));
@@ -281,7 +282,8 @@ public class RobotContainer {
       }
   }
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Center Starting");
+    return new PathPlannerAuto("Center Starting Blue");
+    // return new BasicAuto(drivetrain, shamper, indexer);
   }
 
   public void resetGyro(){

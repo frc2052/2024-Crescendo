@@ -69,7 +69,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
-            () -> robotState.getRobotPose(), // Robot pose supplier
+            () -> robotState.getRobotPoseAuto(), // Robot pose supplier for auot (correct range -180-180)
             this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
             () -> robotState.getChassisSpeeds(), // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds

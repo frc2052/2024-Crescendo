@@ -12,8 +12,10 @@ import frc.robot.RobotState;
 import frc.robot.util.RobotStateEstimator;
 
 public class GyroOffsetCommand extends Command {
+  private double offset;
   /** Creates a new GyroOffsetCommand. */
-  public GyroOffsetCommand() {
+  public GyroOffsetCommand(double offset) {
+    this.offset = offset;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -24,7 +26,7 @@ public class GyroOffsetCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotState.getInstance().addNavXOffset(177.28);
+    RobotState.getInstance().addNavXOffset(offset);
     //RobotStateEstimator.getInstance().resetOdometry(new Pose2d(1.33, 7.026501927468906, new Rotation2d(Units.degreesToRadians(-126.78843142290575))));
   }
 

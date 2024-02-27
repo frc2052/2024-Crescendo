@@ -2,6 +2,8 @@ package frc.robot.util;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 
@@ -45,7 +47,8 @@ public class RobotStateEstimator {
         //     robotState.getVisionPose3d().toPose2d(),
         //     robotState.getVisionDetectionTime()
         // );
-        
+    
+
         poseEstimator.update(
             robotState.getRotation2dRaw(), 
             robotState.getModulePositions()
@@ -61,7 +64,7 @@ public class RobotStateEstimator {
         robotState.resetInitialPose(pose);
 
         poseEstimator.resetPosition(
-            robotState.getRotation2dRaw(), 
+            pose.getRotation(), 
             robotState.getModulePositions(),
             pose
         );

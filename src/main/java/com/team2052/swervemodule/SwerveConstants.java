@@ -25,7 +25,7 @@ public final class SwerveConstants {
         // L3
         public static final double WHEEL_DIAMETER_METERS = 0.10033;
         public static final double DRIVE_REDUCTION = (14.0 / 50.0) * (28.0 / 16.0) * (15.0 / 45.0);
-        public static final boolean DRIVE_INVERTED = false;
+        public static final boolean DRIVE_INVERTED = true;
         public static final double STEER_REDUCTION = (14.0 / 50.0) * (10.0 / 60.0);
         public static final boolean STEER_INVERTED = true;
 

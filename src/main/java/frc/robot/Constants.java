@@ -385,11 +385,11 @@ public final class Constants {
     }
 
     public static final class PathPlanner {
-        public static final double TRANSLATION_KP = 5;
+        public static final double TRANSLATION_KP = .7;
         public static final double TRANSLATION_KI = 0;
         public static final double TRANSLATION_KD = 0;
 
-        public static final double ROTATION_KP = 5;
+        public static final double ROTATION_KP = .7;
         public static final double ROTATION_KI = 0;
         public static final double ROTATION_KD = 0;
 
@@ -399,7 +399,7 @@ public final class Constants {
         public static final HolonomicPathFollowerConfig HOLONOMIC_PATH_FOLLOWER_CONFIG = 
             new HolonomicPathFollowerConfig(
                     new PIDConstants( 
-                        TRANSLATION_KD, 
+                        TRANSLATION_KP, 
                         TRANSLATION_KI, 
                         TRANSLATION_KD
                     ), // Translation PID constants
