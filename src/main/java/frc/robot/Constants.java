@@ -78,12 +78,12 @@ public final class Constants {
         public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(19);
 
         /*
-         * FL: 201.3 FR:171.5 BL:357.0 BR:22.1
+         * FL: 157.8 FR:189.9 BL:3.5 BR:335.5
          */
-        public static final double FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS = -Math.toRadians(24.2); //2.76420367321;
-        public static final double BACK_LEFT_MODULE_STEER_OFFSET_RADIANS =  -Math.toRadians(176.2);//0.0412036732;
-        public static final double BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS = -Math.toRadians(203.2);//-0.39179632679;
-        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS = -Math.toRadians(352.2);//3.28720367321;
+        public static final double FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS = -Math.toRadians( 157.8); //2.76420367321;
+        public static final double BACK_LEFT_MODULE_STEER_OFFSET_RADIANS =  -Math.toRadians(3.5);//0.0412036732;
+        public static final double BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS = -Math.toRadians(335.5);//-0.39179632679;
+        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS = -Math.toRadians(189.9);//3.28720367321;
 
 
         // public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
@@ -99,13 +99,13 @@ public final class Constants {
 
         public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             // Front left
-            new Translation2d(-0.302, 0.298),
+            new Translation2d(0.302, 0.298),
             // Back left
-            new Translation2d(0.302, 0.178),
+            new Translation2d(-0.302, 0.178),
             // Back right
-            new Translation2d(0.302, -0.178),
+            new Translation2d(-0.302, -0.178),
             // Front right
-            new Translation2d(-0.302,  -0.298)
+            new Translation2d(0.302,  -0.298)
         );
 
         public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;

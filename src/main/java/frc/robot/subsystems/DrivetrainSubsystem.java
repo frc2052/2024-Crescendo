@@ -129,7 +129,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
 
         if (fieldCentric) {
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d().unaryMinus());
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d());
         }
 
         drive(chassisSpeeds);

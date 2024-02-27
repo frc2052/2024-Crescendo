@@ -46,7 +46,7 @@ public class SwerveModule {
         CANcoderConfiguration canCoderConfiguration = new CANcoderConfiguration();
         canCoderConfiguration.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
         canCoderConfiguration.MagnetSensor.MagnetOffset = (steerOffset.getRadians() / (2 * Math.PI));
-        canCoderConfiguration.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
+        canCoderConfiguration.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
 
         canCoder = new CANcoder(canCoderChannel);
         
@@ -175,7 +175,7 @@ public class SwerveModule {
         return new SwerveModuleState(
             driveMotor.getVelocity().getValueAsDouble(),
             new Rotation2d(
-                steerMotor.getEncoder().getPosition() % (2.0 * Math.PI)
+                (steerMotor.getEncoder().getPosition() % (2.0 * Math.PI))
             )
         );
     }

@@ -68,7 +68,7 @@ public class DriveCommand extends Command {
 
     @Override
     public void execute() {
-        drivetrain.drive(-getX(), getY(), -getRotation(), fieldCentricSupplier.getAsBoolean());
+        drivetrain.drive(getX(), getY(), getRotation(), fieldCentricSupplier.getAsBoolean());
     }
 
     @Override

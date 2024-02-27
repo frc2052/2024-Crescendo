@@ -91,9 +91,6 @@ public class RobotContainer {
     trapArm = new TrapArmSubsystem();
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, indexer);
 
-    //superstructure = new Superstructure(shamper, climber, indexer);
-    //superstructure = new Superstructure(shamper, indexer, intake);
-
     // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
