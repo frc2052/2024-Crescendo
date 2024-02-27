@@ -9,6 +9,9 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.commands.auto.drive.BasicAuto;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.util.io.Dashboard;
 
 /**
@@ -18,6 +21,7 @@ public class AutoFactory {
     private final Supplier<Auto> autoSupplier;
     private Auto currentAuto;
     private Command compiledAuto;
+
 
     public AutoFactory(
         Supplier<Auto> autoSupplier
@@ -62,7 +66,6 @@ public class AutoFactory {
     public static enum Auto {
         NO_AUTO(null),
         TEST_AUTO(new PathPlannerAuto("Example Auto"));
-
         private final PathPlannerAuto auto;
 
         private Auto(PathPlannerAuto auto) {
