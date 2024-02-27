@@ -7,8 +7,10 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -45,6 +47,9 @@ public class ShamperSubsystem extends SubsystemBase {
 
   private final VelocityVoltage shooterVelocity;
 
+  private final Slot0Configs slot0Configs;
+  private final Slot1Configs slot1Configs;
+
   public ShamperSubsystem() {
     goalSpeed = ShamperSpeed.OFF;
     goalAngle = Constants.Shamper.Angle.DEFAULT;
@@ -72,11 +77,20 @@ public class ShamperSubsystem extends SubsystemBase {
     shooterVelocity = new VelocityVoltage(0);
 
     // robot init, set slot 0 gains
-    Slot0Configs slot0Configs = new Slot0Configs();
+    slot0Configs = new Slot0Configs();
     slot0Configs.kV = 0.12;
     slot0Configs.kP = 0.11;
     slot0Configs.kI = 0.000;
     slot0Configs.kD = 0.0;
+
+    // for autonomous shooting
+    
+    slot1Configs = new Slot1Configs();
+    slot1Configs.kV = 0;
+    slot1Configs.kP = 0.03;
+    slot1Configs.kI = 0;
+    slot1Configs.kD = 0;
+    slot1Configs.kA = 0.001;
     
     lowerMotor.getConfigurator().apply(slot0Configs, 0.050);
     upperMotor.getConfigurator().apply(slot0Configs, 0.050);
@@ -130,6 +144,14 @@ public class ShamperSubsystem extends SubsystemBase {
     }
 
     return speed;
+  }
+
+  public void windDownShooter(){
+    lowerMotor.getConfigurator().apply(slot1Configs, 0.05);
+    upperMotor.getConfigurator().apply(slot1Configs, 0.05);
+
+    lowerMotor.setControl(shooterVelocity.withVelocity(0));
+    upperMotor.setControl(shooterVelocity.withVelocity(0));
   }
 
   public boolean motorAtSpeed(TalonFX motor, double goalSpeed){

@@ -10,6 +10,7 @@ import frc.robot.commands.climb.ClimberSlowRetractCommand;
 import frc.robot.commands.GyroOffsetCommand;
 import frc.robot.commands.auto.drive.AimToSpeakerCommand;
 import frc.robot.commands.auto.drive.BasicAuto;
+import frc.robot.commands.auto.shoot.ShootCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
@@ -27,6 +28,7 @@ import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
 //import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.commands.shamper.ShamperTrapCommand;
+import frc.robot.commands.shamper.ShamperWindDownCommand;
 import frc.robot.commands.trap.TrapReleaseCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -120,6 +122,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
     NamedCommands.registerCommand("Adjust Angle and Score", new ShamperShootCommand(shamper, indexer));
+    NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Manual Angle", new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
     NamedCommands.registerCommand("Manual Shoot", new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_IDLE));
     NamedCommands.registerCommand("Manual Index", new IndexerIndexCommand(indexer));
@@ -187,12 +190,14 @@ public class RobotContainer {
      */
 
     JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
+    JoystickButton shamperWindDownButton = new JoystickButton(rotationJoystick, 5);
     JoystickButton shamperAmpShootButton = new JoystickButton(controlPanel, 11);
     JoystickButton shamperManualShootButton = new JoystickButton(controlPanel, 12);
     JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
     Trigger shamperIdleButton = new Trigger(() -> controlPanel.getY() > 0.5);
 
     shamperShootButton.whileTrue(new ShamperShootCommand(shamper, indexer));
+    shamperWindDownButton.whileTrue(new ShamperWindDownCommand(shamper));
     shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper));
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
     shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper));
