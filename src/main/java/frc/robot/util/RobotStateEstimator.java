@@ -43,10 +43,10 @@ public class RobotStateEstimator {
             );
         }
 
-        poseEstimator.addVisionMeasurement(
-            robotState.getVisionPose3d().toPose2d(),
-            robotState.getVisionDetectionTime()
-        );
+        // poseEstimator.addVisionMeasurement(
+        //     robotState.getVisionPose3d().toPose2d(),
+        //     robotState.getVisionDetectionTime()
+        // );
     
 
         poseEstimator.update(
