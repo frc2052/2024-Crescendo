@@ -290,7 +290,7 @@ public class RobotContainer {
       }
   }
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Center 4");
+    return new PathPlannerAuto("Amp 38");
     // return new BasicAuto(drivetrain, shamper, indexer);
   }
 

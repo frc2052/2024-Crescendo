@@ -64,7 +64,7 @@ public class RobotStateEstimator {
         robotState.resetInitialPose(pose);
 
         poseEstimator.resetPosition(
-            pose.getRotation(), 
+            robotState.getRotation2d360(), 
             robotState.getModulePositions(),
             pose
         );

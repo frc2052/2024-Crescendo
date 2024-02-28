@@ -184,7 +184,8 @@ public class RobotState {
     }
 
     public Pose2d getRobotPoseAuto(){
-        return new Pose2d(robotPose.getTranslation(), getRotation2d180());
+        // return new Pose2d(robotPose.getTranslation(), getRotation2d180());
+        return robotPose;
     }
 
     public boolean getNoteDetected() {

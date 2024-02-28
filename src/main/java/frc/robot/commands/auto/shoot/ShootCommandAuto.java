@@ -51,7 +51,8 @@ public class ShootCommandAuto extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    
+    shamper.stopShooter();
+    indexer.stop();
   }
 
   @Override
