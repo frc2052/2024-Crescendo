@@ -16,12 +16,44 @@
     },
     {
       "anchor": {
-        "x": 3.433681047105317,
-        "y": 1.6746496260467554
+        "x": 2.754452527449989,
+        "y": 1.545830424043158
       },
       "prevControl": {
-        "x": 3.351705191284846,
-        "y": 0.8080477216589248
+        "x": 1.974134412880698,
+        "y": 1.931605671695392
+      },
+      "nextControl": {
+        "x": 3.7967169800245433,
+        "y": 1.0305536160287716
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.574738290703399,
+        "y": 2.6115165497092763
+      },
+      "prevControl": {
+        "x": 8.551316617611835,
+        "y": 2.6232273862550577
+      },
+      "nextControl": {
+        "x": 8.604364624135883,
+        "y": 2.596703382993035
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.754452527449989,
+        "y": 3.2204800500899147
+      },
+      "prevControl": {
+        "x": 4.487656336225653,
+        "y": 0.42159011564813337
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,21 +62,16 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 180.0,
-      "rotateFast": false
-    },
-    {
-      "waypointRelativePos": 0.75,
-      "rotationDegrees": 180.0,
+      "waypointRelativePos": 1.7,
+      "rotationDegrees": 178.92233690079365,
       "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Shoot Starting Note",
-      "waypointRelativePos": 0,
+      "name": "Intake",
+      "waypointRelativePos": 1.6,
       "command": {
         "type": "parallel",
         "data": {
@@ -52,41 +79,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Shoot Command"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Intake and Index Note 4",
-      "waypointRelativePos": 0.8,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake "
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Shoot Note 4",
-      "waypointRelativePos": 1.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot Command"
+                "name": "Intake"
               }
             }
           ]
@@ -95,14 +88,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 5.41,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -4.467159061389264,
+    "rotation": 142.5946433685915,
     "rotateFast": false
   },
   "reversed": false,
@@ -111,5 +104,5 @@
     "rotation": 121.18497465873837,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

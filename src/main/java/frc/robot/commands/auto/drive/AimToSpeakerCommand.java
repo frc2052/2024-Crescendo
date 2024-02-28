@@ -22,9 +22,19 @@ public class AimToSpeakerCommand extends Command {
 
     private double getRotation() {
         double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
-        double deltaDegrees = RobotState.getInstance().getRotation2d360().getDegrees() - goalAngleDegrees;
-        Logger.recordOutput("goal angle", goalAngleDegrees);
-        Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
+        double robotRotationDegrees = RobotState.getInstance().getRotation2d360().getDegrees();
+
+        if(goalAngleDegrees < 0){
+            goalAngleDegrees += 360;
+        }
+
+        if(robotRotationDegrees < 0){
+            robotRotationDegrees += 360;
+        }
+
+        double deltaDegrees = robotRotationDegrees - goalAngleDegrees;
+        Logger.recordOutput("auto goal angle", goalAngleDegrees);
+        Logger.recordOutput("auto measured angle", robotRotationDegrees);
 
         //return 0;
         if (Math.abs(deltaDegrees) > 90) {

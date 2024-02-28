@@ -144,7 +144,6 @@ public class RobotState {
 
     public Rotation2d getRotation2d360() {
         double rotationDegrees = MathUtil.inputModulus(getRotation2dRaw().getDegrees(), 0, 360);
-
         return Rotation2d.fromDegrees(rotationDegrees);
     }
 
@@ -282,8 +281,8 @@ public class RobotState {
         Dashboard.getInstance().putData("VISION Robot Position Y : ", (aprilTagVisionPose3d.getY()));
         Dashboard.getInstance().putData("VISION Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
         
-        double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
-        Logger.recordOutput("goal angle",  Math.copySign(goalAngleDegrees, robotPose.getRotation().getDegrees()));
-        Logger.recordOutput("measured angle", robotRotation2d.getDegrees() % 360);
+        // double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
+        // Logger.recordOutput("goal angle",  Math.copySign(goalAngleDegrees, robotPose.getRotation().getDegrees()));
+        // Logger.recordOutput("measured angle", robotRotation2d.getDegrees() % 360);
     }   
 }

@@ -128,7 +128,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Manual Index", new IndexerIndexCommand(indexer));
     // NamedCommands.registerCommand("Gyro Offset", new GyroOffsetCommand());
 
-    // NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer));
+    NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer, shamper));
     // NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake, indexer));
     // NamedCommands.registerCommand("Default Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.DEFAULT)));
     // NamedCommands.registerCommand("Speaker Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
@@ -290,7 +290,7 @@ public class RobotContainer {
       }
   }
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Amp 38");
+    return new PathPlannerAuto("Amp 3");
     // return new BasicAuto(drivetrain, shamper, indexer);
   }
 

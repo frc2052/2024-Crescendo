@@ -45,7 +45,9 @@ public class ShootCommandAuto extends Command {
 
     if(shamper.shooterAtSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS()) && shamper.isAtGoalAngle()) {
         indexer.indexAll();
-        indexStartTime = Timer.getFPGATimestamp();
+        if(indexStartTime == 0){
+          indexStartTime = Timer.getFPGATimestamp();
+        }
     }
   }
 

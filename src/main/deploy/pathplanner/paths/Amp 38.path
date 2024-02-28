@@ -106,7 +106,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake "
+                "name": null
               }
             },
             {
@@ -129,7 +129,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake"
+                "name": null
               }
             }
           ]
@@ -155,8 +155,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 5.41,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 540.0
   },
