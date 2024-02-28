@@ -48,7 +48,7 @@ public class ShootingAngleCalculator {
         for(int i = 0; i < shootAngleLookup.size(); i++){
             if (distancecm < shootAngleLookup.get(i).getDistanceCentimeters()){
                 lowerDistanceConfig = shootAngleLookup.get(i);
-                System.out.println("Dictionary " + i);
+                // System.out.println("Dictionary " + i);
                 break;
             } else {
                 upperDistanceConfig = shootAngleLookup.get(i);

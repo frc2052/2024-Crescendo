@@ -309,7 +309,7 @@ public class PhotonPoseEstimator {
         }
 
         PhotonPipelineResult cameraResult = camera.getLatestResult();
-
+        
         return update(cameraResult, camera.getCameraMatrix(), camera.getDistCoeffs());
     }
 

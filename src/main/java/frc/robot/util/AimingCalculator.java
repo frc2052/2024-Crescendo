@@ -112,18 +112,18 @@ public class AimingCalculator {
             Translation2d speakerLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
             xDistance = speakerLocation.getX() - robotPose.getX();
             yDistance = speakerLocation.getY() - robotPose.getY();
-            System.out.println(robotPose.getY());
+            // System.out.println(robotPose.getY());
             speakerToRobotDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
             Logger.recordOutput("Aiming Calculator STR", speakerToRobotDegrees);
             // to the right of speaker
             if(robotPose.getY() < speakerLocation.getY()) {
-                System.out.println("RIGHT SIDE");
+                // System.out.println("RIGHT SIDE");
                 angleToSpeakerFieldRelativeDegrees = 180 - speakerToRobotDegrees;
             }
 
             // to the left of the speaker
             if(robotPose.getY() > speakerLocation.getY()) {
-                System.out.println("LEFT SIDE");
+                // System.out.println("LEFT SIDE");
                 angleToSpeakerFieldRelativeDegrees = 180 - speakerToRobotDegrees;
                 
                 //angleToSpeakerFieldRelativeDegrees2 = Math.abs(new Rotation2d(Math.toRadians(90 + angleToSpeakerRobotRelativeDegrees)).unaryMinus().getDegrees());
