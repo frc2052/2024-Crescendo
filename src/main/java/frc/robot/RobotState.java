@@ -274,12 +274,13 @@ public class RobotState {
         Logger.recordOutput("RAW GYRO", robotRotation2d.getDegrees());
         Logger.recordOutput("NOTE DETECTOR", noteDetected);
         Logger.recordOutput("auto gyro method angle", robotPose.getRotation().getDegrees());
-        Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
-        Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
-        Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));
-        Dashboard.getInstance().putData("VISION Robot Position X : ", (aprilTagVisionPose3d.getX()));
-        Dashboard.getInstance().putData("VISION Robot Position Y : ", (aprilTagVisionPose3d.getY()));
-        Dashboard.getInstance().putData("VISION Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
+        Dashboard.getInstance().putData("NOTE DETECTED", noteDetected);
+        // Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
+        // Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
+        // Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));
+        // Dashboard.getInstance().putData("VISION Robot Position X : ", (aprilTagVisionPose3d.getX()));
+        // Dashboard.getInstance().putData("VISION Robot Position Y : ", (aprilTagVisionPose3d.getY()));
+        // Dashboard.getInstance().putData("VISION Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
         
         // double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
         // Logger.recordOutput("goal angle",  Math.copySign(goalAngleDegrees, robotPose.getRotation().getDegrees()));

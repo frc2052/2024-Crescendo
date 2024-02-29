@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -147,8 +148,10 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public void windDownShooter(){
-    lowerMotor.getConfigurator().apply(slot1Configs, 0.05);
-    upperMotor.getConfigurator().apply(slot1Configs, 0.05);
+    ClosedLoopRampsConfigs windDownConfig = new ClosedLoopRampsConfigs();
+    windDownConfig.VoltageClosedLoopRampPeriod = 1;
+    lowerMotor.getConfigurator().apply(windDownConfig, 0.05);
+    upperMotor.getConfigurator().apply(windDownConfig, 0.05);
 
     lowerMotor.setControl(shooterVelocity.withVelocity(0));
     upperMotor.setControl(shooterVelocity.withVelocity(0));
