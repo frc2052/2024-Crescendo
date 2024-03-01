@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotState;
 import frc.robot.util.AimingCalculator;
 
 public class ShamperSubsystem extends SubsystemBase {
@@ -49,11 +50,13 @@ public class ShamperSubsystem extends SubsystemBase {
   private final VelocityVoltage shooterVelocity;
 
   private final Slot0Configs slot0Configs;
-  private final Slot1Configs slot1Configs;
+
+  private ClosedLoopRampsConfigs windDownConfig;
+  private ClosedLoopRampsConfigs shootConfig;
 
   public ShamperSubsystem() {
     goalSpeed = ShamperSpeed.OFF;
-    goalAngle = Constants.Shamper.Angle.DEFAULT;
+    goalAngle = Constants.Shamper.Angle.SUB;
 
     lowerMotor = new TalonFX(Constants.CAN.LOWER_SHOOTER_MOTOR_ID);
 
@@ -83,15 +86,13 @@ public class ShamperSubsystem extends SubsystemBase {
     slot0Configs.kP = 0.11;
     slot0Configs.kI = 0.000;
     slot0Configs.kD = 0.0;
-
-    // for autonomous shooting
     
-    slot1Configs = new Slot1Configs();
-    slot1Configs.kV = 0;
-    slot1Configs.kP = 0.03;
-    slot1Configs.kI = 0;
-    slot1Configs.kD = 0;
-    slot1Configs.kA = 0.001;
+    windDownConfig = new ClosedLoopRampsConfigs();
+    windDownConfig.VoltageClosedLoopRampPeriod = 0.75;
+
+    
+    shootConfig = new ClosedLoopRampsConfigs();
+    shootConfig.VoltageClosedLoopRampPeriod = 0;
     
     lowerMotor.getConfigurator().apply(slot0Configs, 0.050);
     upperMotor.getConfigurator().apply(slot0Configs, 0.050);
@@ -120,18 +121,25 @@ public class ShamperSubsystem extends SubsystemBase {
     goalSpeed = speeds;
     // lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), contrainSpeed(goalSpeed.getLowerPCT())));
     // upperMotor.set(upperMotorController.calculate(getUpperShamperSpeed(), contrainSpeed(goalSpeed.getUpperPCT())));
+    
+    lowerMotor.getConfigurator().apply(shootConfig, 0.05);
+    upperMotor.getConfigurator().apply(shootConfig, 0.05);
     shooterVelocity.Slot = 0;
     lowerMotor.setControl(shooterVelocity.withVelocity(goalSpeed.getLower()));
-    upperMotor.setControl(shooterVelocity.withVelocity(goalSpeed.getLower()));
+    upperMotor.setControl(shooterVelocity.withVelocity(goalSpeed.getUpper()));
   }
 
   public void setShootSpeed(double lowerSpeed, double upperSpeed) {
+    lowerMotor.getConfigurator().apply(shootConfig, 0.05);
+    upperMotor.getConfigurator().apply(shootConfig, 0.05);
     shooterVelocity.Slot = 0;
     lowerMotor.setControl(shooterVelocity.withVelocity(lowerSpeed));
     upperMotor.setControl(shooterVelocity.withVelocity(upperSpeed));
   }
 
   public void setShootSpeedPct(double lowerSpeedPct, double upperSpeedPct) {
+    lowerMotor.getConfigurator().apply(shootConfig, 0.05);
+    upperMotor.getConfigurator().apply(shootConfig, 0.05);
     shooterVelocity.Slot = 0;
     lowerMotor.set(contrainSpeed(lowerSpeedPct));
     upperMotor.set(contrainSpeed(upperSpeedPct));
@@ -148,8 +156,6 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public void windDownShooter(){
-    ClosedLoopRampsConfigs windDownConfig = new ClosedLoopRampsConfigs();
-    windDownConfig.VoltageClosedLoopRampPeriod = 1;
     lowerMotor.getConfigurator().apply(windDownConfig, 0.05);
     upperMotor.getConfigurator().apply(windDownConfig, 0.05);
 
@@ -298,6 +304,8 @@ public class ShamperSubsystem extends SubsystemBase {
     Logger.recordOutput("Shamper Shooter At Speed ", shooterAtSpeed(goalSpeed.getLower(), goalSpeed.getUpper()));
     Logger.recordOutput("Upper Shooter Speed ", upperMotor.getVelocity().getValueAsDouble());
     Logger.recordOutput("Lower Shooter Speed ", lowerMotor.getVelocity().getValueAsDouble());
+
+    RobotState.getInstance().updateShamperAtGoalAngle(isAtGoalAngle());
     
     if(getPivotSpeed() < 0 && shamperZeroed()) {
       System.out.println("***TRYING TO LOWER SHAMPER WHILE ZEROED***");
@@ -326,6 +334,7 @@ public class ShamperSubsystem extends SubsystemBase {
   public static enum ShamperSpeed {
     OFF(0, 0, true),
     SPEAKER_IDLE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS, true),
+    SUB(Constants.Shamper.LOWER_SHAMPER_SUB_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SUB_SPEED_RPS, false),
     AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_RPS, true),
     SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_RPS, false),
     AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_PCT, false),

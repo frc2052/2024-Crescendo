@@ -150,6 +150,10 @@ public final class Constants {
         public static final double UPPER_LOAD_SPEED_PCT = 0.7;
         public static final double UPPER_INDEX_SPEED_PCT = 1;
         
+        public static final double AMP_INDEX_SPEED_PCT = 0.8;
+
+        public static final double SLIDE_BACK_PCT = 0.2;
+
         public static final double UPPER_OUTTAKE_SPEED_PCT = 1;
 
         // DIO
@@ -196,14 +200,17 @@ public final class Constants {
         public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1;
-        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.35;
+        public static final double UPPER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
+
+        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.20 * SHOOTER_MAX_VELOCITY_RPS;
         
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
         public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
 
-        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.11 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.11 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.12 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.12 * SHOOTER_MAX_VELOCITY_RPS;
         
         public static final double INDEX_SPEED_TPS = 0;
 
@@ -218,6 +225,7 @@ public final class Constants {
             public static final double MAXIMUM = 124;
             public static final double CLIMB = 13;
             public static final double DEFAULT = 30;
+            public static final double PODIUM = 34;
             public static final double AMP = 122;
             public static final double SUB = 53;
             public static final double TRAP = 95;
@@ -412,6 +420,17 @@ public final class Constants {
                     DRIVE_BASE_RADIUS_METERS, // Drive base radius in meters. Distance from robot center to furthest module.
                     new ReplanningConfig() // Default path replanning config. See the API for the options here
             );
+    }
+
+    public static final class LEDs {
+        // Binary arduino code output bits
+        public static final int CHANNEL_1_PIN = 3; // 2^0
+        public static final int CHANNEL_2_PIN = 4; // 2^1
+        public static final int CHANNEL_3_PIN = 5; // 2^2
+        public static final int CHANNEL_4_PIN = 6; // 2^3
+        public static final int CHANNEL_5_PIN = 7; // 2^4
+        public static final int CHANNEL_6_PIN = 8; // 2^5
+        public static final int CHANNEL_7_PIN = 9; // 2^6
     }
 }
 

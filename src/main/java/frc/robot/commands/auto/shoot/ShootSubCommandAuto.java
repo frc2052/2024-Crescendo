@@ -12,19 +12,21 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.Shamper;
+import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
+import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.AimingCalculator;
 import frc.robot.util.calculator.ShootAngleConfig;
 import frc.robot.util.calculator.ShootingAngleCalculator;
 
-public class ShootCommandAuto extends Command {
+public class ShootSubCommandAuto extends Command {
     private final ShamperSubsystem shamper;
     private final IndexerSubsystem indexer;
     private double indexStartTime = 0;
 
-    public ShootCommandAuto(ShamperSubsystem shamper, IndexerSubsystem indexer) {
+    public ShootSubCommandAuto(ShamperSubsystem shamper, IndexerSubsystem indexer) {
         this.shamper = shamper;
         this.indexer = indexer;
         addRequirements(shamper, indexer);
@@ -37,13 +39,10 @@ public class ShootCommandAuto extends Command {
 
   @Override
   public void execute() {
-    ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToSpeaker(RobotState.getInstance().getRobotPose()));
-    Logger.recordOutput("shoot speed calculated", config.getShooterSpeedVelocityRPS());
-    Logger.recordOutput("angle calculated", config.getAngleDegrees());
-    shamper.setShootSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS());
-    shamper.setAngle(config.getAngleDegrees());
+    shamper.setShootSpeed(ShamperSpeed.SUB);
+    shamper.setAngle(Constants.Shamper.Angle.SUB);
 
-    if(shamper.shooterAtSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS()) && shamper.isAtGoalAngle()) {
+    if(shamper.shooterAtSpeed(ShamperSpeed.SUB.getLower(),ShamperSpeed.SUB.getUpper()) && shamper.isAtGoalAngle()) {
         indexer.indexAll();
         if(indexStartTime == 0){
           indexStartTime = Timer.getFPGATimestamp();

@@ -9,7 +9,6 @@ import frc.robot.commands.GyroOffsetCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
 import frc.robot.commands.shamper.ShamperManualShootCommand;
-import frc.robot.commands.shamper.ShamperShootCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;

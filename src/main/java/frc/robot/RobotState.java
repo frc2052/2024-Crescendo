@@ -32,6 +32,7 @@ public class RobotState {
     private boolean noteDetected;
     private boolean musicEnabled;
     private boolean isClimbing;
+    private boolean shamperAtGoalAngle;
 
     // private SuperstructureState superstructureState;
 
@@ -97,6 +98,14 @@ public class RobotState {
     
     public boolean getIsClimbing(){
         return isClimbing;
+    }
+
+    public void updateShamperAtGoalAngle(boolean shamperAtGoalAngle) {
+        this.shamperAtGoalAngle = shamperAtGoalAngle;
+    }
+
+    public boolean getIsShamperAtGoalAngle() {
+        return shamperAtGoalAngle;
     }
 
     /**

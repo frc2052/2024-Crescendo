@@ -5,15 +5,16 @@
 package frc.robot.commands.shamper;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
-public class ShamperAmpCommand extends Command {
+public class ShamperSubCommand extends Command {
   private ShamperSubsystem shamper;
   private IndexerSubsystem indexer;
   /** Creates a new ShamperAmpCommand. */
-  public ShamperAmpCommand(ShamperSubsystem shamper, IndexerSubsystem indexer) {
+  public ShamperSubCommand(ShamperSubsystem shamper, IndexerSubsystem indexer) {
     this.shamper = shamper;
     this. indexer = indexer;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -27,9 +28,9 @@ public class ShamperAmpCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shamper.setShootSpeed(ShamperSpeed.AMP_SCORE);
-
-    if(shamper.shooterAtSpeed(ShamperSpeed.AMP_SCORE.getLower(), ShamperSpeed.AMP_SCORE.getUpper()) && shamper.isAtGoalAngle()) {
+    shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
+    shamper.setAngle(Constants.Shamper.Angle.SUB);
+    if(shamper.shooterAtSpeed(ShamperSpeed.SPEAKER_IDLE.getLower(), ShamperSpeed.SPEAKER_IDLE.getUpper()) && shamper.isAtGoalAngle()) {
       indexer.indexAmp();
   }
   }

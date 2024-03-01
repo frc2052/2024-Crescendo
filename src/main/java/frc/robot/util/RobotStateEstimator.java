@@ -4,6 +4,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 
@@ -43,10 +44,12 @@ public class RobotStateEstimator {
             );
         }
 
-        poseEstimator.addVisionMeasurement(
-            robotState.getVisionPose3d().toPose2d(),
-            robotState.getVisionDetectionTime()
-        );
+        if(RobotState.isTeleop()){
+            poseEstimator.addVisionMeasurement(
+                robotState.getVisionPose3d().toPose2d(),
+                robotState.getVisionDetectionTime()
+            );
+        }
     
 
         poseEstimator.update(

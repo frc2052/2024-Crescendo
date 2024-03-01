@@ -11,9 +11,11 @@ import frc.robot.commands.GyroOffsetCommand;
 import frc.robot.commands.auto.drive.AimToSpeakerCommand;
 import frc.robot.commands.auto.drive.BasicAuto;
 import frc.robot.commands.auto.shoot.ShootCommandAuto;
+import frc.robot.commands.auto.shoot.ShootSubCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
+import frc.robot.commands.indexer.IndexerBackupCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.OuttakeCommand;
@@ -24,11 +26,11 @@ import frc.robot.commands.shamper.ShamperIdleCommand;
 import frc.robot.commands.shamper.ShamperManualShootCommand;
 import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
 import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
-//import frc.robot.commands.music.PauseMusicPlayerCommand;
-//import frc.robot.commands.music.PlayActivationJingleCommand;
-import frc.robot.commands.shamper.ShamperShootCommand;
+import frc.robot.commands.shamper.ShamperSubCommand;
 import frc.robot.commands.shamper.ShamperTrapCommand;
 import frc.robot.commands.shamper.ShamperWindDownCommand;
+import frc.robot.commands.shamper.lookup.ShamperAutoAngleCommand;
+import frc.robot.commands.shamper.lookup.ShamperAutoShootCommand;
 import frc.robot.commands.trap.TrapReleaseCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -38,6 +40,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 //import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
 // import frc.robot.subsystems.Superstructure;
@@ -66,6 +69,7 @@ public class RobotContainer {
   private final IndexerSubsystem indexer;
   private final ClimberSubsystem climber;
   private final AprilTagSubsystem aprilTag;
+  private final LEDSubsystem ledSubsystem;
   // private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
   private final AdvantageScopeSubsystem advantageScope;
@@ -89,6 +93,7 @@ public class RobotContainer {
     shamper = new ShamperSubsystem();
     climber = new ClimberSubsystem();
     aprilTag = AprilTagSubsystem.getInstance();
+    ledSubsystem = LEDSubsystem.getInstance();
     // musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     trapArm = new TrapArmSubsystem();
@@ -121,8 +126,9 @@ public class RobotContainer {
     shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
-    NamedCommands.registerCommand("Adjust Angle and Score", new ShamperShootCommand(shamper, indexer));
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
+    NamedCommands.registerCommand("Sub Shoot Command", new ShootSubCommandAuto(shamper, indexer));
+    NamedCommands.registerCommand("Indexer Backup", new IndexerBackupCommand(indexer));
     NamedCommands.registerCommand("Manual Angle", new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
     NamedCommands.registerCommand("Manual Shoot", new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_IDLE));
     NamedCommands.registerCommand("Manual Index", new IndexerIndexCommand(indexer));
@@ -184,7 +190,9 @@ public class RobotContainer {
      */
 
     JoystickButton indexManualButton = new JoystickButton(controlPanel, 10);
+    JoystickButton indexBackButton = new JoystickButton(rotationJoystick, 6);
     indexManualButton.whileTrue(new IndexerIndexCommand(indexer));
+    indexBackButton.onTrue(new IndexerBackupCommand(indexer));
     /*
      *  Shooter Button Bindings
      */
@@ -195,10 +203,12 @@ public class RobotContainer {
     JoystickButton shamperManualShootButton = new JoystickButton(controlPanel, 12);
     JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
     Trigger shamperIdleButton = new Trigger(() -> controlPanel.getY() > 0.5);
+    JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
 
-    shamperShootButton.whileTrue(new ShamperShootCommand(shamper, indexer));
+    shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
+    shamperShootButton.whileTrue(new ShamperAutoShootCommand(shamper, indexer));
     shamperWindDownButton.whileTrue(new ShamperWindDownCommand(shamper));
-    shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper));
+    shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
     shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper));
     shamperIdleButton.whileTrue(new ShamperIdleCommand(shamper));
@@ -210,6 +220,7 @@ public class RobotContainer {
      JoystickButton shamper90Button = new JoystickButton(controlPanel, 8);
      Trigger shamperPodiumButton = new Trigger(() -> controlPanel.getY() < -0.5);
      JoystickButton shamperPodiumDriverButton = new JoystickButton(rotationJoystick, 4);
+     JoystickButton shamperAutoAngleButton = new JoystickButton(rotationJoystick, 3);
      Trigger shamperSubwooferButton = new Trigger(() -> controlPanel.getX() > 0.5);
      Trigger shamperAmpButton = new Trigger(() -> controlPanel.getX() < -0.5);
      JoystickButton shamperClimbHeightButton = new JoystickButton(controlPanel, 9);
@@ -217,8 +228,9 @@ public class RobotContainer {
      JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 5);
 
      shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
-     shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
+     shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.PODIUM));
      shamperPodiumDriverButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
+     shamperAutoAngleButton.onTrue(new ShamperAutoAngleCommand(shamper, indexer));
      shamperSubwooferButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
      shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
      shamperClimbHeightButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.CLIMB));
@@ -290,7 +302,8 @@ public class RobotContainer {
       }
   }
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Center 5");
+    return autoFactory.getCompiledAuto();
+    //return new PathPlannerAuto("Amp 3");
     // return new BasicAuto(drivetrain, shamper, indexer);
   }
 
