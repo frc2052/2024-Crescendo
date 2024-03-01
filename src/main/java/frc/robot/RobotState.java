@@ -33,6 +33,7 @@ public class RobotState {
     private boolean musicEnabled;
     private boolean isClimbing;
     private boolean shamperAtGoalAngle;
+    private double autoOffset;
 
     // private SuperstructureState superstructureState;
 
@@ -114,7 +115,7 @@ public class RobotState {
      */
     public void resetInitialPose(Pose2d initialStartingPose) {
         navxOffset = new Rotation2d();
-        // navxOffset = initialStartingPose.getRotation();
+        autoOffset = -initialStartingPose.getRotation().getRadians() + Math.PI;
         initialPose = initialStartingPose;
     }
 
@@ -158,6 +159,14 @@ public class RobotState {
 
     public Rotation2d getRotation2dRaw() {
         return robotRotation2d.rotateBy(navxOffset);
+    }
+
+    public void applyNavxOffset(){
+        this.navxOffset = new Rotation2d(autoOffset);
+    }
+
+    public void clearNavXOffset() {
+        this.navxOffset = new Rotation2d();
     }
 
     public void addNavXOffset(double offset){
