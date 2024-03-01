@@ -66,15 +66,28 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "1 to 2"
+                }
+              },
+              {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": null
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.0
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -97,15 +110,28 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "2 to 3"
+                }
+              },
+              {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.0
+                      }
+                    }
+                  ]
                 }
               }
             ]

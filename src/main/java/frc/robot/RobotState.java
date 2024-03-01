@@ -116,6 +116,7 @@ public class RobotState {
     public void resetInitialPose(Pose2d initialStartingPose) {
         navxOffset = new Rotation2d();
         autoOffset = -initialStartingPose.getRotation().getRadians() + Math.PI;
+        System.out.println("auto offset of :" + Units.radiansToDegrees(autoOffset));
         initialPose = initialStartingPose;
     }
 
@@ -162,6 +163,7 @@ public class RobotState {
     }
 
     public void applyNavxOffset(){
+        System.out.println("NavX Offset Applied");
         this.navxOffset = new Rotation2d(autoOffset);
     }
 

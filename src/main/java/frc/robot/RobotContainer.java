@@ -10,6 +10,7 @@ import frc.robot.commands.climb.ClimberSlowRetractCommand;
 import frc.robot.commands.GyroOffsetCommand;
 import frc.robot.commands.auto.drive.AimToSpeakerCommand;
 import frc.robot.commands.auto.drive.BasicAuto;
+import frc.robot.commands.auto.shoot.ShootAutoLowCommand;
 import frc.robot.commands.auto.shoot.ShootCommandAuto;
 import frc.robot.commands.auto.shoot.ShootSubCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
@@ -134,6 +135,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Manual Angle", new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
     NamedCommands.registerCommand("Manual Shoot", new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_IDLE));
     NamedCommands.registerCommand("Manual Index", new IndexerIndexCommand(indexer));
+    NamedCommands.registerCommand("ShootAutoLow", new ShootAutoLowCommand(shamper, indexer));
     // NamedCommands.registerCommand("Gyro Offset", new GyroOffsetCommand());
 
     NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer, shamper));

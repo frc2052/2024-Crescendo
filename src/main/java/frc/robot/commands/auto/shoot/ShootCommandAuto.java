@@ -23,6 +23,7 @@ public class ShootCommandAuto extends Command {
     private final ShamperSubsystem shamper;
     private final IndexerSubsystem indexer;
     private double indexStartTime = 0;
+    private ShootAngleConfig config;
 
     public ShootCommandAuto(ShamperSubsystem shamper, IndexerSubsystem indexer) {
         this.shamper = shamper;
@@ -35,9 +36,13 @@ public class ShootCommandAuto extends Command {
     indexStartTime = 0;
   }
 
+  protected ShootAngleConfig getTargetAngle(){
+    return ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToSpeaker(RobotState.getInstance().getRobotPose()));
+  }
+
   @Override
   public void execute() {
-    ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToSpeaker(RobotState.getInstance().getRobotPose()));
+    config = getTargetAngle();
     Logger.recordOutput("shoot speed calculated", config.getShooterSpeedVelocityRPS());
     Logger.recordOutput("angle calculated", config.getAngleDegrees());
     shamper.setShootSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS());
