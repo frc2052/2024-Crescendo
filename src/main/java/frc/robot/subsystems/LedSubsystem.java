@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.sql.Driver;
+
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -49,7 +51,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public static enum LEDStatusMode {
-        OFF(0),
+        OFF(5), // have to do 5 because we don't have pin 8 and it reads pin 8 high when sending 0
         CONE(1),
         CUBE(2),
         DISABLED_RED_PULSE(3),
@@ -73,24 +75,21 @@ public class LEDSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        int code = 0;
+        int code = 5;
         if(!disableLEDs) {
-            if (RobotState.isDisabled()) {
+            if (DriverStation.isDisabled()) {
                 // If disabled, finds gets the alliance color from the driver station and pulses that. Only pulses color if connected to station or FMS, else pulses default disabled color (Firefl status mode)
                 Auto selected = Dashboard.getInstance().getAuto();
-                if (selected == Auto.NO_AUTO){
+                if (selected == Auto.NO_AUTO || selected == null){
                     currentStatusMode = LEDStatusMode.NO_AUTO;
-                }
-                else if (RobotState.getInstance().isRedAlliance()) {
+                } else if (RobotState.getInstance().isRedAlliance()) {
                     currentStatusMode = LEDStatusMode.LAVA;
                 } else if (!RobotState.getInstance().isRedAlliance()) {
                     currentStatusMode = LEDStatusMode.WATER;
                 } else {
                     currentStatusMode = LEDStatusMode.OFF; // Reaches here if DriverStation.getAlliance returns Invalid, which just means it can't determine our alliance and we do cool default effect
                 }
-            }
-
-            if (RobotState.isAutonomous()) {
+            } else if (DriverStation.isAutonomous()) {
                 if(RobotState.getInstance().getNoteDetected()){
                     currentStatusMode = LEDStatusMode.NOTE_DETECTED;
                 } else if (RobotState.getInstance().getIsShamperAtGoalAngle()){
@@ -104,23 +103,23 @@ public class LEDSubsystem extends SubsystemBase {
                 }
             }
 
-            if (RobotState.isTeleop()) {
-                if(RobotState.getInstance().getNoteDetected()){
-                    currentStatusMode = LEDStatusMode.NOTE_DETECTED;
-                } else if (RobotState.getInstance().getIsShamperAtGoalAngle()){
-                    currentStatusMode = LEDStatusMode.RAINBOW;
-                } else {
+            if (DriverStation.isTeleopEnabled()) {
+                if(RobotState.getInstance().getNoteDetected() && RobotState.getInstance().getIsShamperAtGoalAngle()){
+                    currentStatusMode = LEDStatusMode.CUBE;
+                } else if(RobotState.getInstance().getNoteDetected()){
                     currentStatusMode = LEDStatusMode.CONE;
+                } else {
+                    currentStatusMode = LEDStatusMode.NO_AUTO;
                 }
+
             }
 
             code = currentStatusMode.code;
         } else {
             //LEDs are disabled
-            code = 0;
+            code = 5;
         }
 
-        code = 2;
         // Code for encoding the code to binary on the digitalOutput pins
         Dashboard.getInstance().putData("Sending LED Code", code);
         codeChannel1.set((code & 1) > 0);   // 2^0

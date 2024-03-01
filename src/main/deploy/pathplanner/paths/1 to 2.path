@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9066934025451485,
-        "y": 4.438407050851191
+        "x": 2.8715608929078047,
+        "y": 4.344720358484939
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5365255266887123,
-        "y": 4.8248646568619815
+        "x": 1.5013930170513685,
+        "y": 4.73117796449573
       },
       "isLocked": false,
       "linkedName": "End Of Center 1"
     },
     {
       "anchor": {
-        "x": 3.30486184510172,
-        "y": 5.9022616190738795
+        "x": 3.2931510085559395,
+        "y": 5.714888234341376
       },
       "prevControl": {
-        "x": 1.0446703917658886,
-        "y": 5.796864090161845
+        "x": 1.032959555220108,
+        "y": 5.609490705429342
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
+    "maxVelocity": 4.5,
     "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0

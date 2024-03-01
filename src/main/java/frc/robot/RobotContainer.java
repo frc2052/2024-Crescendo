@@ -18,6 +18,7 @@ import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.indexer.IndexerBackupCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
@@ -102,6 +103,7 @@ public class RobotContainer {
     // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
+    ledSubsystem.enableLEDs();
 
     autoFactory = new AutoFactory(() -> Dashboard.getInstance().getAuto());
 
@@ -135,12 +137,8 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Gyro Offset", new GyroOffsetCommand());
 
     NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer, shamper));
-    // NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake, indexer));
-    // NamedCommands.registerCommand("Default Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.DEFAULT)));
-    // NamedCommands.registerCommand("Speaker Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
-    // NamedCommands.registerCommand("Speaker Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_SCORE)));
-    // NamedCommands.registerCommand("Amp Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_IDLE)));
-    // NamedCommands.registerCommand("Amp Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_SCORE)));
+    // NamedCommands.registerCommand("Intake", new IndexerBackupCommand(intake, indexer, shamper));
+
 
     //advantageScope.startRecording();
 
@@ -182,7 +180,7 @@ public class RobotContainer {
     JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
     JoystickButton outtakeButton = new JoystickButton(translationJoystick, 3);
     
-    intakeInButton.whileTrue(new IntakeCommand(intake, indexer, shamper));
+    intakeInButton.whileTrue(new IntakeThenBackupCommand(intake, indexer, shamper));
     outtakeButton.whileTrue(new OuttakeCommand(intake, indexer, shamper));
 
     /*

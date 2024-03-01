@@ -16,10 +16,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.util.calculator.ShootAngleConfig;
-import frc.robot.util.calculator.ShootingAngleCalculator;
 
 public final class Constants {
 
@@ -225,7 +222,7 @@ public final class Constants {
             public static final double MAXIMUM = 124;
             public static final double CLIMB = 13;
             public static final double DEFAULT = 30;
-            public static final double PODIUM = 34;
+            public static final double PODIUM = 35;
             public static final double AMP = 122;
             public static final double SUB = 53;
             public static final double TRAP = 95;
