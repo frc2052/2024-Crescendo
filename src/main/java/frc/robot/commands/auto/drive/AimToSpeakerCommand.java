@@ -25,7 +25,7 @@ public class AimToSpeakerCommand extends Command {
 
     private double getRotation() {
         isFinished = false;
-        goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
+        goalAngleDegrees = AimingCalculator.calculateAngleToSpeaker(RobotState.getInstance().getRobotPose());
         deltaDegrees = RobotState.getInstance().getRotation2d360().getDegrees() - goalAngleDegrees;
         Logger.recordOutput("goal angle", goalAngleDegrees);
         Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());

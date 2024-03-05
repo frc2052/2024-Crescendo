@@ -58,7 +58,7 @@ public class DriveWhileAimingCommand extends Command {
     }
 
     private double getRotation() {
-        double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
+        double goalAngleDegrees = AimingCalculator.calculateAngleToSpeaker(RobotState.getInstance().getRobotPose());
         double deltaDegrees = RobotState.getInstance().getRotation2d360().getDegrees() - goalAngleDegrees;
         Logger.recordOutput("goal angle", goalAngleDegrees);
         Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());

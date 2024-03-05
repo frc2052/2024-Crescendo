@@ -101,59 +101,89 @@ public class AimingCalculator {
     //     return robotTargetAngle;
     // }
 
-    public static double calculateAngle(Pose2d robotPose){
-        double xDistance = 0;
-        double yDistance = 0;
-        double speakerToRobotDegrees = 0;
-        double angleToSpeakerFieldRelativeDegrees = 0;
+    public static double calculateAngleToSpeaker(Pose2d robotPose) {
+        Translation2d speakerLocation;
+        double xDistance;
+        double yDistance;
+        double angle;
+        boolean isBehind;
 
-        // blue alliance
         if(!RobotState.getInstance().isRedAlliance()) {
-            Translation2d speakerLocation = (Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.plus(
+            speakerLocation = (Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.plus(
                 new Translation2d(Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS)));
-            xDistance = speakerLocation.getX() - robotPose.getX();
-            yDistance = speakerLocation.getY() - robotPose.getY();
-            // System.out.println(robotPose.getY());
-            speakerToRobotDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
-            Logger.recordOutput("Aiming Calculator STR", speakerToRobotDegrees);
-            // to the right of speaker
-            if(robotPose.getY() < speakerLocation.getY()) {
-                // System.out.println("RIGHT SIDE");
-                angleToSpeakerFieldRelativeDegrees = 180 - speakerToRobotDegrees;
-            }
-
-            // to the left of the speaker
-            if(robotPose.getY() > speakerLocation.getY()) {
-                // System.out.println("LEFT SIDE");
-                angleToSpeakerFieldRelativeDegrees = 175 - speakerToRobotDegrees;
-                
-                //angleToSpeakerFieldRelativeDegrees2 = Math.abs(new Rotation2d(Math.toRadians(90 + angleToSpeakerRobotRelativeDegrees)).unaryMinus().getDegrees());
-            }
-        } else { // red alliance
-            Translation2d speakerLocation = (Constants.FieldAndRobot.RED_SPEAKER_LOCATION.plus(
+        } else {
+            speakerLocation = (Constants.FieldAndRobot.RED_SPEAKER_LOCATION.plus(
                 new Translation2d(Constants.FieldAndRobot.RED_SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.FieldAndRobot.RED_SPEAKER_TARGET_Y_OFFSET_IN_METERS)));
-            xDistance = speakerLocation.getX() - robotPose.getX();
-            yDistance = speakerLocation.getY() - robotPose.getY();
-
-            speakerToRobotDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
-
-            // to the right of speaker
-            if(robotPose.getY() < speakerLocation.getY()) {
-                angleToSpeakerFieldRelativeDegrees = 180 + speakerToRobotDegrees;
-            }
-
-            // to the left of the speaker
-            if(robotPose.getY() > speakerLocation.getY()) {
-                angleToSpeakerFieldRelativeDegrees = 172 - speakerToRobotDegrees;
-                
-                //angleToSpeakerFieldRelativeDegrees2 = Math.abs(new Rotation2d(Math.toRadians(90 + angleToSpeakerRobotRelativeDegrees)).unaryMinus().getDegrees());
-            }
-
         }
-        Logger.recordOutput("ANGLE TO SPEAKER ROBOT RELATIVE", speakerToRobotDegrees);
-        Logger.recordOutput("ANGLE TO SPEAKER FIELD RELATIVE", angleToSpeakerFieldRelativeDegrees);
-        return MathUtil.inputModulus(Math.copySign(angleToSpeakerFieldRelativeDegrees, robotPose.getRotation().getDegrees()), 0, 360);
+
+        xDistance = speakerLocation.getX() - robotPose.getX();
+        yDistance = speakerLocation.getY() - robotPose.getY();
+
+        angle = Math.toDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
+
+        if (xDistance > 0) {
+            angle = angle + 180;
+        }
+        if (yDistance > 0) {
+            angle = 360 - angle ;
+        }
+
+        return angle;
     }
+
+    // public static double calculateAngle(Pose2d robotPose){
+    //     double xDistance = 0;
+    //     double yDistance = 0;
+    //     double speakerToRobotDegrees = 0;
+    //     double angleToSpeakerFieldRelativeDegrees = 0;
+
+    //     // blue alliance
+    //     if(!RobotState.getInstance().isRedAlliance()) {
+    //         Translation2d speakerLocation = (Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.plus(
+    //             new Translation2d(Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS)));
+    //         xDistance = speakerLocation.getX() - robotPose.getX();
+    //         yDistance = speakerLocation.getY() - robotPose.getY();
+    //         // System.out.println(robotPose.getY());
+    //         speakerToRobotDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
+    //         Logger.recordOutput("Aiming Calculator STR", speakerToRobotDegrees);
+    //         // to the right of speaker
+    //         if(robotPose.getY() < speakerLocation.getY()) {
+    //             // System.out.println("RIGHT SIDE");
+    //             angleToSpeakerFieldRelativeDegrees = 180 - speakerToRobotDegrees;
+    //         }
+
+    //         // to the left of the speaker
+    //         if(robotPose.getY() > speakerLocation.getY()) {
+    //             // System.out.println("LEFT SIDE");
+    //             angleToSpeakerFieldRelativeDegrees = 175 - speakerToRobotDegrees;
+                
+    //             //angleToSpeakerFieldRelativeDegrees2 = Math.abs(new Rotation2d(Math.toRadians(90 + angleToSpeakerRobotRelativeDegrees)).unaryMinus().getDegrees());
+    //         }
+    //     } else { // red alliance
+    //         Translation2d speakerLocation = (Constants.FieldAndRobot.RED_SPEAKER_LOCATION.plus(
+    //             new Translation2d(Constants.FieldAndRobot.RED_SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.FieldAndRobot.RED_SPEAKER_TARGET_Y_OFFSET_IN_METERS)));
+    //         xDistance = speakerLocation.getX() - robotPose.getX();
+    //         yDistance = speakerLocation.getY() - robotPose.getY();
+
+    //         speakerToRobotDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
+
+    //         // to the right of speaker
+    //         if(robotPose.getY() < speakerLocation.getY()) {
+    //             angleToSpeakerFieldRelativeDegrees = 180 + speakerToRobotDegrees;
+    //         }
+
+    //         // to the left of the speaker
+    //         if(robotPose.getY() > speakerLocation.getY()) {
+    //             angleToSpeakerFieldRelativeDegrees = 172 - speakerToRobotDegrees;
+                
+    //             //angleToSpeakerFieldRelativeDegrees2 = Math.abs(new Rotation2d(Math.toRadians(90 + angleToSpeakerRobotRelativeDegrees)).unaryMinus().getDegrees());
+    //         }
+
+    //     }
+    //     Logger.recordOutput("ANGLE TO SPEAKER ROBOT RELATIVE", speakerToRobotDegrees);
+    //     Logger.recordOutput("ANGLE TO SPEAKER FIELD RELATIVE", angleToSpeakerFieldRelativeDegrees);
+    //     return MathUtil.inputModulus(Math.copySign(angleToSpeakerFieldRelativeDegrees, robotPose.getRotation().getDegrees()), 0, 360);
+    // }
 
     public static double calculateDistanceToSpeaker(Pose2d robotPose) {
         if(!RobotState.getInstance().isRedAlliance()) { // blue alliance
