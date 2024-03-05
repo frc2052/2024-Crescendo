@@ -80,26 +80,26 @@ public class AimingCalculator {
 //         return new ShamperAndRotationState(shamperAngle, robotAngle);
 //     }
 
-    public static double calculateStill(Pose2d robotPose) {
-        Rotation2d angleToSpeaker = new Rotation2d();
-        double xDistanceToSpeaker = 0;
-        double yDistanceToSpeaker = 0;
+    // public static double calculateStill(Pose2d robotPose) {
+    //     Rotation2d angleToSpeaker = new Rotation2d();
+    //     double xDistanceToSpeaker = 0;
+    //     double yDistanceToSpeaker = 0;
 
-        if(!(RobotState.getInstance().isRedAlliance())){
-                xDistanceToSpeaker = Math.abs(Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getX() + Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS - robotPose.getX());
-                yDistanceToSpeaker = Math.abs(Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getY() + Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS - robotPose.getY());
+    //     if(!(RobotState.getInstance().isRedAlliance())){
+    //             xDistanceToSpeaker = Math.abs(Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getX() + Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS - robotPose.getX());
+    //             yDistanceToSpeaker = Math.abs(Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getY() + Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS - robotPose.getY());
 
-                angleToSpeaker = new Rotation2d(Math.atan(yDistanceToSpeaker / xDistanceToSpeaker));
+    //             angleToSpeaker = new Rotation2d(Math.atan(yDistanceToSpeaker / xDistanceToSpeaker));
 
-                //angleToSpeaker = Rotation2d.fromDegrees(Math.copySign(angleToSpeaker.getDegrees(), Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getY() - robotPose.getY())); 
-        }
+    //             //angleToSpeaker = Rotation2d.fromDegrees(Math.copySign(angleToSpeaker.getDegrees(), Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getY() - robotPose.getY())); 
+    //     }
 
-        //Logger.recordOutput("robot to speaker", new Pose2d(robotPose.getTranslation(), angleToSpeaker.rotateBy(new Rotation2d(Math.PI)).unaryMinus()));
-        //Logger.recordOutput("speaker location", new Pose2d(Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION, new Rotation2d(0)));
+    //     //Logger.recordOutput("robot to speaker", new Pose2d(robotPose.getTranslation(), angleToSpeaker.rotateBy(new Rotation2d(Math.PI)).unaryMinus()));
+    //     //Logger.recordOutput("speaker location", new Pose2d(Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION, new Rotation2d(0)));
 
-        double robotTargetAngle = angleToSpeaker.rotateBy(new Rotation2d(Math.PI)).unaryMinus().getDegrees();
-        return robotTargetAngle;
-    }
+    //     double robotTargetAngle = angleToSpeaker.rotateBy(new Rotation2d(Math.PI)).unaryMinus().getDegrees();
+    //     return robotTargetAngle;
+    // }
 
     public static double calculateAngle(Pose2d robotPose){
         double xDistance = 0;
@@ -109,7 +109,8 @@ public class AimingCalculator {
 
         // blue alliance
         if(!RobotState.getInstance().isRedAlliance()) {
-            Translation2d speakerLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
+            Translation2d speakerLocation = (Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.plus(
+                new Translation2d(Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS)));
             xDistance = speakerLocation.getX() - robotPose.getX();
             yDistance = speakerLocation.getY() - robotPose.getY();
             // System.out.println(robotPose.getY());
@@ -129,7 +130,8 @@ public class AimingCalculator {
                 //angleToSpeakerFieldRelativeDegrees2 = Math.abs(new Rotation2d(Math.toRadians(90 + angleToSpeakerRobotRelativeDegrees)).unaryMinus().getDegrees());
             }
         } else { // red alliance
-            Translation2d speakerLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
+            Translation2d speakerLocation = (Constants.FieldAndRobot.RED_SPEAKER_LOCATION.plus(
+                new Translation2d(Constants.FieldAndRobot.RED_SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.FieldAndRobot.RED_SPEAKER_TARGET_Y_OFFSET_IN_METERS)));
             xDistance = speakerLocation.getX() - robotPose.getX();
             yDistance = speakerLocation.getY() - robotPose.getY();
 
@@ -155,13 +157,15 @@ public class AimingCalculator {
 
     public static double calculateDistanceToSpeaker(Pose2d robotPose) {
         if(!RobotState.getInstance().isRedAlliance()) { // blue alliance
-            Translation2d speakerLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
+            Translation2d speakerLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.plus(
+                new Translation2d(Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.FieldAndRobot.BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS));
             double xDistance = Math.abs(speakerLocation.getX() - robotPose.getX());
             double yDistance = Math.abs(speakerLocation.getY() - robotPose.getY());
 
             return Math.hypot(xDistance, yDistance);
         } else { // red alliance
-            Translation2d speakerLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
+            Translation2d speakerLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION.plus(
+                new Translation2d(Constants.FieldAndRobot.RED_SPEAKER_TARGET_X_OFFSET_IN_METERS, Constants.FieldAndRobot.RED_SPEAKER_TARGET_Y_OFFSET_IN_METERS));
             double xDistance = Math.abs(speakerLocation.getX() - robotPose.getX());
             double yDistance = Math.abs(speakerLocation.getY() - robotPose.getY());
             

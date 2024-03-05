@@ -40,7 +40,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 //import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
 // import frc.robot.subsystems.Superstructure;
@@ -69,7 +69,7 @@ public class RobotContainer {
   private final IndexerSubsystem indexer;
   private final ClimberSubsystem climber;
   private final AprilTagSubsystem aprilTag;
-  private final LEDSubsystem ledSubsystem;
+  private final LedSubsystem ledSubsystem;
   // private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
   private final AdvantageScopeSubsystem advantageScope;
@@ -93,7 +93,7 @@ public class RobotContainer {
     shamper = new ShamperSubsystem();
     climber = new ClimberSubsystem();
     aprilTag = AprilTagSubsystem.getInstance();
-    ledSubsystem = LEDSubsystem.getInstance();
+    ledSubsystem = LedSubsystem.getInstance();
     // musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     trapArm = new TrapArmSubsystem();

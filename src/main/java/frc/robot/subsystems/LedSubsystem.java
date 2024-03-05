@@ -14,8 +14,8 @@ import frc.robot.util.io.Dashboard;
  * Subsystem to control the robot's LEDs, by determining what number should be encoded to DIO pins and
  * sent to the Arduino we used for controlling the patterns and colors
  */
-public class LEDSubsystem extends SubsystemBase {
-    private static LEDSubsystem INSTANCE;
+public class LedSubsystem extends SubsystemBase {
+    private static LedSubsystem INSTANCE;
     
     private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4, codeChannel5, codeChannel6, codeChannel7;
 
@@ -24,7 +24,7 @@ public class LEDSubsystem extends SubsystemBase {
     private boolean disableLEDs;
     private boolean robotDisabled;
 
-    private LEDSubsystem() {
+    private LedSubsystem() {
         // DIO outputs
         codeChannel1 = new DigitalOutput(Constants.LEDs.CHANNEL_1_PIN);
         codeChannel2 = new DigitalOutput(Constants.LEDs.CHANNEL_2_PIN);
@@ -41,9 +41,9 @@ public class LEDSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("LED CODE", 0);
     }
 
-    public static LEDSubsystem getInstance() {  // Method to allow calling this class and getting the single instance from anywhere, creating the instance if the first time.
+    public static LedSubsystem getInstance() {  // Method to allow calling this class and getting the single instance from anywhere, creating the instance if the first time.
         if (INSTANCE == null) {
-            INSTANCE = new LEDSubsystem();
+            INSTANCE = new LedSubsystem();
         }
         return INSTANCE;
     }
