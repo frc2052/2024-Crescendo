@@ -1,0 +1,20 @@
+{
+  "robotWidth": 0.9,
+  "robotLength": 0.9,
+  "holonomicMode": true,
+  "pathFolders": [
+    "4 Note Auto",
+    "WIP",
+    "test",
+    "working"
+  ],
+  "autoFolders": [
+    "WIP",
+    "working autos"
+  ],
+  "defaultMaxVel": 4.5,
+  "defaultMaxAccel": 4.0,
+  "defaultMaxAngVel": 540.0,
+  "defaultMaxAngAccel": 540.0,
+  "maxModuleSpeed": 5.21
+}
