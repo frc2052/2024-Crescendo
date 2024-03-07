@@ -40,7 +40,6 @@ import frc.robot.subsystems.AdvantageScopeSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
-//import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
@@ -86,7 +85,7 @@ public class RobotContainer {
   private final Joystick controlPanel;
 
   public static boolean musicOn;
-  //public RobotStatusCommunicator robotStatusCommunicator;
+  public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = new DrivetrainSubsystem();
@@ -101,7 +100,8 @@ public class RobotContainer {
     trapArm = new TrapArmSubsystem();
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, indexer);
 
-    // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
+
+    robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
     ledSubsystem.enableLEDs();
