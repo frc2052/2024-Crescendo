@@ -85,7 +85,7 @@ public class RobotContainer {
   private final Joystick controlPanel;
 
   public static boolean musicOn;
-  public RobotStatusCommunicator robotStatusCommunicator;
+  // public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = new DrivetrainSubsystem();
@@ -101,7 +101,7 @@ public class RobotContainer {
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, indexer);
 
 
-    robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
+    // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
     ledSubsystem.enableLEDs();
