@@ -1,8 +1,6 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.commands.music.PlayActivationJingleCommand;
 import frc.robot.commands.music.PlayTeleopJingleCommand;
 import frc.robot.commands.music.PlayTwentySecondsLeftCommand;
@@ -30,10 +28,6 @@ public class RobotStatusCommunicator {
             new PlayActivationJingleCommand(musicPlayer);
         }
     }
-
-//     public void onRobotDisable() {
-//     //BE VERY CARFUL WHAT IS PUT IN HERE BECAUSE IT WILL BE DONE AFTER THE ROBOT IS DISABLED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//     }
 
     public void onRobotPeriodic() {
         if (DriverStation.getMatchTime() >= 180 && !hasRunTwentySeconds) {
