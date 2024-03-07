@@ -45,9 +45,18 @@ public class IndexerSubsystem extends SubsystemBase {
     lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
   }
 
+  public void indexAmp() {
+    upperMotor.set(Constants.Indexer.AMP_INDEX_SPEED_PCT);
+    lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
+  }
+  
   public void reverse() {
     upperMotor.set(-Constants.Indexer.UPPER_INDEX_SPEED_PCT);
     lowerMotor.set(-Constants.Indexer.LOWER_INDEX_SPEED_PCT);
+  }
+
+  public void slideBack() {
+    upperMotor.set(-Constants.Indexer.SLIDE_BACK_PCT);
   }
 
   public void stop() {

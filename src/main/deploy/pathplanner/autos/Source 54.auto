@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7753211512129142,
+      "y": 4.344720358484939
+    },
+    "rotation": 121.10880882854512
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Sub Shoot Command"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Source 5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Command"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Source 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootAutoLow"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

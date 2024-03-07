@@ -3,12 +3,12 @@ package frc.robot.util.calculator;
 public class ShootAngleConfig {
     private final double distancecm;
     private final double angleDegrees;
-    private final double shooterSpeedPCT;
+    private final double shooterSpeedVelocityRPS;
 
-    public ShootAngleConfig(double distancecm, double angleDegrees, double shooterSpeedPCT) {
+    public ShootAngleConfig(double distancecm, double angleDegrees, double shooterSpeedVelocity) {
         this.distancecm = distancecm;
         this.angleDegrees = angleDegrees;
-        this.shooterSpeedPCT = shooterSpeedPCT;
+        this.shooterSpeedVelocityRPS = shooterSpeedVelocity;
     }
 
     public double getDistanceCentimeters() {
@@ -23,7 +23,7 @@ public class ShootAngleConfig {
         return Math.toRadians(angleDegrees);
     }
 
-    public double getShooterSpeedPercent(){
-        return shooterSpeedPCT;
+    public double getShooterSpeedVelocityRPS(){
+        return shooterSpeedVelocityRPS;
     }
 }

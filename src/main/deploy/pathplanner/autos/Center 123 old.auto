@@ -8,12 +8,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Example Path"
+            "pathName": "Center 123"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "WIP",
   "choreoAuto": false
 }

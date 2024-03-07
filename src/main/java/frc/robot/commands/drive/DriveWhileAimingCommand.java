@@ -7,8 +7,12 @@ package frc.robot.commands.drive;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotState;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.AimingCalculator;
 
@@ -33,12 +37,6 @@ public class DriveWhileAimingCommand extends Command {
         BooleanSupplier fieldCentricSupplier,
         DrivetrainSubsystem drivetrain
     ) {
-        DoubleSupplier rotationSupplier = new DoubleSupplier() {
-            @Override
-            public double getAsDouble() {
-                return AimingCalculator.calculate().getRobotAngle();
-            }
-        };
         this.drivetrain = drivetrain;
 
         this.xSupplier = xSupplier;
@@ -59,9 +57,27 @@ public class DriveWhileAimingCommand extends Command {
         return slewAxis(yLimiter, deadBand(-ySupplier.getAsDouble()));
     }
 
+    private double getRotation() {
+        double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
+        double deltaDegrees = RobotState.getInstance().getRotation2d360().getDegrees() - goalAngleDegrees;
+        Logger.recordOutput("goal angle", goalAngleDegrees);
+        Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
+
+        // return 0;
+        if (Math.abs(deltaDegrees) > 90) {
+            return Math.copySign(0.5, -deltaDegrees);
+        } else if (Math.abs(deltaDegrees) > 45){
+            return Math.copySign(0.25, -deltaDegrees);
+        } else if (Math.abs(deltaDegrees) > 5){
+            return Math.copySign(0.1, -deltaDegrees);
+        } else {
+            return 0;
+        }
+    }
+
     @Override
     public void execute() {
-        drivetrain.drive(getX(), getY(), AimingCalculator.calculate().getRobotAngle(), fieldCentricSupplier.getAsBoolean());
+        drivetrain.drive(getX(), getY(), getRotation(), true);
     }
 
     @Override

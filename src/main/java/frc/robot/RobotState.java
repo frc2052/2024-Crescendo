@@ -1,7 +1,10 @@
 package frc.robot;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.team2052.lib.photonvision.EstimatedRobotPose;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,7 +13,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.subsystems.Superstructure.SuperstructureState;
+// import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.util.AimingCalculator;
 import frc.robot.util.io.Dashboard;
 import frc.robot.util.states.DrivetrainState;
 
@@ -27,8 +31,11 @@ public class RobotState {
     private ChassisSpeeds chassisSpeeds;
     private boolean noteDetected;
     private boolean musicEnabled;
+    private boolean isClimbing;
+    private boolean shamperAtGoalAngle;
+    private double autoOffset;
 
-    private SuperstructureState superstructureState;
+    // private SuperstructureState superstructureState;
 
     public static RobotState getInstance() {
         if (INSTANCE == null) {
@@ -78,6 +85,7 @@ public class RobotState {
     }
 
     public void updateRobotPose(Pose2d robotPose) {
+        //this.robotPose = new Pose2d(robotPose.getTranslation(), getRotation2d360());
         this.robotPose = robotPose;
     }
 
@@ -85,15 +93,20 @@ public class RobotState {
         this.noteDetected = noteDetected;
     }
 
-    /*
-     *  Add Superstructure State
-     */
-    public void addSuperstructureState(SuperstructureState state) {
-        this.superstructureState = state;
+    public void updateIsClimbing(boolean isClimbing) {
+        this.isClimbing = isClimbing;
+    }
+    
+    public boolean getIsClimbing(){
+        return isClimbing;
     }
 
-    public SuperstructureState getSuperstructureState() {
-        return superstructureState;
+    public void updateShamperAtGoalAngle(boolean shamperAtGoalAngle) {
+        this.shamperAtGoalAngle = shamperAtGoalAngle;
+    }
+
+    public boolean getIsShamperAtGoalAngle() {
+        return shamperAtGoalAngle;
     }
 
     /**
@@ -102,7 +115,8 @@ public class RobotState {
      */
     public void resetInitialPose(Pose2d initialStartingPose) {
         navxOffset = new Rotation2d();
-        navxOffset = initialStartingPose.getRotation();
+        autoOffset = -  initialStartingPose.getRotation().getRadians() + Math.PI;
+        System.out.println("auto offset of :" + Units.radiansToDegrees(autoOffset));
         initialPose = initialStartingPose;
     }
 
@@ -133,8 +147,32 @@ public class RobotState {
      * 
      * @return Rotation2d
      */
-    public Rotation2d getRotation2d() {
+    public Rotation2d getRotation2d180() {
+        double rotationDegrees = MathUtil.inputModulus(getRotation2dRaw().getDegrees(), -180, 180);
+
+        return Rotation2d.fromDegrees(rotationDegrees);
+    }
+
+    public Rotation2d getRotation2d360() {
+        double rotationDegrees = MathUtil.inputModulus(getRotation2dRaw().getDegrees(), 0, 360);
+        return Rotation2d.fromDegrees(rotationDegrees);
+    }
+
+    public Rotation2d getRotation2dRaw() {
         return robotRotation2d.rotateBy(navxOffset);
+    }
+
+    public void applyNavxOffset(){
+        System.out.println("NavX Offset Applied");
+        this.navxOffset = new Rotation2d(autoOffset);
+    }
+
+    public void clearNavXOffset() {
+        this.navxOffset = new Rotation2d();
+    }
+
+    public void addNavXOffset(double offset){
+        this.navxOffset = new Rotation2d(Units.degreesToRadians(offset));
     }
 
     /**
@@ -161,6 +199,11 @@ public class RobotState {
      * @return Pose2d
      */
     public Pose2d getRobotPose() {
+        return robotPose;
+    }
+
+    public Pose2d getRobotPoseAuto(){
+        // return new Pose2d(robotPose.getTranslation(), getRotation2d180());
         return robotPose;
     }
 
@@ -242,11 +285,25 @@ public class RobotState {
     }
 
     public void output(){
-        Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
-        Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
-        Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));
-        Dashboard.getInstance().putData("VISION Robot Position X : ", (aprilTagVisionPose3d.getX()));
-        Dashboard.getInstance().putData("VISION Robot Position Y : ", (aprilTagVisionPose3d.getY()));
-        Dashboard.getInstance().putData("VISION Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
+        Logger.recordOutput("Vision Pose", aprilTagVisionPose3d);
+        Logger.recordOutput("Robot Position X : ", (robotPose.getX()));
+        Logger.recordOutput("Robot Position Y : ", (robotPose.getY()));
+        Logger.recordOutput("ROBOT POSE2D", robotPose);
+        Logger.recordOutput("Auto Pose", getRobotPoseAuto());
+        Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateDistanceToSpeaker(robotPose));
+        Logger.recordOutput("RAW GYRO", robotRotation2d.getDegrees());
+        Logger.recordOutput("NOTE DETECTOR", noteDetected);
+        Logger.recordOutput("auto gyro method angle", robotPose.getRotation().getDegrees());
+        Dashboard.getInstance().putData("NOTE DETECTED", noteDetected);
+        // Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
+        // Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
+        // Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));
+        // Dashboard.getInstance().putData("VISION Robot Position X : ", (aprilTagVisionPose3d.getX()));
+        // Dashboard.getInstance().putData("VISION Robot Position Y : ", (aprilTagVisionPose3d.getY()));
+        // Dashboard.getInstance().putData("VISION Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
+        
+        // double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
+        // Logger.recordOutput("goal angle",  Math.copySign(goalAngleDegrees, robotPose.getRotation().getDegrees()));
+        // Logger.recordOutput("measured angle", robotRotation2d.getDegrees() % 360);
     }   
 }

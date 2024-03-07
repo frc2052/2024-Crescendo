@@ -16,10 +16,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.util.calculator.ShootAngleConfig;
-import frc.robot.util.calculator.ShootingAngleCalculator;
 
 public final class Constants {
 
@@ -67,17 +64,23 @@ public final class Constants {
 
     }
 
+    public static class Trap {
+        public static final int TRAP_RELAY_PIN = 0;
+    }
+
     public static class Drivetrain {
         // Left-to-right distance between drivetrain wheels
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = Units.inchesToMeters(24);
         // Front-to-back distance between drivetrain wheels
         public static final double DRIVETRAIN_WHEELBASE_METERS = Units.inchesToMeters(19);
 
-        
-        public static final double FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS = 2.76420367321;
-        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS = 3.28720367321;
-        public static final double BACK_LEFT_MODULE_STEER_OFFSET_RADIANS = 0.0412036732;
-        public static final double BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS = -0.39179632679;
+        /*
+         * FL: 157.8 FR:189.9 BL:3.5 BR:335.5
+         */
+        public static final double FRONT_LEFT_MODULE_STEER_OFFSET_RADIANS = -Math.toRadians( 157.8); //2.76420367321;
+        public static final double BACK_LEFT_MODULE_STEER_OFFSET_RADIANS =  -Math.toRadians(3.5);//0.0412036732;
+        public static final double BACK_RIGHT_MODULE_STEER_OFFSET_RADIANS = -Math.toRadians(335.5);//-0.39179632679;
+        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET_RADIANS = -Math.toRadians(189.9);//3.28720367321;
 
 
         // public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
@@ -93,13 +96,13 @@ public final class Constants {
 
         public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             // Front left
-            new Translation2d(0.302, -0.298),
-            // Front right
-            new Translation2d(0.302,  0.298),
+            new Translation2d(0.302, 0.298),
             // Back left
-            new Translation2d(-0.302, -0.178),
+            new Translation2d(-0.302, 0.178),
             // Back right
-            new Translation2d(-0.302, 0.178)
+            new Translation2d(-0.302, -0.178),
+            // Front right
+            new Translation2d(0.302,  -0.298)
         );
 
         public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;
@@ -116,6 +119,7 @@ public final class Constants {
     public static class MotorConstants {
         public static final double PIVOT_MOTOR_TICKS_PER_ROTATION = 42;
         public static final double FALCON500_TICKS_PER_ROTATION = 2048;
+        public static final double FALCON500_MAX_RPM = 6380;
     }
 
     public static class Climber{
@@ -126,7 +130,8 @@ public final class Constants {
         public static final int WINCH_CIRCUMFERENCE_INCHES = 0;
         public static final int TICKS_PER_WINCH_ROTATION = 0;
 
-        public static final double CLIMBER_MOTOR_PCT = 0.5;
+        public static final double CLIMBER_MOTOR_PCT = 1;
+        public static final double CLIMBER_MOTOR_PCT_SLOW = 0.25;
 
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
@@ -139,8 +144,14 @@ public final class Constants {
 
     public static class Indexer {
         public static final double LOWER_INDEX_SPEED_PCT = 1;
-        public static final double UPPER_LOAD_SPEED_PCT = 0.3;
+        public static final double UPPER_LOAD_SPEED_PCT = 0.7;
         public static final double UPPER_INDEX_SPEED_PCT = 1;
+        
+        public static final double AMP_INDEX_SPEED_PCT = 0.8;
+
+        public static final double SLIDE_BACK_PCT = 0.2;
+
+        public static final double UPPER_OUTTAKE_SPEED_PCT = 1;
 
         // DIO
         public static final int INDEXER_SENSOR_PIN = 0;
@@ -150,7 +161,7 @@ public final class Constants {
 
         // DIO pins
         public static final int ROTATION_ENCODER_PIN = 1;
-        public static final int LIMIT_SWITCH_PIN = 0;
+        public static final int LIMIT_SWITCH_PIN = 2;
         public static final int AMP_HALL_EFFECT_PIN = 0;
         public static final int PODIUM_HALL_EFFECT_PIN = 0;
 
@@ -177,49 +188,50 @@ public final class Constants {
         public static final double PIVOT_MOTOR_KP = 0.2;
         public static final double PIVOT_MOTOR_KI = 0.002;
         public static final double PIVOT_MOTOR_KD = 1;
-            
-        //all of these in TPS, calculated using free speed
-        public static final double UPPER_MOTOR_MAX_VELOCITY = 200000; 
-        public static final double LOWER_MOTOR_MAX_VELOCITY = 200000;
 
-        public static final double UPPER_MOTOR_MAX_ACCELERATION = 10000;
-        public static final double LOWER_MOTOR_MAX_ACCELERATION = 10000;
+        public static final double SHOOTER_MAX_VELOCITY_RPS = 100;
         
-        public static final double PIVOT_MOTOR_MANUAL_UP_SPEED = 0;
-        public static final double PIVOT_MOTOR_MANUAL_DOWN_SPEED = 0;
-        
-        public static final double UPPER_SHAMPER_SPEAKER_SPEED_PCT = 1;
-        public static final double LOWER_SHAMPER_SPEAKER_SPEED_PCT = 1;
+        public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
-        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_PCT = 0;
+        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1;
-        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0;
+        public static final double UPPER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
+
+        public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.20 * SHOOTER_MAX_VELOCITY_RPS;
         
-        public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
-        public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_PCT = 0;
+        public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
+        public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
+
+        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.12 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.12 * SHOOTER_MAX_VELOCITY_RPS;
         
         public static final double INDEX_SPEED_TPS = 0;
 
         public static final double PIVOT_MOTOR_MANUAL_VELOCITY = 0.25;
-        public static final double PIVOT_MOTOR_MAX_VELOCITY = 0.25;
-        public static final double PIVOT_MOTOR_LEVEL_2_VELOCITY = 0.05;
-        public static final double PIVOT_MOTOR_LEVEL_1_VELOCITY = 0.05;
+        public static final double PIVOT_MOTOR_MAX_VELOCITY = 0.5;
+        public static final double PIVOT_MOTOR_LEVEL_2_VELOCITY = 0.1;
+        public static final double PIVOT_MOTOR_LEVEL_1_VELOCITY = 0.1;
         public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0;
 
         public static class Angle {
             public static final double MINIMUM  = 12;
             public static final double MAXIMUM = 124;
+            public static final double CLIMB = 13;
             public static final double DEFAULT = 30;
+            public static final double PODIUM = 35;
             public static final double AMP = 122;
-            public static final double SUB = 14;
+            public static final double SUB = 53;
             public static final double TRAP = 95;
         }
 
         public static final double ENCODER_OFFSET_DEGREES = 0;
         public static final double DEAD_ZONE_DEGREES = 1;
-        public static final double DEAD_ZONE_SHOOTER_SPEED_PCT = 0.05;
+        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 2;
+        public static final double SHOOTER_TOLERANCE_PERCENT = 0.01;
     }
 
     public static class FieldAndRobot {
@@ -227,8 +239,8 @@ public final class Constants {
         public static final double SPEAKER_TARGET_HEIGHT_OFF_GROUND_IN_METERS = 1.98;
 
         //got from cad model
-        public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(19.546, 6.014);
-        public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(3.009, 6.014);
+        public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(651.157), Units.inchesToMeters(218.416));
+        public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(0.066), Units.inchesToMeters(218.415));
 
         public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
 
@@ -254,7 +266,7 @@ public final class Constants {
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
 
         public static final double X_OFFSET_M = 0.29;
-        public static final double Y_OFFSET_M = 0.26;
+        public static final double Y_OFFSET_M = -0.26;
         public static final double Z_OFFSET_M = 0.25;
 
         public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll
@@ -378,11 +390,11 @@ public final class Constants {
     }
 
     public static final class PathPlanner {
-        public static final double TRANSLATION_KP = 5;
+        public static final double TRANSLATION_KP = .7;
         public static final double TRANSLATION_KI = 0;
         public static final double TRANSLATION_KD = 0;
 
-        public static final double ROTATION_KP = 5;
+        public static final double ROTATION_KP = .7;
         public static final double ROTATION_KI = 0;
         public static final double ROTATION_KD = 0;
 
@@ -392,7 +404,7 @@ public final class Constants {
         public static final HolonomicPathFollowerConfig HOLONOMIC_PATH_FOLLOWER_CONFIG = 
             new HolonomicPathFollowerConfig(
                     new PIDConstants( 
-                        TRANSLATION_KD, 
+                        TRANSLATION_KP, 
                         TRANSLATION_KI, 
                         TRANSLATION_KD
                     ), // Translation PID constants
@@ -405,6 +417,17 @@ public final class Constants {
                     DRIVE_BASE_RADIUS_METERS, // Drive base radius in meters. Distance from robot center to furthest module.
                     new ReplanningConfig() // Default path replanning config. See the API for the options here
             );
+    }
+
+    public static final class LEDs {
+        // Binary arduino code output bits
+        public static final int CHANNEL_1_PIN = 3; // 2^0
+        public static final int CHANNEL_2_PIN = 4; // 2^1
+        public static final int CHANNEL_3_PIN = 5; // 2^2
+        public static final int CHANNEL_4_PIN = 6; // 2^3
+        public static final int CHANNEL_5_PIN = 7; // 2^4
+        public static final int CHANNEL_6_PIN = 8; // 2^5
+        public static final int CHANNEL_7_PIN = 9; // 2^6
     }
 }
 

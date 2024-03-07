@@ -2,11 +2,16 @@ package frc.robot.auto;
 
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.commands.auto.drive.BasicAuto;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.util.io.Dashboard;
 
 /**
@@ -16,6 +21,7 @@ public class AutoFactory {
     private final Supplier<Auto> autoSupplier;
     private Auto currentAuto;
     private Command compiledAuto;
+
 
     public AutoFactory(
         Supplier<Auto> autoSupplier
@@ -42,6 +48,7 @@ public class AutoFactory {
         
         if (currentAuto.getAuto() != null) {
             compiledAuto = AutoBuilder.buildAuto(currentAuto.getAuto().getName());
+            System.out.println("Current Auto: " + currentAuto.getAuto().getName());
 
             // don't need to initialize the command according to bryan
             // if (compiledAuto != null) {
@@ -59,8 +66,10 @@ public class AutoFactory {
      */
     public static enum Auto {
         NO_AUTO(null),
-        TEST_AUTO(new PathPlannerAuto("Example Auto"));
-
+        AMP_3(new PathPlannerAuto("Amp 3")),
+        SOURCE_5(new PathPlannerAuto("Source 5")),
+        SOURCE_54(new PathPlannerAuto("Source 54")),
+        CENTER_123(new PathPlannerAuto("Center 123"));
         private final PathPlannerAuto auto;
 
         private Auto(PathPlannerAuto auto) {

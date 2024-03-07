@@ -44,7 +44,7 @@ public class DriveCommand extends Command {
 
         xLimiter = new SlewRateLimiter(2);
         yLimiter = new SlewRateLimiter(2);
-        rotationLimiter = new SlewRateLimiter(2);
+        rotationLimiter = new SlewRateLimiter(5);
 
         addRequirements(drivetrain);
     }
@@ -68,7 +68,7 @@ public class DriveCommand extends Command {
 
     @Override
     public void execute() {
-        drivetrain.drive(getX(), -getY(), -getRotation(), false);
+        drivetrain.drive(getX(), getY(), getRotation(), fieldCentricSupplier.getAsBoolean());
     }
 
     @Override

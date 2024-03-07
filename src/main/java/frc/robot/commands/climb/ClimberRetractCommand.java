@@ -10,17 +10,17 @@ import frc.robot.subsystems.ClimberSubsystem;
 public class ClimberRetractCommand extends Command {
   /** Creates a new RaiseClimberCommand. */
    
-  private final ClimberSubsystem hook;
+  private final ClimberSubsystem climber;
 
-  public ClimberRetractCommand(ClimberSubsystem hook) {
-      this.hook = hook;
-      addRequirements(hook);
+  public ClimberRetractCommand(ClimberSubsystem climber) {
+      this.climber = climber;
+      addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    hook.retract(true);
+    climber.retract(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,12 +30,13 @@ public class ClimberRetractCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hook.stop();
+    climber.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //return climber.getEncoderPosition() < 0;
     return false;
   }
 }
