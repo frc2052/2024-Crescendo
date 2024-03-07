@@ -4,21 +4,31 @@
 
 package frc.robot.commands.trap;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.TrapArmSubsystem;
 
 public class TrapReleaseCommand extends Command {
   private TrapArmSubsystem trapArm;
+  
+  private ShuffleboardTab tab = Shuffleboard.getTab("trap");
+  private GenericEntry upperMotorSpeedPct =
+  tab.add("Upper Motor Speed", 0).getEntry();
+  private GenericEntry lowerMotorSpeedPct =
+  tab.add("Lower Motor Speed", 0).getEntry();
   /** Creates a new TrapReleaseCommand. */
   public TrapReleaseCommand(TrapArmSubsystem trapArm) {
     this.trapArm = trapArm;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(trapArm);
+  addRequirements(trapArm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    
     trapArm.open();
   }
 

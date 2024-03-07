@@ -44,12 +44,12 @@ public class RobotStateEstimator {
             );
         }
 
-        if(RobotState.isTeleop()){
-            poseEstimator.addVisionMeasurement(
-                robotState.getVisionPose3d().toPose2d(),
-                robotState.getVisionDetectionTime()
-            );
-        }
+        // if(RobotState.isTeleop()){
+        //     poseEstimator.addVisionMeasurement(
+        //         robotState.getVisionPose3d().toPose2d(),
+        //         robotState.getVisionDetectionTime()
+        //     );
+        // }
     
 
         poseEstimator.update(

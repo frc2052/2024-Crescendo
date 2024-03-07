@@ -54,6 +54,8 @@ import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.io.Dashboard;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -155,6 +157,11 @@ public class RobotContainer {
 
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
     zeroGyroButton.onTrue(new InstantCommand(() -> {drivetrain.zeroGyro(); RobotState.getInstance().clearNavXOffset();}));
+
+    // TODO: remove after testing
+    JoystickButton zeroOdometry = new JoystickButton(translationJoystick, 8);
+    zeroOdometry.onTrue(new InstantCommand(() -> drivetrain.resetPose(new Pose2d())));
+
     JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
 
     driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(

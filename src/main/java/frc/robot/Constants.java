@@ -206,8 +206,8 @@ public final class Constants {
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
         public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
 
-        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.12 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.12 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
         
         public static final double INDEX_SPEED_TPS = 0;
 

@@ -4,11 +4,22 @@
 
 package frc.robot.commands.shamper;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
 public class ShamperTrapCommand extends Command {
+  
+  private ShuffleboardTab tab = Shuffleboard.getTab("trap");
+  private GenericEntry upperMotorSpeedPct =
+  tab.add("Upper Motor Shoot Speed Manual", 0).getEntry();
+  private GenericEntry lowerMotorSpeedPct =
+  tab.add("Lower Motor Shoot Speed Manual", 0).getEntry();
+
   private ShamperSubsystem shamper;
   /** Creates a new ShamperAmpCommand. */
   public ShamperTrapCommand(ShamperSubsystem shamper) {
@@ -21,10 +32,21 @@ public class ShamperTrapCommand extends Command {
   @Override
   public void initialize() {}
 
+  public double getValue(GenericEntry value){
+    double num = value.getDouble(0);
+    if(num > 1){
+      num = 1;
+    } else if (num < -1){
+      num = -1;
+    }
+
+    return num;
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shamper.setShootSpeed(ShamperSpeed.TRAP.getLower(), ShamperSpeed.TRAP.getUpper());
+    shamper.setShootSpeedPct(getValue(lowerMotorSpeedPct), (getValue(upperMotorSpeedPct)));
   }
 
   // Called once the command ends or is interrupted.

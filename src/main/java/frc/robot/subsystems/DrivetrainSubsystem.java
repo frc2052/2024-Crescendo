@@ -89,7 +89,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
     }
 
-    private void resetPose (Pose2d pose) {
+    public void resetPose (Pose2d pose) {
         RobotStateEstimator.getInstance().resetOdometry(pose);
     }
 
