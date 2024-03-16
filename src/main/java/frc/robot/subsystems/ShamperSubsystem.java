@@ -14,9 +14,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.MotorFeedbackSensor;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -26,6 +28,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.util.AimingCalculator;
+import frc.robot.util.io.Dashboard;
+import frc.robot.util.io.Dashboard.ShamperIdleMode;
 
 public class ShamperSubsystem extends SubsystemBase {
   private static TalonFX lowerMotor;
@@ -38,12 +42,9 @@ public class ShamperSubsystem extends SubsystemBase {
   private static DigitalInput ampHallEffectSensor;
   private static DigitalInput podiumHallEffectSensor;
 
-  private ProfiledPIDController lowerMotorController;
-  private ProfiledPIDController upperMotorController;
-  private ProfiledPIDController leftPivotMotorController;
-
   private double goalAngle;
   private ShamperSpeed goalSpeed;
+  private ProfiledPIDController pivotMotorController;
 
   private boolean override;
 
@@ -54,7 +55,11 @@ public class ShamperSubsystem extends SubsystemBase {
   private ClosedLoopRampsConfigs windDownConfig;
   private ClosedLoopRampsConfigs shootConfig;
 
+  private ShamperIdleMode currentIdleMode;
+
   public ShamperSubsystem() {
+    currentIdleMode = ShamperIdleMode.SPEAKER_IDLE;
+
     goalSpeed = ShamperSpeed.OFF;
     goalAngle = Constants.Shamper.Angle.SUB;
 
@@ -63,20 +68,11 @@ public class ShamperSubsystem extends SubsystemBase {
     upperMotor = new TalonFX(Constants.CAN.UPPER_SHOOTER_MOTOR_ID);
 
     leftPivotMotor = new CANSparkMax(Constants.CAN.LEFT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
-    leftPivotMotorController = new ProfiledPIDController(
-    Constants.Shamper.PIVOT_MOTOR_KP,
-    Constants.Shamper.PIVOT_MOTOR_KI,
-    Constants.Shamper.PIVOT_MOTOR_KD,      
-    new TrapezoidProfile.Constraints(
-    Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
-    Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
-
     rightPivotMotor = new CANSparkMax(Constants.CAN.RIGHT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
 
     rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_PIN);
     rotationEncoder.setPositionOffset(Constants.Shamper.ENCODER_OFFSET_DEGREES / 360);
     rotationEncoder.setDistancePerRotation(360);
-
     
     shooterVelocity = new VelocityVoltage(0);
 
@@ -89,7 +85,6 @@ public class ShamperSubsystem extends SubsystemBase {
     
     windDownConfig = new ClosedLoopRampsConfigs();
     windDownConfig.VoltageClosedLoopRampPeriod = 0.75;
-
     
     shootConfig = new ClosedLoopRampsConfigs();
     shootConfig.VoltageClosedLoopRampPeriod = 0;
@@ -115,6 +110,16 @@ public class ShamperSubsystem extends SubsystemBase {
     limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_PIN);
     // ampHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_PIN);
     // podiumHallEffectSensor = new DigitalInput(Constants.Shamper.PODIUM_HALL_EFFECT_PIN);
+
+    pivotMotorController = new ProfiledPIDController(
+      Constants.Shamper.PIVOT_MOTOR_KP,
+      Constants.Shamper.PIVOT_MOTOR_KI,
+      Constants.Shamper.PIVOT_MOTOR_KD,      
+      new TrapezoidProfile.Constraints(
+      Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
+      Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
+     
+    pivotMotorController.setTolerance(Constants.Shamper.DEAD_ZONE_DEGREES);
   }
 
   public void setShootSpeed(ShamperSpeed speeds) { 
@@ -294,10 +299,26 @@ public class ShamperSubsystem extends SubsystemBase {
     return !limitSwitch.get();
   }
 
+  public void toggleCurrentIdle() {
+    switch (currentIdleMode) {
+        // keep no idle if already no idle
+        case NO_IDLE:
+            Dashboard.getInstance().setCurrentIdle(ShamperIdleMode.NO_IDLE);
+        // go from speaker idle to amp idle
+        case SPEAKER_IDLE:
+            Dashboard.getInstance().setCurrentIdle(ShamperIdleMode.AMP_IDLE);
+        // go from amp idle to speaker idle
+        case AMP_IDLE:
+            Dashboard.getInstance().setCurrentIdle(ShamperIdleMode.SPEAKER_IDLE);
+    }
+  }
+
+  public ShamperIdleMode getCurrentIdleMode() {
+    return currentIdleMode;
+  }
+
   @Override
   public void periodic() {
-    //System.out.println(ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().getRobotPose()).getAngleDegrees());
-    //stopPivot();
     Logger.recordOutput("upperGoal", goalSpeed.getUpper());
     Logger.recordOutput("Shamper Current Angle:  ", getShamperAngle());
     Logger.recordOutput("Shamper Current Goal Angle: ", goalAngle);
@@ -307,28 +328,37 @@ public class ShamperSubsystem extends SubsystemBase {
 
     RobotState.getInstance().updateShamperAtGoalAngle(isAtGoalAngle());
     
-    if(getPivotSpeed() < 0 && shamperZeroed()) {
+    if(!(getPivotSpeed() < 0 && shamperZeroed())) {
+      if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
+        double speed = Math.copySign(pivotMotorController.calculate(getShamperAngle(), goalAngle), (goalAngle - getShamperAngle()));
+      } else {
+        System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
+        stopPivot();
+      }
+
+      // if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
+      //   if (isAtGoalAngle()) {
+      //     stopPivot();
+      //     //System.out.println("At Goal of " + this.goalAngle);
+      //   } else if (Math.abs(getShamperAngle() - goalAngle) > 10) {
+      //     double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle));
+      //     runPivot(speed);
+      //     //System.out.println("Go Fast " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
+      //   } else {
+      //     double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle));
+      //     runPivot(speed);
+      //     //System.out.println("Go Slow " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
+      //   }
+      // } else {
+      //   System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
+      //   stopPivot();
+      // }
+
+    } else {
       System.out.println("***TRYING TO LOWER SHAMPER WHILE ZEROED***");
       stopPivot();
     }
 
-    if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
-      if (isAtGoalAngle()) {
-        stopPivot();
-        //System.out.println("At Goal of " + this.goalAngle);
-      } else if (Math.abs(getShamperAngle() - goalAngle) > 10) {
-        double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle));
-        runPivot(speed);
-        //System.out.println("Go Fast " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
-      } else {
-        double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle));
-        runPivot(speed);
-        //System.out.println("Go Slow " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
-      }
-    } else {
-      System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
-      stopPivot();
-    }
   }
 
   public static enum ShamperSpeed {

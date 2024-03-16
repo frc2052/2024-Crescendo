@@ -20,6 +20,7 @@ public class IntakeCommand extends Command {
     @Override
     public void initialize(){
         shamper.setAngle(Constants.Shamper.Angle.CLIMB);
+        shamper.windDownShooter();
     }
 
     @Override

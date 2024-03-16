@@ -9,6 +9,7 @@ import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.util.io.Dashboard;
 
 public class ShamperDefaultCommand extends Command {
   private ShamperSubsystem shamper;
@@ -22,15 +23,25 @@ public class ShamperDefaultCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if(!RobotState.getInstance().getIsClimbing() && !RobotState.getInstance().getNoteDetected() && shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT) {
-    //   shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
-    // }
+    if(Dashboard.getInstance().shouldIdle()) {
+      switch (shamper.getCurrentIdleMode()) {
+        case NO_IDLE:
+          System.out.println("NO IDLE SELECTED BUT WANT TO IDLE");
+          return;
+        case SPEAKER_IDLE:
+          shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
+        case AMP_IDLE:
+          shamper.setShootSpeed(ShamperSpeed.AMP_IDLE);
+      }
+    }
+    if(!RobotState.getInstance().getNoteDetected() && shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT) {
+      shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
+    }
   }
 
   // Called once the command ends or is interrupted.

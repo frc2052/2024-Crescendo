@@ -37,7 +37,6 @@ import frc.robot.commands.trap.TrapReleaseCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
-//import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 //import frc.robot.subsystems.MusicPlayerSubsystem;
@@ -45,21 +44,14 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
-// import frc.robot.subsystems.Superstructure;
-//import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
-// import frc.robot.subsystems.Superstructure.SuperstructureState;
-//import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
+
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -209,7 +201,7 @@ public class RobotContainer {
     JoystickButton shamperAmpShootButton = new JoystickButton(controlPanel, 11);
     JoystickButton shamperManualShootButton = new JoystickButton(controlPanel, 12);
     JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
-    Trigger shamperIdleButton = new Trigger(() -> controlPanel.getY() > 0.5);
+    Trigger shamperIdleToggleButton = new Trigger(() -> controlPanel.getY() > 0.5);
     JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
 
     shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
@@ -218,7 +210,7 @@ public class RobotContainer {
     shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
     shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper));
-    shamperIdleButton.whileTrue(new ShamperIdleCommand(shamper));
+    shamperIdleToggleButton.onTrue(new InstantCommand(() -> shamper.toggleCurrentIdle()));
 
     /*
      *  Shamper Angle Button Bindings
@@ -252,37 +244,6 @@ public class RobotContainer {
     JoystickButton trapReleaseButton = new JoystickButton(controlPanel, 3);
 
     trapReleaseButton.whileTrue(new TrapReleaseCommand(trapArm));
-
-    /*
-     *  Superstructure Position Button Bindings
-     */
-
-    // JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
-    // JoystickButton shamperAmpIdleButton = new JoystickButton(rotationJoystick, 4);
-    // JoystickButton superstructureIntakeButton = new JoystickButton(rotationJoystick, 2);
-    // // JoystickButton shamperSpeakerIdleAimButon = new JoystickButton(rotationJoystick, 3);
-    // JoystickButton shamperPodiumIdleButton = new JoystickButton(rotationJoystick, 3);
-    // JoystickButton shamperDefaultButton = new JoystickButton(rotationJoystick, 5);
-
-    // shamperAmpIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
-    // // shamperSpeakerIdleAimButon.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
-    // superstructureIntakeButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.INTAKE)));
-    // shamperPodiumIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.PODIUM_IDLE)));
-    // shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
-    
-    // shamperShootButton.onTrue(new InstantCommand(() -> {
-    //   if(superstructure.getState() == SuperstructureState.AMP_IDLE) {
-    //     superstructure.setState(SuperstructureState.AMP_SCORE);
-    //   // } else if (superstructure.getState() == SuperstructureState.SPEAKER_IDLE) {
-    //   //   superstructure.setState(SuperstructureState.SPEAKER_SCORE);
-    //   } else if (superstructure.getState() == SuperstructureState.PODIUM_IDLE) {
-    //     superstructure.setState(SuperstructureState.PODIUM_SCORE);
-    //   } else {
-    //     System.out.println("WASN'T IDLING*********");
-    //   }
-    // })).onFalse(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
-
-    // shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
     
     /*
      * Music Player Toggle

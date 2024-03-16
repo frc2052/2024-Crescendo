@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
+import frc.robot.util.io.Dashboard;
 
 public class ClimberSubsystem extends SubsystemBase{
  
@@ -64,6 +65,14 @@ public class ClimberSubsystem extends SubsystemBase{
 @Override
 public void periodic() {
     Logger.recordOutput("Climber Encoder Value", leftClimberMotor.getEncoder().getPosition());
+
+    if (Dashboard.getInstance().isClimberCoast()){
+        leftClimberMotor.setIdleMode(IdleMode.kCoast);
+        rightClimberMotor.setIdleMode(IdleMode.kCoast);
+    } else {
+        leftClimberMotor.setIdleMode(IdleMode.kBrake);
+        rightClimberMotor.setIdleMode(IdleMode.kBrake);
+    }
 }
 
 }

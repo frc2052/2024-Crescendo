@@ -208,14 +208,18 @@ public final class Constants {
 
         public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
-        
-        public static final double INDEX_SPEED_TPS = 0;
+
+        public static final double PIVOT_CONTROLLER_kP = 0.1;
+        public static final double PIVOT_CONTROLLER_kI = 0;
+        public static final double PIVOT_CONTROLLER_kD = 0;
+
+        public static final double PIVOT_MOTOR_MAX_VELOCITY = 0.5;
+        public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0.1;
 
         public static final double PIVOT_MOTOR_MANUAL_VELOCITY = 0.25;
-        public static final double PIVOT_MOTOR_MAX_VELOCITY = 0.5;
+        
         public static final double PIVOT_MOTOR_LEVEL_2_VELOCITY = 0.1;
         public static final double PIVOT_MOTOR_LEVEL_1_VELOCITY = 0.1;
-        public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0;
 
         public static class Angle {
             public static final double MINIMUM  = 12;
@@ -387,6 +391,9 @@ public final class Constants {
     public static final class Dashboard {
         public static final String DRIVE_MODE_KEY = "Drive Mode";
         public static final String AUTO_COMPILED_KEY = "Auto Compiled";
+        public static final String IDLE_CHOOSER_KEY = "Should Idle?";
+        public static final String IDLE_MODE_KEY = "Current Idle Mode";
+        public static final String CLIMBER_MODE_KEY = "Climber Motors Mode";
     }
 
     public static final class PathPlanner {
