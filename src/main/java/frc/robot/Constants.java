@@ -356,6 +356,10 @@ public final class Constants {
         public static final double TAG16_ROTATION = 240;
     }
 
+    public static final class AprilTags {
+        public static final double APRILTAG_TIMEOUT = 1000;
+    }
+
 
     public static final class Elevator{
             public static final int BELT_MOTOR = 0;

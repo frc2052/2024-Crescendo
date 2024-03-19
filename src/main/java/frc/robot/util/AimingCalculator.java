@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import java.util.Optional;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
@@ -7,8 +9,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotState;
+import frc.robot.subsystems.AprilTagSubsystem;
 
 public class AimingCalculator {
 
@@ -83,6 +87,16 @@ public class AimingCalculator {
         Logger.recordOutput("ANGLE TO SPEAKER ROBOT RELATIVE", speakerToRobotDegrees);
         Logger.recordOutput("ANGLE TO SPEAKER FIELD RELATIVE", angleToSpeakerFieldRelativeDegrees);
         return MathUtil.inputModulus(Math.copySign(angleToSpeakerFieldRelativeDegrees, robotPose.getRotation().getDegrees()), 0, 360);
+    }
+
+    public static double calculateRobotAngleOneAprilTag() {
+        Optional<Double> yaw = AprilTagSubsystem.getInstance().getYaw();
+     
+        if (!yaw.isEmpty()) {
+            return yaw.get();
+        } else {
+            return 0;
+        }
     }
 
     public static double calculateDistanceToSpeaker(Pose2d robotPose) {
