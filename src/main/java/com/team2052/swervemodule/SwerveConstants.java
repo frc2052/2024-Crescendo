@@ -9,7 +9,7 @@ package com.team2052.swervemodule;
  */
 public final class SwerveConstants {
     public static final double MAX_VOLTAGE_VOLTS = 12.0;
-    public static final int DRIVE_STALL_CURRENT_LIMIT_AMPS = 40;
+    public static final int DRIVE_STALL_CURRENT_LIMIT_AMPS = 100;
     public static final int DRIVE_FREE_CURRENT_LIMIT_AMPS = 60;
     public static final double STEER_CURRENT_LIMIT_AMPS = 20.0;
     public static final double CAN_TIMEOUT_SECONDS = 0.25;
