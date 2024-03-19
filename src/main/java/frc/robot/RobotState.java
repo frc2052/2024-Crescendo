@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.Optional;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.team2052.lib.photonvision.EstimatedRobotPose;
@@ -8,6 +10,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
@@ -33,6 +36,8 @@ public class RobotState {
     private boolean isClimbing;
     private boolean shamperAtGoalAngle;
     private double autoOffset;
+    private Timer lastGyroResetTimer;
+    private double lastGyroResetValue;
 
     public static RobotState getInstance() {
         if (INSTANCE == null) {
@@ -61,6 +66,9 @@ public class RobotState {
         robotRotation2d = new Rotation2d(0);
         chassisSpeeds = new ChassisSpeeds();
         noteDetected = false;
+        lastGyroResetTimer = new Timer();
+        lastGyroResetTimer.start();
+        lastGyroResetValue = -1;
     }  
 
     public boolean hasValidSwerveState() {
@@ -111,9 +119,9 @@ public class RobotState {
      * NavX offset is set when the robot has an inital rotation not facing where you want 0 (forwards) to be.
      */
     public void resetInitialPose(Pose2d initialStartingPose) {
-        navxOffset = new Rotation2d();
-        autoOffset = -  initialStartingPose.getRotation().getRadians() + Math.PI;
-        System.out.println("auto offset of :" + Units.radiansToDegrees(autoOffset));
+        //navxOffset = new Rotation2d();
+        //autoOffset = -initialStartingPose.getRotation().getRadians() + Math.PI;
+        //System.out.println("auto offset of :" + Units.radiansToDegrees(autoOffset));
         initialPose = initialStartingPose;
     }
 
@@ -122,8 +130,15 @@ public class RobotState {
      * 
      * @return Translation2d
      */
-    public Pose3d getVisionPose3d() {
-        return aprilTagVisionPose3d;
+    public Optional<Pose3d> getVisionPose3d() {
+        Optional<Pose3d> visionPose = Optional.empty();
+
+        // if the vision pose doesn't have it's pose at the origin and not null, then it's good
+        if (!(aprilTagVisionPose3d.getTranslation() == new Translation3d()) && !(aprilTagVisionPose3d == null)){
+            visionPose = Optional.of(aprilTagVisionPose3d);
+        }
+
+        return visionPose;
     }
 
     /**
@@ -160,7 +175,7 @@ public class RobotState {
     }
 
     public void applyNavxOffset(){
-        System.out.println("NavX Offset Applied");
+        System.out.println("NavX Offset Applied of: " + autoOffset);
         this.navxOffset = new Rotation2d(autoOffset);
     }
 
@@ -170,6 +185,19 @@ public class RobotState {
 
     public void addNavXOffset(double offset){
         this.navxOffset = new Rotation2d(Units.degreesToRadians(offset));
+    }
+
+    public boolean gyroResetNeeded(){
+        if (lastGyroResetValue == -1) {
+            lastGyroResetValue = getRotation2d360().getDegrees();
+        }
+
+        if (lastGyroResetTimer.get() > 2 && (Math.abs(lastGyroResetValue - getRotation2d360().getDegrees())) > 2){
+            lastGyroResetTimer.restart();
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -41,12 +41,12 @@ public class RobotStateEstimator {
             );
         }
 
-        // if(RobotState.isTeleop()){
-        //     poseEstimator.addVisionMeasurement(
-        //         robotState.getVisionPose3d().toPose2d(),
-        //         robotState.getVisionDetectionTime()
-        //     );
-        // }
+        if(robotState.getVisionPose3d().isPresent()){
+            poseEstimator.addVisionMeasurement(
+                robotState.getVisionPose3d().get().toPose2d(),
+                robotState.getVisionDetectionTime()
+            );
+        }
     
 
         poseEstimator.update(
@@ -61,7 +61,7 @@ public class RobotStateEstimator {
      * Reset the position of SwerveDrivePoseEstimator and set the NavX Offset
      */
     public void resetOdometry(Pose2d pose){
-        robotState.resetInitialPose(pose);
+        //robotState.resetInitialPose(pose);
 
         poseEstimator.resetPosition(
             robotState.getRotation2d360(), 

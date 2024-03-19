@@ -46,6 +46,8 @@ import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.io.Dashboard;
 
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -138,10 +140,6 @@ public class RobotContainer {
 
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
     zeroGyroButton.onTrue(new InstantCommand(() -> {drivetrain.zeroGyro(); RobotState.getInstance().clearNavXOffset();}));
-
-    // TODO: remove after testing
-    JoystickButton zeroOdometry = new JoystickButton(translationJoystick, 8);
-    zeroOdometry.onTrue(new InstantCommand(() -> drivetrain.resetPose(new Pose2d())));
 
     JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
 
@@ -258,11 +256,16 @@ public class RobotContainer {
           autoFactory.recompile();
       }
   }
+
+  // TODO: check if this before starting works for reset gyro
   public Command getAutonomousCommand() {
-    return autoFactory.getCompiledAuto();
+    return autoFactory.getCompiledAuto().beforeStarting(new InstantCommand(() -> resetGyro()));
   }
 
   public void resetGyro(){
-    drivetrain.zeroGyro();
+    
+    if (RobotState.getInstance().gyroResetNeeded()){
+      drivetrain.zeroGyro();
+    }
   }
 }
