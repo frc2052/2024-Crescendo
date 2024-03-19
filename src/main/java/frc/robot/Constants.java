@@ -135,6 +135,8 @@ public final class Constants {
 
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
+
+        public static final int CLIMBER_LIMIT_SWITCH_PIN = 9;
     }
 
     public static class Intake {
@@ -145,6 +147,7 @@ public final class Constants {
     public static class Indexer {
         public static final double LOWER_INDEX_SPEED_PCT = 1;
         public static final double UPPER_LOAD_SPEED_PCT = 0.7;
+        public static final double UPPER_LOAD_SLOW_SPEED_PCT = 0.5;
         public static final double UPPER_INDEX_SPEED_PCT = 1;
         
         public static final double AMP_INDEX_SPEED_PCT = 0.8;
@@ -154,7 +157,8 @@ public final class Constants {
         public static final double UPPER_OUTTAKE_SPEED_PCT = 1;
 
         // DIO
-        public static final int INDEXER_SENSOR_PIN = 0;
+        public static final int EARLY_INDEXER_SENSOR_PIN = 0;
+        public static final int END_INDEXER_SENSOR_PIN = 8;
     }
   
     public static class Shamper {
@@ -225,6 +229,7 @@ public final class Constants {
             public static final double MINIMUM  = 12;
             public static final double MAXIMUM = 124;
             public static final double CLIMB = 13;
+            public static final double INTAKE = 17;
             public static final double DEFAULT = 30;
             public static final double PODIUM = 35;
             public static final double AMP = 122;
@@ -235,7 +240,7 @@ public final class Constants {
         public static final double ENCODER_OFFSET_DEGREES = 0;
         public static final double DEAD_ZONE_DEGREES = 1;
         public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 2;
-        public static final double SHOOTER_TOLERANCE_PERCENT = 0.01;
+        public static final double SHOOTER_TOLERANCE_PERCENT = 0.03;
     }
 
     public static class FieldAndRobot {

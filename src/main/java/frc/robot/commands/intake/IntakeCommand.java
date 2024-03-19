@@ -19,14 +19,14 @@ public class IntakeCommand extends Command {
     }
     @Override
     public void initialize(){
-        shamper.setAngle(Constants.Shamper.Angle.CLIMB);
-        shamper.windDownShooter();
+        //shamper.windDownShooter();
+        shamper.setAngle(Constants.Shamper.Angle.INTAKE);
     }
 
     @Override
     public void execute() {
         intake.intake();
-        indexer.loadAll();
+        indexer.load();
     }
 
     @Override
@@ -37,6 +37,6 @@ public class IntakeCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return indexer.getNoteDetector();
+        return indexer.getNoteHeld();
     }
 }

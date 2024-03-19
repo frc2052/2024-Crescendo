@@ -16,12 +16,14 @@ import frc.robot.RobotState;
 public class IndexerSubsystem extends SubsystemBase {
   private final CANSparkFlex lowerMotor;
   private final CANSparkMax upperMotor;
-  private final DigitalInput noteDetector;
+  private final DigitalInput noteEarlyDetector;
+  private final DigitalInput noteEndDetector;
 
   public IndexerSubsystem() {
     lowerMotor = new CANSparkFlex(Constants.CAN.LOWER_INDEX_MOTOR_ID, MotorType.kBrushless);
     upperMotor = new CANSparkMax(Constants.CAN.SHAMPER_INDEX_ID, MotorType.kBrushless);
-    noteDetector = new DigitalInput(Constants.Indexer.INDEXER_SENSOR_PIN);
+    noteEarlyDetector = new DigitalInput(Constants.Indexer.EARLY_INDEXER_SENSOR_PIN);
+    noteEndDetector = new DigitalInput(Constants.Indexer.END_INDEXER_SENSOR_PIN);
 
     upperMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     lowerMotor.setIdleMode(CANSparkFlex.IdleMode.kBrake);
@@ -35,7 +37,12 @@ public class IndexerSubsystem extends SubsystemBase {
     upperMotor.set(Constants.Indexer.UPPER_INDEX_SPEED_PCT);
   }
 
-  public void loadAll() {
+  public void loadSlow() {
+    upperMotor.set(Constants.Indexer.UPPER_LOAD_SLOW_SPEED_PCT);
+    lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
+  }
+
+  public void load() {
     upperMotor.set(Constants.Indexer.UPPER_LOAD_SPEED_PCT);
     lowerMotor.set(Constants.Indexer.LOWER_INDEX_SPEED_PCT);
   }
@@ -72,14 +79,18 @@ public class IndexerSubsystem extends SubsystemBase {
     return lowerMotor.get();
   }
 
-  public boolean getNoteDetector() {
-    return !noteDetector.get();
+  public boolean getNoteHeld() {
+    return !noteEarlyDetector.get();
+  }
+
+  public boolean getNoteStaged() {
+    return !noteEndDetector.get();
   }
 
   @Override
   public void periodic() {
-    boolean noteDetected = getNoteDetector();
-    RobotState.getInstance().updateNoteDetected(noteDetected);
+    RobotState.getInstance().updateNoteHeld(getNoteHeld());
+    RobotState.getInstance().updateNoteStaged(getNoteStaged());
     //System.out.println(noteDetected);
   }
 }

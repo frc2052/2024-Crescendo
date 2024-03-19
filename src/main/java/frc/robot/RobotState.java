@@ -31,7 +31,8 @@ public class RobotState {
     private Rotation2d robotRotation2d;
     private SwerveModulePosition[] swerveModulePositions;
     private ChassisSpeeds chassisSpeeds;
-    private boolean noteDetected;
+    private boolean noteHeld;
+    private boolean noteStaged;
     private boolean musicEnabled;
     private boolean isClimbing;
     private boolean shamperAtGoalAngle;
@@ -65,7 +66,8 @@ public class RobotState {
         navxOffset = new Rotation2d(0);
         robotRotation2d = new Rotation2d(0);
         chassisSpeeds = new ChassisSpeeds();
-        noteDetected = false;
+        noteHeld = false;
+        noteStaged = false;
         lastGyroResetTimer = new Timer();
         lastGyroResetTimer.start();
         lastGyroResetValue = -1;
@@ -94,8 +96,12 @@ public class RobotState {
         this.robotPose = robotPose;
     }
 
-    public void updateNoteDetected(boolean noteDetected) {
-        this.noteDetected = noteDetected;
+    public void updateNoteHeld(boolean noteHeld) {
+        this.noteHeld = noteHeld;
+    }
+
+    public void updateNoteStaged(boolean noteStaged) {
+        this.noteStaged = noteStaged;
     }
 
     public void updateIsClimbing(boolean isClimbing) {
@@ -232,11 +238,13 @@ public class RobotState {
         return robotPose;
     }
 
-    public boolean getNoteDetected() {
-        return noteDetected;
+    public boolean getNoteStagedDetected() {
+        return noteHeld;
     }
 
-
+    public boolean getNoteHeldDetected() {
+        return noteStaged;
+    }
 
     /**
      * Returns the initial Pose2d of the robot since last reset.
@@ -317,18 +325,9 @@ public class RobotState {
         Logger.recordOutput("Auto Pose", getRobotPoseAuto());
         Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateDistanceToSpeaker(robotPose));
         Logger.recordOutput("RAW GYRO", robotRotation2d.getDegrees());
-        Logger.recordOutput("NOTE DETECTOR", noteDetected);
+        Logger.recordOutput("NOTE STAGED", noteStaged);
+        Logger.recordOutput("NOTE HELD", noteHeld);
         Logger.recordOutput("auto gyro method angle", robotPose.getRotation().getDegrees());
-        Dashboard.getInstance().putData("NOTE DETECTED", noteDetected);
-        // Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
-        // Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
-        // Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));
-        // Dashboard.getInstance().putData("VISION Robot Position X : ", (aprilTagVisionPose3d.getX()));
-        // Dashboard.getInstance().putData("VISION Robot Position Y : ", (aprilTagVisionPose3d.getY()));
-        // Dashboard.getInstance().putData("VISION Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
-        
-        // double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
-        // Logger.recordOutput("goal angle",  Math.copySign(goalAngleDegrees, robotPose.getRotation().getDegrees()));
-        // Logger.recordOutput("measured angle", robotRotation2d.getDegrees() % 360);
+        Dashboard.getInstance().putData("NOTE HELD", noteHeld);
     }   
 }

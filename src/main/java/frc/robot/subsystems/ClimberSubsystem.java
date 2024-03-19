@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -15,6 +16,8 @@ public class ClimberSubsystem extends SubsystemBase{
  
     private final CANSparkMax leftClimberMotor;
     private final CANSparkMax rightClimberMotor;
+
+    private final DigitalInput limitSwitch;
 
     public ClimberSubsystem() {
         leftClimberMotor = new CANSparkMax(Constants.CAN.LEFT_CLIMBER_MOTOR, MotorType.kBrushless);
@@ -26,6 +29,8 @@ public class ClimberSubsystem extends SubsystemBase{
         rightClimberMotor.setInverted(Constants.Climber.LEFT_CLIMBER_MOTOR_INVERTED);
 
         rightClimberMotor.follow(leftClimberMotor);
+
+        limitSwitch = new DigitalInput(Constants.Climber.CLIMBER_LIMIT_SWITCH_PIN);
     }
 
     public void extend(boolean override) {
@@ -48,17 +53,8 @@ public class ClimberSubsystem extends SubsystemBase{
         leftClimberMotor.set(0);
     }
 
-    public void zeroEncoder() {
-        //leftClimberMotor.setSelectedSensorPosition(0);
-    }
-
-    public double getEncoderPosition() {
-        return leftClimberMotor.getEncoder().getPosition();
-    }
-
-    public boolean getEncoderIsAbove(double ticks) {
-        //return leftClimberMotor.getSelectedSensorPosition() >= ticks;
-        return false;
+    public boolean limitSwitchHit(){
+        return !limitSwitch.get();
     }
 
 @Override

@@ -15,7 +15,7 @@ import frc.robot.util.io.Dashboard;
 public class LedSubsystem extends SubsystemBase {
     private static LedSubsystem INSTANCE;
     
-    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4, codeChannel5, codeChannel6, codeChannel7;
+    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4, codeChannel5, codeChannel6;
 
     private LEDStatusMode currentStatusMode;
 
@@ -30,7 +30,6 @@ public class LedSubsystem extends SubsystemBase {
         codeChannel4 = new DigitalOutput(Constants.LEDs.CHANNEL_4_PIN);
         codeChannel5 = new DigitalOutput(Constants.LEDs.CHANNEL_5_PIN);
         codeChannel6 = new DigitalOutput(Constants.LEDs.CHANNEL_6_PIN);
-        codeChannel7 = new DigitalOutput(Constants.LEDs.CHANNEL_7_PIN);
         robotDisabled = true;
 
         currentStatusMode = LEDStatusMode.OFF;
@@ -86,7 +85,7 @@ public class LedSubsystem extends SubsystemBase {
                     currentStatusMode = LEDStatusMode.OFF; // Reaches here if DriverStation.getAlliance returns Invalid, which just means it can't determine our alliance and we do cool default effect
                 }
             } else if (DriverStation.isAutonomous()) {
-                if(RobotState.getInstance().getNoteDetected()){
+                if(RobotState.getInstance().getNoteHeldDetected()){
                     currentStatusMode = LEDStatusMode.NOTE_DETECTED;
                 } else if (RobotState.getInstance().getIsShamperAtGoalAngle()){
                     currentStatusMode = LEDStatusMode.RAINBOW;
@@ -100,9 +99,9 @@ public class LedSubsystem extends SubsystemBase {
             }
 
             if (DriverStation.isTeleopEnabled()) {
-                if(RobotState.getInstance().getNoteDetected() && RobotState.getInstance().getIsShamperAtGoalAngle()){
+                if(RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().getIsShamperAtGoalAngle()){
                     currentStatusMode = LEDStatusMode.CUBE;
-                } else if(RobotState.getInstance().getNoteDetected()){
+                } else if(RobotState.getInstance().getNoteHeldDetected()){
                     currentStatusMode = LEDStatusMode.CONE;
                 } else {
                     currentStatusMode = LEDStatusMode.NO_AUTO;
@@ -124,7 +123,6 @@ public class LedSubsystem extends SubsystemBase {
         codeChannel4.set((code & 8) > 0);   // 2^3
         codeChannel5.set((code & 16) > 0);  // 2^4
         codeChannel6.set((code & 32) > 0);
-        codeChannel7.set((code & 64) > 0);    
     }
 
     public void setLEDStatusMode(LEDStatusMode statusMode) {

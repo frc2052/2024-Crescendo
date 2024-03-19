@@ -326,36 +326,36 @@ public class ShamperSubsystem extends SubsystemBase {
 
     RobotState.getInstance().updateShamperAtGoalAngle(isAtGoalAngle());
     
-    if(!(getPivotSpeed() < 0 && shamperZeroed())) {
-      if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
-        double speed = Math.copySign(pivotMotorController.calculate(getShamperAngle(), goalAngle), (goalAngle - getShamperAngle()));
-      } else {
-        System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
+    // if(!(getPivotSpeed() < 0 && shamperZeroed())) {
+    //   if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
+    //     double speed = Math.copySign(pivotMotorController.calculate(getShamperAngle(), goalAngle), (goalAngle - getShamperAngle()));
+    //   } else {
+    //     System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
+    //     stopPivot();
+    //   }
+
+    if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
+      if (isAtGoalAngle()) {
         stopPivot();
+        //System.out.println("At Goal of " + this.goalAngle);
+      } else if (Math.abs(getShamperAngle() - goalAngle) > 10) {
+        double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle));
+        runPivot(speed);
+        //System.out.println("Go Fast " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
+      } else {
+        double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle));
+        runPivot(speed);
+        //System.out.println("Go Slow " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
       }
-
-      // if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
-      //   if (isAtGoalAngle()) {
-      //     stopPivot();
-      //     //System.out.println("At Goal of " + this.goalAngle);
-      //   } else if (Math.abs(getShamperAngle() - goalAngle) > 10) {
-      //     double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle));
-      //     runPivot(speed);
-      //     //System.out.println("Go Fast " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
-      //   } else {
-      //     double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle));
-      //     runPivot(speed);
-      //     //System.out.println("Go Slow " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
-      //   }
-      // } else {
-      //   System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
-      //   stopPivot();
-      // }
-
     } else {
-      System.out.println("***TRYING TO LOWER SHAMPER WHILE ZEROED***");
+      System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
       stopPivot();
     }
+
+    // } else {
+    //   System.out.println("***TRYING TO LOWER SHAMPER WHILE ZEROED***");
+    //   stopPivot();
+    // }
 
   }
 
