@@ -13,6 +13,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     static DrivetrainSubsystem drivetrainSubsystem;
     // static MusicPlayerSubsystem musicPlayerSubsystem;
     static IndexerSubsystem indexerSubsystem;
+
     static String folder = "Data_";
     
     public AdvantageScopeSubsystem (    
@@ -23,6 +24,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     // MusicPlayerSubsystem musicPlayerSubsystem,
     IndexerSubsystem indexerSubsystem
     ) {
+
         AdvantageScopeSubsystem.intakeSubsystem = intakeSubsystem;
         AdvantageScopeSubsystem.shamperSubsystem = shamperSubsystem;
         AdvantageScopeSubsystem.climberSubsystem = climberSubsystem;
@@ -41,6 +43,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         recordMusicPlayerData();
         recordIndexerData();
         recordTrapArmData();
+
     }
 
     public static void recordIntakeData () {
@@ -60,6 +63,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         // trapArmSubsystem.getPosition());
     }
 
+
     public static void recordShamperData () {
         String shamperFolder = "Shamper_";
 
@@ -78,6 +82,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     }
 
     public static void recordMusicPlayerData() {
+
         // String musicPlayerFolder = "MusicPlayer_";
 
         // Logger.recordOutput(folder+musicPlayerFolder+"Current Track Play Time",
@@ -85,6 +90,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
         // Logger.recordOutput(folder+musicPlayerFolder+"Is Music Player Playing", 
         // musicPlayerSubsystem.isPlayerPLaying());
+
     }
 
     public static void recordDrivetrainData () {
@@ -94,6 +100,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
             drivetrainSubsystem.frontLeftModule.getState().angle.getDegrees(), 
             drivetrainSubsystem.frontLeftModule.getState().speedMetersPerSecond,
 
+
             drivetrainSubsystem.backLeftModule.getState().angle.getDegrees(), 
             drivetrainSubsystem.backLeftModule.getState().speedMetersPerSecond,
 
@@ -102,6 +109,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
             drivetrainSubsystem.frontRightModule.getState().angle.getDegrees(), 
             drivetrainSubsystem.frontRightModule.getState().speedMetersPerSecond,
+
         };
         Logger.recordOutput(folder+drivetrainFolder+"Swerve Array", swerveArray);
 
@@ -118,6 +126,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
         Logger.recordOutput(folder+driverstationFolder+"Match Number", DriverStation.getMatchNumber());
 
         Logger.recordOutput(folder+driverstationFolder+"Match Time", DriverStation.getMatchTime());
+
 
         Logger.recordOutput(folder+driverstationFolder+"Is Robot Enabled", DriverStation.isEnabled());
     }

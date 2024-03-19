@@ -25,13 +25,13 @@ public class ShootingAngleCalculator {
     public void setupShootAngleLookup(){
         shootAngleLookup.add(new ShootAngleConfig(100, 55, 0.7 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
         shootAngleLookup.add(new ShootAngleConfig(150, 53, 0.7 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
-        shootAngleLookup.add(new ShootAngleConfig(200, 47, 0.7 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
-        shootAngleLookup.add(new ShootAngleConfig(250, 41, 0.8 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(200, 47, 0.8 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(250, 41, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
         shootAngleLookup.add(new ShootAngleConfig(300, 38, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
-        shootAngleLookup.add(new ShootAngleConfig(350, 35, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
-        shootAngleLookup.add(new ShootAngleConfig(400, 34, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
-        shootAngleLookup.add(new ShootAngleConfig(450, 33, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
-        shootAngleLookup.add(new ShootAngleConfig(500, 33, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(350, 33, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(400, 32, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(450, 28, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(500, 27, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
         shootAngleLookup.add(new ShootAngleConfig(550, 26, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
         shootAngleLookup.add(new ShootAngleConfig(600, 25, 0.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
     }

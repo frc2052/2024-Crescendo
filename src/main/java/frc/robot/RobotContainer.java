@@ -7,17 +7,17 @@ package frc.robot;
 import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimberSlowRetractCommand;
-import frc.robot.commands.GyroOffsetCommand;
-import frc.robot.commands.auto.drive.AimToSpeakerCommand;
-import frc.robot.commands.auto.drive.BasicAuto;
-import frc.robot.commands.auto.shoot.ShootCommandAuto;
-import frc.robot.commands.auto.shoot.ShootSubCommandAuto;
+import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
+import frc.robot.commands.auto.commands.shoot.ShootAutoLowCommand;
+import frc.robot.commands.auto.commands.shoot.ShootCommandAuto;
+import frc.robot.commands.auto.commands.shoot.ShootSubCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.indexer.IndexerBackupCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
@@ -35,27 +35,17 @@ import frc.robot.commands.trap.TrapReleaseCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
-//import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
-//import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
-// import frc.robot.subsystems.Superstructure;
-//import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
-// import frc.robot.subsystems.Superstructure.SuperstructureState;
-//import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -75,8 +65,6 @@ public class RobotContainer {
   private final AdvantageScopeSubsystem advantageScope;
   private final TrapArmSubsystem trapArm;
 
-  //private final Superstructure superstructure;
-
   private final AutoFactory autoFactory;
 
   private final Joystick translationJoystick;
@@ -84,7 +72,7 @@ public class RobotContainer {
   private final Joystick controlPanel;
 
   public static boolean musicOn;
-  //public RobotStatusCommunicator robotStatusCommunicator;
+  // public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = new DrivetrainSubsystem();
@@ -99,9 +87,11 @@ public class RobotContainer {
     trapArm = new TrapArmSubsystem();
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, indexer);
 
+
     // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
+    ledSubsystem.enableLEDs();
 
     autoFactory = new AutoFactory(() -> Dashboard.getInstance().getAuto());
 
@@ -132,17 +122,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("Manual Angle", new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
     NamedCommands.registerCommand("Manual Shoot", new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_IDLE));
     NamedCommands.registerCommand("Manual Index", new IndexerIndexCommand(indexer));
-    // NamedCommands.registerCommand("Gyro Offset", new GyroOffsetCommand());
+    NamedCommands.registerCommand("ShootAutoLow", new ShootAutoLowCommand(shamper, indexer));
 
     NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer, shamper));
-    // NamedCommands.registerCommand("Outtake", new OuttakeCommand(intake, indexer));
-    // NamedCommands.registerCommand("Default Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.DEFAULT)));
-    // NamedCommands.registerCommand("Speaker Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
-    // NamedCommands.registerCommand("Speaker Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.SPEAKER_SCORE)));
-    // NamedCommands.registerCommand("Amp Idle Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_IDLE)));
-    // NamedCommands.registerCommand("Amp Score Superstructure", new InstantCommand(() ->superstructure.setState(SuperstructureState.AMP_SCORE)));
-
-    //advantageScope.startRecording();
 
     configureButtonBindings();
   }
@@ -154,7 +136,7 @@ public class RobotContainer {
      */
 
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
-    zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroGyro()));
+    zeroGyroButton.onTrue(new InstantCommand(() -> {drivetrain.zeroGyro(); RobotState.getInstance().clearNavXOffset();}));
     JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
 
     driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(
@@ -182,7 +164,7 @@ public class RobotContainer {
     JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
     JoystickButton outtakeButton = new JoystickButton(translationJoystick, 3);
     
-    intakeInButton.whileTrue(new IntakeCommand(intake, indexer, shamper));
+    intakeInButton.whileTrue(new IntakeThenBackupCommand(intake, indexer, shamper));
     outtakeButton.whileTrue(new OuttakeCommand(intake, indexer, shamper));
 
     /*
@@ -245,37 +227,6 @@ public class RobotContainer {
     JoystickButton trapReleaseButton = new JoystickButton(controlPanel, 3);
 
     trapReleaseButton.whileTrue(new TrapReleaseCommand(trapArm));
-
-    /*
-     *  Superstructure Position Button Bindings
-     */
-
-    // JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
-    // JoystickButton shamperAmpIdleButton = new JoystickButton(rotationJoystick, 4);
-    // JoystickButton superstructureIntakeButton = new JoystickButton(rotationJoystick, 2);
-    // // JoystickButton shamperSpeakerIdleAimButon = new JoystickButton(rotationJoystick, 3);
-    // JoystickButton shamperPodiumIdleButton = new JoystickButton(rotationJoystick, 3);
-    // JoystickButton shamperDefaultButton = new JoystickButton(rotationJoystick, 5);
-
-    // shamperAmpIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.AMP_IDLE)));
-    // // shamperSpeakerIdleAimButon.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.SPEAKER_IDLE)));
-    // superstructureIntakeButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.INTAKE)));
-    // shamperPodiumIdleButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.PODIUM_IDLE)));
-    // shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
-    
-    // shamperShootButton.onTrue(new InstantCommand(() -> {
-    //   if(superstructure.getState() == SuperstructureState.AMP_IDLE) {
-    //     superstructure.setState(SuperstructureState.AMP_SCORE);
-    //   // } else if (superstructure.getState() == SuperstructureState.SPEAKER_IDLE) {
-    //   //   superstructure.setState(SuperstructureState.SPEAKER_SCORE);
-    //   } else if (superstructure.getState() == SuperstructureState.PODIUM_IDLE) {
-    //     superstructure.setState(SuperstructureState.PODIUM_SCORE);
-    //   } else {
-    //     System.out.println("WASN'T IDLING*********");
-    //   }
-    // })).onFalse(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
-
-    // shamperDefaultButton.onTrue(new InstantCommand(() -> superstructure.setState(SuperstructureState.DEFAULT)));
     
     /*
      * Music Player Toggle
@@ -303,8 +254,6 @@ public class RobotContainer {
   }
   public Command getAutonomousCommand() {
     return autoFactory.getCompiledAuto();
-    //return new PathPlannerAuto("Amp 3");
-    // return new BasicAuto(drivetrain, shamper, indexer);
   }
 
   public void resetGyro(){

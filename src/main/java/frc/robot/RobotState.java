@@ -13,7 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-// import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.util.AimingCalculator;
 import frc.robot.util.io.Dashboard;
 import frc.robot.util.states.DrivetrainState;
@@ -33,8 +32,7 @@ public class RobotState {
     private boolean musicEnabled;
     private boolean isClimbing;
     private boolean shamperAtGoalAngle;
-
-    // private SuperstructureState superstructureState;
+    private double autoOffset;
 
     public static RobotState getInstance() {
         if (INSTANCE == null) {
@@ -114,7 +112,8 @@ public class RobotState {
      */
     public void resetInitialPose(Pose2d initialStartingPose) {
         navxOffset = new Rotation2d();
-        // navxOffset = initialStartingPose.getRotation();
+        autoOffset = -  initialStartingPose.getRotation().getRadians() + Math.PI;
+        System.out.println("auto offset of :" + Units.radiansToDegrees(autoOffset));
         initialPose = initialStartingPose;
     }
 
@@ -158,6 +157,15 @@ public class RobotState {
 
     public Rotation2d getRotation2dRaw() {
         return robotRotation2d.rotateBy(navxOffset);
+    }
+
+    public void applyNavxOffset(){
+        System.out.println("NavX Offset Applied");
+        this.navxOffset = new Rotation2d(autoOffset);
+    }
+
+    public void clearNavXOffset() {
+        this.navxOffset = new Rotation2d();
     }
 
     public void addNavXOffset(double offset){

@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
+
+import javax.swing.text.html.Option;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -11,8 +14,12 @@ import com.team2052.lib.photonvision.PhotonCamera;
 import com.team2052.lib.photonvision.PhotonPoseEstimator;
 import com.team2052.lib.photonvision.PhotonPoseEstimator.PoseStrategy;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.units.Time;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -27,6 +34,12 @@ public class AprilTagSubsystem extends SubsystemBase{
     private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     private PhotonCamera camera0 = new PhotonCamera(Constants.PhotonCamera1.CAMERA_NAME, Constants.PhotonCamera1.ROBOT_TO_CAMERA_METERS);
     private PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera0, camera0.getRobotToCamera());
+    private int speakertag;
+    private double speakerTagYaw;
+    private Timer timer;
+    private double lastUpdatedTime;
+    private boolean isSeeingTag;
+
     //private PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy., camera0, camera0.getRobotToCamera());
     //private PhotonCamera camera1 = new PhotonCamera(Constants.PhotonCamera2.CAMERA_NAME, Constants.PhotonCamera2.ROBOT_TO_CAMERA_METERS);
   
@@ -41,6 +54,14 @@ public class AprilTagSubsystem extends SubsystemBase{
     private AprilTagSubsystem() {
         cameras.add(camera0);
         //cameras.add(camera1);
+        if (!robotState.getInstance().isRedAlliance()){
+            speakertag = 8; //blue
+        } else {
+            speakertag = 4;//red
+        }
+        timer.start();
+        isSeeingTag = false;
+        SmartDashboard.putBoolean("Is Seeing Speaker April Tag", isSeeingTag);
     }
 
     @Override
@@ -48,6 +69,8 @@ public class AprilTagSubsystem extends SubsystemBase{
         for(int i = 0; i < cameras.size(); i++){
             PhotonCamera camera = cameras.get(i);
             var result = camera.getLatestResult();
+            var targets = result.getTargets();
+
             boolean hasTargets = result.hasTargets();
             if (hasTargets){
                 // PhotonTrackedTarget target7 = null;
@@ -66,7 +89,25 @@ public class AprilTagSubsystem extends SubsystemBase{
                     estimatedPose = poseUpdate.get();
                     robotState.addAprilTagVisionUpdate(estimatedPose);
                 }
+
+                for (int j = 0; j < targets.size(); j++) {
+                    if (targets.get(j).getFiducialId() == speakertag) {
+                        speakerTagYaw = targets.get(j).getYaw();
+                        double lastUpdatedTime = timer.get();
+                    }
+                }
+                
             }
+        }
+    }
+
+    public Optional<Double> getYaw() {
+        if (timer.get() - lastUpdatedTime <= Constants.AprilTags.APRILTAG_TIMEOUT) {
+            isSeeingTag = true;
+            return Optional.of(speakerTagYaw);
+        } else {
+            isSeeingTag = false;
+            return Optional.empty();
         }
     }
 }

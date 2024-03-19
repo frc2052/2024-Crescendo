@@ -9,7 +9,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.commands.auto.drive.BasicAuto;
+import frc.robot.commands.auto.backupAuto.BasicAuto;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.util.io.Dashboard;
