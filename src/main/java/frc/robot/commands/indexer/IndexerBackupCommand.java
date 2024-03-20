@@ -32,7 +32,7 @@ public class IndexerBackupCommand extends Command {
   @Override
   public void execute() {
     System.out.println(runBackTimer.get());
-    if(runBackTimer.get() < 0.25){
+    if(runBackTimer.get() < 0.125){
       indexer.slideBack();
     } else {
       isFinished = true;

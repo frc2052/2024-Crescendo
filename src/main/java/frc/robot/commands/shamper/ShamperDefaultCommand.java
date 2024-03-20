@@ -39,7 +39,7 @@ public class ShamperDefaultCommand extends Command {
           shamper.setShootSpeed(ShamperSpeed.AMP_IDLE);
       }
     }
-    if(!RobotState.getInstance().getNoteStagedDetected() && shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT) {
+    if((!RobotState.getInstance().getNoteStagedDetected() && !RobotState.getInstance().getNoteHeldDetected()) && shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT) {
       shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
     }
   }

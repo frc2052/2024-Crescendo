@@ -15,7 +15,7 @@ import frc.robot.util.io.Dashboard;
 public class LedSubsystem extends SubsystemBase {
     private static LedSubsystem INSTANCE;
     
-    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4, codeChannel5, codeChannel6;
+    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4, codeChannel5;
 
     private LEDStatusMode currentStatusMode;
 
@@ -29,7 +29,6 @@ public class LedSubsystem extends SubsystemBase {
         codeChannel3 = new DigitalOutput(Constants.LEDs.CHANNEL_3_PIN);
         codeChannel4 = new DigitalOutput(Constants.LEDs.CHANNEL_4_PIN);
         codeChannel5 = new DigitalOutput(Constants.LEDs.CHANNEL_5_PIN);
-        codeChannel6 = new DigitalOutput(Constants.LEDs.CHANNEL_6_PIN);
         robotDisabled = true;
 
         currentStatusMode = LEDStatusMode.OFF;
@@ -122,7 +121,6 @@ public class LedSubsystem extends SubsystemBase {
         codeChannel3.set((code & 4) > 0);   // 2^2
         codeChannel4.set((code & 8) > 0);   // 2^3
         codeChannel5.set((code & 16) > 0);  // 2^4
-        codeChannel6.set((code & 32) > 0);
     }
 
     public void setLEDStatusMode(LEDStatusMode statusMode) {

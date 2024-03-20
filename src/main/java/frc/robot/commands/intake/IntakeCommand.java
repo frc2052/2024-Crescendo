@@ -26,7 +26,11 @@ public class IntakeCommand extends Command {
     @Override
     public void execute() {
         intake.intake();
-        indexer.load();
+        if(indexer.getNoteHeld()){
+            indexer.loadSlow();
+        } else {
+            indexer.load();
+        }
     }
 
     @Override
@@ -37,6 +41,6 @@ public class IntakeCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return indexer.getNoteHeld();
+        return indexer.getNoteStaged();
     }
 }
