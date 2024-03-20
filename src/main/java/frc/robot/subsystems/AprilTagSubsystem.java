@@ -53,7 +53,10 @@ public class AprilTagSubsystem extends SubsystemBase{
 
     private AprilTagSubsystem() {
         cameras.add(camera0);
-        //cameras.add(camera1);
+        // cameras.add(camera1);
+
+        timer = new Timer();
+
         if (!robotState.getInstance().isRedAlliance()){
             speakertag = 8; //blue
         } else {

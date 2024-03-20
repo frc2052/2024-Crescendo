@@ -107,14 +107,6 @@ public final class Constants {
 
         public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;
     }
-
-    public static final class LED {
-        public static final int CHANNEL_1_PIN = 0;
-        public static final int CHANNEL_2_PIN = 0;
-        public static final int CHANNEL_3_PIN = 0;
-        public static final int CHANNEL_4_PIN = 0;
-        public static final int CHANNEL_5_PIN = 0;
-    }
     
     public static class MotorConstants {
         public static final double PIVOT_MOTOR_TICKS_PER_ROTATION = 42;
@@ -133,8 +125,8 @@ public final class Constants {
         public static final double CLIMBER_MOTOR_PCT = 1;
         public static final double CLIMBER_MOTOR_PCT_SLOW = 0.25;
 
-        public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = false;
-        public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = false;
+        public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = true;
+        public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = true;
 
         public static final int CLIMBER_LIMIT_SWITCH_PIN = 9;
     }
@@ -146,8 +138,8 @@ public final class Constants {
 
     public static class Indexer {
         public static final double LOWER_INDEX_SPEED_PCT = 1;
-        public static final double UPPER_LOAD_SPEED_PCT = 0.7;
-        public static final double UPPER_LOAD_SLOW_SPEED_PCT = 0.5;
+        public static final double UPPER_LOAD_SPEED_PCT = 0.5;
+        public static final double UPPER_LOAD_SLOW_SPEED_PCT = 0.2;
         public static final double UPPER_INDEX_SPEED_PCT = 1;
         
         public static final double AMP_INDEX_SPEED_PCT = 0.8;
@@ -157,8 +149,8 @@ public final class Constants {
         public static final double UPPER_OUTTAKE_SPEED_PCT = 1;
 
         // DIO
-        public static final int EARLY_INDEXER_SENSOR_PIN = 0;
-        public static final int END_INDEXER_SENSOR_PIN = 8;
+        public static final int EARLY_INDEXER_SENSOR_PIN = 8;
+        public static final int END_INDEXER_SENSOR_PIN = 0;
     }
   
     public static class Shamper {
@@ -443,7 +435,6 @@ public final class Constants {
         public static final int CHANNEL_4_PIN = 6; // 2^3
         public static final int CHANNEL_5_PIN = 7; // 2^4
         public static final int CHANNEL_6_PIN = 8; // 2^5
-        public static final int CHANNEL_7_PIN = 9; // 2^6
     }
 }
 

@@ -12,12 +12,7 @@ import frc.robot.subsystems.TrapArmSubsystem;
 
 public class TrapReleaseCommand extends Command {
   private TrapArmSubsystem trapArm;
-  
-  private ShuffleboardTab tab = Shuffleboard.getTab("trap");
-  private GenericEntry upperMotorSpeedPct =
-  tab.add("Upper Motor Speed", 0).getEntry();
-  private GenericEntry lowerMotorSpeedPct =
-  tab.add("Lower Motor Speed", 0).getEntry();
+
   /** Creates a new TrapReleaseCommand. */
   public TrapReleaseCommand(TrapArmSubsystem trapArm) {
     this.trapArm = trapArm;

@@ -91,6 +91,5 @@ public class IndexerSubsystem extends SubsystemBase {
   public void periodic() {
     RobotState.getInstance().updateNoteHeld(getNoteHeld());
     RobotState.getInstance().updateNoteStaged(getNoteStaged());
-    //System.out.println(noteDetected);
   }
 }

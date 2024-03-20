@@ -194,12 +194,9 @@ public class RobotState {
     }
 
     public boolean gyroResetNeeded(){
-        if (lastGyroResetValue == -1) {
-            lastGyroResetValue = getRotation2d360().getDegrees();
-        }
-
-        if (lastGyroResetTimer.get() > 2 && (Math.abs(lastGyroResetValue - getRotation2d360().getDegrees())) > 2){
+        if (lastGyroResetTimer.get() > 5 && (Math.abs(0 - getRotation2d360().getDegrees())) > 0.5){
             lastGyroResetTimer.restart();
+            System.out.println("GYRO DIFF: " + (Math.abs(0 - getRotation2d360().getDegrees())));
             return true;
         }
 
@@ -239,11 +236,11 @@ public class RobotState {
     }
 
     public boolean getNoteStagedDetected() {
-        return noteHeld;
+        return noteStaged;
     }
 
     public boolean getNoteHeldDetected() {
-        return noteStaged;
+        return noteHeld;
     }
 
     /**
