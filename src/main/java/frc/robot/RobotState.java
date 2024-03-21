@@ -16,6 +16,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.AimingCalculator;
 import frc.robot.util.io.Dashboard;
 import frc.robot.util.states.DrivetrainState;
@@ -326,5 +328,6 @@ public class RobotState {
         Logger.recordOutput("NOTE HELD", noteHeld);
         Logger.recordOutput("auto gyro method angle", robotPose.getRotation().getDegrees());
         Dashboard.getInstance().putData("NOTE HELD", noteHeld);
+        Dashboard.getInstance().updateIsClimbing(isClimbing);
     }   
 }

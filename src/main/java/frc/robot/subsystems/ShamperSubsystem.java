@@ -41,7 +41,8 @@ public class ShamperSubsystem extends SubsystemBase {
   private static DigitalInput podiumHallEffectSensor;
 
   private double goalAngle;
-  private ShamperSpeed goalSpeed;
+  private double goalSpeedUpper;
+  private double goalSpeedLower;
   private ProfiledPIDController pivotMotorController;
 
   private boolean override;
@@ -58,7 +59,8 @@ public class ShamperSubsystem extends SubsystemBase {
   public ShamperSubsystem() {
     currentIdleMode = ShamperIdleMode.SPEAKER_IDLE;
 
-    goalSpeed = ShamperSpeed.OFF;
+    goalSpeedUpper = 0;
+    goalSpeedLower = 0;
     goalAngle = Constants.Shamper.Angle.SUB;
 
     lowerMotor = new TalonFX(Constants.CAN.LOWER_SHOOTER_MOTOR_ID);
@@ -121,18 +123,32 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public void setShootSpeed(ShamperSpeed speeds) { 
-    goalSpeed = speeds;
-    // lowerMotor.set(lowerMotorController.calculate(getLowerShamperSpeed(), contrainSpeed(goalSpeed.getLowerPCT())));
-    // upperMotor.set(upperMotorController.calculate(getUpperShamperSpeed(), contrainSpeed(goalSpeed.getUpperPCT())));
-    
-    lowerMotor.getConfigurator().apply(shootConfig, 0.05);
-    upperMotor.getConfigurator().apply(shootConfig, 0.05);
+    if(speeds.getUpper() == goalSpeedUpper && speeds.getLower() == goalSpeedLower) {
+      // do nothing if set speed is already the goal speed
+      return;
+    }
+
+    if(goalSpeedUpper == 0 || (Math.copySign(1, upperMotor.getVelocity().getValueAsDouble()) == Math.copySign(1, speeds.getUpper()))) {
+      // no ramp needed, wheel either stopped or already spinning in same direction
+      lowerMotor.getConfigurator().apply(shootConfig, 0.05);
+      upperMotor.getConfigurator().apply(shootConfig, 0.05);
+    } else {
+      // ramp needed, wheel goal is to be reversed
+      lowerMotor.getConfigurator().apply(windDownConfig, 0.05);
+      upperMotor.getConfigurator().apply(windDownConfig, 0.05);
+    }
+
+    goalSpeedUpper = speeds.getUpper();
+    goalSpeedLower = speeds.getLower();
+
     shooterVelocity.Slot = 0;
-    lowerMotor.setControl(shooterVelocity.withVelocity(goalSpeed.getLower()));
-    upperMotor.setControl(shooterVelocity.withVelocity(goalSpeed.getUpper()));
+    lowerMotor.setControl(shooterVelocity.withVelocity(goalSpeedLower));
+    upperMotor.setControl(shooterVelocity.withVelocity(goalSpeedUpper));
   }
 
   public void setShootSpeed(double lowerSpeed, double upperSpeed) {
+    goalSpeedLower = lowerSpeed;
+    goalSpeedUpper = upperSpeed;
     lowerMotor.getConfigurator().apply(shootConfig, 0.05);
     upperMotor.getConfigurator().apply(shootConfig, 0.05);
     shooterVelocity.Slot = 0;
@@ -299,15 +315,16 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public void toggleCurrentIdle() {
     switch (currentIdleMode) {
-        // keep no idle if already no idle
-        case NO_IDLE:
-            Dashboard.getInstance().setCurrentIdle(ShamperIdleMode.NO_IDLE);
         // go from speaker idle to amp idle
         case SPEAKER_IDLE:
-            Dashboard.getInstance().setCurrentIdle(ShamperIdleMode.AMP_IDLE);
+          currentIdleMode = ShamperIdleMode.AMP_IDLE;
+          SmartDashboard.putString(Constants.Dashboard.IDLE_MODE_KEY, currentIdleMode.name());
+          break;
         // go from amp idle to speaker idle
         case AMP_IDLE:
-            Dashboard.getInstance().setCurrentIdle(ShamperIdleMode.SPEAKER_IDLE);
+          currentIdleMode = ShamperIdleMode.SPEAKER_IDLE;
+          SmartDashboard.putString(Constants.Dashboard.IDLE_MODE_KEY, currentIdleMode.name());
+          break;
     }
   }
 
@@ -317,10 +334,10 @@ public class ShamperSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Logger.recordOutput("upperGoal", goalSpeed.getUpper());
+    Logger.recordOutput("upperGoal", goalSpeedUpper);
     Logger.recordOutput("Shamper Current Angle:  ", getShamperAngle());
     Logger.recordOutput("Shamper Current Goal Angle: ", goalAngle);
-    Logger.recordOutput("Shamper Shooter At Speed ", shooterAtSpeed(goalSpeed.getLower(), goalSpeed.getUpper()));
+    Logger.recordOutput("Shamper Shooter At Speed ", shooterAtSpeed(goalSpeedLower, goalSpeedUpper));
     Logger.recordOutput("Upper Shooter Speed ", upperMotor.getVelocity().getValueAsDouble());
     Logger.recordOutput("Lower Shooter Speed ", lowerMotor.getVelocity().getValueAsDouble());
 
@@ -360,22 +377,20 @@ public class ShamperSubsystem extends SubsystemBase {
   }
 
   public static enum ShamperSpeed {
-    OFF(0, 0, true),
-    SPEAKER_IDLE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS, true),
-    SUB(Constants.Shamper.LOWER_SHAMPER_SUB_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SUB_SPEED_RPS, false),
-    AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_RPS, true),
-    SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_RPS, false),
-    AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_PCT, false),
-    TRAP(Constants.Shamper.UPPER_SHAMPER_TRAP_SPEED_RPS, Constants.Shamper.LOWER_SHAMPER_TRAP_SPEED_RPS, false);
+    OFF(0, 0),
+    SPEAKER_IDLE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS),
+    SUB(Constants.Shamper.LOWER_SHAMPER_SUB_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SUB_SPEED_RPS),
+    AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_RPS),
+    SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_RPS),
+    AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_PCT),
+    TRAP(Constants.Shamper.UPPER_SHAMPER_TRAP_SPEED_RPS, Constants.Shamper.LOWER_SHAMPER_TRAP_SPEED_RPS);
 
     private final double lowerRPS;
     private final double upperRPS;
-    private final boolean isIdle;
 
-    private ShamperSpeed(double lowerRPS, double upperRPS, boolean isIdle) {
+    private ShamperSpeed(double lowerRPS, double upperRPS) {
       this.lowerRPS = lowerRPS;
       this.upperRPS = upperRPS;
-      this.isIdle = isIdle;
     }
 
     public double getLower() {
@@ -384,10 +399,6 @@ public class ShamperSubsystem extends SubsystemBase {
 
     public double getUpper() {
       return upperRPS;
-    }
-
-    public boolean isIdle() {
-      return isIdle;
     }
   }
 }

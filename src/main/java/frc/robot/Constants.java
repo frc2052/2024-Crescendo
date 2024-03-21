@@ -190,8 +190,9 @@ public final class Constants {
         public static final double UPPER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
+        // idle can't be the same as our shot at sub because the idle logic won't start idle again
+        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.699 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.699 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
@@ -199,8 +200,8 @@ public final class Constants {
         public static final double UPPER_SHAMPER_AMP_SPEED_PCT = -1 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_AMP_SPEED_PCT = 0.20 * SHOOTER_MAX_VELOCITY_RPS;
         
-        public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
-        public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0;
+        public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = -0.7 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0.20 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
@@ -264,7 +265,7 @@ public final class Constants {
         public static final double NOTE_DETECTION_CAMERA_ROTATION_OFFSET = 0;
     }
     public static final class PhotonCamera1 {
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
 
         public static final double X_OFFSET_M = 0.29;
         public static final double Y_OFFSET_M = -0.26;
@@ -281,7 +282,7 @@ public final class Constants {
     }
     public static final class PhotonCamera2 {
         // TODO: make offsets more precise than caleb's eyeballing
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
 
         public static final double X_OFFSET_M = 0.01;
         public static final double Y_OFFSET_M = -0.40;

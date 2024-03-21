@@ -50,7 +50,7 @@ public class Dashboard {
         shamperIdleModeChooser.addOption(Idle.NO_IDLE.name(), Idle.NO_IDLE);
         shamperIdleModeChooser.addOption(Idle.IDLE.name(), Idle.IDLE);
         shamperIdleModeChooser.setDefaultOption(Idle.IDLE.name(), Idle.IDLE);
-        SmartDashboard.putData(Constants.Dashboard.IDLE_MODE_KEY, shamperIdleModeChooser);
+        SmartDashboard.putData(Constants.Dashboard.IDLE_CHOOSER_KEY, shamperIdleModeChooser);
         
         autoChooser = new SendableChooser<Auto>();
         for (Auto auto : Auto.values()) {
@@ -64,6 +64,8 @@ public class Dashboard {
         climberModeChooser.addOption(ClimberMode.COAST.name(), ClimberMode.COAST);
         climberModeChooser.setDefaultOption(ClimberMode.BRAKE.name(), ClimberMode.BRAKE);
         SmartDashboard.putData(Constants.Dashboard.CLIMBER_MODE_KEY, climberModeChooser);
+        
+        SmartDashboard.putString(Constants.Dashboard.IDLE_MODE_KEY, ShamperIdleMode.SPEAKER_IDLE.name());
     }
 
     public <V> void putData(String key, V value) {
@@ -105,6 +107,10 @@ public class Dashboard {
     public boolean isClimberCoast() {
         return climberModeChooser.getSelected() == ClimberMode.COAST;
     }
+
+    public void updateIsClimbing(boolean isClimbing) {
+        SmartDashboard.putBoolean("Is Climbing", isClimbing);
+    }
     
     public boolean shouldIdle() {
         return shamperIdleModeChooser.getSelected() == Idle.IDLE;
@@ -112,11 +118,6 @@ public class Dashboard {
 
     public Auto getAuto() {
         return autoChooser.getSelected();
-    }
-
-    public void setCurrentIdle(ShamperIdleMode currentIdleMode) {
-        System.out.println("Setting Current Idle Mode To: " + currentIdleMode.name());
-        SmartDashboard.putString(Constants.Dashboard.IDLE_MODE_KEY, currentIdleMode.name());
     }
 
     // Enums for Dashboard elements:
@@ -136,7 +137,6 @@ public class Dashboard {
     }
 
     public static enum ShamperIdleMode {
-        NO_IDLE,
         SPEAKER_IDLE,
         AMP_IDLE;
     }

@@ -22,7 +22,6 @@ import frc.robot.commands.intake.OuttakeCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperAngleCommand;
 import frc.robot.commands.shamper.ShamperDefaultCommand;
-import frc.robot.commands.shamper.ShamperIdleCommand;
 import frc.robot.commands.shamper.ShamperManualShootCommand;
 import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
 import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
@@ -41,13 +40,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.io.Dashboard;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -156,10 +153,12 @@ public class RobotContainer {
     JoystickButton climberRetractButton = new JoystickButton(controlPanel, 6);
     JoystickButton climberExtendButton = new JoystickButton(controlPanel, 1);
     JoystickButton climberManualRetractSlow = new JoystickButton(controlPanel, 4);
+    JoystickButton resetIsClimbingButton = new JoystickButton(rotationJoystick, 6);
 
     climberRetractButton.whileTrue(new ClimberRetractCommand(climber));
     climberExtendButton.whileTrue(new ClimberExtendCommand(climber));
     climberManualRetractSlow.whileTrue(new ClimberSlowRetractCommand(climber));
+    resetIsClimbingButton.whileTrue(new InstantCommand(() -> robotState.updateIsClimbing(false)));
 
     /*
      * Intake Button Bindings
@@ -176,9 +175,7 @@ public class RobotContainer {
      */
 
     JoystickButton indexManualButton = new JoystickButton(controlPanel, 10);
-    JoystickButton indexBackButton = new JoystickButton(rotationJoystick, 6);
     indexManualButton.whileTrue(new IndexerIndexCommand(indexer));
-    indexBackButton.onTrue(new IndexerBackupCommand(indexer));
     /*
      *  Shooter Button Bindings
      */

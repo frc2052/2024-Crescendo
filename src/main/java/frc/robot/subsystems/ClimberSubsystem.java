@@ -35,11 +35,11 @@ public class ClimberSubsystem extends SubsystemBase{
 
     public void extend(boolean override) {
         leftClimberMotor.set(Constants.Climber.CLIMBER_MOTOR_PCT);
-        RobotState.getInstance().updateIsClimbing(true);
     }
 
     public void retract(boolean override) {
         leftClimberMotor.set(-Constants.Climber.CLIMBER_MOTOR_PCT);
+        RobotState.getInstance().updateIsClimbing(true);
     }
 
     public void retractSlow(boolean override) {
@@ -53,7 +53,7 @@ public class ClimberSubsystem extends SubsystemBase{
         leftClimberMotor.set(0);
     }
 
-    public boolean limitSwitchHit(){
+    public boolean limitSwitchHit() {
         return !limitSwitch.get();
     }
 
