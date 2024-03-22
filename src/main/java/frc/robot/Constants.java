@@ -169,6 +169,8 @@ public final class Constants {
         public static final boolean LOWER_MOTOR_IS_INVERTED = false;
         public static final boolean LEFT_PIVOT_MOTOR_IS_INVERTED = false;
         public static final boolean RIGHT_PIVOT_MOTOR_IS_INVERTED = false;
+
+        public static final boolean ENCODER_INVERTED = true;
             
         public static final double PIVOT_GEAR_RATIO = 60 * (48 / 22); 
             

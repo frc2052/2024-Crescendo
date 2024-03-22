@@ -13,8 +13,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.MotorFeedbackSensor;
+import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -35,7 +39,10 @@ public class ShamperSubsystem extends SubsystemBase {
   private static CANSparkMax leftPivotMotor;
   private static CANSparkMax rightPivotMotor;
 
-  private final DutyCycleEncoder rotationEncoder;
+  private SparkPIDController pivotController;
+  private SparkAbsoluteEncoder pivotEncoder;
+
+  // private final DutyCycleEncoder rotationEncoder;
   private static DigitalInput limitSwitch;
   private static DigitalInput ampHallEffectSensor;
   private static DigitalInput podiumHallEffectSensor;
@@ -70,9 +77,31 @@ public class ShamperSubsystem extends SubsystemBase {
     leftPivotMotor = new CANSparkMax(Constants.CAN.LEFT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
     rightPivotMotor = new CANSparkMax(Constants.CAN.RIGHT_PIVOT_SHAMPER_MOTOR_ID, MotorType.kBrushless);
 
-    rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_PIN);
-    rotationEncoder.setPositionOffset(Constants.Shamper.ENCODER_OFFSET_DEGREES / 360);
-    rotationEncoder.setDistancePerRotation(360);
+    leftPivotMotor.restoreFactoryDefaults();
+    rightPivotMotor.restoreFactoryDefaults();
+
+    pivotEncoder = leftPivotMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    pivotEncoder.setPositionConversionFactor(360);
+    pivotEncoder.setInverted(Constants.Shamper.ENCODER_INVERTED);
+
+    pivotController = leftPivotMotor.getPIDController();
+    pivotController.setFeedbackDevice(pivotEncoder);
+    pivotController.setP(0.01);
+    pivotController.setI(0);
+    pivotController.setD(0);
+    pivotController.setFF(0.001);
+    pivotController.setOutputRange(-1, 1);
+    
+    leftPivotMotor.setInverted(Constants.Shamper.LEFT_PIVOT_MOTOR_IS_INVERTED);
+    rightPivotMotor.setInverted(Constants.Shamper.RIGHT_PIVOT_MOTOR_IS_INVERTED);
+    rightPivotMotor.follow(leftPivotMotor, false);
+
+    leftPivotMotor.setIdleMode(IdleMode.kBrake);
+    rightPivotMotor.setIdleMode(IdleMode.kBrake);
+
+    // rotationEncoder = new DutyCycleEncoder(Constants.Shamper.ROTATION_ENCODER_PIN);
+    // rotationEncoder.setPositionOffset(Constants.Shamper.ENCODER_OFFSET_DEGREES / 360);
+    // rotationEncoder.setDistancePerRotation(360);
     
     shooterVelocity = new VelocityVoltage(0);
 
@@ -98,28 +127,19 @@ public class ShamperSubsystem extends SubsystemBase {
     lowerMotor.setNeutralMode(NeutralModeValue.Coast);
     upperMotor.setNeutralMode(NeutralModeValue.Coast);
 
-    leftPivotMotor.restoreFactoryDefaults();
-    
-    leftPivotMotor.setInverted(Constants.Shamper.LEFT_PIVOT_MOTOR_IS_INVERTED);
-    rightPivotMotor.setInverted(Constants.Shamper.RIGHT_PIVOT_MOTOR_IS_INVERTED);
-    rightPivotMotor.follow(leftPivotMotor, false);
-
-    leftPivotMotor.setIdleMode(IdleMode.kBrake);
-    rightPivotMotor.setIdleMode(IdleMode.kBrake);
-
     limitSwitch = new DigitalInput(Constants.Shamper.LIMIT_SWITCH_PIN);
     // ampHallEffectSensor = new DigitalInput(Constants.Shamper.AMP_HALL_EFFECT_PIN);
     // podiumHallEffectSensor = new DigitalInput(Constants.Shamper.PODIUM_HALL_EFFECT_PIN);
 
-    pivotMotorController = new ProfiledPIDController(
-      Constants.Shamper.PIVOT_MOTOR_KP,
-      Constants.Shamper.PIVOT_MOTOR_KI,
-      Constants.Shamper.PIVOT_MOTOR_KD,      
-      new TrapezoidProfile.Constraints(
-      Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
-      Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
+    // pivotMotorController = new ProfiledPIDController(
+    //   Constants.Shamper.PIVOT_MOTOR_KP,
+    //   Constants.Shamper.PIVOT_MOTOR_KI,
+    //   Constants.Shamper.PIVOT_MOTOR_KD,      
+    //   new TrapezoidProfile.Constraints(
+    //   Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY,
+    //   Constants.Shamper.PIVOT_MOTOR_MAX_ACCELERATION));
      
-    pivotMotorController.setTolerance(Constants.Shamper.DEAD_ZONE_DEGREES);
+    // pivotMotorController.setTolerance(Constants.Shamper.DEAD_ZONE_DEGREES);
   }
 
   public void setShootSpeed(ShamperSpeed speeds) { 
@@ -203,22 +223,34 @@ public class ShamperSubsystem extends SubsystemBase {
     lowerMotor.set(0);
   }
 
-  public void setAngle(double goalAngle) {
-    //System.out.println("Setting Angle " + goalAngle);
-    this.goalAngle = goalAngle;
+  // public void setAngle(double goalAngle) {
+  //   //System.out.println("Setting Angle " + goalAngle);
+  //   this.goalAngle = goalAngle;
+  // }
+
+  public void setAngle(double degrees) {
+    SmartDashboard.putNumber("Last Requested Angles", degrees);
+    if(degrees > Constants.Shamper.Angle.MAXIMUM) {
+      degrees = Constants.Shamper.Angle.MAXIMUM;
+    } else if (degrees < Constants.Shamper.Angle.MINIMUM) {
+      degrees = Constants.Shamper.Angle.MINIMUM;
+    }
+
+    pivotController.setReference(degrees, ControlType.kPosition);
   }
 
   public void runPivot(double pct) {
-    pct = constrainPivotSpeed(pct); 
-    if(getShamperAngle() > Constants.Shamper.Angle.MINIMUM && getShamperAngle() < Constants.Shamper.Angle.MAXIMUM) {
-      leftPivotMotor.set(pct);
-    } else if (getShamperAngle() < Constants.Shamper.Angle.MINIMUM && pct > 0) { // If we are below the minimum but trying to go up it's fine
-      leftPivotMotor.set(pct);      
-    } else if (getShamperAngle() > Constants.Shamper.Angle.MAXIMUM && pct < 0) {// If we are above the maximum but trying to go down it's fine
-      leftPivotMotor.set(pct);      
-    } else {
-      leftPivotMotor.stopMotor();
-    }
+    leftPivotMotor.set(pct);
+    // pct = constrainPivotSpeed(pct); 
+    // if(getShamperAngle() > Constants.Shamper.Angle.MINIMUM && getShamperAngle() < Constants.Shamper.Angle.MAXIMUM) {
+    //   leftPivotMotor.set(pct);
+    // } else if (getShamperAngle() < Constants.Shamper.Angle.MINIMUM && pct > 0) { // If we are below the minimum but trying to go up it's fine
+    //   leftPivotMotor.set(pct);      
+    // } else if (getShamperAngle() > Constants.Shamper.Angle.MAXIMUM && pct < 0) {// If we are above the maximum but trying to go down it's fine
+    //   leftPivotMotor.set(pct);      
+    // } else {
+    //   leftPivotMotor.stopMotor();
+    // }
   }
 
   public double getPivotSpeed(){
@@ -247,15 +279,14 @@ public class ShamperSubsystem extends SubsystemBase {
     // % is "mod", mod will always give remander when dividing by 360
     // subtracting 360 to reverse the angle and getting the absolute value so it is positive
 
-    SmartDashboard.putNumber("RAW ENCODER GET", rotationEncoder.get());
-    SmartDashboard.putNumber("RAW ENCODER DISTANCE", rotationEncoder.getDistance());
+    return pivotEncoder.getPosition();
 
-    double angle = rotationEncoder.getAbsolutePosition() % 1.0;
-    if (angle < 0) {
-      angle += 1;
-    }
+    // double angle = rotationEncoder.getAbsolutePosition() % 1.0;
+    // if (angle < 0) {
+    //   angle += 1;
+    // }
 
-    return 360 - (angle * 360);
+    // return 360 - (angle * 360);
     // return Math.abs((rotationEncoder.getDistance() % 360) - 360);
   }
 
@@ -340,6 +371,7 @@ public class ShamperSubsystem extends SubsystemBase {
     Logger.recordOutput("Shamper Shooter At Speed ", shooterAtSpeed(goalSpeedLower, goalSpeedUpper));
     Logger.recordOutput("Upper Shooter Speed ", upperMotor.getVelocity().getValueAsDouble());
     Logger.recordOutput("Lower Shooter Speed ", lowerMotor.getVelocity().getValueAsDouble());
+    SmartDashboard.putNumber("Current Shamper Angle", getShamperAngle());
 
     RobotState.getInstance().updateShamperAtGoalAngle(isAtGoalAngle());
     
@@ -351,23 +383,23 @@ public class ShamperSubsystem extends SubsystemBase {
     //     stopPivot();
     //   }
 
-    if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
-      if (isAtGoalAngle()) {
-        stopPivot();
-        //System.out.println("At Goal of " + this.goalAngle);
-      } else if (Math.abs(getShamperAngle() - goalAngle) > 10) {
-        double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle));
-        runPivot(speed);
-        //System.out.println("Go Fast " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
-      } else {
-        double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle));
-        runPivot(speed);
-        //System.out.println("Go Slow " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
-      }
-    } else {
-      System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
-      stopPivot();
-    }
+    // if (goalAngle > Constants.Shamper.Angle.MINIMUM && goalAngle < Constants.Shamper.Angle.MAXIMUM) {
+    //   if (isAtGoalAngle()) {
+    //     stopPivot();
+    //     //System.out.println("At Goal of " + this.goalAngle);
+    //   } else if (Math.abs(getShamperAngle() - goalAngle) > 10) {
+    //     double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle));
+    //     runPivot(speed);
+    //     //System.out.println("Go Fast " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_MAX_VELOCITY, -(getShamperAngle() - goalAngle)));
+    //   } else {
+    //     double speed = Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle));
+    //     runPivot(speed);
+    //     //System.out.println("Go Slow " + Math.copySign(Constants.Shamper.PIVOT_MOTOR_LEVEL_2_VELOCITY, -(getShamperAngle() - goalAngle)));
+    //   }
+    // } else {
+    //   System.out.println("Goal Angle for Shamper Pivot Invalid: " + goalAngle);
+    //   stopPivot();
+    // }
 
     // } else {
     //   System.out.println("***TRYING TO LOWER SHAMPER WHILE ZEROED***");

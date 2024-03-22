@@ -1,4 +1,4 @@
-package frc.robot.commands.shamper;
+package frc.robot.commands.shamper.shoot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShamperSubsystem;

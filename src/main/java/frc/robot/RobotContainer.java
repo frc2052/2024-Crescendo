@@ -20,16 +20,18 @@ import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
-import frc.robot.commands.shamper.ShamperAngleCommand;
 import frc.robot.commands.shamper.ShamperDefaultCommand;
-import frc.robot.commands.shamper.ShamperManualShootCommand;
-import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
-import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
-import frc.robot.commands.shamper.ShamperSubCommand;
-import frc.robot.commands.shamper.ShamperTrapCommand;
-import frc.robot.commands.shamper.ShamperWindDownCommand;
 import frc.robot.commands.shamper.lookup.ShamperAutoAngleCommand;
 import frc.robot.commands.shamper.lookup.ShamperAutoShootCommand;
+import frc.robot.commands.shamper.pivot.ShamperAngleCommand;
+import frc.robot.commands.shamper.pivot.ShamperPivotDownPct;
+import frc.robot.commands.shamper.pivot.ShamperPivotManualDownCommand;
+import frc.robot.commands.shamper.pivot.ShamperPivotManualUpCommand;
+import frc.robot.commands.shamper.pivot.ShamperPivotUpPct;
+import frc.robot.commands.shamper.pivot.ShamperSubCommand;
+import frc.robot.commands.shamper.shoot.ShamperManualShootCommand;
+import frc.robot.commands.shamper.shoot.ShamperTrapCommand;
+import frc.robot.commands.shamper.shoot.ShamperWindDownCommand;
 import frc.robot.commands.trap.TrapReleaseCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -113,7 +115,7 @@ public class RobotContainer {
       )
     );
 
-    shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
+    // shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
@@ -209,6 +211,8 @@ public class RobotContainer {
      JoystickButton shamperClimbHeightButton = new JoystickButton(controlPanel, 9);
      JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 7);
      JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 5);
+     JoystickButton shamperManualDownPct = new JoystickButton(translationJoystick, 7);
+     JoystickButton shamperManualUpPct = new JoystickButton(translationJoystick, 6);
 
      shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
      shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.PODIUM));
@@ -219,6 +223,9 @@ public class RobotContainer {
      shamperClimbHeightButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.CLIMB));
      shamperManualUpButton.onTrue(new ShamperPivotManualUpCommand(shamper));
      shamperManualDownButton.onTrue(new ShamperPivotManualDownCommand(shamper));
+
+     shamperManualDownPct.whileTrue(new ShamperPivotDownPct(shamper));
+     shamperManualUpPct.whileTrue(new ShamperPivotUpPct(shamper));
 
 
     /*
