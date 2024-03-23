@@ -148,10 +148,28 @@
           "data": {
             "name": "Shoot Command"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "(WA) Note 3 to Note 8 to Amp Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Indexer Backup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Command"
+          }
         }
       ]
     }
   },
-  "folder": "working autos",
+  "folder": null,
   "choreoAuto": false
 }

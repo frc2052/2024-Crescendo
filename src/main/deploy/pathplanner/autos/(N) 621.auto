@@ -2,36 +2,36 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7753211512129142,
-      "y": 4.344720358484939
+      "x": 1.362992428365809,
+      "y": 5.524944777568127
     },
-    "rotation": 122.61924307119281
+    "rotation": 179.8339944808294
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Sub Shoot Command"
+            "pathName": "Speaker 6"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": " (WA) Source 5 to Source Shoot"
+            "pathName": "(WA) Note 6 to Center Shoot"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Shoot Command"
+            "pathName": "(WA) Center Shoot to Note 2 Shoot"
           }
         }
       ]
     }
   },
-  "folder": "working autos",
+  "folder": "10k",
   "choreoAuto": false
 }

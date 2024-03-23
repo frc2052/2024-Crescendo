@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8715608929078047,
-        "y": 4.344720358484939
+        "x": 2.8903977413609594,
+        "y": 5.558163872094113
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5013930170513685,
-        "y": 4.73117796449573
+        "x": 1.5553623751418675,
+        "y": 5.651850564460364
       },
       "isLocked": false,
-      "linkedName": "End Of Center 1"
+      "linkedName": "Note 2"
     },
     {
       "anchor": {
-        "x": 3.2931510085559395,
-        "y": 5.714888234341376
+        "x": 3.1470164484227783,
+        "y": 6.93692455372262
       },
       "prevControl": {
-        "x": 1.032959555220108,
-        "y": 5.609490705429342
+        "x": 1.6714510436543084,
+        "y": 6.960346226814183
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End Of 1 to 2"
+      "linkedName": "Note 3"
     }
   ],
   "rotationTargets": [],
@@ -33,19 +33,19 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 4.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -177.06432655357887,
+    "rotation": -150.06848815949215,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 Note Auto",
+  "folder": "Connector Paths",
   "previewStartingState": {
-    "rotation": 152.81888891452283,
+    "rotation": -179.14490260373327,
     "velocity": 0
   },
   "useDefaultConstraints": true

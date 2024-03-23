@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3725738150477713,
-        "y": 5.574358195791997
+        "x": 3.6335728242513037,
+        "y": 6.143512200528865
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7310308543584263,
-        "y": 5.539225686154654
+        "x": 5.812043545590067,
+        "y": 3.584247777684543
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Amp Shoot"
     },
     {
       "anchor": {
-        "x": 2.684689339802787,
-        "y": 4.291800068905197
+        "x": 8.378615207751249,
+        "y": 2.1527499807231756
       },
       "prevControl": {
-        "x": 1.5604490314077626,
-        "y": 3.6242823857956523
+        "x": 6.986778413660993,
+        "y": 3.4907920327373394
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Note 1"
+      "linkedName": "Accurate Note 5"
     }
   ],
   "rotationTargets": [],
@@ -39,14 +39,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 153.4349488229219,
+    "rotation": 178.80258318131857,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Starting Paths",
+  "folder": "Connector Paths",
   "previewStartingState": {
-    "rotation": -178.6980473274211,
+    "rotation": 179.74977286747625,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

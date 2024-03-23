@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source 5"
+            "pathName": " (WA) Source 5 to Source Shoot"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source 4"
+            "pathName": " (WA) Source Shoot to Note 4 to Source Shoot"
           }
         },
         {
@@ -44,6 +44,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "working autos",
   "choreoAuto": false
 }

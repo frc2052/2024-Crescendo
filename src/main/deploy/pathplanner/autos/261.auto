@@ -2,36 +2,36 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7753211512129142,
-      "y": 4.344720358484939
+      "x": 1.410729853639767,
+      "y": 5.536626745686528
     },
-    "rotation": 122.61924307119281
+    "rotation": -178.60408532470024
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Sub Shoot Command"
+            "pathName": "Center 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": " (WA) Source 5 to Source Shoot"
+            "pathName": "(WA) Note 2 (Note 6 Intake) Center Shoot"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Shoot Command"
+            "pathName": null
           }
         }
       ]
     }
   },
-  "folder": "working autos",
+  "folder": null,
   "choreoAuto": false
 }
