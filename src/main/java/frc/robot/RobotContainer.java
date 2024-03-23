@@ -126,6 +126,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Manual Index", new IndexerIndexCommand(indexer));
     NamedCommands.registerCommand("ShootAutoLow", new ShootAutoLowCommand(shamper, indexer));
 
+    NamedCommands.registerCommand("Continuous Shamper Angle", new ShamperAutoAngleCommand(shamper, indexer));
+
     NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer, shamper));
 
     configureButtonBindings();
