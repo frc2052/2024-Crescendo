@@ -3,21 +3,14 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalDouble;
-
-import javax.swing.text.html.Option;
-
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.team2052.lib.photonvision.EstimatedRobotPose;
 import com.team2052.lib.photonvision.PhotonCamera;
 import com.team2052.lib.photonvision.PhotonPoseEstimator;
 import com.team2052.lib.photonvision.PhotonPoseEstimator.PoseStrategy;
 
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -93,12 +86,12 @@ public class AprilTagSubsystem extends SubsystemBase{
                     robotState.addAprilTagVisionUpdate(estimatedPose);
                 }
 
-                for (int j = 0; j < targets.size(); j++) {
-                    if (targets.get(j).getFiducialId() == speakertag) {
-                        speakerTagYaw = targets.get(j).getYaw();
-                        double lastUpdatedTime = timer.get();
-                    }
-                }
+                // for (int j = 0; j < targets.size(); j++) {
+                //     if (targets.get(j).getFiducialId() == speakertag) {
+                //         speakerTagYaw = targets.get(j).getYaw();
+                //         double lastUpdatedTime = timer.get();
+                //     }
+                // }
                 
             }
         }

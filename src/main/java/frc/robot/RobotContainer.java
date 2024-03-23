@@ -8,9 +8,9 @@ import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimberSlowRetractCommand;
 import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
-import frc.robot.commands.auto.commands.shoot.ShootAutoLowCommand;
-import frc.robot.commands.auto.commands.shoot.ShootCommandAuto;
-import frc.robot.commands.auto.commands.shoot.ShootSubCommandAuto;
+import frc.robot.commands.auto.commands.shamper.ShootAutoLowCommand;
+import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
+import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
@@ -115,7 +115,7 @@ public class RobotContainer {
       )
     );
 
-    // shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
+    shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
@@ -134,6 +134,9 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+
+    JoystickButton manualshamptestbutton = new JoystickButton(rotationJoystick, 8);
+    manualshamptestbutton.onTrue(new InstantCommand(() -> shamper.setAngleManual()));
 
     /*
      * Drive Commands
@@ -180,6 +183,7 @@ public class RobotContainer {
 
     JoystickButton indexManualButton = new JoystickButton(controlPanel, 10);
     indexManualButton.whileTrue(new IndexerIndexCommand(indexer));
+
     /*
      *  Shooter Button Bindings
      */

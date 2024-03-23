@@ -10,6 +10,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -50,16 +51,6 @@ public class RobotState {
         return INSTANCE;
     }
 
-    public boolean isRedAlliance() {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            return (alliance.get() == DriverStation.Alliance.Red) ? 
-            true : false;
-        } else {
-            return false;
-        }
-    }
-
     private RobotState() {
         initialPose = new Pose2d();
         robotPose = new Pose2d();
@@ -91,6 +82,30 @@ public class RobotState {
     public void addAprilTagVisionUpdate(EstimatedRobotPose aprilTagVisionPose) {
         this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
         this.detectionTime = aprilTagVisionPose.timestampSeconds;
+
+        if(!(aprilTagVisionPose.estimatedPose.getTranslation() == new Translation3d())){
+            if(aprilTagVisionPose.estimatedPose.getTranslation().toTranslation2d().getDistance(getSpeakerLocation()) < 3.5){
+                // if((aprilTagVisionPose.estimatedPose.getTranslation().toTranslation2d().getDistance(robotPose.getTranslation()) < 2)){
+                //     this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
+                //     this.detectionTime = aprilTagVisionPose.timestampSeconds;
+                // } else {
+                //     System.out.println("VISION POSE TOO DIFFERENT");
+                //     this.aprilTagVisionPose3d = null;
+                //     this.detectionTime = 0;
+                // }
+
+                this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
+                this.detectionTime = aprilTagVisionPose.timestampSeconds;
+            } else {
+                System.out.println("VISION POSE TOO FAR FROM SPEAKER");
+                this.aprilTagVisionPose3d = null;
+                this.detectionTime = 0;
+            }
+        } else {
+            System.out.println("EMPTY VISION POSE");
+            this.aprilTagVisionPose3d = null;
+            this.detectionTime = 0;
+        }
     }
 
     public void updateRobotPose(Pose2d robotPose) {
@@ -142,8 +157,10 @@ public class RobotState {
         Optional<Pose3d> visionPose = Optional.empty();
 
         // if the vision pose doesn't have it's pose at the origin and not null, then it's good
-        if (!(aprilTagVisionPose3d.getTranslation() == new Translation3d()) && !(aprilTagVisionPose3d == null)){
-            visionPose = Optional.of(aprilTagVisionPose3d);
+        if(!(aprilTagVisionPose3d == null)){
+            if (!(aprilTagVisionPose3d.getTranslation() == new Translation3d())){
+                visionPose = Optional.of(aprilTagVisionPose3d);
+            }
         }
 
         return visionPose;
@@ -260,6 +277,24 @@ public class RobotState {
     
     public void setMusicEnableStatus(boolean isEnabled) {
         musicEnabled = isEnabled;
+    }
+
+    public boolean isRedAlliance() {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            return (alliance.get() == DriverStation.Alliance.Red) ? 
+            true : false;
+        } else {
+            return false;
+        }
+    }
+
+    public Translation2d getSpeakerLocation() {
+        if(isRedAlliance()) {
+            return Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
+        } else {
+            return Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
+        }
     }
 
     /**

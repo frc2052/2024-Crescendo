@@ -144,7 +144,7 @@ public final class Constants {
         
         public static final double AMP_INDEX_SPEED_PCT = 0.8;
 
-        public static final double SLIDE_BACK_PCT = 0.2;
+        public static final double SLIDE_BACK_PCT = 0.1;
 
         public static final double UPPER_OUTTAKE_SPEED_PCT = 1;
 
@@ -155,37 +155,15 @@ public final class Constants {
   
     public static class Shamper {
 
-        // DIO pins
-        public static final int ROTATION_ENCODER_PIN = 1;
+        // DIO
         public static final int LIMIT_SWITCH_PIN = 2;
-        public static final int AMP_HALL_EFFECT_PIN = 0;
-        public static final int PODIUM_HALL_EFFECT_PIN = 0;
 
-        public static final double ROTATION_SHOOTER_KP = 0;
-        public static final double ROTATION_SHOOTER_KI = 0;
-        public static final double ROTATION_SHOOTER_KD = 0;
+        /*
+         * SHOOTER
+         */
 
         public static final boolean UPPER_MOTOR_IS_INVERTED = true;
         public static final boolean LOWER_MOTOR_IS_INVERTED = false;
-        public static final boolean LEFT_PIVOT_MOTOR_IS_INVERTED = false;
-        public static final boolean RIGHT_PIVOT_MOTOR_IS_INVERTED = false;
-
-        public static final boolean ENCODER_INVERTED = true;
-            
-        public static final double PIVOT_GEAR_RATIO = 60 * (48 / 22); 
-            
-        //edit these later
-        public static final double UPPER_MOTOR_KP = 0.2;
-        public static final double UPPER_MOTOR_KI = 0.002;
-        public static final double UPPER_MOTOR_KD = 1;
-
-        public static final double LOWER_MOTOR_KP = 0.2;
-        public static final double LOWER_MOTOR_KI = 0.002;
-        public static final double LOWER_MOTOR_KD = 1;
-
-        public static final double PIVOT_MOTOR_KP = 0.2;
-        public static final double PIVOT_MOTOR_KI = 0.002;
-        public static final double PIVOT_MOTOR_KD = 1;
 
         public static final double SHOOTER_MAX_VELOCITY_RPS = 100;
         
@@ -193,8 +171,8 @@ public final class Constants {
         public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
 
         // idle can't be the same as our shot at sub because the idle logic won't start idle again
-        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.699 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.699 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.299 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.299 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
@@ -208,17 +186,33 @@ public final class Constants {
         public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double PIVOT_CONTROLLER_kP = 0.1;
-        public static final double PIVOT_CONTROLLER_kI = 0;
-        public static final double PIVOT_CONTROLLER_kD = 0;
+        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 3;
+
+        public static final double SHOOTER_TOLERANCE_PERCENT = 0.03;
+
+        /*
+         * PIVOT
+         */
+
+        public static final boolean LEFT_PIVOT_MOTOR_IS_INVERTED = false;
+        public static final boolean RIGHT_PIVOT_MOTOR_IS_INVERTED = false;
+
+        public static final boolean ENCODER_INVERTED = true;
+            
+        public static final double PIVOT_GEAR_RATIO = 60 * (48 / 22); 
+
+        public static final double PIVOT_kP = 0.05;
+        public static final double PIVOT_kI = 0;
+        public static final double PIVOT_kD = 0.2;
+        public static final double PIVOT_kFF = 0.001;
+        
+        public static final double PIVOT_RAMP_RATE = 0.5;
 
         public static final double PIVOT_MOTOR_MAX_VELOCITY = 0.5;
-        public static final double PIVOT_MOTOR_MAX_ACCELERATION = 0.1;
 
         public static final double PIVOT_MOTOR_MANUAL_VELOCITY = 0.25;
-        
-        public static final double PIVOT_MOTOR_LEVEL_2_VELOCITY = 0.1;
-        public static final double PIVOT_MOTOR_LEVEL_1_VELOCITY = 0.1;
+
+        public static final double PIVOT_DEADZONE_DEGREES = 1;
 
         public static class Angle {
             public static final double MINIMUM  = 12;
@@ -231,11 +225,6 @@ public final class Constants {
             public static final double SUB = 53;
             public static final double TRAP = 95;
         }
-
-        public static final double ENCODER_OFFSET_DEGREES = 0;
-        public static final double DEAD_ZONE_DEGREES = 1;
-        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 2;
-        public static final double SHOOTER_TOLERANCE_PERCENT = 0.03;
     }
 
     public static class FieldAndRobot {

@@ -66,6 +66,8 @@ public class Dashboard {
         SmartDashboard.putData(Constants.Dashboard.CLIMBER_MODE_KEY, climberModeChooser);
         
         SmartDashboard.putString(Constants.Dashboard.IDLE_MODE_KEY, ShamperIdleMode.SPEAKER_IDLE.name());
+
+        SmartDashboard.putNumber("Shamper Angle Manual", 0);
     }
 
     public <V> void putData(String key, V value) {
