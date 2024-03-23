@@ -238,8 +238,8 @@ public class RobotContainer {
      shamperSubwooferButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
      shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
      shamperClimbHeightButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.CLIMB));
-     shamperManualUpButton.onTrue(new ShamperPivotManualUpCommand(shamper));
-     shamperManualDownButton.onTrue(new ShamperPivotManualDownCommand(shamper));
+     shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
+     shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
 
      shamperManualDownPct.whileTrue(new ShamperPivotDownPct(shamper));
      shamperManualUpPct.whileTrue(new ShamperPivotUpPct(shamper));

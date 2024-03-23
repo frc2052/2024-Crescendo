@@ -16,15 +16,28 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "cpath"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Mega 1"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "cpath"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "cpath 6"
+                      }
+                    }
+                  ]
                 }
               }
             ]

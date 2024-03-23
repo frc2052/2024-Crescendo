@@ -54,7 +54,7 @@ public class MegaAutoCommand extends Command {
 
 
     if (indexer.getNoteStaged()) { 
-      if(shamperReady() && robotState.distanceToSpeaker() < 3.4) {
+      if(shamperReady() && robotState.distanceToSpeaker() < 4) {
         indexer.indexAll();
       } else {
         indexer.stop();
