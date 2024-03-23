@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotState;
@@ -24,6 +25,7 @@ public class DriveWhileAimingCommand extends Command {
     
     private final SlewRateLimiter xLimiter;
     private final SlewRateLimiter yLimiter;
+    private final PIDController rotationController;
 
     /**
      * @param xSupplier supplier for forward velocity.
@@ -41,6 +43,9 @@ public class DriveWhileAimingCommand extends Command {
         this.xSupplier = xSupplier;
         this.ySupplier = ySupplier;
         this.fieldCentricSupplier = fieldCentricSupplier;
+
+        rotationController = new PIDController(0.025, 0, 1);
+        rotationController.setTolerance(2);
 
         xLimiter = new SlewRateLimiter(2);
         yLimiter = new SlewRateLimiter(2);
@@ -62,16 +67,19 @@ public class DriveWhileAimingCommand extends Command {
         Logger.recordOutput("goal angle", goalAngleDegrees);
         Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
 
+        
+        System.out.println(rotationController.calculate(RobotState.getInstance().getRotation2d360().getDegrees(), goalAngleDegrees) / 360);
+        return rotationController.calculate(RobotState.getInstance().getRotation2d360().getDegrees(), goalAngleDegrees);
         // return 0;
-        if (Math.abs(deltaDegrees) > 90) {
-            return Math.copySign(0.5, -deltaDegrees);
-        } else if (Math.abs(deltaDegrees) > 45){
-            return Math.copySign(0.25, -deltaDegrees);
-        } else if (Math.abs(deltaDegrees) > 5){
-            return Math.copySign(0.1, -deltaDegrees);
-        } else {
-            return 0;
-        }
+        // if (Math.abs(deltaDegrees) > 90) {
+        //     return Math.copySign(0.5, -deltaDegrees);
+        // } else if (Math.abs(deltaDegrees) > 45){
+        //     return Math.copySign(0.25, -deltaDegrees);
+        // } else if (Math.abs(deltaDegrees) > 5){
+        //     return Math.copySign(0.1, -deltaDegrees);
+        // } else {
+        //     return 0;
+        // }
     }
 
     @Override
