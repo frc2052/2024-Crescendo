@@ -148,10 +148,22 @@
           "data": {
             "name": "Shoot Command"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "(WA) Note 3 to Note 7 to Amp Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Command"
+          }
         }
       ]
     }
   },
-  "folder": "working autos",
+  "folder": "WIP",
   "choreoAuto": false
 }

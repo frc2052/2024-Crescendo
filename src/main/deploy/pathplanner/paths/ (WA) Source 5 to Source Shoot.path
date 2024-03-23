@@ -20,44 +20,44 @@
         "y": 1.7917579915045703
       },
       "prevControl": {
-        "x": 3.402229213978416,
-        "y": 2.4391809620892446
+        "x": 3.2143348072258737,
+        "y": 2.1982002177507978
       },
       "nextControl": {
-        "x": 4.8155597595075355,
-        "y": 0.8666019043878308
+        "x": 4.900465440811835,
+        "y": 1.3078985086541597
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.375654069425114,
-        "y": 2.1547939244237972
+        "x": 8.378615207751249,
+        "y": 2.1527499807231756
       },
       "prevControl": {
-        "x": 8.35223239633355,
-        "y": 2.1665047609695787
+        "x": 8.355193534659685,
+        "y": 2.164460817268957
       },
       "nextControl": {
-        "x": 8.405280402857597,
-        "y": 2.139980757707556
+        "x": 8.408241541183733,
+        "y": 2.137936814006934
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Accurate Note 5"
     },
     {
       "anchor": {
-        "x": 4.101198730214863,
-        "y": 2.6466490593466205
+        "x": 2.8137678764196816,
+        "y": 3.202396449435756
       },
       "prevControl": {
-        "x": 5.143463182789417,
-        "y": 0.9485777602083012
+        "x": 3.856032328994236,
+        "y": 1.5043251502974369
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End Of Source 5"
+      "linkedName": "Real Source Shoot"
     }
   ],
   "rotationTargets": [
@@ -88,8 +88,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -99,7 +99,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Starting Paths",
   "previewStartingState": {
     "rotation": 121.18497465873837,
     "velocity": 0
