@@ -79,7 +79,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake"
+                "name": null
               }
             }
           ]
@@ -99,7 +99,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Starting Paths",
+  "folder": null,
   "previewStartingState": {
     "rotation": 121.18497465873837,
     "velocity": 0

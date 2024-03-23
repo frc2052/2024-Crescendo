@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Connector Paths",
+  "folder": null,
   "previewStartingState": {
     "rotation": -171.80909584685546,
     "velocity": 0

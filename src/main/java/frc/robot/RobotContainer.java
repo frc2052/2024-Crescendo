@@ -121,7 +121,7 @@ public class RobotContainer {
       )
     );
 
-    shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
+    // shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
@@ -134,16 +134,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShootAutoLow", new ShootAutoLowCommand(shamper, indexer));
 
     NamedCommands.registerCommand("Continuous Shamper Angle", new ShamperAutoAngleCommand(shamper, indexer));
-    NamedCommands.registerCommand("Mega 1", new MegaAutoBackupCommand(shamper, indexer, intake));
+    NamedCommands.registerCommand("Mega 1", new MegaAutoCommand(shamper, indexer, intake));
 
-    NamedCommands.registerCommand("Index", new AutoManualIndexerOnCommand(indexer));
-    NamedCommands.registerCommand("Intake", new AutoManualIntakeOnCommand(intake));
+    NamedCommands.registerCommand("Scotts Index", new AutoManualIndexerOnCommand(indexer));
+    NamedCommands.registerCommand("Scotts Intake", new AutoManualIntakeOnCommand(intake));
     NamedCommands.registerCommand("Angle 1", new AutoManualShamperAngleCenter1Command(shamper));
     NamedCommands.registerCommand("Angle 2", new AutoManualShamperAngleCenter2Command(shamper));
-
-    NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer, shamper));
-
-    
 
     configureButtonBindings();
   }

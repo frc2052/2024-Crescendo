@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8903977413609594,
-        "y": 5.558163872094113
+        "x": 4.522788845862998,
+        "y": 5.527972981871891
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5553623751418675,
-        "y": 5.651850564460364
+        "x": 3.1877534796439058,
+        "y": 5.621659674238142
       },
       "isLocked": false,
       "linkedName": "Note 2"
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Connector Paths",
+  "folder": null,
   "previewStartingState": {
     "rotation": -179.14490260373327,
     "velocity": 0

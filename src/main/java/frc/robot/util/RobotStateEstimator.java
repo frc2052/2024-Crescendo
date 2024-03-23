@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 
@@ -41,13 +42,14 @@ public class RobotStateEstimator {
             );
         }
 
-        if(robotState.getVisionPose3d().isPresent()){
-            poseEstimator.addVisionMeasurement(
-                robotState.getVisionPose3d().get().toPose2d(),
-                robotState.getVisionDetectionTime()
-            );
+        if(DriverStation.isTeleop()){
+            if(robotState.getVisionPose3d().isPresent()){
+                poseEstimator.addVisionMeasurement(
+                    robotState.getVisionPose3d().get().toPose2d(),
+                    robotState.getVisionDetectionTime()
+                );
+            }
         }
-    
 
         poseEstimator.update(
             robotState.getRotation2dRaw(), 

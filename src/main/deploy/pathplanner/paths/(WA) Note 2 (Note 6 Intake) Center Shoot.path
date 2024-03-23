@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8903977413609594,
-        "y": 5.558163872094113
+        "x": 4.522788845862998,
+        "y": 5.527972981871891
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.393656020756984,
-        "y": 4.657931217834161
+        "x": 7.026047125259022,
+        "y": 4.627740327611939
       },
       "isLocked": false,
       "linkedName": "Note 2"
@@ -63,7 +63,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake"
+                "name": null
               }
             }
           ]
@@ -83,7 +83,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Connector Paths",
+  "folder": null,
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

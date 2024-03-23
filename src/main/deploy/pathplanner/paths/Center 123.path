@@ -209,7 +209,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "WIP",
+  "folder": null,
   "previewStartingState": {
     "rotation": 133.91907581333936,
     "velocity": 0

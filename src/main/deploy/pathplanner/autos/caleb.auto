@@ -2,21 +2,15 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7167669684840067,
-      "y": 6.722020177278586
+      "x": 1.3842846515935527,
+      "y": 5.550936522700434
     },
-    "rotation": -119.74488129694214
+    "rotation": 177.9904461869789
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
-        {
-          "type": "named",
-          "data": {
-            "name": "Sub Shoot Command"
-          }
-        },
         {
           "type": "parallel",
           "data": {
@@ -24,27 +18,21 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp 3"
+                  "pathName": "cpath"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "Mega 1"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot Command"
           }
         }
       ]
     }
   },
-  "folder": "working autos",
+  "folder": null,
   "choreoAuto": false
 }

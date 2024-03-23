@@ -12,21 +12,66 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "Center 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "(WA) Note 2 (Note 6 Intake) Center Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": null
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Scotts Intake"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.75
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Scotts Index"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Angle 1"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.4
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Angle 2"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]

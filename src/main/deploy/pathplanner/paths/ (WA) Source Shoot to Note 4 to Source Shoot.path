@@ -63,7 +63,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake"
+                "name": null
               }
             }
           ]
@@ -83,7 +83,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Connector Paths",
+  "folder": null,
   "previewStartingState": {
     "rotation": 136.0908073225193,
     "velocity": 0

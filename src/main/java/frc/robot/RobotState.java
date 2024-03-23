@@ -213,7 +213,7 @@ public class RobotState {
     }
 
     public boolean gyroResetNeeded(){
-        if (lastGyroResetTimer.get() > 5 && ((getRotation2d360().getDegrees() > 1) || (getRotation2d360().getDegrees() < 359))){
+        if (lastGyroResetTimer.get() > 5 && (getRotation2d360().getDegrees() > 1)){
             lastGyroResetTimer.restart();
             System.out.println("GYRO DIFF: " + getRotation2d360().getDegrees());
             return true;

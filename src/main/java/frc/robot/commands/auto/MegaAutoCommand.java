@@ -42,30 +42,31 @@ public class MegaAutoCommand extends Command {
   public void execute() {
     ShootAngleConfig config = getShootConfig();
     shamper.setAngle(config.getAngleDegrees());
-    shamper.setShootSpeed(.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, .9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS);
+    shamper.setShootSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS());
+    //shamper.setShootSpeed(.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, .9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS);
 
-    isReady = true; // isReady || shamperReady();
+    // isReady = true; // isReady || shamperReady();
 
-    if (isReady) {
-      indexer.indexAll();
-      intake.intake();
-    }
-
-
-    // if (indexer.getNoteStaged()) { 
-    //   if(shamperReady() && robotState.distanceToSpeaker() < 3.4) {
-    //     indexer.indexAll();
-    //   } else {
-    //     indexer.stop();
-    //   }
-    // } else {
+    // if (isReady) {
+    //   indexer.indexAll();
     //   intake.intake();
-    //   if(indexer.getNoteHeld()){
-    //       indexer.loadSlow();
-    //   } else {
-    //       indexer.load();
-    //   }
     // }
+
+
+    if (indexer.getNoteStaged()) { 
+      if(shamperReady() && robotState.distanceToSpeaker() < 3.4) {
+        indexer.indexAll();
+      } else {
+        indexer.stop();
+      }
+    } else {
+      intake.intake();
+      if(indexer.getNoteHeld()){
+          indexer.loadSlow();
+      } else {
+          indexer.load();
+      }
+    }
   }
 
   public ShootAngleConfig getShootConfig(){
@@ -75,7 +76,7 @@ public class MegaAutoCommand extends Command {
   }
 
   public boolean shamperReady(){
-    return shamper.shooterAtSpeed(getShootConfig().getShooterSpeedVelocityRPS(), getShootConfig().getShooterSpeedVelocityRPS()) && shamper.isAtGoalAngle();
+    return shamper.shooterAtSpeed(getShootConfig().getShooterSpeedVelocityRPS(), getShootConfig().getShooterSpeedVelocityRPS());// && shamper.isAtGoalAngle(4);
   }
 
   @Override

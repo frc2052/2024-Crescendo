@@ -70,7 +70,9 @@ public class AutoFactory {
         SOURCE_5(new PathPlannerAuto("Source 5")),
         SOURCE_54(new PathPlannerAuto("Source 54")),
         CENTER_123(new PathPlannerAuto("Center 123")),
-        TESTING_AAS(new PathPlannerAuto("Testing Auto Angle Adjustment"));
+        TESTING_AAS(new PathPlannerAuto("Testing Auto Angle Adjustment")),
+        TESTING_261(new PathPlannerAuto("261")),
+        CALEB(new PathPlannerAuto("caleb"));
 
         private final PathPlannerAuto auto;
 

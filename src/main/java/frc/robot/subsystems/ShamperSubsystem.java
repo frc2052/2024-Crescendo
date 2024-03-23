@@ -276,6 +276,10 @@ public class ShamperSubsystem extends SubsystemBase {
     return Math.abs(getShamperAngle() - goalAngle) < Constants.Shamper.PIVOT_DEADZONE_DEGREES;
   }
 
+  public boolean isAtGoalAngle(double tol) {
+    return Math.abs(getShamperAngle() - goalAngle) < tol;
+  }
+
   public double getShamperAngle() {
     return pivotEncoder.getPosition();
   }
