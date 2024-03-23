@@ -29,9 +29,9 @@ public class ShamperDefaultCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(RobotState.getInstance().getIsClimbing()) {
-      return;
-    }
+    // if(RobotState.getInstance().getIsClimbing()) {
+    //   return;
+    // }
 
     if(Dashboard.getInstance().shouldIdle()) {
       switch (shamper.getCurrentIdleMode()) {
@@ -46,11 +46,11 @@ public class ShamperDefaultCommand extends Command {
       shamper.windDownShooter();
     }
 
-    if((!RobotState.getInstance().getNoteStagedDetected() && !RobotState.getInstance().getNoteHeldDetected()) &&
-        shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT
-      ) {
-      shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
-    }
+    // if((!RobotState.getInstance().getNoteStagedDetected() && !RobotState.getInstance().getNoteHeldDetected()) &&
+    //     shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT
+    //   ) {
+    //   shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
+    // }
   }
 
   // Called once the command ends or is interrupted.

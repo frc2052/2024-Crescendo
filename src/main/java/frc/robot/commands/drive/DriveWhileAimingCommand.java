@@ -44,7 +44,7 @@ public class DriveWhileAimingCommand extends Command {
         this.ySupplier = ySupplier;
         this.fieldCentricSupplier = fieldCentricSupplier;
 
-        rotationController = new PIDController(0.025, 0, 1);
+        rotationController = new PIDController(0.01, 0, 0.2);
         rotationController.setTolerance(2);
 
         xLimiter = new SlewRateLimiter(2);

@@ -144,7 +144,7 @@ public final class Constants {
         
         public static final double AMP_INDEX_SPEED_PCT = 0.8;
 
-        public static final double SLIDE_BACK_PCT = 0.2;
+        public static final double SLIDE_BACK_PCT = 0.1;
 
         public static final double UPPER_OUTTAKE_SPEED_PCT = 1;
 
@@ -171,8 +171,8 @@ public final class Constants {
         public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
 
         // idle can't be the same as our shot at sub because the idle logic won't start idle again
-        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.699 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.699 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.299 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.299 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;

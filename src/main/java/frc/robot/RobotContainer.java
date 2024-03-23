@@ -115,7 +115,7 @@ public class RobotContainer {
       )
     );
 
-    // shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
+    shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
