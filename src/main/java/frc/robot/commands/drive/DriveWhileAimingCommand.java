@@ -44,7 +44,7 @@ public class DriveWhileAimingCommand extends Command {
         this.ySupplier = ySupplier;
         this.fieldCentricSupplier = fieldCentricSupplier;
 
-        rotationController = new PIDController(0.01, 0, 0.2);
+        rotationController = new PIDController(0.1, 0, 0.4);
         rotationController.setTolerance(2);
 
         xLimiter = new SlewRateLimiter(2);
@@ -68,8 +68,8 @@ public class DriveWhileAimingCommand extends Command {
         Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
 
         
-        System.out.println(rotationController.calculate(RobotState.getInstance().getRotation2d360().getDegrees(), goalAngleDegrees) / 360);
-        return rotationController.calculate(RobotState.getInstance().getRotation2d360().getDegrees(), goalAngleDegrees);
+        // System.out.println(rotationController.calculate(RobotState.getInstance().getRotation2d360().getDegrees(), goalAngleDegrees) / 360);
+        return rotationController.calculate(RobotState.getInstance().getRotation2d360().getDegrees(), goalAngleDegrees) / 360;
         // return 0;
         // if (Math.abs(deltaDegrees) > 90) {
         //     return Math.copySign(0.5, -deltaDegrees);

@@ -69,6 +69,7 @@ public class IndexerSubsystem extends SubsystemBase {
   public void stop() {
     upperMotor.stopMotor();
     lowerMotor.stopMotor();
+    // System.out.println("I'm being stopped");
   }
 
   public double getUpperIndexerSpeed() {

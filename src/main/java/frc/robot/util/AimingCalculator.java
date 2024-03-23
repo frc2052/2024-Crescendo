@@ -54,7 +54,7 @@ public class AimingCalculator {
             // to the right of speaker
             if(robotPose.getY() < speakerLocation.getY()) {
                 // System.out.println("RIGHT SIDE");
-                angleToSpeakerFieldRelativeDegrees = 180 - speakerToRobotDegrees;
+                angleToSpeakerFieldRelativeDegrees = 180 + speakerToRobotDegrees;
             }
 
             // to the left of the speaker

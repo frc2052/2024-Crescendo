@@ -97,7 +97,7 @@ public class RobotState {
                 this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
                 this.detectionTime = aprilTagVisionPose.timestampSeconds;
             } else {
-                System.out.println("VISION POSE TOO FAR FROM SPEAKER");
+                // System.out.println("VISION POSE TOO FAR FROM SPEAKER");
                 this.aprilTagVisionPose3d = null;
                 this.detectionTime = 0;
             }
@@ -213,9 +213,9 @@ public class RobotState {
     }
 
     public boolean gyroResetNeeded(){
-        if (lastGyroResetTimer.get() > 5 && (Math.abs(0 - getRotation2d360().getDegrees())) > 0.5){
+        if (lastGyroResetTimer.get() > 5 && ((getRotation2d360().getDegrees() > 1) || (getRotation2d360().getDegrees() < 359))){
             lastGyroResetTimer.restart();
-            System.out.println("GYRO DIFF: " + (Math.abs(0 - getRotation2d360().getDegrees())));
+            System.out.println("GYRO DIFF: " + getRotation2d360().getDegrees());
             return true;
         }
 
@@ -282,8 +282,7 @@ public class RobotState {
     public boolean isRedAlliance() {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
-            return (alliance.get() == DriverStation.Alliance.Red) ? 
-            true : false;
+            return (alliance.get() == DriverStation.Alliance.Red) ? true : false;
         } else {
             return false;
         }
@@ -295,6 +294,10 @@ public class RobotState {
         } else {
             return Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
         }
+    }
+
+    public double distanceToSpeaker() {
+        return AimingCalculator.calculateDistanceToSpeaker(robotPose);
     }
 
     /**

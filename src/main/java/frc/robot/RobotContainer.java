@@ -7,6 +7,8 @@ package frc.robot;
 import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimberSlowRetractCommand;
+import frc.robot.commands.auto.MegaAutoBackupCommand;
+import frc.robot.commands.auto.MegaAutoCommand;
 import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
 import frc.robot.commands.auto.commands.shamper.ShootAutoLowCommand;
 import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
@@ -127,6 +129,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShootAutoLow", new ShootAutoLowCommand(shamper, indexer));
 
     NamedCommands.registerCommand("Continuous Shamper Angle", new ShamperAutoAngleCommand(shamper, indexer));
+    NamedCommands.registerCommand("Mega 1", new MegaAutoBackupCommand(shamper, indexer, intake));
+
 
     NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer, shamper));
 
@@ -136,7 +140,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     JoystickButton manualshamptestbutton = new JoystickButton(rotationJoystick, 8);
-    manualshamptestbutton.onTrue(new InstantCommand(() -> shamper.setAngleManual()));
+    manualshamptestbutton.whileTrue(new MegaAutoBackupCommand(shamper, indexer, intake));
 
     /*
      * Drive Commands
@@ -223,7 +227,7 @@ public class RobotContainer {
      shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
      shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.PODIUM));
      shamperPodiumDriverButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
-     shamperAutoAngleButton.onTrue(new ShamperAutoAngleCommand(shamper, indexer));
+     shamperAutoAngleButton.whileTrue(new ShamperAutoAngleCommand(shamper, indexer));
      shamperSubwooferButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
      shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
      shamperClimbHeightButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.CLIMB));
@@ -269,7 +273,7 @@ public class RobotContainer {
 
   // TODO: check if this before starting works for reset gyro
   public Command getAutonomousCommand() {
-    return autoFactory.getCompiledAuto().beforeStarting(new InstantCommand(() -> resetGyro()));
+    return autoFactory.getCompiledAuto();//.beforeStarting(new InstantCommand(() -> resetGyro()));
   }
 
   public void resetGyro(){

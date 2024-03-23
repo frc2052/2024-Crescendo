@@ -188,16 +188,24 @@ public class ShamperSubsystem extends SubsystemBase {
     upperMotor.setControl(shooterVelocity.withVelocity(0));
   }
 
-  public boolean motorAtSpeed(TalonFX motor, double goalSpeed){
-    boolean motorAtSpeed = motor.getVelocity().getValueAsDouble() > goalSpeed - Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_RPS
-    && motor.getVelocity().getValueAsDouble() < goalSpeed + Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_RPS
+  public boolean motorAtSpeed(TalonFX motor, double goalSpeed, double tolerance){
+    boolean motorAtSpeed = motor.getVelocity().getValueAsDouble() > goalSpeed - tolerance
+    && motor.getVelocity().getValueAsDouble() < goalSpeed + tolerance
     && goalSpeed != 0;
 
     return motorAtSpeed;
   }
 
   public boolean shooterAtSpeed(double lowerGoalSpeed, double upperGoalSpeed){
-    if((motorAtSpeed(lowerMotor, lowerGoalSpeed)) && motorAtSpeed(upperMotor, upperGoalSpeed)){
+    if((motorAtSpeed(lowerMotor, lowerGoalSpeed, Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_RPS)) && motorAtSpeed(upperMotor, upperGoalSpeed, Constants.Shamper.DEAD_ZONE_SHOOTER_SPEED_RPS)){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean shooterAtSpeed(double lowerGoalSpeed, double upperGoalSpeed, double tolerance){
+    if((motorAtSpeed(lowerMotor, lowerGoalSpeed, tolerance)) && motorAtSpeed(upperMotor, upperGoalSpeed, tolerance)){
       return true;
     } else {
       return false;
@@ -230,7 +238,7 @@ public class ShamperSubsystem extends SubsystemBase {
    */
 
   public void setAngle(double degrees) {
-    SmartDashboard.putNumber("Last Requested Angles", degrees);
+    SmartDashboard.putNumber("Last Requested Angle", degrees);
 
     degrees = constrainAngle(degrees);
     goalAngle = degrees;

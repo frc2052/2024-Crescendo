@@ -212,7 +212,7 @@ public final class Constants {
 
         public static final double PIVOT_MOTOR_MANUAL_VELOCITY = 0.25;
 
-        public static final double PIVOT_DEADZONE_DEGREES = 1;
+        public static final double PIVOT_DEADZONE_DEGREES = 2;
 
         public static class Angle {
             public static final double MINIMUM  = 12;

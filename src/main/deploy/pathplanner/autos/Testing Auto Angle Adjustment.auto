@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.4231793192931113,
+      "x": 1.4311279977766789,
       "y": 5.5430292057165325
     },
     "rotation": 180.0
@@ -24,7 +24,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Continuous Shamper Angle"
+                  "name": "Mega 1"
                 }
               }
             ]
