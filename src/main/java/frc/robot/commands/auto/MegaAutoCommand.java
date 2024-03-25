@@ -43,15 +43,6 @@ public class MegaAutoCommand extends Command {
     ShootAngleConfig config = getShootConfig();
     shamper.setAngle(config.getAngleDegrees());
     shamper.setShootSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS());
-    //shamper.setShootSpeed(.9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, .9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS);
-
-    // isReady = true; // isReady || shamperReady();
-
-    // if (isReady) {
-    //   indexer.indexAll();
-    //   intake.intake();
-    // }
-
 
     if (indexer.getNoteStaged()) { 
       if(shamperReady() && robotState.distanceToSpeaker() < 4) {
@@ -76,7 +67,7 @@ public class MegaAutoCommand extends Command {
   }
 
   public boolean shamperReady(){
-    return shamper.shooterAtSpeed(getShootConfig().getShooterSpeedVelocityRPS(), getShootConfig().getShooterSpeedVelocityRPS());// && shamper.isAtGoalAngle(4);
+    return shamper.shooterAtSpeed(getShootConfig().getShooterSpeedVelocityRPS(), getShootConfig().getShooterSpeedVelocityRPS());
   }
 
   @Override

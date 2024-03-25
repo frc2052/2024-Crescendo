@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 import java.util.Optional;
+import java.util.Vector;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -8,6 +9,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -87,6 +89,23 @@ public class AimingCalculator {
         Logger.recordOutput("ANGLE TO SPEAKER ROBOT RELATIVE", speakerToRobotDegrees);
         Logger.recordOutput("ANGLE TO SPEAKER FIELD RELATIVE", angleToSpeakerFieldRelativeDegrees);
         return MathUtil.inputModulus(Math.copySign(angleToSpeakerFieldRelativeDegrees, robotPose.getRotation().getDegrees()), 0, 360);
+    }
+
+    public static double angleToPoint(Translation2d goalPoint, Pose2d robotPose, ChassisSpeeds robotChassisSpeeds) {
+        Translation2d robotPos = robotPose.getTranslation();
+        double distanceToTarget = goalPoint.getDistance(robotPos);
+        Rotation2d angleToTarget = goalPoint.minus(robotPos).getAngle();
+
+        Translation2d robotVelo = new Translation2d(robotChassisSpeeds.vxMetersPerSecond, robotChassisSpeeds.vyMetersPerSecond).rotateBy(angleToTarget);
+
+        double flyTime = 0.5;
+        double uncorrectedShot = flyTime * robotVelo.getY();
+
+        double correction = -Math.atan2(uncorrectedShot, distanceToTarget);
+
+        double setpointAngle = MathUtil.inputModulus(angleToTarget.getRadians() + correction, -Math.PI, Math.PI);
+        
+        return setpointAngle;
     }
 
     public static double calculateRobotAngleOneAprilTag() {

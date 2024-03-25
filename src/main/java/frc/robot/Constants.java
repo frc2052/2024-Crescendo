@@ -9,11 +9,16 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 import frc.robot.subsystems.ShamperSubsystem;
@@ -106,6 +111,10 @@ public final class Constants {
         );
 
         public static final double ROBOT_AIMING_ROTATION_OFFSET_IN_DEGREES = 0;
+
+        
+        public static final Matrix<N3, N1> ODOMETRY_STDDEV = VecBuilder.fill(0.03, 0.03, Math.toRadians(1.0));
+        public static final TrapezoidProfile.Constraints AIM_PID_CONSTRAINT = new TrapezoidProfile.Constraints(2160.0, 2160.0);
     }
     
     public static class MotorConstants {
@@ -235,6 +244,10 @@ public final class Constants {
         public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(651.157), Units.inchesToMeters(218.416));
         public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(0.066), Units.inchesToMeters(218.415));
 
+        // put center of speaker in the middle-ish of the 
+        // public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(643.157), Units.inchesToMeters(218.416));
+        // public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(8), Units.inchesToMeters(218.415));
+
         public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
 
         public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 10; //0 will cause an error
@@ -254,6 +267,8 @@ public final class Constants {
         public static final double NOTE_DETECTION_CAMERA_X_OFFSET = 0;
         public static final double NOTE_DETECTION_CAMERA_Y_OFFSET = 0;
         public static final double NOTE_DETECTION_CAMERA_ROTATION_OFFSET = 0;
+
+        public static final Matrix<N3, N1> VISION_STDDEV = VecBuilder.fill(1.0,1.0, Math.toRadians(3.0));
     }
     public static final class PhotonCamera1 {
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";

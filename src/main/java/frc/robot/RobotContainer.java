@@ -19,6 +19,7 @@ import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
+import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.indexer.IndexerBackupCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
@@ -53,6 +54,9 @@ import frc.robot.util.io.Dashboard;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -115,7 +119,7 @@ public class RobotContainer {
           translationJoystick::getX,
           // Rotation velocity supplier.
           rotationJoystick::getX,
-          () -> true,
+          Dashboard.getInstance()::isFieldCentric,
           //Dashboard.getInstance()::isFieldCentric,
           drivetrain
       )
@@ -162,6 +166,17 @@ public class RobotContainer {
       () -> translationJoystick.getY(), 
       () -> translationJoystick.getX(), 
       () -> true, 
+      drivetrain
+    ));
+
+    // TODO: assign button
+    JoystickButton aimToAmpButton = new JoystickButton(rotationJoystick, 99);
+    Rotation2d ampDirection = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 90 : 270);
+    aimToAmpButton.whileTrue(new DriveWhileAimAmpCommand(
+      () -> translationJoystick.getY(), 
+      () -> translationJoystick.getX(),  
+      () -> ampDirection,
+      Dashboard.getInstance()::isFieldCentric,
       drivetrain
     ));
 
