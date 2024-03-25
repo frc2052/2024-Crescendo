@@ -278,9 +278,8 @@ public class RobotContainer {
       }
   }
 
-  // TODO: check if this before starting works for reset gyro
   public Command getAutonomousCommand() {
-    return autoFactory.getCompiledAuto();//.beforeStarting(new InstantCommand(() -> resetGyro()));
+    return autoFactory.getCompiledAuto();
   }
 
   public void resetGyro(){

@@ -4,6 +4,7 @@
   "holonomicMode": true,
   "pathFolders": [
     "Connector Paths",
+    "Slowdown 261",
     "Starting Paths"
   ],
   "autoFolders": [
@@ -11,8 +12,6 @@
     "WIP",
     "working autos"
   ],
-  "defaultMaxVel": 4.5,
-  "defaultMaxAccel": 4.5,
   "defaultMaxVel": 4.5,
   "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,

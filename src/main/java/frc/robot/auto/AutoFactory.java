@@ -62,7 +62,7 @@ public class AutoFactory {
 
     /*
      * This is where all our autos are. Need to use this as our list because when deploying to robot old autos don't get 
-     * cleared and may show up with built in PathPlannerLib SendableChooser
+     * cleared from the RoboRIO and may show up with built in PathPlannerLib Auto Selector
      */
     public static enum Auto {
         NO_AUTO(null),
@@ -72,7 +72,7 @@ public class AutoFactory {
         CENTER_123(new PathPlannerAuto("Center 123")),
         TESTING_AAS(new PathPlannerAuto("Testing Auto Angle Adjustment")),
         TESTING_261(new PathPlannerAuto("261")),
-        CALEB(new PathPlannerAuto("caleb"));
+        CALEB(new PathPlannerAuto("Slowdown 261"));
 
         private final PathPlannerAuto auto;
 

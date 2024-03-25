@@ -50,7 +50,7 @@ public class AprilTagSubsystem extends SubsystemBase{
 
         timer = new Timer();
 
-        if (!robotState.getInstance().isRedAlliance()){
+        if (!RobotState.getInstance().isRedAlliance()){
             speakertag = 8; //blue
         } else {
             speakertag = 4;//red

@@ -41,7 +41,7 @@ public class RobotStateEstimator {
                 robotState.getInitialPose()
             );
         }
-
+        
         if(DriverStation.isTeleop()){
             if(robotState.getVisionPose3d().isPresent()){
                 Pose2d visionPose = robotState.getVisionPose3d().get().toPose2d();//new Pose2d(robotState.getVisionPose3d().get().getTranslation().toTranslation2d(), robotState.getRotation2d180());
