@@ -9,10 +9,12 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.AimingCalculator;
+import frc.robot.util.io.Dashboard;
 
 public class DriveWhileAimingCommand extends DriveCommand {
     private final ProfiledPIDController rotationController;
@@ -32,9 +34,9 @@ public class DriveWhileAimingCommand extends DriveCommand {
     ) {
         super(xSupplier, ySupplier, () -> 0, fieldCentricSupplier, drivetrain);
 
-        rotationController = new ProfiledPIDController(2.5, 0, 0.1, Constants.Drivetrain.AIM_PID_CONSTRAINT, 0);
-        rotationController.enableContinuousInput(-180.0, +180.0);
-        rotationController.setTolerance(2);
+        rotationController = new ProfiledPIDController(0.25, 0, 0.1, Constants.Drivetrain.AIM_PID_CONSTRAINT);
+        rotationController.enableContinuousInput(-Math.PI, Math.PI);
+        rotationController.setTolerance(0.5);
 
         robotState = RobotState.getInstance();
     }
@@ -62,7 +64,9 @@ public class DriveWhileAimingCommand extends DriveCommand {
 
         double goalAngle = AimingCalculator.angleToPoint(robotState.getSpeakerLocation(), robotState.getRobotPose(), robotState.getChassisSpeeds());
         double currentAngle = robotState.getRotation2d180().getRadians();
-
+        Dashboard.getInstance().putData("AIM GOAL ANGLE", goalAngle);
+        Dashboard.getInstance().putData("AIM CURRENT ANGLE", currentAngle);
+            
         double rotation = rotationController.calculate(currentAngle, goalAngle);
         // do we want to check the error?
         double error = rotationController.getPositionError();

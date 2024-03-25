@@ -1,10 +1,13 @@
 package frc.robot.util;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import frc.robot.RobotState;
+import frc.robot.util.io.Dashboard;
 
 public class RobotStateEstimator {
     static RobotStateEstimator INSTANCE;
@@ -44,15 +47,27 @@ public class RobotStateEstimator {
             );
         }
         
-        if(DriverStation.isTeleop()){
-            if(robotState.getVisionPose3d().isPresent()){
-                Pose2d visionPose = robotState.getVisionPose3d().get().toPose2d();//new Pose2d(robotState.getVisionPose3d().get().getTranslation().toTranslation2d(), robotState.getRotation2d180());
-                poseEstimator.addVisionMeasurement(
-                    visionPose,
-                    robotState.getVisionDetectionTime()
-                );
+        // if(DriverStation.isTeleop()){
+            if (robotState.getChassisSpeeds().vxMetersPerSecond < 0.5 || robotState.getChassisSpeeds().vxMetersPerSecond < 0.5){            
+                if(robotState.getVisionPose3d().isPresent()){
+                    Pose2d visionPose = robotState.getVisionPose3d().get().toPose2d();//new Pose2d(robotState.getVisionPose3d().get().getTranslation().toTranslation2d(), robotState.getRotation2d180());
+                    // square the x distance in meters and multiply by 0.05 to get how much we trust the vision
+                    double xyStds = 0.05 * Math.pow(visionPose.getX() , 2);
+                    System.out.println("STDS " + xyStds);
+                    poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, Math.toRadians(99999999)));
+
+                    poseEstimator.addVisionMeasurement(
+                        visionPose,
+                        robotState.getVisionDetectionTime()
+                    );
+                }
+                
+                Dashboard.getInstance().putData("VISION IN USE?", true);
+            } else {
+                Dashboard.getInstance().putData("VISION IN USE?", false);
             }
-        }
+
+        // }
 
         poseEstimator.update(
             robotState.getRotation2dRaw(), 

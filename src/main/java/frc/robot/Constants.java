@@ -268,7 +268,7 @@ public final class Constants {
         public static final double NOTE_DETECTION_CAMERA_Y_OFFSET = 0;
         public static final double NOTE_DETECTION_CAMERA_ROTATION_OFFSET = 0;
 
-        public static final Matrix<N3, N1> VISION_STDDEV = VecBuilder.fill(1.0,1.0, Math.toRadians(3.0));
+        public static final Matrix<N3, N1> VISION_STDDEV = VecBuilder.fill(0.05, 0.05, Math.toRadians(99999999));
     }
     public static final class PhotonCamera1 {
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";

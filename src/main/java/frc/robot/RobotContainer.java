@@ -170,7 +170,7 @@ public class RobotContainer {
     ));
 
     // TODO: assign button
-    JoystickButton aimToAmpButton = new JoystickButton(rotationJoystick, 99);
+    JoystickButton aimToAmpButton = new JoystickButton(rotationJoystick, 4);
     Rotation2d ampDirection = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 90 : 270);
     aimToAmpButton.whileTrue(new DriveWhileAimAmpCommand(
       () -> translationJoystick.getY(), 
@@ -236,7 +236,7 @@ public class RobotContainer {
 
      JoystickButton shamper90Button = new JoystickButton(controlPanel, 8);
      Trigger shamperPodiumButton = new Trigger(() -> controlPanel.getY() < -0.5);
-     JoystickButton shamperPodiumDriverButton = new JoystickButton(rotationJoystick, 4);
+    //  JoystickButton shamperPodiumDriverButton = new JoystickButton(rotationJoystick, 4);
      JoystickButton shamperAutoAngleButton = new JoystickButton(rotationJoystick, 3);
      Trigger shamperSubwooferButton = new Trigger(() -> controlPanel.getX() > 0.5);
      Trigger shamperAmpButton = new Trigger(() -> controlPanel.getX() < -0.5);
@@ -248,7 +248,7 @@ public class RobotContainer {
 
      shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
      shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.PODIUM));
-     shamperPodiumDriverButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
+    //  shamperPodiumDriverButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
      shamperAutoAngleButton.whileTrue(new ShamperAutoAngleCommand(shamper, indexer));
      shamperSubwooferButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
      shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));

@@ -98,7 +98,7 @@ public class AimingCalculator {
 
         Translation2d robotVelo = new Translation2d(robotChassisSpeeds.vxMetersPerSecond, robotChassisSpeeds.vyMetersPerSecond).rotateBy(angleToTarget);
 
-        double flyTime = 0.5;
+        double flyTime = 0.0;
         double uncorrectedShot = flyTime * robotVelo.getY();
 
         double correction = -Math.atan2(uncorrectedShot, distanceToTarget);
