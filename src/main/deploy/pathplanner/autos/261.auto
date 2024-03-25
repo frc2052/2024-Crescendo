@@ -18,13 +18,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Center 2"
+                  "pathName": "P-Center-2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Scotts Intake"
+                  "name": null
                 }
               },
               {
@@ -40,7 +40,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Scotts Index"
+                        "name": null
                       }
                     }
                   ]
@@ -53,7 +53,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Angle 1"
+                        "name": null
                       }
                     },
                     {
@@ -65,7 +65,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Angle 2"
+                        "name": null
                       }
                     }
                   ]

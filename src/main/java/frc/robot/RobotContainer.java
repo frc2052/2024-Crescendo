@@ -13,7 +13,9 @@ import frc.robot.commands.auto.AutoManualShamperAngleCenter1Command;
 import frc.robot.commands.auto.AutoManualShamperAngleCenter2Command;
 import frc.robot.commands.auto.MegaAutoBackupCommand;
 import frc.robot.commands.auto.MegaAutoCommand;
+import frc.robot.commands.auto.commands.IntakeCommandAuto;
 import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
+import frc.robot.commands.auto.commands.shamper.ShamperAimCommand;
 import frc.robot.commands.auto.commands.shamper.ShootAutoLowCommand;
 import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
@@ -128,7 +130,6 @@ public class RobotContainer {
     // shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
-    NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Sub Shoot Command", new ShootSubCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Indexer Backup", new IndexerBackupCommand(indexer));
     NamedCommands.registerCommand("Sub Angle", new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
@@ -137,13 +138,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("Manual Index", new IndexerIndexCommand(indexer));
     NamedCommands.registerCommand("ShootAutoLow", new ShootAutoLowCommand(shamper, indexer));
 
-    NamedCommands.registerCommand("Continuous Shamper Angle", new ShamperAutoAngleCommand(shamper, indexer));
-    NamedCommands.registerCommand("Mega 1", new MegaAutoCommand(shamper, indexer, intake));
-
-    NamedCommands.registerCommand("Scotts Index", new AutoManualIndexerOnCommand(indexer));
-    NamedCommands.registerCommand("Scotts Intake", new AutoManualIntakeOnCommand(intake));
-    NamedCommands.registerCommand("Angle 1", new AutoManualShamperAngleCenter1Command(shamper));
-    NamedCommands.registerCommand("Angle 2", new AutoManualShamperAngleCenter2Command(shamper));
+    NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
+    NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer, shamper));
+    NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain));
 
     configureButtonBindings();
   }

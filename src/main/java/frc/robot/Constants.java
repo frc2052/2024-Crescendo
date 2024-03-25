@@ -227,6 +227,7 @@ public final class Constants {
             public static final double MINIMUM  = 12;
             public static final double MAXIMUM = 124;
             public static final double CLIMB = 13;
+            public static final double AUTO_INTAKE = 30;
             public static final double INTAKE = 17;
             public static final double DEFAULT = 30;
             public static final double PODIUM = 35;

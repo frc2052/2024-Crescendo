@@ -5,42 +5,45 @@
 package frc.robot.commands.auto.commands.drive;
 
 import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.AimingCalculator;
+import frc.robot.util.io.Dashboard;
 
 public class AimToSpeakerCommand extends Command {
     protected final DrivetrainSubsystem drivetrain;
-    private double goalAngleDegrees;
-    private double deltaDegrees;
+    private final ProfiledPIDController rotationController;
     private boolean isFinished = false;
+    private RobotState robotState;
 
     public AimToSpeakerCommand(DrivetrainSubsystem drivetrain) {
         this.drivetrain = drivetrain;
         isFinished = false;
+        robotState = RobotState.getInstance();
+
+        rotationController = new ProfiledPIDController(0.25, 0, 0.1, Constants.Drivetrain.AIM_PID_CONSTRAINT);
+        rotationController.enableContinuousInput(-Math.PI, Math.PI);
+        rotationController.setTolerance(0.5);
 
         addRequirements(drivetrain);
     }
 
     private double getRotation() {
-        isFinished = false;
-        goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
-        deltaDegrees = RobotState.getInstance().getRotation2d360().getDegrees() - goalAngleDegrees;
-        Logger.recordOutput("goal angle", goalAngleDegrees);
-        Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
-
-        // return 0;
-        if (Math.abs(deltaDegrees) > 90) {
-            return Math.copySign(0.5, -deltaDegrees);
-        } else if (Math.abs(deltaDegrees) > 45){
-            return Math.copySign(0.25, -deltaDegrees);
-        } else if (Math.abs(deltaDegrees) > 5){
-            return Math.copySign(0.1, -deltaDegrees);
-        } else {
-            isFinished = true;
-            return 0;
-        }
+        double goalAngle = AimingCalculator.angleToPoint(robotState.getSpeakerLocation(), robotState.getRobotPose(), robotState.getChassisSpeeds());
+        double currentAngle = robotState.getRotation2d180().getRadians();
+        Dashboard.getInstance().putData("AIM GOAL ANGLE", goalAngle);
+        Dashboard.getInstance().putData("AIM CURRENT ANGLE", currentAngle);
+            
+        double rotation = rotationController.calculate(currentAngle, goalAngle);
+        // do we want to check the error?
+        double error = rotationController.getPositionError();
+        double output = MathUtil.clamp(rotation, -DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond() * 2 * Math.PI, DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond()* 2 * Math.PI);
+        return output;
     }
 
     @Override

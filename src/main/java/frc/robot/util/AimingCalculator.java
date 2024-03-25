@@ -104,6 +104,7 @@ public class AimingCalculator {
         double correction = -Math.atan2(uncorrectedShot, distanceToTarget);
 
         double setpointAngle = MathUtil.inputModulus(angleToTarget.getRadians() + correction, -Math.PI, Math.PI);
+        Logger.recordOutput("setpoint", setpointAngle);
         
         return setpointAngle;
     }

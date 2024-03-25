@@ -60,6 +60,6 @@ public class ShootCommandAuto extends Command {
 
   @Override
   public boolean isFinished() {
-    return (indexStartTime > 0 && Timer.getFPGATimestamp() - indexStartTime > 0.25);
+    return (!indexer.getNoteHeld() && !indexer.getNoteStaged());
   }
 }

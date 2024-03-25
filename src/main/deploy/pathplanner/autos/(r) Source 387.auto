@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Sub Shoot Command"
+            "name": null
           }
         },
         {
@@ -52,13 +52,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Indexer Backup"
+            "name": null
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot Command"
+            "name": null
           }
         },
         {
@@ -70,7 +70,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Command"
+            "name": null
           }
         },
         {
@@ -82,7 +82,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Command"
+            "name": null
           }
         }
       ]
