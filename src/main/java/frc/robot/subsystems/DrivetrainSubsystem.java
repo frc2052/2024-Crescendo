@@ -130,9 +130,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
             normalizedRotationVelocity * getMaxAngularVelocityRadiansPerSecond()
         );
 
+        // The origin is always blue. When our alliance is red, X and Y need to be inverted
+        var alliance = DriverStation.getAlliance();
+        var invert = 1;
+        if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+            invert = -1;
+        }
+
         if (fieldCentric) {
             // chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d());
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, RobotState.getInstance().getRotation2d180());
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds.vxMetersPerSecond * invert, chassisSpeeds.vyMetersPerSecond * invert, RobotState.getInstance().getRotation2d180());
         }
 
         drive(chassisSpeeds);
