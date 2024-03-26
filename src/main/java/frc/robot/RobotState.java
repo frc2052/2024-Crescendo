@@ -197,7 +197,7 @@ public class RobotState {
 
     public Rotation2d getRotation2dRaw() {
         if(isTeleop()){
-            return robotRotation2d.rotateBy(navxOffset.unaryMinus());
+            return robotRotation2d;//.rotateBy(navxOffset.unaryMinus());
         } else {
             return robotRotation2d;
         }
