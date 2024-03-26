@@ -48,20 +48,6 @@ public class DriveWhileAimingCommand extends DriveCommand {
         // Logger.recordOutput("goal angle", goalAngleDegrees);
         // Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
 
-        
-        // // System.out.println(rotationController.calculate(RobotState.getInstance().getRotation2d360().getDegrees(), goalAngleDegrees) / 360);
-        // return rotationController.calculate(RobotState.getInstance().getRotation2d360().getDegrees(), goalAngleDegrees) / 360;
-        // // return 0;
-        // // if (Math.abs(deltaDegrees) > 90) {
-        // //     return Math.copySign(0.5, -deltaDegrees);
-        // // } else if (Math.abs(deltaDegrees) > 45){
-        // //     return Math.copySign(0.25, -deltaDegrees);
-        // // } else if (Math.abs(deltaDegrees) > 5){
-        // //     return Math.copySign(0.1, -deltaDegrees);
-        // // } else {
-        // //     return 0;
-        // // }
-
         double goalAngle = AimingCalculator.angleToPoint(robotState.getSpeakerLocation(), robotState.getRobotPose(), robotState.getChassisSpeeds());
         double currentAngle = robotState.getRotation2d180().getRadians();
         Dashboard.getInstance().putData("AIM GOAL ANGLE", goalAngle);

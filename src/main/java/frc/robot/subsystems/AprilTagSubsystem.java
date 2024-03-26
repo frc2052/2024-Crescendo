@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.team2052.lib.photonvision.EstimatedRobotPose;
 import com.team2052.lib.photonvision.PhotonCamera;
 import com.team2052.lib.photonvision.PhotonPoseEstimator;
@@ -51,17 +53,19 @@ public class AprilTagSubsystem extends SubsystemBase{
         timer = new Timer();
 
         if (!RobotState.getInstance().isRedAlliance()){
-            speakertag = 8; //blue
+            speakertag = 7; //blue
         } else {
             speakertag = 4;//red
         }
         timer.start();
         isSeeingTag = false;
-        SmartDashboard.putBoolean("Is Seeing Speaker April Tag", isSeeingTag);
+        
     }
 
     @Override
     public void periodic() {
+        
+        boolean sawTag = false;
         for(int i = 0; i < cameras.size(); i++){
             PhotonCamera camera = cameras.get(i);
             var result = camera.getLatestResult();
@@ -85,25 +89,39 @@ public class AprilTagSubsystem extends SubsystemBase{
                     estimatedPose = poseUpdate.get();
                     robotState.addAprilTagVisionUpdate(estimatedPose);
                 }
-
-                // for (int j = 0; j < targets.size(); j++) {
-                //     if (targets.get(j).getFiducialId() == speakertag) {
-                //         speakerTagYaw = targets.get(j).getYaw();
-                //         double lastUpdatedTime = timer.get();
-                //     }
-                // }
+                for (int j = 0; j < targets.size(); j++) {
+                    System.out.println("IDs : " + targets.get(j).getFiducialId());
+                    System.out.println("SpeakerTag : " + speakertag);
+                    if (targets.get(j).getFiducialId() == speakertag) {
+                        speakerTagYaw = targets.get(j).getYaw();
+                        double lastUpdatedTime = timer.get();
+                        sawTag = true;
+                        System.out.println("Saw tag 7");
+                    }
+                }
                 
             }
         }
+        if (sawTag) {
+            sawTag = false;
+            isSeeingTag = true;
+        } else {
+            isSeeingTag = false;
+        }
+
+        Logger.recordOutput("Is Seeing Speaker April Tag", isSeeingTag);
+        Logger.recordOutput("SpeakerTag Yaw", speakerTagYaw);
     }
 
     public Optional<Double> getYaw() {
         if (timer.get() - lastUpdatedTime <= Constants.AprilTags.APRILTAG_TIMEOUT) {
-            isSeeingTag = true;
             return Optional.of(speakerTagYaw);
         } else {
-            isSeeingTag = false;
             return Optional.empty();
         }
+    }
+
+    public boolean isSeeingSpeakerTag() {
+        return isSeeingTag;
     }
 }

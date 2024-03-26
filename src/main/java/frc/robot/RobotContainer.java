@@ -23,6 +23,7 @@ import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
+import frc.robot.commands.drive.DriveWhileAimingSpeakerSingleTag;
 import frc.robot.commands.indexer.IndexerBackupCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeCommand;
@@ -175,6 +176,13 @@ public class RobotContainer {
       () -> ampDirection,
       Dashboard.getInstance()::isFieldCentric,
       drivetrain
+    ));
+    JoystickButton aimToSpeakerUsingOneTag = new JoystickButton(rotationJoystick, 7);
+    aimToSpeakerUsingOneTag.whileTrue(new DriveWhileAimingSpeakerSingleTag(
+    () -> translationJoystick.getX(), 
+    () -> translationJoystick.getY(), 
+    Dashboard.getInstance()::isFieldCentric, 
+    drivetrain
     ));
 
     /*
