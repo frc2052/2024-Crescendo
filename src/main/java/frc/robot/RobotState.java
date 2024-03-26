@@ -196,7 +196,11 @@ public class RobotState {
     }
 
     public Rotation2d getRotation2dRaw() {
-        return robotRotation2d.rotateBy(navxOffset);
+        if(isTeleop()){
+            return robotRotation2d.rotateBy(navxOffset.unaryMinus());
+        } else {
+            return robotRotation2d;
+        }
     }
 
     public void applyNavxOffset(){
@@ -208,8 +212,8 @@ public class RobotState {
         this.navxOffset = new Rotation2d();
     }
 
-    public void addNavXOffset(double offset){
-        this.navxOffset = new Rotation2d(Units.degreesToRadians(offset));
+    public void addNavXOffset(Rotation2d offset){
+        this.navxOffset = offset;
     }
 
     public boolean gyroResetNeeded(){

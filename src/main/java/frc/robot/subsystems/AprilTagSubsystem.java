@@ -90,13 +90,13 @@ public class AprilTagSubsystem extends SubsystemBase{
                     robotState.addAprilTagVisionUpdate(estimatedPose);
                 }
                 for (int j = 0; j < targets.size(); j++) {
-                    System.out.println("IDs : " + targets.get(j).getFiducialId());
-                    System.out.println("SpeakerTag : " + speakertag);
+                    // System.out.println("IDs : " + targets.get(j).getFiducialId());
+                    // System.out.println("SpeakerTag : " + speakertag);
                     if (targets.get(j).getFiducialId() == speakertag) {
                         speakerTagYaw = targets.get(j).getYaw();
                         double lastUpdatedTime = timer.get();
                         sawTag = true;
-                        System.out.println("Saw tag 7");
+                        // System.out.println("Saw tag 7");
                     }
                 }
                 

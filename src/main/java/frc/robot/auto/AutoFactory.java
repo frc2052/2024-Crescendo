@@ -9,6 +9,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.RobotState;
 import frc.robot.commands.auto.backupAuto.BasicAuto;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
@@ -54,6 +55,8 @@ public class AutoFactory {
             // if (compiledAuto != null) {
             //     compiledAuto.initialize();
             // }
+            RobotState.getInstance().addNavXOffset(PathPlannerAuto.getStaringPoseFromAutoFile(currentAuto.getAuto().getName()).getRotation());
+            System.out.println("starting rotation = " + PathPlannerAuto.getStaringPoseFromAutoFile(currentAuto.getAuto().getName()).getRotation().getDegrees());
         }
 
         Dashboard.getInstance().putData(Constants.Dashboard.AUTO_COMPILED_KEY, true);
