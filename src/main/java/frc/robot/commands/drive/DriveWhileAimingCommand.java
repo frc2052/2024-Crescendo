@@ -44,7 +44,7 @@ public class DriveWhileAimingCommand extends DriveCommand {
 
         rotationController = new PIDController(0.5, 0.0, 0);
         rotationController.enableContinuousInput(-Math.PI, Math.PI);
-        rotationController.setTolerance(0.5);
+        rotationController.setTolerance(2);
 
         robotState = RobotState.getInstance();
     }
@@ -62,11 +62,10 @@ public class DriveWhileAimingCommand extends DriveCommand {
         double error = rotationController.getPositionError();
         System.out.println(error);
 
-        // if(Math.abs(rotation) < 0.04 && rotation != 0){
-        //     // needs at least 5% power to make robot turn
-        //     rotation = Math.copySign(0.04, rotation);
-        // } else
-        if (Math.abs(rotation) > 0.35 && rotation != 0) {
+        if(Math.abs(rotation) < 0.035 && rotation != 0){
+            // needs at least 4% power to make robot turn
+            rotation = Math.copySign(0.035, rotation);
+        } else if (Math.abs(rotation) > 0.35 && rotation != 0) {
             rotation = Math.copySign(0.35, rotation);
         }
 
