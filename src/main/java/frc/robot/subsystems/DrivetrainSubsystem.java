@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -139,7 +140,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         if (fieldCentric) {
             // chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d());
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds.vxMetersPerSecond * invert, chassisSpeeds.vyMetersPerSecond * invert, RobotState.getInstance().getRotation2d180());
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds.vxMetersPerSecond * invert, chassisSpeeds.vyMetersPerSecond * invert, chassisSpeeds.omegaRadiansPerSecond, RobotState.getInstance().getRotation2d180());
         }
 
         drive(chassisSpeeds);

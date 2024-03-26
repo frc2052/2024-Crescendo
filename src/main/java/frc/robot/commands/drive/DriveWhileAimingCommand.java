@@ -34,29 +34,30 @@ public class DriveWhileAimingCommand extends DriveCommand {
     ) {
         super(xSupplier, ySupplier, () -> 0, fieldCentricSupplier, drivetrain);
 
-        rotationController = new ProfiledPIDController(0.25, 0, 0.1, Constants.Drivetrain.AIM_PID_CONSTRAINT);
+        rotationController = new ProfiledPIDController(0.5, 0, 0.1, Constants.Drivetrain.AIM_PID_CONSTRAINT);
         rotationController.enableContinuousInput(-Math.PI, Math.PI);
-        rotationController.setTolerance(0.5);
+        rotationController.setTolerance(3);
 
         robotState = RobotState.getInstance();
     }
     
     @Override
     protected double getRotation() {
-        // double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
-        // double deltaDegrees = RobotState.getInstance().getRotation2d360().getDegrees() - goalAngleDegrees;
-        // Logger.recordOutput("goal angle", goalAngleDegrees);
-        // Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
-
         double goalAngle = AimingCalculator.angleToPoint(robotState.getSpeakerLocation(), robotState.getRobotPose(), robotState.getChassisSpeeds());
         double currentAngle = robotState.getRotation2d180().getRadians();
         Dashboard.getInstance().putData("AIM GOAL ANGLE", goalAngle);
         Dashboard.getInstance().putData("AIM CURRENT ANGLE", currentAngle);
             
         double rotation = rotationController.calculate(currentAngle, goalAngle);
+        System.out.println("Rotation " + rotation);
         // do we want to check the error?
         double error = rotationController.getPositionError();
-        double output = MathUtil.clamp(rotation, -DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond() * 2 * Math.PI, DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond()* 2 * Math.PI);
-        return output;
+
+        if(Math.abs(rotation) < 0.03 && rotation != 0){
+            // needs at least 5% power to make robot turn
+            rotation = Math.copySign(0.03, rotation);
+        }
+        // double output = MathUtil.clamp(rotation, -DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond() * 2 * Math.PI, DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond()* 2 * Math.PI);
+        return rotation;
     }
 }
