@@ -101,6 +101,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // currentChassisSpeeds = new ChassisSpeeds(navx.getVelocityX(), navx.getVelocityY)
         robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(),  navx.getRotation2d()));
         debug();
+
+        
+        Logger.recordOutput("drivetrain omega radians", currentChassisSpeeds.omegaRadiansPerSecond);
     }
 
     /**
