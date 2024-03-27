@@ -300,8 +300,16 @@ public class RobotState {
         }
     }
 
+    public Translation2d getSpeakerAimLocation() {
+        if(isRedAlliance()) {
+            return Constants.FieldAndRobot.RED_SPEAKER_AIM_LOCATION;
+        } else {
+            return Constants.FieldAndRobot.BLUE_SPEAKER_AIM_LOCATION;
+        }
+    }
+
     public double distanceToSpeaker() {
-        return AimingCalculator.calculateDistanceToSpeaker(robotPose);
+        return AimingCalculator.calculateDistanceToAimPoint(robotPose);
     }
 
     /**
@@ -364,7 +372,7 @@ public class RobotState {
         Logger.recordOutput("Robot Position Y : ", (robotPose.getY()));
         Logger.recordOutput("ROBOT POSE2D", robotPose);
         Logger.recordOutput("Auto Pose", getRobotPoseAuto());
-        Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateDistanceToSpeaker(robotPose));
+        Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateDistanceToAimPoint(robotPose));
         Logger.recordOutput("RAW GYRO", robotRotation2d.getDegrees());
         Logger.recordOutput("NOTE STAGED", noteStaged);
         Logger.recordOutput("NOTE HELD", noteHeld);

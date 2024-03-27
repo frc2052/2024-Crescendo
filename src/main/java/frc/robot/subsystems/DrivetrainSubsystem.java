@@ -67,6 +67,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
 
         navx = new AHRS(SPI.Port.kMXP, (byte) 200);
+        navx.setAngleAdjustment(0);
 
         zeroGyro();
 
@@ -166,6 +167,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void zeroGyro() {
         System.out.println("zeroing gyro");
+        if(RobotState.getInstance().isRedAlliance()){
+            navx.setAngleAdjustment(180);
+        }
+
         navx.reset();
     }
 
