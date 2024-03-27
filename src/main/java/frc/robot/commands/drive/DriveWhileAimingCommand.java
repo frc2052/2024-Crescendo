@@ -24,6 +24,7 @@ import frc.robot.util.io.Dashboard;
 public class DriveWhileAimingCommand extends DriveCommand {
     private final PIDController rotationController;
     private SlewRateLimiter rotationSlew;
+    protected boolean isOnTarget;
 
     private RobotState robotState;
 
@@ -60,7 +61,6 @@ public class DriveWhileAimingCommand extends DriveCommand {
         // System.out.println("Rotation " + rotation);
         // do we want to check the error?
         double error = rotationController.getPositionError();
-        System.out.println(error);
 
         if(Math.abs(rotation) < 0.035 && rotation != 0){
             // needs at least 4% power to make robot turn
@@ -68,6 +68,8 @@ public class DriveWhileAimingCommand extends DriveCommand {
         } else if (Math.abs(rotation) > 0.35 && rotation != 0) {
             rotation = Math.copySign(0.35, rotation);
         }
+
+        isOnTarget = Math.abs(rotation) <= 1;
 
         Logger.recordOutput("aim rot", rotation);
 

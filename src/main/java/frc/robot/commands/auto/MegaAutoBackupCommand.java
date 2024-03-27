@@ -27,7 +27,6 @@ public class MegaAutoBackupCommand extends MegaAutoCommand {
   @Override
     public ShootAngleConfig getShootConfig(){
     Pose2d robotPose = RobotState.getInstance().getRobotPose();
-    System.out.println(robotPose.getY());
 //    if(!RobotState.getInstance().isRedAlliance()){
 //      robotPose = robotPose.transformBy(new Transform2d(new Translation2d(-1.5,0), new Rotation2d(0)));
 //    }else{
@@ -37,7 +36,6 @@ public class MegaAutoBackupCommand extends MegaAutoCommand {
 //    }
     ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToAimPoint(robotPose));
     config = new ShootAngleConfig(config.getDistanceCentimeters(), config.getAngleDegrees(), .9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS);
-    System.out.println(robotPose.getY());
     return config;
   }
 

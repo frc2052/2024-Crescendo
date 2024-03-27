@@ -149,7 +149,7 @@ public class RobotContainer {
      */
 
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
-    zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroGyro()));
+    zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroOdometry()));
 
     JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
 
@@ -296,8 +296,8 @@ public class RobotContainer {
   }
 
   public void resetGyro(){
-    if (RobotState.getInstance().gyroResetNeeded()){
-      drivetrain.zeroGyro();
-    }
+    // if (RobotState.getInstance().gyroResetNeeded()){
+    //   drivetrain.zeroOdometry();
+    // }
   }
 }

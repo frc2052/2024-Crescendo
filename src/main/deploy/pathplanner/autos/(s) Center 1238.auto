@@ -26,24 +26,24 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "path",
                       "data": {
-                        "name": null
+                        "pathName": null
                       }
                     },
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 3.0
+                        "waitTime": 1.0
                       }
                     }
                   ]
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Center 1"
+                  "name": null
                 }
               }
             ]

@@ -142,14 +142,17 @@ public class AimingCalculator {
             Translation2d aimLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
 
             if (calculateAngleToSpeaker(robotPose) > 30) { // if we are too far to the left or right aim for a better shot
+                System.out.println("applying: " + calculateAngleToSpeaker(robotPose));
                 if(aimLocation.getY() > robotPose.getY()) { //to the left of speaker (robot pov)
                     // since we are to the left, we want to offset our aim point to the right for a better shot
-                    aimLocation.plus(new Translation2d(0, +0.4));
+                    aimLocation = aimLocation.plus(new Translation2d(0, +0.2));
                 } else { //to the right of speaker
                     // since we are to the right, we want to offset our aim point to the left for a better shot
-                    aimLocation.plus(new Translation2d(0, -.40));
+                    aimLocation = aimLocation.plus(new Translation2d(0, -0.2));
                 }
             }
+
+            System.out.println("Angle: " + calculateAngleToSpeaker(robotPose) + " Speaker Location: " + Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getY() + " Aim Location: " + aimLocation.getY());
 
             double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
             double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
@@ -161,10 +164,10 @@ public class AimingCalculator {
             if (calculateAngleToSpeaker(robotPose) > 30) { // if we are too far to the left or right aim for a better shot
                 if(aimLocation.getY() < robotPose.getY()) { //to the left of speaker (robot pov)
                     // since we are to the left, we want to offset our aim point to the right for a better shot
-                    aimLocation.plus(new Translation2d(0, -0.4));
+                    aimLocation.plus(new Translation2d(0, -0.2));
                 } else { //to the right of speaker
                     // since we are to the right, we want to offset our aim point to the left for a better shot
-                    aimLocation.plus(new Translation2d(0, +.40));
+                    aimLocation.plus(new Translation2d(0, +0.2));
                 }
             }
             double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());

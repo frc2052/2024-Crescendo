@@ -69,7 +69,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         navx = new AHRS(SPI.Port.kMXP, (byte) 200);
         navx.setAngleAdjustment(0);
 
-        zeroGyro();
+        zeroOdometry();
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
@@ -170,8 +170,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return navx;
     }
 
-    public void zeroGyro() {
-        System.out.println("zeroing gyro");
+    public void zeroOdometry() {
+        System.out.println("zeroing odometry");
         // if(RobotState.getInstance().isRedAlliance()){
         //     navx.setAngleAdjustment(180);
         // }
