@@ -144,7 +144,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         if (fieldCentric) {
             // chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d());
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds.vxMetersPerSecond * invert, chassisSpeeds.vyMetersPerSecond * invert, chassisSpeeds.omegaRadiansPerSecond, RobotState.getInstance().getRotation2d180());
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                chassisSpeeds.vxMetersPerSecond * invert, 
+                chassisSpeeds.vyMetersPerSecond * invert, 
+                chassisSpeeds.omegaRadiansPerSecond, 
+                RobotState.getInstance().getRobotPose().getRotation()
+            );
         }
 
         drive(chassisSpeeds);
@@ -167,11 +172,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void zeroGyro() {
         System.out.println("zeroing gyro");
-        if(RobotState.getInstance().isRedAlliance()){
-            navx.setAngleAdjustment(180);
-        }
+        // if(RobotState.getInstance().isRedAlliance()){
+        //     navx.setAngleAdjustment(180);
+        // }
 
-        navx.reset();
+        // navx.reset();
+        resetPose(new Pose2d(RobotState.getInstance().getRobotPose().getTranslation(), new Rotation2d()));
     }
 
     public void setModuleStates(SwerveModuleState[] swerveModuleStates) {

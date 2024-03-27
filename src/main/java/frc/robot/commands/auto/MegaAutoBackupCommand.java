@@ -35,7 +35,7 @@ public class MegaAutoBackupCommand extends MegaAutoCommand {
       //System.out.println(robotPose.getX());
       // robotPose = robotPose.transformBy(new Transform2d(new Translation2d(-1,0), new Rotation2d(0)));
 //    }
-    ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToSpeaker(robotPose));
+    ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToAimPoint(robotPose));
     config = new ShootAngleConfig(config.getDistanceCentimeters(), config.getAngleDegrees(), .9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS);
     System.out.println(robotPose.getY());
     return config;

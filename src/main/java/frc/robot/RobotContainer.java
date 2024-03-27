@@ -7,15 +7,9 @@ package frc.robot;
 import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimberSlowRetractCommand;
-import frc.robot.commands.auto.AutoManualIndexerOnCommand;
-import frc.robot.commands.auto.AutoManualIntakeOnCommand;
-import frc.robot.commands.auto.AutoManualShamperAngleCenter1Command;
-import frc.robot.commands.auto.AutoManualShamperAngleCenter2Command;
 import frc.robot.commands.auto.MegaAutoBackupCommand;
-import frc.robot.commands.auto.MegaAutoCommand;
 import frc.robot.commands.auto.commands.IntakeCommandAuto;
 import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
-import frc.robot.commands.auto.commands.shamper.ShamperAimCommand;
 import frc.robot.commands.auto.commands.shamper.ShootAutoLowCommand;
 import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
@@ -26,7 +20,6 @@ import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.DriveWhileAimingSpeakerSingleTag;
 import frc.robot.commands.indexer.IndexerBackupCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
-import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
@@ -156,7 +149,7 @@ public class RobotContainer {
      */
 
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
-    zeroGyroButton.onTrue(new InstantCommand(() -> {drivetrain.zeroGyro(); RobotState.getInstance().clearNavXOffset();}));
+    zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroGyro()));
 
     JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
 
@@ -303,7 +296,6 @@ public class RobotContainer {
   }
 
   public void resetGyro(){
-    
     if (RobotState.getInstance().gyroResetNeeded()){
       drivetrain.zeroGyro();
     }

@@ -28,6 +28,7 @@ public class IntakeCommand extends Command {
         intake.intake();
         if(indexer.getNoteHeld()){
             indexer.loadSlow();
+            intake.outtake();
         } else {
             indexer.load();
         }

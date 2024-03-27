@@ -39,7 +39,7 @@ public class RobotStateEstimator {
         if(poseEstimator == null){
             poseEstimator = new SwerveDrivePoseEstimator(
                 Constants.Drivetrain.kinematics, 
-                robotState.getRotation2dRaw(), 
+                robotState.getGyroRotation(), 
                 robotState.getModulePositions(),
                 robotState.getInitialPose(),
                 Constants.Drivetrain.ODOMETRY_STDDEV,
@@ -67,7 +67,7 @@ public class RobotStateEstimator {
         }
 
         poseEstimator.update(
-            robotState.getRotation2dRaw(), 
+            robotState.getGyroRotation(), 
             robotState.getModulePositions()
         );
 
@@ -79,11 +79,13 @@ public class RobotStateEstimator {
      */
     public void resetOdometry(Pose2d pose){
         //robotState.resetInitialPose(pose);
+        if(poseEstimator != null){
+            poseEstimator.resetPosition(
+                robotState.getGyroRotation(), 
+                robotState.getModulePositions(),
+                pose
+            );
+        }
 
-        poseEstimator.resetPosition(
-            robotState.getRotation2d360(), 
-            robotState.getModulePositions(),
-            pose
-        );
     }
 }

@@ -246,8 +246,8 @@ public final class Constants {
         public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(0.066), Units.inchesToMeters(218.415));
 
         // put center of speaker in the middle-ish of the 
-        // public static final Translation2d RED_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(643.157), Units.inchesToMeters(218.416));
-        // public static final Translation2d BLUE_SPEAKER_LOCATION = new Translation2d(Units.inchesToMeters(8), Units.inchesToMeters(218.415));
+        public static final Translation2d RED_SPEAKER_AIM_LOCATION = new Translation2d(Units.inchesToMeters(643.157), Units.inchesToMeters(218.416));
+        public static final Translation2d BLUE_SPEAKER_AIM_LOCATION = new Translation2d(Units.inchesToMeters(8), Units.inchesToMeters(218.415));
 
         public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
 

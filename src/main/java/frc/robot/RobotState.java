@@ -14,11 +14,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.AimingCalculator;
 import frc.robot.util.io.Dashboard;
 import frc.robot.util.states.DrivetrainState;
@@ -30,8 +27,7 @@ public class RobotState {
     private Pose2d robotPose;
     private Pose3d aprilTagVisionPose3d;
     private double detectionTime;
-    private Rotation2d navxOffset;
-    private Rotation2d robotRotation2d;
+    private Rotation2d navxRotation;
     private SwerveModulePosition[] swerveModulePositions;
     private ChassisSpeeds chassisSpeeds;
     private boolean noteHeld;
@@ -39,7 +35,6 @@ public class RobotState {
     private boolean musicEnabled;
     private boolean isClimbing;
     private boolean shamperAtGoalAngle;
-    private double autoOffset;
     private Timer lastGyroResetTimer;
     private double lastGyroResetValue;
 
@@ -56,8 +51,7 @@ public class RobotState {
         robotPose = new Pose2d();
         detectionTime = 0.0;
         aprilTagVisionPose3d = new Pose3d();
-        navxOffset = new Rotation2d(0);
-        robotRotation2d = new Rotation2d(0);
+        navxRotation = new Rotation2d(0);
         chassisSpeeds = new ChassisSpeeds();
         noteHeld = false;
         noteStaged = false;
@@ -73,7 +67,11 @@ public class RobotState {
     public void addDrivetrainState(DrivetrainState drivetrainState) {
         this.chassisSpeeds = drivetrainState.getChassisSpeeds();
         this.swerveModulePositions = drivetrainState.getModulePositions();
-        this.robotRotation2d = drivetrainState.getRotation2d();
+        this.navxRotation = drivetrainState.getRotation2d();
+    }
+
+    public Rotation2d getGyroRotation() {
+        return navxRotation;
     }
 
     /**
@@ -185,41 +183,23 @@ public class RobotState {
      * @return Rotation2d
      */
     public Rotation2d getRotation2d180() {
-        double rotationDegrees = MathUtil.inputModulus(getRotation2dRaw().getDegrees(), -180, 180);
+        double rotationDegrees = MathUtil.inputModulus(getRotation2d().getDegrees(), -180, 180);
 
         return Rotation2d.fromDegrees(rotationDegrees);
     }
 
     public Rotation2d getRotation2d360() {
-        double rotationDegrees = MathUtil.inputModulus(getRotation2dRaw().getDegrees(), 0, 360);
+        double rotationDegrees = MathUtil.inputModulus(getRotation2d().getDegrees(), 0, 360);
         return Rotation2d.fromDegrees(rotationDegrees);
     }
 
-    public Rotation2d getRotation2dRaw() {
-        if(isTeleop()){
-            return robotRotation2d;//.rotateBy(navxOffset.unaryMinus());
-        } else {
-            return robotRotation2d;
-        }
-    }
-
-    public void applyNavxOffset(){
-        System.out.println("NavX Offset Applied of: " + autoOffset);
-        this.navxOffset = new Rotation2d(autoOffset);
-    }
-
-    public void clearNavXOffset() {
-        this.navxOffset = new Rotation2d();
-    }
-
-    public void addNavXOffset(Rotation2d offset){
-        this.navxOffset = offset;
+    public Rotation2d getRotation2d() {
+        return robotPose.getRotation();
     }
 
     public boolean gyroResetNeeded(){
-        if (lastGyroResetTimer.get() > 5 && (getRotation2d360().getDegrees() > 1)){
+        if (lastGyroResetTimer.get() > 5 && (getGyroRotation().getDegrees() > 1)){
             lastGyroResetTimer.restart();
-            System.out.println("GYRO DIFF: " + getRotation2d360().getDegrees());
             return true;
         }
 
@@ -373,7 +353,8 @@ public class RobotState {
         Logger.recordOutput("ROBOT POSE2D", robotPose);
         Logger.recordOutput("Auto Pose", getRobotPoseAuto());
         Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateDistanceToAimPoint(robotPose));
-        Logger.recordOutput("RAW GYRO", robotRotation2d.getDegrees());
+        Logger.recordOutput("RAW GYRO", navxRotation.getDegrees());
+        Logger.recordOutput("Robot Rotation", robotPose.getRotation().getDegrees());
         Logger.recordOutput("NOTE STAGED", noteStaged);
         Logger.recordOutput("NOTE HELD", noteHeld);
         Logger.recordOutput("auto gyro method angle", robotPose.getRotation().getDegrees());

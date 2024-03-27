@@ -119,17 +119,56 @@ public class AimingCalculator {
         }
     }
 
-    public static double calculateDistanceToSpeaker(Pose2d robotPose) {
+    public static double calculateAngleToSpeaker(Pose2d robotPose) {
         if(!RobotState.getInstance().isRedAlliance()) { // blue alliance
             Translation2d speakerLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
             double xDistance = Math.abs(speakerLocation.getX() - robotPose.getX());
             double yDistance = Math.abs(speakerLocation.getY() - robotPose.getY());
 
-            return Math.hypot(xDistance, yDistance);
+            double speakerToRobotDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
+            return speakerToRobotDegrees;
         } else { // red alliance
             Translation2d speakerLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
             double xDistance = Math.abs(speakerLocation.getX() - robotPose.getX());
             double yDistance = Math.abs(speakerLocation.getY() - robotPose.getY());
+            
+            double speakerToRobotDegrees = Units.radiansToDegrees(Math.atan(Math.abs(yDistance) / Math.abs(xDistance)));
+            return speakerToRobotDegrees;
+        }
+    }
+    
+    public static double calculateDistanceToAimPoint(Pose2d robotPose) {
+        if(!RobotState.getInstance().isRedAlliance()) { // blue alliance
+            Translation2d aimLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
+
+            if (calculateAngleToSpeaker(robotPose) > 30) { // if we are too far to the left or right aim for a better shot
+                if(aimLocation.getY() > robotPose.getY()) { //to the left of speaker (robot pov)
+                    // since we are to the left, we want to offset our aim point to the right for a better shot
+                    aimLocation.plus(new Translation2d(0, +0.4));
+                } else { //to the right of speaker
+                    // since we are to the right, we want to offset our aim point to the left for a better shot
+                    aimLocation.plus(new Translation2d(0, -.40));
+                }
+            }
+
+            double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
+            double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
+
+            return Math.hypot(xDistance, yDistance);
+        } else { // red alliance
+            Translation2d aimLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
+
+            if (calculateAngleToSpeaker(robotPose) > 30) { // if we are too far to the left or right aim for a better shot
+                if(aimLocation.getY() < robotPose.getY()) { //to the left of speaker (robot pov)
+                    // since we are to the left, we want to offset our aim point to the right for a better shot
+                    aimLocation.plus(new Translation2d(0, -0.4));
+                } else { //to the right of speaker
+                    // since we are to the right, we want to offset our aim point to the left for a better shot
+                    aimLocation.plus(new Translation2d(0, +.40));
+                }
+            }
+            double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
+            double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
             
             return Math.hypot(xDistance, yDistance);
         }

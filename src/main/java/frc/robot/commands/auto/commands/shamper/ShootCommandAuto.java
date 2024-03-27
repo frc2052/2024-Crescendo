@@ -33,7 +33,7 @@ public class ShootCommandAuto extends Command {
   }
 
   protected ShootAngleConfig getTargetAngle(){
-    return ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToSpeaker(RobotState.getInstance().getRobotPose()));
+    return ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToAimPoint(RobotState.getInstance().getRobotPose()));
   }
 
   @Override
