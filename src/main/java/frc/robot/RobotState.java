@@ -26,6 +26,7 @@ public class RobotState {
     private Pose2d initialPose;
     private Pose2d robotPose;
     private Pose3d aprilTagVisionPose3d;
+    private boolean visionEnabled;
     private double detectionTime;
     private Rotation2d navxRotation;
     private SwerveModulePosition[] swerveModulePositions;
@@ -51,6 +52,7 @@ public class RobotState {
         robotPose = new Pose2d();
         detectionTime = 0.0;
         aprilTagVisionPose3d = new Pose3d();
+        visionEnabled = false;
         navxRotation = new Rotation2d(0);
         chassisSpeeds = new ChassisSpeeds();
         noteHeld = false;
@@ -104,6 +106,15 @@ public class RobotState {
             this.aprilTagVisionPose3d = null;
             this.detectionTime = 0;
         }
+    }
+
+    public void updateVisionEnabled(boolean visionEnabled) {
+        this.visionEnabled = visionEnabled;
+        Dashboard.getInstance().putData("vision enabled", visionEnabled);
+    }
+
+    public boolean getVisionEnabled() {
+        return visionEnabled;
     }
 
     public void updateRobotPose(Pose2d robotPose) {

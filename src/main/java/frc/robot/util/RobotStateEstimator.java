@@ -4,6 +4,7 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -47,24 +48,24 @@ public class RobotStateEstimator {
             );
         }
         
-        if (!(robotState.getChassisSpeeds().vxMetersPerSecond > 0.5) && !(robotState.getChassisSpeeds().vxMetersPerSecond > 0.5) && !(robotState.getChassisSpeeds().omegaRadiansPerSecond > 0.5)){            
-            if(robotState.getVisionPose3d().isPresent()){
-                Pose2d visionPose = robotState.getVisionPose3d().get().toPose2d();
-                // square the x distance in meters and multiply by 0.05 to get how much we trust the vision
-                double xyStds = 0.05 * Math.pow(robotState.getSpeakerLocation().getDistance(visionPose.getTranslation()), 2);
-                // System.out.println("STDS " + xyStds);
-                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, 99999999));
+        // if(robotState.getVisionEnabled()){
+            if (!(robotState.getChassisSpeeds().vxMetersPerSecond > 0.5) && !(robotState.getChassisSpeeds().vxMetersPerSecond > 0.5) && !(robotState.getChassisSpeeds().omegaRadiansPerSecond > 0.5)){            
+                if(robotState.getVisionPose3d().isPresent()){
+                    Pose2d visionPose = robotState.getVisionPose3d().get().toPose2d();
+                    if(visionPose.getX() > 0 && visionPose.getX() < Units.inchesToMeters(651.157) && visionPose.getY() > 0 && visionPose.getY() < Units.feetToMeters(27)){
+                        // square the x distance in meters and multiply by 0.05 to get how much we trust the vision
+                        double xyStds = 0.05 * Math.pow(robotState.getSpeakerLocation().getDistance(visionPose.getTranslation()), 2);
+                        // System.out.println("STDS " + xyStds);
+                        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, 99999999));
 
-                poseEstimator.addVisionMeasurement(
-                    visionPose,
-                    robotState.getVisionDetectionTime()
-                );
-            }
-            
-            Dashboard.getInstance().putData("VISION IN USE?", true);
-        } else {
-            Dashboard.getInstance().putData("VISION IN USE?", false);
-        }
+                        poseEstimator.addVisionMeasurement(
+                            visionPose,
+                            robotState.getVisionDetectionTime()
+                        );
+                    }
+                }
+            } 
+        // }
 
         poseEstimator.update(
             robotState.getGyroRotation(), 

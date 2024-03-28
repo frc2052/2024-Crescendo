@@ -141,8 +141,8 @@ public class AimingCalculator {
         if(!RobotState.getInstance().isRedAlliance()) { // blue alliance
             Translation2d aimLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
 
-            if (calculateAngleToSpeaker(robotPose) > 30) { // if we are too far to the left or right aim for a better shot
-                System.out.println("applying: " + calculateAngleToSpeaker(robotPose));
+            if (calculateAngleToSpeaker(robotPose) > 25) { // if we are too far to the left or right aim for a better shot
+                // System.out.println("applying: " + calculateAngleToSpeaker(robotPose));
                 if(aimLocation.getY() > robotPose.getY()) { //to the left of speaker (robot pov)
                     // since we are to the left, we want to offset our aim point to the right for a better shot
                     aimLocation = aimLocation.plus(new Translation2d(0, +0.2));
@@ -152,7 +152,7 @@ public class AimingCalculator {
                 }
             }
 
-            System.out.println("Angle: " + calculateAngleToSpeaker(robotPose) + " Speaker Location: " + Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getY() + " Aim Location: " + aimLocation.getY());
+            // System.out.println("Angle: " + calculateAngleToSpeaker(robotPose) + " Speaker Location: " + Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getY() + " Aim Location: " + aimLocation.getY());
 
             double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
             double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());

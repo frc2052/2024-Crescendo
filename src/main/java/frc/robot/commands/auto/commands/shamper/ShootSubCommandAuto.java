@@ -30,7 +30,7 @@ public class ShootSubCommandAuto extends Command {
   @Override
   public void execute() {
     shamper.setShootSpeed(ShamperSpeed.SUB);
-    shamper.setAngle(Constants.Shamper.Angle.SUB);
+    shamper.setAngle(55);
 
     if(shamper.shooterAtSpeed(ShamperSpeed.SUB.getLower(),ShamperSpeed.SUB.getUpper()) && shamper.isAtGoalAngle()) {
         indexer.indexAll();
@@ -48,6 +48,6 @@ public class ShootSubCommandAuto extends Command {
 
   @Override
   public boolean isFinished() {
-    return (indexStartTime > 0 && Timer.getFPGATimestamp() - indexStartTime > 0.25);
+    return (!indexer.getNoteHeld() && !indexer.getNoteStaged());
   }
 }

@@ -70,6 +70,8 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    
+    RobotState.getInstance().updateVisionEnabled(false);
   }
 
   /** This function is called periodically during autonomous. */
@@ -85,6 +87,8 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    RobotState.getInstance().updateVisionEnabled(true);
     
     // m_robotContainer.robotStatusCommunicator.onRobotTeleop();
   }

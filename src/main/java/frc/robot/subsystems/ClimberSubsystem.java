@@ -19,6 +19,8 @@ public class ClimberSubsystem extends SubsystemBase{
 
     private final DigitalInput limitSwitch;
 
+    private boolean isCoast;
+
     public ClimberSubsystem() {
         leftClimberMotor = new CANSparkMax(Constants.CAN.LEFT_CLIMBER_MOTOR, MotorType.kBrushless);
         rightClimberMotor = new CANSparkMax(Constants.CAN.RIGHT_CLIMBER_MOTOR, MotorType.kBrushless);
@@ -31,6 +33,8 @@ public class ClimberSubsystem extends SubsystemBase{
         rightClimberMotor.follow(leftClimberMotor);
 
         limitSwitch = new DigitalInput(Constants.Climber.CLIMBER_LIMIT_SWITCH_PIN);
+
+        isCoast = false;
     }
 
     public void extend(boolean override) {
@@ -57,17 +61,26 @@ public class ClimberSubsystem extends SubsystemBase{
         return !limitSwitch.get();
     }
 
+    public void setCoast(boolean isCoast){
+        if(isCoast == this.isCoast){
+            return;
+        }
+
+        if(isCoast){
+            leftClimberMotor.setIdleMode(IdleMode.kCoast);
+            rightClimberMotor.setIdleMode(IdleMode.kCoast);
+        } else {
+            leftClimberMotor.setIdleMode(IdleMode.kBrake);
+            rightClimberMotor.setIdleMode(IdleMode.kBrake);
+        }
+
+        this.isCoast = isCoast;
+    }
+
 @Override
 public void periodic() {
     Logger.recordOutput("Climber Encoder Value", leftClimberMotor.getEncoder().getPosition());
-
-    if (Dashboard.getInstance().isClimberCoast()){
-        leftClimberMotor.setIdleMode(IdleMode.kCoast);
-        rightClimberMotor.setIdleMode(IdleMode.kCoast);
-    } else {
-        leftClimberMotor.setIdleMode(IdleMode.kBrake);
-        rightClimberMotor.setIdleMode(IdleMode.kBrake);
-    }
+    setCoast(Dashboard.getInstance().isClimberCoast());
 }
 
 }

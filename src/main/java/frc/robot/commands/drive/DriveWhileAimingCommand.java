@@ -23,7 +23,6 @@ import frc.robot.util.io.Dashboard;
 
 public class DriveWhileAimingCommand extends DriveCommand {
     private final PIDController rotationController;
-    private SlewRateLimiter rotationSlew;
     protected boolean isOnTarget;
 
     private RobotState robotState;
@@ -41,11 +40,9 @@ public class DriveWhileAimingCommand extends DriveCommand {
     ) {
         super(xSupplier, ySupplier, () -> 0, fieldCentricSupplier, drivetrain);
 
-        rotationSlew = new SlewRateLimiter(5);
-
-        rotationController = new PIDController(0.5, 0.0, 0);
+        rotationController = new PIDController(0.3, 0, 0);
         rotationController.enableContinuousInput(-Math.PI, Math.PI);
-        rotationController.setTolerance(2);
+        rotationController.setTolerance(0.087, 0.087);
 
         robotState = RobotState.getInstance();
     }
@@ -61,16 +58,30 @@ public class DriveWhileAimingCommand extends DriveCommand {
         // System.out.println("Rotation " + rotation);
         // do we want to check the error?
         double error = rotationController.getPositionError();
+        // System.out.println("ERROR: " + error);
 
-        if(Math.abs(rotation) < 0.035 && rotation != 0){
+        /*
+         *  static friction is 0.61 voltage
+         *          */
+
+        if(Math.abs(rotation) < 0.04){
             // needs at least 4% power to make robot turn
-            rotation = Math.copySign(0.035, rotation);
-        } else if (Math.abs(rotation) > 0.35 && rotation != 0) {
-            rotation = Math.copySign(0.35, rotation);
+            rotation = Math.copySign(0.04, rotation);
+        } else if (Math.abs(rotation) > 0.4) {
+            rotation = Math.copySign(0.4, rotation);
+        } 
+        // else if (Math.abs(rotation) < 0.05){
+        //     rotation = 0;
+        // }
+
+        isOnTarget = rotationController.atSetpoint();
+
+        if(isOnTarget){
+            rotation = 0;
         }
 
-        isOnTarget = Math.abs(rotation) <= 1;
-
+        // isOnTarget = Math.abs(goalAngle - currentAngle) <= Math.toRadians(3.5);
+        System.out.println("on target " + isOnTarget);
         Logger.recordOutput("aim rot", rotation);
 
         //rotation = rotationSlew.calculate(rotation);

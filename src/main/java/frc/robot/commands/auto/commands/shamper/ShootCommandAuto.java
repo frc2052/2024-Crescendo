@@ -30,6 +30,7 @@ public class ShootCommandAuto extends Command {
   @Override
   public void initialize() {
     indexStartTime = 0;
+    RobotState.getInstance().updateVisionEnabled(true);
   }
 
   protected ShootAngleConfig getTargetAngle(){
@@ -56,6 +57,8 @@ public class ShootCommandAuto extends Command {
   public void end(boolean interrupted) {
     shamper.windDownShooter();
     indexer.stop();
+    
+    RobotState.getInstance().updateVisionEnabled(false);
   }
 
   @Override

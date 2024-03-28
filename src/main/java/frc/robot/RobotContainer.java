@@ -121,10 +121,9 @@ public class RobotContainer {
       )
     );
 
-    // shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
+    shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
 
     NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
-    NamedCommands.registerCommand("Sub Shoot Command", new ShootSubCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Indexer Backup", new IndexerBackupCommand(indexer));
     NamedCommands.registerCommand("Sub Angle", new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
     NamedCommands.registerCommand("Note 2 Angle", new ShamperAngleCommand(shamper, 35));
@@ -133,6 +132,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShootAutoLow", new ShootAutoLowCommand(shamper, indexer));
 
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
+    NamedCommands.registerCommand("Sub Shoot Command", new ShootSubCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer, shamper));
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain));
 
