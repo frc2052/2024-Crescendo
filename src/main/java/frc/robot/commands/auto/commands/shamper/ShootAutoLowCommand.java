@@ -18,6 +18,6 @@ public class ShootAutoLowCommand extends ShootCommandAuto {
   @Override
   protected ShootAngleConfig getTargetAngle(){
     ShootAngleConfig config = super.getTargetAngle();
-    return new ShootAngleConfig(config.getDistanceCentimeters(), config.getAngleDegrees() - 3, config.getShooterSpeedVelocityRPS());
+    return new ShootAngleConfig(config.getDistanceCentimeters(), config.getAngleDegrees() - 3, config.getLowerShooterSpeedVelocityRPS(), config.getUpperShooterSpeedVelocityRPS());
   }
 }

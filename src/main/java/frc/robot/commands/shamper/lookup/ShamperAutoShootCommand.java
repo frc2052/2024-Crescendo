@@ -27,11 +27,13 @@ public class ShamperAutoShootCommand extends Command{
 
     @Override
     public void execute() {
-        ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToAimPoint(RobotState.getInstance().getRobotPose()));
-        Logger.recordOutput("shoot speed calculated", config.getShooterSpeedVelocityRPS());
-        Logger.recordOutput("angle calculated", config.getAngleDegrees());
-        shamper.setShootSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS());
-        if(shamper.shooterAtSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS()) && shamper.isAtGoalAngle()) {
+        // ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToAimPoint(RobotState.getInstance().getRobotPose()));
+        ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(RobotState.getInstance().distanceToSpeaker());
+        System.out.println("upper config: " + config.getUpperShooterSpeedVelocityRPS()  + " lower config: " + config.getLowerShooterSpeedVelocityRPS());
+        System.out.println("upper speed: " + shamper.getUpperShamperSpeed()  + " lower speed: " + shamper.getLowerShamperSpeed());
+        System.out.println("at goal angle " + shamper.isAtGoalAngle());
+        shamper.setShootSpeed(config.getLowerShooterSpeedVelocityRPS(), config.getUpperShooterSpeedVelocityRPS());
+        if(shamper.shooterAtSpeed(config.getLowerShooterSpeedVelocityRPS(), config.getUpperShooterSpeedVelocityRPS()) && shamper.isAtGoalAngle()) {
             indexer.indexAll();
         }
     }

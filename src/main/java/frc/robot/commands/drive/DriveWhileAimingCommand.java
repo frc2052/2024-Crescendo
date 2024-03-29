@@ -46,7 +46,7 @@ public class DriveWhileAimingCommand extends DriveCommand {
         rotationController.enableContinuousInput(-Math.PI, Math.PI);
         rotationController.setTolerance(0.087, 0.087);
 
-        rotationFeedForward = new SimpleMotorFeedforward(0.0061, 0, 0);
+        rotationFeedForward = new SimpleMotorFeedforward(0.008, 0, 0);
 
         robotState = RobotState.getInstance();
     }

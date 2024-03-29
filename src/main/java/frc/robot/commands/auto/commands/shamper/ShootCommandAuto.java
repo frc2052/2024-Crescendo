@@ -40,12 +40,11 @@ public class ShootCommandAuto extends Command {
   @Override
   public void execute() {
     config = getTargetAngle();
-    Logger.recordOutput("shoot speed calculated", config.getShooterSpeedVelocityRPS());
     Logger.recordOutput("angle calculated", config.getAngleDegrees());
-    shamper.setShootSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS());
+    shamper.setShootSpeed(config.getLowerShooterSpeedVelocityRPS(), config.getUpperShooterSpeedVelocityRPS());
     shamper.setAngle(config.getAngleDegrees());
 
-    if(shamper.shooterAtSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS()) && shamper.isAtGoalAngle()) {
+    if(shamper.shooterAtSpeed(config.getLowerShooterSpeedVelocityRPS(), config.getUpperShooterSpeedVelocityRPS()) && shamper.isAtGoalAngle()) {
         indexer.indexAll();
         if(indexStartTime == 0){
           indexStartTime = Timer.getFPGATimestamp();

@@ -28,7 +28,7 @@ public class PreShootCommandAuto extends Command {
   public void execute() {
     ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToAimPoint(RobotState.getInstance().getRobotPose()));
     shamper.setAngle(config.getAngleDegrees());
-    shamper.setShootSpeed(config.getShooterSpeedVelocityRPS(), config.getShooterSpeedVelocityRPS());
+    shamper.setShootSpeed(config.getLowerShooterSpeedVelocityRPS(), config.getUpperShooterSpeedVelocityRPS());
   }
 
   // Called once the command ends or is interrupted.

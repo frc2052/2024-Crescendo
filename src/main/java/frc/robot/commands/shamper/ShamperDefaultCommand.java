@@ -34,13 +34,15 @@ public class ShamperDefaultCommand extends Command {
     // }
 
     if(Dashboard.getInstance().shouldIdle()) {
-      switch (shamper.getCurrentIdleMode()) {
-        case SPEAKER_IDLE:
-          shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
-          break;
-        case AMP_IDLE:
-          shamper.setShootSpeed(ShamperSpeed.AMP_IDLE);
-          break;
+      if(RobotState.getInstance().getNoteHeldDetected()){
+        switch (shamper.getCurrentIdleMode()) {
+          case SPEAKER_IDLE:
+            shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
+            break;
+          case AMP_IDLE:
+            shamper.setShootSpeed(ShamperSpeed.AMP_IDLE);
+            break;
+        }
       }
     } else {
       shamper.windDownShooter();

@@ -215,7 +215,7 @@ public class RobotContainer {
      */
 
     JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
-    JoystickButton shamperWindDownButton = new JoystickButton(rotationJoystick, 5);
+    // JoystickButton shamperWindDownButton = new JoystickButton(rotationJoystick, 5);
     JoystickButton shamperAmpShootButton = new JoystickButton(controlPanel, 11);
     JoystickButton shamperManualShootButton = new JoystickButton(controlPanel, 12);
     JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
@@ -224,7 +224,7 @@ public class RobotContainer {
 
     shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
     shamperShootButton.whileTrue(new ShamperAutoShootCommand(shamper, indexer));
-    shamperWindDownButton.whileTrue(new ShamperWindDownCommand(shamper));
+    // shamperWindDownButton.whileTrue(new ShamperWindDownCommand(shamper));
     shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
     shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper));
@@ -236,7 +236,7 @@ public class RobotContainer {
 
      JoystickButton shamper90Button = new JoystickButton(controlPanel, 8);
      Trigger shamperPodiumButton = new Trigger(() -> controlPanel.getY() < -0.5);
-    //  JoystickButton shamperPodiumDriverButton = new JoystickButton(rotationJoystick, 4);
+     JoystickButton customAngleButton = new JoystickButton(rotationJoystick, 5);
      JoystickButton shamperAutoAngleButton = new JoystickButton(rotationJoystick, 3);
      Trigger shamperSubwooferButton = new Trigger(() -> controlPanel.getX() > 0.5);
      Trigger shamperAmpButton = new Trigger(() -> controlPanel.getX() < -0.5);
@@ -248,7 +248,7 @@ public class RobotContainer {
 
      shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
      shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.PODIUM));
-    //  shamperPodiumDriverButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
+     customAngleButton.onTrue(new InstantCommand(()-> shamper.setAngleManual()));
      shamperAutoAngleButton.whileTrue(new ShamperAutoAngleCommand(shamper, indexer));
      shamperSubwooferButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
      shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));

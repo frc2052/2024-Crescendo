@@ -35,12 +35,12 @@ public class MegaAutoBackupCommand extends MegaAutoCommand {
       // robotPose = robotPose.transformBy(new Transform2d(new Translation2d(-1,0), new Rotation2d(0)));
 //    }
     ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToAimPoint(robotPose));
-    config = new ShootAngleConfig(config.getDistanceCentimeters(), config.getAngleDegrees(), .9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS);
+    config = new ShootAngleConfig(config.getDistanceCentimeters(), config.getAngleDegrees(), .9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, .9 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS);
     return config;
   }
 
   @Override
   public boolean shamperReady(){
-    return shamper.shooterAtSpeed(getShootConfig().getShooterSpeedVelocityRPS(), getShootConfig().getShooterSpeedVelocityRPS(), 10) && shamper.isAtGoalAngle();
+    return shamper.shooterAtSpeed(getShootConfig().getLowerShooterSpeedVelocityRPS(), getShootConfig().getUpperShooterSpeedVelocityRPS(), 10) && shamper.isAtGoalAngle();
   }
 }

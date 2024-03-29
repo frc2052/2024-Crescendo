@@ -172,12 +172,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void zeroOdometry() {
         System.out.println("zeroing odometry");
-        // if(RobotState.getInstance().isRedAlliance()){
-        //     navx.setAngleAdjustment(180);
-        // }
 
-        // navx.reset();
-        resetPose(new Pose2d(RobotState.getInstance().getRobotPose().getTranslation(), new Rotation2d()));
+        if(RobotState.getInstance().isRedAlliance()){
+            resetPose(new Pose2d(RobotState.getInstance().getRobotPose().getTranslation(), new Rotation2d(Math.toRadians(180))));
+        } else {
+            resetPose(new Pose2d(RobotState.getInstance().getRobotPose().getTranslation(), new Rotation2d(0)));
+        }
     }
 
     public void setModuleStates(SwerveModuleState[] swerveModuleStates) {

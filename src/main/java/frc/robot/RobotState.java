@@ -292,7 +292,7 @@ public class RobotState {
     }
 
     public double distanceToSpeaker() {
-        return AimingCalculator.calculateDistanceToAimPoint(robotPose);
+        return AimingCalculator.calculateDistanceToSpeaker(robotPose);
     }
 
     /**

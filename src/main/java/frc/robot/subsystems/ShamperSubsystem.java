@@ -218,11 +218,11 @@ public class ShamperSubsystem extends SubsystemBase {
   }
   
   public double getUpperShamperSpeed() {
-    return upperMotor.get();
+    return upperMotor.getVelocity().getValueAsDouble();
   }
 
   public double getLowerShamperSpeed() {
-    return lowerMotor.get();
+    return lowerMotor.getVelocity().getValueAsDouble();
   }  
 
   public static TalonFX getUpperTalonFX() {

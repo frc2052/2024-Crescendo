@@ -26,6 +26,7 @@ public class ShamperAutoAngleCommand extends Command{
     @Override
     public void execute() {
         ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToAimPoint(RobotState.getInstance().getRobotPose()));
+        System.out.println("angle: " + config.getAngleDegrees());
         shamper.setAngle(config.getAngleDegrees());
     }
 

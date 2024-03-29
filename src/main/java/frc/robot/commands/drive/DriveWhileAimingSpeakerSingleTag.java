@@ -42,7 +42,7 @@ public class DriveWhileAimingSpeakerSingleTag extends DriveCommand {
       double goalAngleDegrees = AimingCalculator.calculateRobotAngleOneAprilTag();
       double deltaDegrees = RobotState.getInstance().getRotation2d360().getDegrees() - goalAngleDegrees;
       
-      double rotation = rotationController.calculate(RobotState.getInstance().getRotation2d360().getDegrees(), goalAngleDegrees);
+      double rotation = rotationController.calculate(goalAngleDegrees, 0);
       Logger.recordOutput("Robot Angle", RobotState.getInstance().getRotation2d360().getDegrees());
       Logger.recordOutput("Speaker Tag PID Error", rotationController.getPositionError());
       if (AprilTagSubsystem.getInstance().isSeeingSpeakerTag()){
