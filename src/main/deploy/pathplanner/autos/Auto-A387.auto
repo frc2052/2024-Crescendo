@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3633965729469937,
-      "y": 5.527972981871891
+      "x": 0.6825775190011933,
+      "y": 6.7095211113499165
     },
-    "rotation": 180.0
+    "rotation": -120.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Command"
+            "name": "Sub Shoot Command"
           }
         },
         {
@@ -28,7 +28,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "ScP-CS-2"
+                        "pathName": "StP-AS-3"
                       }
                     },
                     {
@@ -52,6 +52,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Aim Speaker Command"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Shoot Command"
           }
         },
@@ -66,7 +72,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "P-2-6"
+                        "pathName": "P-3-8"
                       }
                     },
                     {
@@ -90,7 +96,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-6-CS"
+            "pathName": "ScP-8-AS"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Aim Speaker Command"
           }
         },
         {
@@ -110,7 +122,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "P-CS-1"
+                        "pathName": "PiP-AS-7"
                       }
                     },
                     {
@@ -132,6 +144,18 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "ScP 7-AS"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Aim Speaker Command"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "Shoot Command"
@@ -141,25 +165,6 @@
           "type": "race",
           "data": {
             "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "P-1-7"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    }
-                  ]
-                }
-              },
               {
                 "type": "named",
                 "data": {

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4032252184874743,
-      "y": 5.54293784513495
+      "x": 0.7753211512129142,
+      "y": 4.344720358484939
     },
-    "rotation": 179.93394879118944
+    "rotation": 121.5347919051883
   },
   "command": {
     "type": "sequential",
@@ -14,80 +14,62 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Sub Shoot Command"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "ScP-CS-2"
-                }
-              },
-              {
-                "type": "race",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "path",
                       "data": {
-                        "name": null
+                        "pathName": "PiP-S-5"
                       }
                     },
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 3.0
+                        "waitTime": 1.0
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": null
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "(WA) Note 2 (Note 6 Intake) Center Shoot"
+            "pathName": null
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "(WA) Amp Shoot to Note 7 to Amp Shoot"
+            "name": "Aim Speaker Command"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Shoot Command"
           }
         }
       ]
     }
   },
-  "folder": "WIP",
+  "folder": "10k",
   "choreoAuto": false
 }

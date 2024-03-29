@@ -1,10 +1,13 @@
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 
 import com.team2052.lib.photonvision.EstimatedRobotPose;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -26,6 +29,7 @@ public class RobotState {
     private Pose2d initialPose;
     private Pose2d robotPose;
     private Pose3d aprilTagVisionPose3d;
+    private List<PhotonTrackedTarget> activeTargets;
     private boolean visionEnabled;
     private double detectionTime;
     private Rotation2d navxRotation;
@@ -52,6 +56,7 @@ public class RobotState {
         robotPose = new Pose2d();
         detectionTime = 0.0;
         aprilTagVisionPose3d = new Pose3d();
+        activeTargets = new ArrayList<PhotonTrackedTarget>();
         visionEnabled = false;
         navxRotation = new Rotation2d(0);
         chassisSpeeds = new ChassisSpeeds();
@@ -80,32 +85,19 @@ public class RobotState {
      * Adds an AprilTag vision tracked translation3d WITHOUT timestamp.
      */ 
     public void addAprilTagVisionUpdate(EstimatedRobotPose aprilTagVisionPose) {
-        this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
-        this.detectionTime = aprilTagVisionPose.timestampSeconds;
-
-        if(!(aprilTagVisionPose.estimatedPose.getTranslation() == new Translation3d())){
-            if(aprilTagVisionPose.estimatedPose.getTranslation().toTranslation2d().getDistance(getSpeakerLocation()) < 3.5){
-                // if((aprilTagVisionPose.estimatedPose.getTranslation().toTranslation2d().getDistance(robotPose.getTranslation()) < 2)){
-                //     this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
-                //     this.detectionTime = aprilTagVisionPose.timestampSeconds;
-                // } else {
-                //     System.out.println("VISION POSE TOO DIFFERENT");
-                //     this.aprilTagVisionPose3d = null;
-                //     this.detectionTime = 0;
-                // }
-
-                this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
-                this.detectionTime = aprilTagVisionPose.timestampSeconds;
-            } else {
-                // System.out.println("VISION POSE TOO FAR FROM SPEAKER");
-                this.aprilTagVisionPose3d = null;
-                this.detectionTime = 0;
-            }
+        if(!(aprilTagVisionPose.estimatedPose.getTranslation() == new Translation3d())){  
+            this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
+            this.detectionTime = aprilTagVisionPose.timestampSeconds;
+            this.activeTargets = aprilTagVisionPose.targetsUsed;
         } else {
             System.out.println("EMPTY VISION POSE");
             this.aprilTagVisionPose3d = null;
             this.detectionTime = 0;
         }
+    }
+
+    public List<PhotonTrackedTarget> getActiveTargets() {
+        return activeTargets;
     }
 
     public void updateVisionEnabled(boolean visionEnabled) {

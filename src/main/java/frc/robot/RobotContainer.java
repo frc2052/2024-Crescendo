@@ -10,6 +10,7 @@ import frc.robot.commands.climb.ClimberSlowRetractCommand;
 import frc.robot.commands.auto.MegaAutoBackupCommand;
 import frc.robot.commands.auto.commands.IntakeCommandAuto;
 import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
+import frc.robot.commands.auto.commands.shamper.PreShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootAutoLowCommand;
 import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
@@ -135,6 +136,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Sub Shoot Command", new ShootSubCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer, shamper));
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain));
+    NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
 
     configureButtonBindings();
   }

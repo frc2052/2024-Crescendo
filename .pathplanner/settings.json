@@ -13,7 +13,7 @@
     "working autos"
   ],
   "defaultMaxVel": 4.5,
-  "defaultMaxAccel": 3.0,
+  "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 540.0,
   "maxModuleSpeed": 5.21

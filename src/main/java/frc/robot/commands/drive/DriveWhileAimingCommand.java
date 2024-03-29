@@ -13,6 +13,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -23,6 +24,7 @@ import frc.robot.util.io.Dashboard;
 
 public class DriveWhileAimingCommand extends DriveCommand {
     private final PIDController rotationController;
+    private SimpleMotorFeedforward rotationFeedForward;
     protected boolean isOnTarget;
 
     private RobotState robotState;
@@ -44,6 +46,8 @@ public class DriveWhileAimingCommand extends DriveCommand {
         rotationController.enableContinuousInput(-Math.PI, Math.PI);
         rotationController.setTolerance(0.087, 0.087);
 
+        rotationFeedForward = new SimpleMotorFeedforward(0.0061, 0, 0);
+
         robotState = RobotState.getInstance();
     }
     
@@ -55,6 +59,9 @@ public class DriveWhileAimingCommand extends DriveCommand {
         Dashboard.getInstance().putData("AIM CURRENT ANGLE", currentAngle);
             
         double rotation = rotationController.calculate(currentAngle, goalAngle);
+
+        // add our rotation
+        rotation = rotation + rotationFeedForward.calculate(rotation);
         // System.out.println("Rotation " + rotation);
         // do we want to check the error?
         double error = rotationController.getPositionError();

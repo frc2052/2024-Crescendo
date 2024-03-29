@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6419230556007463,
-        "y": 5.597779868883561
+        "x": 8.317099886696207,
+        "y": 2.4709865111598974
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.641923055600746,
-        "y": 5.597779868883561
+        "x": 3.864020860973098,
+        "y": 1.3253684733739317
       },
       "isLocked": false,
-      "linkedName": "7-AS End"
+      "linkedName": "Accurate Note 5"
     },
     {
       "anchor": {
-        "x": 3.30486184510172,
-        "y": 5.597779868883561
+        "x": 2.8137678764196816,
+        "y": 3.202396449435756
       },
       "prevControl": {
-        "x": 2.30486184510172,
-        "y": 5.597779868883561
+        "x": 4.04340571372674,
+        "y": 1.9727586121286962
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Real Source Shoot"
     }
   ],
   "rotationTargets": [],
@@ -33,19 +33,19 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 179.73302340495502,
+    "rotation": 142.28895232361015,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 179.30130561701645,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3633965729469937,
-      "y": 5.527972981871891
+      "x": 0.7284778050297884,
+      "y": 4.344720358484939
     },
-    "rotation": 180.0
+    "rotation": 123.31063082456083
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Command"
+            "name": "Sub Shoot Command"
           }
         },
         {
@@ -28,45 +28,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "ScP-CS-2"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake Command"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot Command"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "P-2-6"
+                        "pathName": "PiP-S-4"
                       }
                     },
                     {
@@ -90,7 +52,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-6-CS"
+            "pathName": "ScP-4-SS"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Aim Speaker Command"
           }
         },
         {
@@ -110,7 +78,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "P-CS-1"
+                        "pathName": "PiP-S-5"
                       }
                     },
                     {
@@ -132,41 +100,21 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Shoot Command"
+            "pathName": "ScP-5-SS"
           }
         },
         {
-          "type": "race",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "P-1-7"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake Command"
-                }
-              }
-            ]
+            "name": "Aim Speaker Command"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Command"
           }
         }
       ]

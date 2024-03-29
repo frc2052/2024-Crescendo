@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.65,
-        "y": 8.2
+        "x": 8.526797053594109,
+        "y": 4.242785408647741
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.786824011625944,
-        "y": 7.948549593709278
+        "x": 5.026354817331602,
+        "y": 5.117635570506519
       },
       "isLocked": false,
-      "linkedName": "Note 8"
+      "linkedName": "Note 6"
     },
     {
       "anchor": {
-        "x": 3.7732953069329804,
-        "y": 6.522935956000301
+        "x": 2.8137678764196816,
+        "y": 3.202396449435756
       },
       "prevControl": {
-        "x": 4.019968877203199,
-        "y": 6.572270670054345
+        "x": 4.1597529129437705,
+        "y": 2.529540693888806
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "8-AS End"
+      "linkedName": "Real Source Shoot"
     }
   ],
   "rotationTargets": [],
@@ -33,19 +33,19 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -174.55966796899432,
+    "rotation": 147.86749463502065,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -175.9052812803003,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

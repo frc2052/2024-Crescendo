@@ -3,48 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.551316617611835,
-        "y": 8.021923033860334
+        "x": 0.7753211512129142,
+        "y": 4.344720358484939
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.408233529733819,
-        "y": 8.502067332237377
+        "x": 3.820138653116107,
+        "y": 1.335035366219091
       },
       "isLocked": false,
-      "linkedName": "Note 7"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.838981432599097,
-        "y": 6.850839379282182
+        "x": 8.317099886696207,
+        "y": 2.47
       },
       "prevControl": {
-        "x": 5.3659690771592645,
-        "y": 7.225586148747191
+        "x": 3.173738848495291,
+        "y": -0.6196338344076948
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "7-AS End"
+      "linkedName": "Accurate Note 5"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7,
+      "rotationDegrees": -155.65140497046576,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.4,
+      "name": "Intake",
+      "waypointRelativePos": 0.65,
       "command": {
         "type": "parallel",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Pre-Shoot Command"
-              }
-            }
-          ]
+          "commands": []
         }
       }
     }
@@ -57,13 +56,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -169.21570213243746,
+    "rotation": -172.05652818940962,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 179.33640293076084,
+    "rotation": 121.18497465873837,
     "velocity": 0
   },
   "useDefaultConstraints": true
