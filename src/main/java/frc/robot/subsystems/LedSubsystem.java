@@ -45,16 +45,18 @@ public class LedSubsystem extends SubsystemBase {
     }
 
     public static enum LEDStatusMode {
-        OFF(5), // have to do 5 because we don't have pin 8 and it reads pin 8 high when sending 0
-        CONE(1),
-        CUBE(2),
-        DISABLED_RED_PULSE(3),
-        DISABLED_BLUE_PULSE(4),
-        NO_AUTO(5),
-        NOTE_DETECTED(6),
-        RAINBOW(7),
-        LAVA(8),
-        WATER(9);
+        OFF(0), 
+        DANGER(1),
+        INTAKE(2),
+        HAS_NOTE(3),
+        AIMING(4),
+        AIMING_ON_TARGET(5),
+        SHOOTING(6),
+        SHOOTING_ON_TARGET(7),
+        DONE_SHOOTING(8),
+        NO_AUTO(9),
+        BLUE_AUTO(10),
+        RED_AUTO(11);
 
         private final int code;
 
@@ -77,31 +79,31 @@ public class LedSubsystem extends SubsystemBase {
                 if (selected == Auto.NO_AUTO || selected == null){
                     currentStatusMode = LEDStatusMode.NO_AUTO;
                 } else if (RobotState.getInstance().isRedAlliance()) {
-                    currentStatusMode = LEDStatusMode.LAVA;
+                    currentStatusMode = LEDStatusMode.RED_AUTO;
                 } else if (!RobotState.getInstance().isRedAlliance()) {
-                    currentStatusMode = LEDStatusMode.WATER;
+                   currentStatusMode = LEDStatusMode.BLUE_AUTO; 
                 } else {
                     currentStatusMode = LEDStatusMode.OFF; // Reaches here if DriverStation.getAlliance returns Invalid, which just means it can't determine our alliance and we do cool default effect
                 }
             } else if (DriverStation.isAutonomous()) {
                 if(RobotState.getInstance().getNoteHeldDetected()){
-                    currentStatusMode = LEDStatusMode.NOTE_DETECTED;
+                    currentStatusMode = LEDStatusMode.HAS_NOTE;
                 } else if (RobotState.getInstance().getIsShamperAtGoalAngle()){
-                    currentStatusMode = LEDStatusMode.RAINBOW;
+                    // currentStatusMode = LEDStatusMode.RAINBOW;
                 } else {
                     if (RobotState.getInstance().isRedAlliance()) {
-                        currentStatusMode = LEDStatusMode.LAVA;
+                        currentStatusMode = LEDStatusMode.RED_AUTO;
                     } else if (!RobotState.getInstance().isRedAlliance()) {
-                        currentStatusMode = LEDStatusMode.WATER;
+                        currentStatusMode = LEDStatusMode.BLUE_AUTO;
                     }
                 }
             }
 
             if (DriverStation.isTeleopEnabled()) {
                 if(RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().getIsShamperAtGoalAngle()){
-                    currentStatusMode = LEDStatusMode.CUBE;
+                    // currentStatusMode = LEDStatusMode.CUBE;
                 } else if(RobotState.getInstance().getNoteHeldDetected()){
-                    currentStatusMode = LEDStatusMode.CONE;
+                    // currentStatusMode = LEDStatusMode.CONE;
                 } else {
                     currentStatusMode = LEDStatusMode.NO_AUTO;
                 }

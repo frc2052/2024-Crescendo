@@ -138,6 +138,25 @@ public class RobotState {
         return shamperAtGoalAngle;
     }
 
+    
+    public boolean getIsShooting(){
+        return true;
+    }
+
+    public void updateIsShooting(){
+    }
+
+    public boolean getIsOnTarget(){
+        return true;
+    }
+
+    public void updateIsOnTarget(){
+    }
+
+
+
+
+
     /**
      * Reset the RobotState's Initial Pose2d and set the NavX Offset. 
      * NavX offset is set when the robot has an inital rotation not facing where you want 0 (forwards) to be.
@@ -348,6 +367,8 @@ public class RobotState {
     public static boolean isTest() {
         return DriverStation.isTest();
     }
+
+
 
     public void output(){
         Logger.recordOutput("Vision Pose", aprilTagVisionPose3d);
