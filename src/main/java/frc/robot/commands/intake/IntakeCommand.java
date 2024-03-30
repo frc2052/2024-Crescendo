@@ -2,6 +2,7 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.RobotState;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
@@ -21,6 +22,8 @@ public class IntakeCommand extends Command {
     public void initialize(){
         //shamper.windDownShooter();
         shamper.setAngle(Constants.Shamper.Angle.INTAKE);
+        RobotState.getInstance().updateIsIntaking(true);
+
     }
 
     @Override
@@ -38,6 +41,8 @@ public class IntakeCommand extends Command {
     public void end(boolean interrupted) {
         intake.stop();
         indexer.stop();
+        RobotState.getInstance().updateIsIntaking(false);
+
     }
 
     @Override

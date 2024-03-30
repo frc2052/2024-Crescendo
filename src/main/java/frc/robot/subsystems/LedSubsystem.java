@@ -128,11 +128,15 @@ public class LedSubsystem extends SubsystemBase {
                 // aiming
                 else if (RobotState.getInstance().getIsVerticalAiming() || RobotState.getInstance().getIsHorizontalAiming())
                 {
-                        currentStatusMode = LEDStatusMode.AIMING;
+                    currentStatusMode = LEDStatusMode.AIMING;
                 } 
                 else {
                     if(RobotState.getInstance().getNoteHeldDetected()){
                         currentStatusMode = LEDStatusMode.HAS_NOTE;
+                    } else if (RobotState.getInstance().getIsIntaking()){
+                        currentStatusMode = LEDStatusMode.INTAKING;
+                    } else {
+                        currentStatusMode = LEDStatusMode.OFF;
                     }
                 }
             }
