@@ -50,6 +50,11 @@ public class DriveWhileAimingCommand extends DriveCommand {
 
         robotState = RobotState.getInstance();
     }
+
+    @Override
+    public void initialize() {
+        RobotState.getInstance().updateIsHorizontalAiming(true);
+    }
     
     @Override
     protected double getRotation() {
@@ -85,6 +90,9 @@ public class DriveWhileAimingCommand extends DriveCommand {
 
         if(isOnTarget){
             rotation = 0;
+            RobotState.getInstance().updateRotationOnTarget(true);
+        } else {
+            RobotState.getInstance().updateRotationOnTarget(false);
         }
 
         // isOnTarget = Math.abs(goalAngle - currentAngle) <= Math.toRadians(3.5);
@@ -95,4 +103,12 @@ public class DriveWhileAimingCommand extends DriveCommand {
         // double output = MathUtil.clamp(rotation, -DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond() * 2 * Math.PI, DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond()* 2 * Math.PI);
         return rotation;
     }
+
+     // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    RobotState.getInstance().updateIsHorizontalAiming(false);
+  }
+
+
 }

@@ -3,6 +3,7 @@ package frc.robot.commands.shamper.lookup;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Robot;
 import frc.robot.RobotState;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
@@ -23,6 +24,7 @@ public class ShamperAutoShootCommand extends Command{
 
     @Override
     public void initialize() {
+        RobotState.getInstance().updateIsVerticalAiming(true);
     }
 
     @Override
@@ -42,5 +44,6 @@ public class ShamperAutoShootCommand extends Command{
     public void end(boolean interrupted) {
         shamper.windDownShooter();
         indexer.stop();
+        RobotState.getInstance().updateIsVerticalAiming(false);
     }
 }

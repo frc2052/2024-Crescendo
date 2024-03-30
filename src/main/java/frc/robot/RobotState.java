@@ -43,6 +43,12 @@ public class RobotState {
     private Timer lastGyroResetTimer;
     private double lastGyroResetValue;
 
+    private boolean isShooting;
+    private boolean atGoalRotation;
+    private boolean isVerticalAiming;
+    private boolean isHorizontalAiming;
+    private boolean isIntaking;
+
     public static RobotState getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new RobotState();
@@ -65,6 +71,12 @@ public class RobotState {
         lastGyroResetTimer = new Timer();
         lastGyroResetTimer.start();
         lastGyroResetValue = -1;
+
+        isShooting = false;
+        atGoalRotation = false;
+        isVerticalAiming = false;
+        isHorizontalAiming = false;
+        isIntaking = false;
     }  
 
     public boolean hasValidSwerveState() {
@@ -138,22 +150,45 @@ public class RobotState {
         return shamperAtGoalAngle;
     }
 
-    
-    public boolean getIsShooting(){
-        return true;
+     public void updateShooting(boolean isShooting){
+        this.isShooting = isShooting;
     }
 
-    public void updateIsShooting(){
+    public boolean getShooting(){
+        return isShooting;
     }
 
-    public boolean getIsOnTarget(){
-        return true;
+     public void updateRotationOnTarget(boolean isOnTarget){
+        this.atGoalRotation = isOnTarget;
     }
 
-    public void updateIsOnTarget(){
+    public boolean getIsRotationOnTarget(){
+        return atGoalRotation;
     }
 
+    public void updateIsVerticalAiming(boolean isVerticalAiming){
+        this.isVerticalAiming = isVerticalAiming;
+    }
 
+   public boolean getIsVerticalAiming(){
+        return isVerticalAiming;
+   }
+
+   public void updateIsHorizontalAiming(boolean isHorizontalAiming){
+        this.isHorizontalAiming = isHorizontalAiming;
+   }
+
+   public boolean getIsHorizontalAiming(){
+        return isHorizontalAiming;
+   }
+
+   public void updateIsIntaking(boolean isIntaking){
+        this.isIntaking = isIntaking;
+   }
+
+   public boolean getIsIntaking(){
+        return isIntaking;
+   }
 
 
 

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotState;
 import frc.robot.auto.AutoFactory.Auto;
 import frc.robot.util.io.Dashboard;
@@ -56,7 +57,9 @@ public class LedSubsystem extends SubsystemBase {
         DONE_SHOOTING(8),
         NO_AUTO(9),
         BLUE_AUTO(10),
-        RED_AUTO(11);
+        RED_AUTO(11),
+        // TODO: make LED status for "intaking" blue pulse
+        INTAKING(12);
 
         private final int code;
 
@@ -73,8 +76,11 @@ public class LedSubsystem extends SubsystemBase {
     public void periodic() {
         int code = 5;
         if(!disableLEDs) {
+
+            // disabled 
+
             if (DriverStation.isDisabled()) {
-                // If disabled, finds gets the alliance color from the driver station and pulses that. Only pulses color if connected to station or FMS, else pulses default disabled color (Firefl status mode)
+                // If disabled, gets the alliance color from the driver station and pulses that. Only pulses color if connected to station or FMS, else pulses default disabled color (Firefl status mode)
                 Auto selected = Dashboard.getInstance().getAuto();
                 if (selected == Auto.NO_AUTO || selected == null){
                     currentStatusMode = LEDStatusMode.NO_AUTO;
@@ -85,11 +91,14 @@ public class LedSubsystem extends SubsystemBase {
                 } else {
                     currentStatusMode = LEDStatusMode.OFF; // Reaches here if DriverStation.getAlliance returns Invalid, which just means it can't determine our alliance and we do cool default effect
                 }
+
+            // autonomous LED status modes
+
             } else if (DriverStation.isAutonomous()) {
                 if(RobotState.getInstance().getNoteHeldDetected()){
                     currentStatusMode = LEDStatusMode.HAS_NOTE;
                 } else if (RobotState.getInstance().getIsShamperAtGoalAngle()){
-                    // currentStatusMode = LEDStatusMode.RAINBOW;
+                    // currentStatusMode = LEDStatusMode.AIMING;
                 } else {
                     if (RobotState.getInstance().isRedAlliance()) {
                         currentStatusMode = LEDStatusMode.RED_AUTO;
@@ -99,15 +108,33 @@ public class LedSubsystem extends SubsystemBase {
                 }
             }
 
-            if (DriverStation.isTeleopEnabled()) {
-                if(RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().getIsShamperAtGoalAngle()){
-                    // currentStatusMode = LEDStatusMode.CUBE;
-                } else if(RobotState.getInstance().getNoteHeldDetected()){
-                    // currentStatusMode = LEDStatusMode.CONE;
-                } else {
-                    currentStatusMode = LEDStatusMode.NO_AUTO;
-                }
+            // teleop LED status modes
 
+            if (DriverStation.isTeleopEnabled()) {
+                // shooting
+                if(RobotState.getInstance().getShooting()){
+                    if(!RobotState.getInstance().getNoteHeldDetected()){
+                        currentStatusMode = LEDStatusMode.OFF;
+                    } else if (RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().getIsShamperAtGoalAngle() && RobotState.getInstance().getIsRotationOnTarget()){
+                        currentStatusMode = LEDStatusMode.SHOOTING_ON_TARGET;
+                    } else {
+                        currentStatusMode = LEDStatusMode.SHOOTING;
+                    } 
+                }
+                //  aimed
+                else if (RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().getIsShamperAtGoalAngle() && RobotState.getInstance().getIsRotationOnTarget()){
+                    currentStatusMode = LEDStatusMode.AIMING_ON_TARGET;
+                } 
+                // aiming
+                else if (RobotState.getInstance().getIsVerticalAiming() || RobotState.getInstance().getIsHorizontalAiming())
+                {
+                        currentStatusMode = LEDStatusMode.AIMING;
+                } 
+                else {
+                    if(RobotState.getInstance().getNoteHeldDetected()){
+                        currentStatusMode = LEDStatusMode.HAS_NOTE;
+                    }
+                }
             }
 
             code = currentStatusMode.code;
