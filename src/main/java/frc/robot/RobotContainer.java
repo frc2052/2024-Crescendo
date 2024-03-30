@@ -35,6 +35,8 @@ import frc.robot.commands.shamper.pivot.ShamperPivotUpPct;
 import frc.robot.commands.shamper.pivot.ShamperSubCommand;
 import frc.robot.commands.shamper.shoot.ShamperManualShootCommand;
 import frc.robot.commands.shamper.shoot.ShamperTrapCommand;
+import frc.robot.commands.shamper.shoot.ShamperCustomShotCommand;
+import frc.robot.commands.shamper.shoot.ShamperLobCommand;
 import frc.robot.commands.shamper.shoot.ShamperWindDownCommand;
 import frc.robot.commands.trap.TrapReleaseCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
@@ -180,6 +182,9 @@ public class RobotContainer {
     drivetrain
     ));
 
+    JoystickButton aimLobButton = new JoystickButton(rotationJoystick, 5);
+    aimLobButton.whileTrue(new ShamperLobCommand(shamper, indexer));
+
     /*
      *  Climber Button Bindings
      */
@@ -227,7 +232,7 @@ public class RobotContainer {
     // shamperWindDownButton.whileTrue(new ShamperWindDownCommand(shamper));
     shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
-    shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper));
+    shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper, indexer));
     shamperIdleToggleButton.onTrue(new InstantCommand(() -> shamper.toggleCurrentIdle()));
 
     /*
@@ -236,7 +241,7 @@ public class RobotContainer {
 
      JoystickButton shamper90Button = new JoystickButton(controlPanel, 8);
      Trigger shamperPodiumButton = new Trigger(() -> controlPanel.getY() < -0.5);
-     JoystickButton customAngleButton = new JoystickButton(rotationJoystick, 5);
+    //  JoystickButton customAngleButton = new JoystickButton(rotationJoystick, 5);
      JoystickButton shamperAutoAngleButton = new JoystickButton(rotationJoystick, 3);
      Trigger shamperSubwooferButton = new Trigger(() -> controlPanel.getX() > 0.5);
      Trigger shamperAmpButton = new Trigger(() -> controlPanel.getX() < -0.5);
@@ -248,7 +253,7 @@ public class RobotContainer {
 
      shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
      shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.PODIUM));
-     customAngleButton.onTrue(new InstantCommand(()-> shamper.setAngleManual()));
+    //  customAngleButton.onTrue(new InstantCommand(()-> shamper.setAngleManual()));
      shamperAutoAngleButton.whileTrue(new ShamperAutoAngleCommand(shamper, indexer));
      shamperSubwooferButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
      shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));

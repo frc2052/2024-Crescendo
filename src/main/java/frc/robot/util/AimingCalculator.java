@@ -167,12 +167,12 @@ public class AimingCalculator {
                 // System.out.println("applying: " + calculateAngleToSpeaker(robotPose));
                 if(aimLocation.getY() > robotPose.getY()) { //to the left of speaker (robot pov)
                     // since we are to the left, we want to offset our aim point to the right for a better shot
-                    aimLocation = aimLocation.plus(new Translation2d(0, +0.2));
-                    System.out.println("LEFT");
+                    aimLocation = aimLocation.plus(new Translation2d(0, +0.4));
+                    // System.out.println("LEFT");
                 } else { //to the right of speaker
                     // since we are to the right, we want to offset our aim point to the left for a better shot
                     aimLocation = aimLocation.plus(new Translation2d(0, -0.2));
-                    System.out.println("RIGHT");
+                    // System.out.println("RIGHT");
                 }
             }
 

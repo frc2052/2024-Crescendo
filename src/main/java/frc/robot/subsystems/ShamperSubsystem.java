@@ -381,7 +381,8 @@ public class ShamperSubsystem extends SubsystemBase {
     AMP_IDLE(Constants.Shamper.LOWER_SHAMPER_AMP_IDLE_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_AMP_IDLE_SPEED_RPS),
     SPEAKER_SCORE(Constants.Shamper.LOWER_SHAMPER_SPEAKER_SPEED_RPS, Constants.Shamper.UPPER_SHAMPER_SPEAKER_SPEED_RPS),
     AMP_SCORE(Constants.Shamper.LOWER_SHAMPER_AMP_SPEED_PCT, Constants.Shamper.UPPER_SHAMPER_AMP_SPEED_PCT),
-    TRAP(Constants.Shamper.UPPER_SHAMPER_TRAP_SPEED_RPS, Constants.Shamper.LOWER_SHAMPER_TRAP_SPEED_RPS);
+    TRAP(Constants.Shamper.UPPER_SHAMPER_TRAP_SPEED_RPS, Constants.Shamper.LOWER_SHAMPER_TRAP_SPEED_RPS),
+    LOB(Constants.Shamper.UPPER_SHAMPER_LOB_SPEED_RPS, Constants.Shamper.LOWER_SHAMPER_LOB_SPEED_RPS);
 
     private final double lowerRPS;
     private final double upperRPS;

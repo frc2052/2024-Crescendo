@@ -116,6 +116,8 @@ public final class Constants {
         public static final Matrix<N3, N1> ODOMETRY_STDDEV = VecBuilder.fill(0.03, 0.03, Math.toRadians(1.0));
         public static final TrapezoidProfile.Constraints AIM_PID_CONSTRAINT = new TrapezoidProfile.Constraints(2160.0, 2160.0);
         public static final double AIM_OFFSET_DEGREES = -2.5;
+
+        public static final double LOB_ANGLE = 210;
     }
     
     public static class MotorConstants {
@@ -196,6 +198,9 @@ public final class Constants {
         public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
 
+        public static final double UPPER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
+
         public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 2;
 
         public static final double SHOOTER_TOLERANCE_PERCENT = 0.03;
@@ -235,6 +240,7 @@ public final class Constants {
             public static final double AMP = 122;
             public static final double SUB = 53;
             public static final double TRAP = 95;
+            public static final double LOB = 45;
         }
     }
 
