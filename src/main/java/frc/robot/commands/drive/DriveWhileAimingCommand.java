@@ -108,6 +108,7 @@ public class DriveWhileAimingCommand extends DriveCommand {
   @Override
   public void end(boolean interrupted) {
     RobotState.getInstance().updateIsHorizontalAiming(false);
+    RobotState.getInstance().updateRotationOnTarget(false);
   }
 
 

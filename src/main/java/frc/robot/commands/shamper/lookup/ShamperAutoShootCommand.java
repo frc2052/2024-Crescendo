@@ -24,7 +24,7 @@ public class ShamperAutoShootCommand extends Command{
 
     @Override
     public void initialize() {
-        RobotState.getInstance().updateIsVerticalAiming(true);
+        RobotState.getInstance().updateShooting(true);
     }
 
     @Override
@@ -42,6 +42,6 @@ public class ShamperAutoShootCommand extends Command{
     public void end(boolean interrupted) {
         shamper.windDownShooter();
         indexer.stop();
-        RobotState.getInstance().updateIsVerticalAiming(false);
+        RobotState.getInstance().updateShooting(false);
     }
 }

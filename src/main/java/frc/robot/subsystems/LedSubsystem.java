@@ -58,8 +58,7 @@ public class LedSubsystem extends SubsystemBase {
         NO_AUTO(9),
         BLUE_AUTO(10),
         RED_AUTO(11),
-        // TODO: make LED status for "intaking" blue pulse
-        INTAKING(12);
+        AMP_IDLE(12);
 
         private final int code;
 
@@ -114,7 +113,7 @@ public class LedSubsystem extends SubsystemBase {
                 // shooting
                 if(RobotState.getInstance().getShooting()){
                     if(!RobotState.getInstance().getNoteHeldDetected()){
-                        currentStatusMode = LEDStatusMode.OFF;
+                        currentStatusMode = LEDStatusMode.DANGER;
                     } else if (RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().getIsShamperAtGoalAngle() && RobotState.getInstance().getIsRotationOnTarget()){
                         currentStatusMode = LEDStatusMode.SHOOTING_ON_TARGET;
                     } else {
@@ -129,12 +128,14 @@ public class LedSubsystem extends SubsystemBase {
                 else if (RobotState.getInstance().getIsVerticalAiming() || RobotState.getInstance().getIsHorizontalAiming())
                 {
                     currentStatusMode = LEDStatusMode.AIMING;
-                } 
+                } else if (RobotState.getInstance().getAmpIdle()){
+                    currentStatusMode = LEDStatusMode.AMP_IDLE;
+                }
                 else {
                     if(RobotState.getInstance().getNoteHeldDetected()){
                         currentStatusMode = LEDStatusMode.HAS_NOTE;
                     } else if (RobotState.getInstance().getIsIntaking()){
-                        currentStatusMode = LEDStatusMode.INTAKING;
+                        currentStatusMode = LEDStatusMode.INTAKE;
                     } else {
                         currentStatusMode = LEDStatusMode.OFF;
                     }

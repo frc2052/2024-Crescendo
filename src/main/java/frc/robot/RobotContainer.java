@@ -38,7 +38,7 @@ import frc.robot.commands.shamper.shoot.ShamperTrapCommand;
 import frc.robot.commands.shamper.shoot.ShamperCustomShotCommand;
 import frc.robot.commands.shamper.shoot.ShamperLobCommand;
 import frc.robot.commands.shamper.shoot.ShamperWindDownCommand;
-import frc.robot.commands.trap.TrapReleaseCommand;
+import frc.robot.commands.trap.TrapToggleCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
@@ -232,7 +232,7 @@ public class RobotContainer {
     // shamperWindDownButton.whileTrue(new ShamperWindDownCommand(shamper));
     shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
-    shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper, indexer));
+    shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper, indexer, trapArm));
     shamperIdleToggleButton.onTrue(new InstantCommand(() -> shamper.toggleCurrentIdle()));
 
     /*
@@ -271,7 +271,7 @@ public class RobotContainer {
 
     JoystickButton trapReleaseButton = new JoystickButton(controlPanel, 3);
 
-    trapReleaseButton.whileTrue(new TrapReleaseCommand(trapArm));
+    trapReleaseButton.whileTrue(new TrapToggleCommand(trapArm));
     
     /*
      * Music Player Toggle

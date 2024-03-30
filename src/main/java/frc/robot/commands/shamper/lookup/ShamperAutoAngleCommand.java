@@ -21,6 +21,7 @@ public class ShamperAutoAngleCommand extends Command{
 
     @Override
     public void initialize() {
+        RobotState.getInstance().updateIsVerticalAiming(true);
     }
 
     @Override
@@ -32,5 +33,6 @@ public class ShamperAutoAngleCommand extends Command{
 
     @Override
     public void end(boolean interrupted) {
+        RobotState.getInstance().updateIsVerticalAiming(false);
     }
 }

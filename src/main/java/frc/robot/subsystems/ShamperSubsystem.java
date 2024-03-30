@@ -339,6 +339,7 @@ public class ShamperSubsystem extends SubsystemBase {
     Logger.recordOutput("Lower Shooter Speed ", lowerMotor.getVelocity().getValueAsDouble());
     SmartDashboard.putNumber("Current Shamper Angle", getShamperAngle());
 
+    RobotState.getInstance().updateAmpIdle(getCurrentIdleMode() == ShamperIdleMode.AMP_IDLE);
     RobotState.getInstance().updateShamperAtGoalAngle(isAtGoalAngle());
     
     // if(!(getPivotSpeed() < 0 && shamperZeroed())) {

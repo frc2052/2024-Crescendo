@@ -100,15 +100,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Aim Speaker Command"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "ScP-4-SS"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Aim Speaker Command"
           }
         },
         {

@@ -52,7 +52,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "ScP-5-SS"
           }
         },
         {
@@ -65,6 +65,32 @@
           "type": "named",
           "data": {
             "name": "Shoot Command"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": null
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": null
+                }
+              }
+            ]
           }
         }
       ]

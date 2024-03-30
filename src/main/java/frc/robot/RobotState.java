@@ -48,6 +48,7 @@ public class RobotState {
     private boolean isVerticalAiming;
     private boolean isHorizontalAiming;
     private boolean isIntaking;
+    private boolean isAmpIdle;
 
     public static RobotState getInstance() {
         if (INSTANCE == null) {
@@ -77,6 +78,7 @@ public class RobotState {
         isVerticalAiming = false;
         isHorizontalAiming = false;
         isIntaking = false;
+        isAmpIdle = false;
     }  
 
     public boolean hasValidSwerveState() {
@@ -156,6 +158,14 @@ public class RobotState {
 
     public boolean getShooting(){
         return isShooting;
+    }
+
+    public void updateAmpIdle(boolean isAmpIdle) {
+        this.isAmpIdle = isAmpIdle;
+    }
+
+    public boolean getAmpIdle(){
+        return isAmpIdle;
     }
 
      public void updateRotationOnTarget(boolean isOnTarget){

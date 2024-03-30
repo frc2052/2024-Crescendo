@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.TrapArmSubsystem;
 
-public class TrapReleaseCommand extends Command {
+public class TrapToggleCommand extends Command {
   private TrapArmSubsystem trapArm;
 
   /** Creates a new TrapReleaseCommand. */
-  public TrapReleaseCommand(TrapArmSubsystem trapArm) {
+  public TrapToggleCommand(TrapArmSubsystem trapArm) {
     this.trapArm = trapArm;
     // Use addRequirements() here to declare subsystem dependencies.
   addRequirements(trapArm);
@@ -23,8 +23,11 @@ public class TrapReleaseCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
-    trapArm.open();
+    if(trapArm.getIsOpen()){
+      trapArm.close();
+    } else {
+      trapArm.open();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,9 +36,7 @@ public class TrapReleaseCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    trapArm.close();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

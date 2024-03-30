@@ -9,16 +9,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
+import frc.robot.subsystems.TrapArmSubsystem;
 
 public class ShamperTrapCommand extends Command {
   private ShamperSubsystem shamper;
   private IndexerSubsystem indexer;
+  private TrapArmSubsystem trap;
   private Timer indexTimer;
   private boolean isFinished;
   /** Creates a new ShamperTrapCommand. */
-  public ShamperTrapCommand(ShamperSubsystem shamper, IndexerSubsystem indexer) {
+  public ShamperTrapCommand(ShamperSubsystem shamper, IndexerSubsystem indexer, TrapArmSubsystem trap) {
     this.shamper = shamper;
     this.indexer = indexer;
+    this.trap = trap;
     indexTimer = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shamper);
@@ -34,13 +37,10 @@ public class ShamperTrapCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("executing");
     if(shamper.shooterAtSpeed(0.25 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.03 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS)){
-      System.out.println("starting timer");
       indexTimer.restart();
       indexer.indexAll();
       if(indexTimer.get() > 0.25) {
-        System.out.println("done index");
         isFinished = true;
       }
     } else {
@@ -54,6 +54,7 @@ public class ShamperTrapCommand extends Command {
     indexTimer.reset();
     indexer.stop();
     shamper.stopShooter();
+    trap.close();
   }
 
   // Returns true when the command should end.
