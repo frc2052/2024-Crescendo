@@ -57,7 +57,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     public static void recordIndexerData() {}
 
     public static void recordTrapArmData() {
-        String trapArmFolder = "TrapArm_";
+        // String trapArmFolder = "TrapArm_";
 
         // Logger.recordOutput(folder+trapArmFolder+"Trap Arm Position", 
         // trapArmSubsystem.getPosition());

@@ -5,14 +5,10 @@
 package frc.robot.commands.shamper;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
-import frc.robot.util.calculator.ShootAngleConfig;
-import frc.robot.util.calculator.ShootingAngleCalculator;
 import frc.robot.util.io.Dashboard;
-import frc.robot.util.io.Dashboard.ShamperIdleMode;
 
 public class ShamperDefaultCommand extends Command {
   private ShamperSubsystem shamper;

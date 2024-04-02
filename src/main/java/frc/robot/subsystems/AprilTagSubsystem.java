@@ -14,7 +14,6 @@ import com.team2052.lib.photonvision.PhotonPoseEstimator.PoseStrategy;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -94,7 +93,7 @@ public class AprilTagSubsystem extends SubsystemBase{
                     // System.out.println("SpeakerTag : " + speakertag);
                     if (targets.get(j).getFiducialId() == speakertag) {
                         speakerTagYaw = targets.get(j).getYaw();
-                        double lastUpdatedTime = timer.get();
+                        lastUpdatedTime = timer.get();
                         sawTag = true;
                         // System.out.println("Saw tag 7");
                     }

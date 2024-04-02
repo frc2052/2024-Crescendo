@@ -1,7 +1,5 @@
 package frc.robot.util.calculator;
 
-import frc.robot.Constants;
-
 public class ShootAngleConfig {
     private final double distancecm;
     private final double angleDegrees;

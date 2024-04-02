@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotState;
 import frc.robot.auto.AutoFactory.Auto;
 import frc.robot.util.io.Dashboard;

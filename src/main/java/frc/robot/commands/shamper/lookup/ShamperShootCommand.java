@@ -1,21 +1,17 @@
 package frc.robot.commands.shamper.lookup;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Robot;
 import frc.robot.RobotState;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.util.AimingCalculator;
 import frc.robot.util.calculator.ShootAngleConfig;
 import frc.robot.util.calculator.ShootingAngleCalculator;
 
-public class ShamperAutoShootCommand extends Command{
+public class ShamperShootCommand extends Command{
     private final ShamperSubsystem shamper;
     private final IndexerSubsystem indexer;
 
-    public ShamperAutoShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer) {
+    public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer) {
         this.shamper = shamper;
         this.indexer = indexer;
 

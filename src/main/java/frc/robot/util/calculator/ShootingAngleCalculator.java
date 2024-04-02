@@ -3,7 +3,6 @@ package frc.robot.util.calculator;
 import java.util.ArrayList;
 import java.util.List;
 import frc.robot.Constants;
-import frc.robot.commands.auto.commands.shamper.ShootAutoLowCommand;
 
 public class ShootingAngleCalculator {
     private static ShootingAngleCalculator INSTANCE;
@@ -74,8 +73,8 @@ public class ShootingAngleCalculator {
         shootAngleLookup.add(new ShootAngleConfig(349, 32.5, 0.65 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.75 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
         shootAngleLookup.add(new ShootAngleConfig(375, 31.5, 0.65 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.75 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
         shootAngleLookup.add(new ShootAngleConfig(405, 31, 0.75 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.85 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
-        shootAngleLookup.add(new ShootAngleConfig(451, 27.5, 0.75 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.85 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
-        shootAngleLookup.add(new ShootAngleConfig(500, 26.75, 0.75 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.85 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(451, 29.5, 0.75 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.85 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
+        shootAngleLookup.add(new ShootAngleConfig(500, 27.5, 0.75 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.85 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
         shootAngleLookup.add(new ShootAngleConfig(555, 25.75, 0.75 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.85 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS));
     }
 

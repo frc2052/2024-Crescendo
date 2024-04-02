@@ -12,7 +12,6 @@ import frc.robot.util.AimingCalculator;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 
 import java.util.function.BooleanSupplier;

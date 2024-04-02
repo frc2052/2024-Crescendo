@@ -1,7 +1,5 @@
 package frc.robot.util.io;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-
 import edu.wpi.first.networktables.BooleanTopic;
 import edu.wpi.first.networktables.DoubleArrayTopic;
 import edu.wpi.first.networktables.NetworkTable;

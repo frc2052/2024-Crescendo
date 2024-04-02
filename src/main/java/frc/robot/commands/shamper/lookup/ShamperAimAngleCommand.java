@@ -2,19 +2,16 @@ package frc.robot.commands.shamper.lookup;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotState;
-import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.util.AimingCalculator;
 import frc.robot.util.calculator.ShootAngleConfig;
 import frc.robot.util.calculator.ShootingAngleCalculator;
 
-public class ShamperAutoAngleCommand extends Command{
+public class ShamperAimAngleCommand extends Command{
     private final ShamperSubsystem shamper;
-    private final IndexerSubsystem indexer;
 
-    public ShamperAutoAngleCommand(ShamperSubsystem shamper, IndexerSubsystem indexer) {
+    public ShamperAimAngleCommand(ShamperSubsystem shamper) {
         this.shamper = shamper;
-        this.indexer = indexer;
 
         addRequirements(shamper);
     }

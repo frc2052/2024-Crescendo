@@ -29,7 +29,7 @@ public class IntakeCommand extends Command {
     @Override
     public void execute() {
         intake.intake();
-        if(indexer.getNoteHeld()){
+        if(indexer.getNoteHeld() && !RobotState.getInstance().getNoteDetectorOverride()){
             indexer.loadSlow();
             intake.outtake();
         } else {
@@ -42,11 +42,14 @@ public class IntakeCommand extends Command {
         intake.stop();
         indexer.stop();
         RobotState.getInstance().updateIsIntaking(false);
-
     }
 
     @Override
     public boolean isFinished() {
-        return indexer.getNoteStaged();
+        if(!RobotState.getInstance().getNoteDetectorOverride()){
+            return indexer.getNoteStaged();
+        } else {
+            return false;
+        }
     }
 }

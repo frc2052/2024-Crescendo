@@ -40,8 +40,7 @@ public class RobotState {
     private boolean musicEnabled;
     private boolean isClimbing;
     private boolean shamperAtGoalAngle;
-    private Timer lastGyroResetTimer;
-    private double lastGyroResetValue;
+    private boolean noteDetectorOverride;
 
     private boolean isShooting;
     private boolean atGoalRotation;
@@ -69,9 +68,7 @@ public class RobotState {
         chassisSpeeds = new ChassisSpeeds();
         noteHeld = false;
         noteStaged = false;
-        lastGyroResetTimer = new Timer();
-        lastGyroResetTimer.start();
-        lastGyroResetValue = -1;
+        noteDetectorOverride = false;
 
         isShooting = false;
         atGoalRotation = false;
@@ -133,10 +130,16 @@ public class RobotState {
     }
 
     public void updateRobotPose(Pose2d robotPose) {
-        //this.robotPose = new Pose2d(robotPose.getTranslation(), getRotation2d360());
         this.robotPose = robotPose;
     }
 
+    public void updateNoteDetectorOverride(boolean override) {
+        this.noteDetectorOverride = override;
+    }
+
+    public boolean getNoteDetectorOverride(){
+        return noteDetectorOverride;
+    }
     public void updateNoteHeld(boolean noteHeld) {
         this.noteHeld = noteHeld;
     }
@@ -271,15 +274,6 @@ public class RobotState {
 
     public Rotation2d getRotation2d() {
         return robotPose.getRotation();
-    }
-
-    public boolean gyroResetNeeded(){
-        if (lastGyroResetTimer.get() > 5 && (getGyroRotation().getDegrees() > 1)){
-            lastGyroResetTimer.restart();
-            return true;
-        }
-
-        return false;
     }
 
     /**

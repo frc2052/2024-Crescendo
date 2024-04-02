@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
-import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
 public class ShootSubCommandAuto extends Command {
     private final ShamperSubsystem shamper;

@@ -1,8 +1,6 @@
 package frc.robot.util;
 
 import java.util.Optional;
-import java.util.Vector;
-
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
@@ -11,10 +9,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.AprilTagSubsystem;
+import frc.robot.util.io.Dashboard;
 
 public class AimingCalculator {
 
@@ -146,6 +144,7 @@ public class AimingCalculator {
 
             double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
             double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
+            Dashboard.getInstance().putData("Calculated hypot to speaker",  Math.hypot(xDistance, yDistance));
 
             return Math.hypot(xDistance, yDistance);
         } else { // red alliance
@@ -153,6 +152,7 @@ public class AimingCalculator {
 
             double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
             double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
+            Dashboard.getInstance().putData("Calculated hypot to speaker",  Math.hypot(xDistance, yDistance));
             
             return Math.hypot(xDistance, yDistance);
         }
@@ -163,8 +163,13 @@ public class AimingCalculator {
         if(!RobotState.getInstance().isRedAlliance()) { // blue alliance
             Translation2d aimLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
             double pctOff = calculateAngleToSpeaker(robotPose) / 90;
+            double aimOffset = 0;
 
-            double aimOffset = pctOff * 0.5;
+            if(calculateDistanceToSpeaker(robotPose) < 2.5){
+
+                aimOffset = pctOff * 0.5;
+            }
+            System.out.println("SHIFT " + aimOffset);
 
             if(robotPose.getY() > aimLocation.getY()) { //to the right of speaker
                 // since we are to the left, we want to offset our aim point deeper for a better shot
