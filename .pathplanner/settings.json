@@ -3,8 +3,13 @@
   "robotLength": 0.9144,
   "holonomicMode": true,
   "pathFolders": [
-    "Connector Paths",
     "261",
+    "A387",
+    "C2617",
+    "Connector Paths",
+    "old",
+    "S54&S45",
+    "S56",
     "Starting Paths"
   ],
   "autoFolders": [

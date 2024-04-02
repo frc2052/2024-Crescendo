@@ -73,7 +73,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "A387",
   "previewStartingState": {
     "rotation": -119.29136217098423,
     "velocity": 0
