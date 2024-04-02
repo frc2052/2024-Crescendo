@@ -46,7 +46,7 @@ public class DriveWhileAimingCommand extends DriveCommand {
         rotationController.enableContinuousInput(-Math.PI, Math.PI);
         rotationController.setTolerance(0.087, 0.087);
 
-        rotationFeedForward = new SimpleMotorFeedforward(0.008, 0, 0);
+        rotationFeedForward = new SimpleMotorFeedforward(0.013, 0.013, 0);
 
         robotState = RobotState.getInstance();
     }
@@ -58,7 +58,7 @@ public class DriveWhileAimingCommand extends DriveCommand {
     
     @Override
     protected double getRotation() {
-        double goalAngle = AimingCalculator.angleToPoint(robotState.getSpeakerLocation(), robotState.getRobotPose(), robotState.getChassisSpeeds());
+        double goalAngle = AimingCalculator.angleToPoint(AimingCalculator.calculateAimPointSpeaker(robotState.getRobotPose()), robotState.getRobotPose(), robotState.getChassisSpeeds());
         double currentAngle = robotState.getRotation2d180().getRadians();
         Dashboard.getInstance().putData("AIM GOAL ANGLE", goalAngle);
         Dashboard.getInstance().putData("AIM CURRENT ANGLE", currentAngle);
@@ -67,40 +67,21 @@ public class DriveWhileAimingCommand extends DriveCommand {
 
         // add our rotation
         rotation = rotation + rotationFeedForward.calculate(rotation);
-        // System.out.println("Rotation " + rotation);
-        // do we want to check the error?
-        double error = rotationController.getPositionError();
-        // System.out.println("ERROR: " + error);
 
         /*
          *  static friction is 0.61 voltage
-         *          */
+         */
 
-        if(Math.abs(rotation) < 0.04){
-            // needs at least 4% power to make robot turn
-            rotation = Math.copySign(0.04, rotation);
-        } else if (Math.abs(rotation) > 0.4) {
-            rotation = Math.copySign(0.4, rotation);
-        } 
-        // else if (Math.abs(rotation) < 0.05){
-        //     rotation = 0;
-        // }
-
-        isOnTarget = rotationController.atSetpoint();
+        isOnTarget = Math.abs(currentAngle - goalAngle) < Math.toRadians(Constants.Drivetrain.AIM_TOLERANCE_DEGREES);
 
         if(isOnTarget){
-            rotation = 0;
             RobotState.getInstance().updateRotationOnTarget(true);
         } else {
             RobotState.getInstance().updateRotationOnTarget(false);
         }
 
-        // isOnTarget = Math.abs(goalAngle - currentAngle) <= Math.toRadians(3.5);
-        System.out.println("on target " + isOnTarget);
         Logger.recordOutput("aim rot", rotation);
 
-        //rotation = rotationSlew.calculate(rotation);
-        // double output = MathUtil.clamp(rotation, -DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond() * 2 * Math.PI, DrivetrainSubsystem.getMaxAngularVelocityRadiansPerSecond()* 2 * Math.PI);
         return rotation;
     }
 
@@ -110,6 +91,4 @@ public class DriveWhileAimingCommand extends DriveCommand {
     RobotState.getInstance().updateIsHorizontalAiming(false);
     RobotState.getInstance().updateRotationOnTarget(false);
   }
-
-
 }

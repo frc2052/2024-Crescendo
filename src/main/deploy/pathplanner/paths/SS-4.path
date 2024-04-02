@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8137678764196816,
-        "y": 3.202396449435756
+        "x": 3.423911383591413,
+        "y": 2.99061821867936
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.6561869414751653,
-        "y": 1.5575412605889405
+        "x": 4.266330448646896,
+        "y": 1.3457630298325445
       },
       "isLocked": false,
       "linkedName": "Real Source Shoot"
     },
     {
       "anchor": {
-        "x": 8.555335021756354,
-        "y": 1.080028019431039
+        "x": 9.08847065791544,
+        "y": 0.6492670519587607
       },
       "prevControl": {
-        "x": 2.824717546724679,
-        "y": 1.4872762413142506
+        "x": 6.205839382759434,
+        "y": 0.44786049998279687
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },

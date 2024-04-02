@@ -62,8 +62,9 @@ public class AutoFactory {
     public static enum Auto {
         NO_AUTO(null),
         AUTO_C2617(new PathPlannerAuto("Auto-C2617")),
-        AUTO_A3876(new PathPlannerAuto("Auto-A3876")),
-        AUTO_S54(new PathPlannerAuto("Auto-S54"));
+        AUTO_A387(new PathPlannerAuto("Auto-A387")),
+        AUTO_S54(new PathPlannerAuto("Auto-S54")),
+        AUTO_S45(new PathPlannerAuto("Auto-S45"));
         // AMP_3(new PathPlannerAuto("Amp 3")),
         // SOURCE_5(new PathPlannerAuto("Source 5")),
         // SOURCE_54(new PathPlannerAuto("Source 54")),

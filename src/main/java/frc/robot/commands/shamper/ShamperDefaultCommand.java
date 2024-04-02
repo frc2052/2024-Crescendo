@@ -9,6 +9,8 @@ import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.util.calculator.ShootAngleConfig;
+import frc.robot.util.calculator.ShootingAngleCalculator;
 import frc.robot.util.io.Dashboard;
 import frc.robot.util.io.Dashboard.ShamperIdleMode;
 
@@ -32,7 +34,6 @@ public class ShamperDefaultCommand extends Command {
     // if(RobotState.getInstance().getIsClimbing()) {
     //   return;
     // }
-
     if(Dashboard.getInstance().shouldIdle()) {
       if(RobotState.getInstance().getNoteHeldDetected()){
         switch (shamper.getCurrentIdleMode()) {
@@ -47,6 +48,7 @@ public class ShamperDefaultCommand extends Command {
     } else {
       shamper.windDownShooter();
     }
+
 
     // if((!RobotState.getInstance().getNoteStagedDetected() && !RobotState.getInstance().getNoteHeldDetected()) &&
     //     shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT

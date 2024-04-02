@@ -159,47 +159,37 @@ public class AimingCalculator {
     }
     
     // offset from speaker
-    public static double calculateDistanceToAimPoint(Pose2d robotPose) {
+    public static Translation2d calculateAimPointSpeaker(Pose2d robotPose) {
         if(!RobotState.getInstance().isRedAlliance()) { // blue alliance
             Translation2d aimLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
+            double pctOff = calculateAngleToSpeaker(robotPose) / 90;
 
-            if (calculateAngleToSpeaker(robotPose) > 25) { // if we are too far to the left or right aim for a better shot
-                // System.out.println("applying: " + calculateAngleToSpeaker(robotPose));
-                if(aimLocation.getY() > robotPose.getY()) { //to the left of speaker (robot pov)
-                    // since we are to the left, we want to offset our aim point to the right for a better shot
-                    aimLocation = aimLocation.plus(new Translation2d(0, +0.4));
-                    // System.out.println("LEFT");
-                } else { //to the right of speaker
-                    // since we are to the right, we want to offset our aim point to the left for a better shot
-                    aimLocation = aimLocation.plus(new Translation2d(0, -0.2));
-                    // System.out.println("RIGHT");
-                }
+            double aimOffset = pctOff * 0.5;
+
+            if(robotPose.getY() > aimLocation.getY()) { //to the right of speaker
+                // since we are to the left, we want to offset our aim point deeper for a better shot
+                aimLocation = aimLocation.plus(new Translation2d(0, -aimOffset));
+            } else { //to the left of speaker
+                // since we are to the right, we want to offset our aim point deeper for a better shot
+                aimLocation = aimLocation.plus(new Translation2d(0, +aimOffset));
             }
 
-            // System.out.println("Angle: " + calculateAngleToSpeaker(robotPose) + " Speaker Location: " + Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION.getY() + " Aim Location: " + aimLocation.getY());
-
-            double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
-            double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
-
-            return Math.hypot(xDistance, yDistance);
+            return aimLocation;
         } else { // red alliance
             Translation2d aimLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
+            double pctOff = calculateAngleToSpeaker(robotPose) / 90;
 
-            if (calculateAngleToSpeaker(robotPose) > 25) { // if we are too far to the left or right aim for a better shot
-                if(aimLocation.getY() < robotPose.getY()) { //to the left of speaker (robot pov)
-                    // since we are to the left, we want to offset our aim point to the right for a better shot
-                    aimLocation.plus(new Translation2d(0, +0.4));
-                    System.out.println("LEFT");
-                } else { //to the right of speaker
-                    // since we are to the right, we want to offset our aim point to the left for a better shot
-                    aimLocation.plus(new Translation2d(0, -0.2));
-                    System.out.println("RIGHT");
-                }
+            double aimOffset = pctOff * 0.5;
+
+            if(robotPose.getY() > aimLocation.getY()) { //to the right of speaker
+                // since we are to the left, we want to offset our aim point deeper for a better shot
+                aimLocation = aimLocation.plus(new Translation2d(0, -aimOffset));
+            } else { //to the left of speaker
+                // since we are to the right, we want to offset our aim point deeper for a better shot
+                aimLocation = aimLocation.plus(new Translation2d(0, +aimOffset));
             }
-            double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
-            double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
-            
-            return Math.hypot(xDistance, yDistance);
+
+            return aimLocation;
         }
     }
 }

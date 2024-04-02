@@ -28,6 +28,7 @@ import frc.robot.commands.shamper.ShamperDefaultCommand;
 import frc.robot.commands.shamper.lookup.ShamperAutoAngleCommand;
 import frc.robot.commands.shamper.lookup.ShamperAutoShootCommand;
 import frc.robot.commands.shamper.pivot.ShamperAngleCommand;
+import frc.robot.commands.shamper.pivot.ShamperCustomAngle;
 import frc.robot.commands.shamper.pivot.ShamperPivotDownPct;
 import frc.robot.commands.shamper.pivot.ShamperPivotManualDownCommand;
 import frc.robot.commands.shamper.pivot.ShamperPivotManualUpCommand;
@@ -137,7 +138,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Sub Shoot Command", new ShootSubCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer, shamper));
-    NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain));
+    NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
     NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
 
     configureButtonBindings();
@@ -226,6 +227,9 @@ public class RobotContainer {
     JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
     Trigger shamperIdleToggleButton = new Trigger(() -> controlPanel.getY() > 0.5);
     JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
+    JoystickButton shamperCustomAngleTrigger = new JoystickButton(translationJoystick, 7);
+
+
 
     shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
     shamperShootButton.whileTrue(new ShamperAutoShootCommand(shamper, indexer));
@@ -234,6 +238,7 @@ public class RobotContainer {
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
     shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper, indexer, trapArm));
     shamperIdleToggleButton.onTrue(new InstantCommand(() -> shamper.toggleCurrentIdle()));
+    shamperCustomAngleTrigger.onTrue(new ShamperCustomAngle(shamper));
 
     /*
      *  Shamper Angle Button Bindings
@@ -248,8 +253,8 @@ public class RobotContainer {
      JoystickButton shamperClimbHeightButton = new JoystickButton(controlPanel, 9);
      JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 7);
      JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 5);
-     JoystickButton shamperManualDownPct = new JoystickButton(translationJoystick, 7);
-     JoystickButton shamperManualUpPct = new JoystickButton(translationJoystick, 6);
+    //  JoystickButton shamperManualDownPct = new JoystickButton(translationJoystick, 7);
+    //  JoystickButton shamperManualUpPct = new JoystickButton(translationJoystick, 6);
 
      shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
      shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.PODIUM));
@@ -261,8 +266,8 @@ public class RobotContainer {
      shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
      shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
 
-     shamperManualDownPct.whileTrue(new ShamperPivotDownPct(shamper));
-     shamperManualUpPct.whileTrue(new ShamperPivotUpPct(shamper));
+    //  shamperManualDownPct.whileTrue(new ShamperPivotDownPct(shamper));
+    //  shamperManualUpPct.whileTrue(new ShamperPivotUpPct(shamper));
 
 
     /*

@@ -50,9 +50,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "ScP-5-SS"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ScP-5-SS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
+                }
+              }
+            ]
           }
         },
         {
@@ -100,9 +113,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "ScP-4-SS"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ScP-4-SS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
+                }
+              }
+            ]
           }
         },
         {

@@ -115,7 +115,8 @@ public final class Constants {
         
         public static final Matrix<N3, N1> ODOMETRY_STDDEV = VecBuilder.fill(0.03, 0.03, Math.toRadians(1.0));
         public static final TrapezoidProfile.Constraints AIM_PID_CONSTRAINT = new TrapezoidProfile.Constraints(2160.0, 2160.0);
-        public static final double AIM_OFFSET_DEGREES = -2.5;
+        public static final double AIM_OFFSET_DEGREES = -4;
+        public static final double AIM_TOLERANCE_DEGREES = 2.5;
 
         public static final double LOB_ANGLE = 210;
     }

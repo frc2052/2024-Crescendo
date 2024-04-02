@@ -61,7 +61,7 @@ public class MegaAutoCommand extends Command {
   }
 
   public ShootAngleConfig getShootConfig(){
-    ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToAimPoint(RobotState.getInstance().getRobotPose()));
+    ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToSpeaker(RobotState.getInstance().getRobotPose()));
     return config;
 
   }

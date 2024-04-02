@@ -29,10 +29,10 @@ public class ShootSubCommandAuto extends Command {
 
   @Override
   public void execute() {
-    shamper.setShootSpeed(ShamperSpeed.SUB);
-    shamper.setAngle(55);
+    shamper.setShootSpeed(.85* Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS,.95 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS);
+    shamper.setAngle(54);
 
-    if(shamper.shooterAtSpeed(ShamperSpeed.SUB.getLower(),ShamperSpeed.SUB.getUpper()) && shamper.isAtGoalAngle()) {
+    if(shamper.shooterAtSpeed(.85* Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS,.95 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS) && shamper.isAtGoalAngle()) {
         indexer.indexAll();
         if(indexStartTime == 0){
           indexStartTime = Timer.getFPGATimestamp();

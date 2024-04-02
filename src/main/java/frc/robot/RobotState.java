@@ -96,10 +96,19 @@ public class RobotState {
     }
 
     /**
-     * Adds an AprilTag vision tracked translation3d WITHOUT timestamp.
+     * Adds an AprilTag vision update
      */ 
     public void addAprilTagVisionUpdate(EstimatedRobotPose aprilTagVisionPose) {
-        if(!(aprilTagVisionPose.estimatedPose.getTranslation() == new Translation3d())){  
+        if(!(aprilTagVisionPose.estimatedPose.getTranslation() == new Translation3d())){
+            
+            // check if any of the targets have a ambiguity greater than 0.2 to filter out tags that could potentially throw us across the field
+            for (PhotonTrackedTarget target : aprilTagVisionPose.targetsUsed) {
+                if(target.getPoseAmbiguity() > 0.25 && target.getPoseAmbiguity() > 0){
+                    this.aprilTagVisionPose3d = null;
+                    this.detectionTime = 0;
+                    return;
+                }
+            }
             this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
             this.detectionTime = aprilTagVisionPose.timestampSeconds;
             this.activeTargets = aprilTagVisionPose.targetsUsed;
@@ -421,7 +430,7 @@ public class RobotState {
         Logger.recordOutput("Robot Position Y : ", (robotPose.getY()));
         Logger.recordOutput("ROBOT POSE2D", robotPose);
         Logger.recordOutput("Auto Pose", getRobotPoseAuto());
-        Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateDistanceToAimPoint(robotPose));
+        Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateAimPointSpeaker(robotPose));
         Logger.recordOutput("RAW GYRO", navxRotation.getDegrees());
         Logger.recordOutput("Robot Rotation", robotPose.getRotation().getDegrees());
         Logger.recordOutput("NOTE STAGED", noteStaged);
