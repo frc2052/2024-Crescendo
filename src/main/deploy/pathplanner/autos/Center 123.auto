@@ -56,7 +56,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "(G) 1 to 2"
+                  "pathName": "PiP-1-2"
                 }
               },
               {
@@ -100,7 +100,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "(G) 2 to 3"
+                  "pathName": "PiP-2-3"
                 }
               },
               {

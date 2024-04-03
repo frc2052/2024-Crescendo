@@ -64,7 +64,9 @@ public class AutoFactory {
         AUTO_C2617(new PathPlannerAuto("Auto-C2617")),
         AUTO_A387(new PathPlannerAuto("Auto-A387")),
         AUTO_S54(new PathPlannerAuto("Auto-S54")),
-        AUTO_S45(new PathPlannerAuto("Auto-S45"));
+        AUTO_S45(new PathPlannerAuto("Auto-S45")),
+        AUTO_C123(new PathPlannerAuto("Auto-C123")),
+        AUTO_C12387(new PathPlannerAuto("Auto-C12387"));
         // AMP_3(new PathPlannerAuto("Amp 3")),
         // SOURCE_5(new PathPlannerAuto("Source 5")),
         // SOURCE_54(new PathPlannerAuto("Source 54")),

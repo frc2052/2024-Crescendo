@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3725738150477713,
-      "y": 5.574358195791997
+      "x": 1.3633965729469937,
+      "y": 5.527972981871891
     },
     "rotation": 180.0
   },
@@ -14,21 +14,21 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Sub Shoot Command"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "race",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
                       "type": "path",
                       "data": {
-                        "pathName": null
+                        "pathName": "StP-CS-1"
                       }
                     },
                     {
@@ -43,7 +43,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "Intake Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
                 }
               }
             ]
@@ -52,42 +58,48 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Aim Speaker Command"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Shoot Command"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "PiP-1-2"
-                }
-              },
-              {
-                "type": "race",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "path",
                       "data": {
-                        "name": null
+                        "pathName": "PiP-1-2"
                       }
                     },
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 3.0
+                        "waitTime": 1.0
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
                 }
               }
             ]
@@ -96,42 +108,48 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Aim Speaker Command"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Shoot Command"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "PiP-2-3"
-                }
-              },
-              {
-                "type": "race",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "path",
                       "data": {
-                        "name": null
+                        "pathName": "PiP-2-3"
                       }
                     },
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 3.0
+                        "waitTime": 1.0
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
                 }
               }
             ]
@@ -140,36 +158,18 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Aim Speaker Command"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "(WA) Note 3 to Note 8 to Amp Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
+            "name": "Shoot Command"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "10k",
   "choreoAuto": false
 }

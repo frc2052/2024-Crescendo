@@ -7,10 +7,11 @@
     "A387",
     "C2617",
     "Connector Paths",
-    "old",
+    "C123",
     "S54&S45",
     "S56",
-    "Starting Paths"
+    "Starting Paths",
+    "old"
   ],
   "autoFolders": [
     "10k",
@@ -18,7 +19,7 @@
     "working autos"
   ],
   "defaultMaxVel": 4.5,
-  "defaultMaxAccel": 3.5,
+  "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 540.0,
   "maxModuleSpeed": 5.21
