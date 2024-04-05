@@ -196,8 +196,8 @@ public final class Constants {
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = -0.7 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0.20 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.1 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.2 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.04 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.1 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
@@ -241,7 +241,7 @@ public final class Constants {
             public static final double AMP = 120;
             public static final double SUB = 53;
             public static final double NINETY = 95;
-            public static final double TRAP = 114;
+            public static final double TRAP = 120;
             public static final double LOB = 45;
         }
     }

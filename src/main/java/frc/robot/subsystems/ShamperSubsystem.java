@@ -208,6 +208,8 @@ public class ShamperSubsystem extends SubsystemBase {
   public void stopShooter(){
     upperMotor.set(0);
     lowerMotor.set(0);
+    goalSpeedUpper = 0;
+    goalSpeedLower = 0;
   }
   
   public double getUpperShamperSpeed() {
