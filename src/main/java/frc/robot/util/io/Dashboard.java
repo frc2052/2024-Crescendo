@@ -66,6 +66,8 @@ public class Dashboard {
         SmartDashboard.putString(Constants.Dashboard.IDLE_MODE_KEY, ShamperIdleMode.SPEAKER_IDLE.name());
 
         SmartDashboard.putNumber("Shamper Angle Manual", 0);
+        SmartDashboard.putNumber("Shamper Shot Manual Upper", 0);
+        SmartDashboard.putNumber("Shamper Shot Manual Lower", 0);
     }
 
     public <V> void putData(String key, V value) {
@@ -94,6 +96,17 @@ public class Dashboard {
     
     public NetworkTable getrPiTable(){
         return rPiTable;
+    }
+
+    public double getManualAngle() {
+        return SmartDashboard.getNumber("Shamper Angle Manual", 30);
+    }
+
+    public double getManualShotUpper() {
+        return SmartDashboard.getNumber("Shamper Shot Manual Upper", 0);
+    }
+    public double getManualShotLower() {
+        return SmartDashboard.getNumber("Shamper Shot Manual Lower", 0);
     }
 
     public boolean pixyCamBroken() {

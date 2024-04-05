@@ -141,7 +141,7 @@ public final class Constants {
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = true;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = true;
 
-        public static final int CLIMBER_LIMIT_SWITCH_PIN = 9;
+        public static final int CLIMBER_LIMIT_SWITCH_PIN = 7;
     }
 
     public static class Intake {
@@ -196,8 +196,8 @@ public final class Constants {
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = -0.7 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0.20 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.1 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.2 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
@@ -238,9 +238,10 @@ public final class Constants {
             public static final double INTAKE = 17;
             public static final double DEFAULT = 30;
             public static final double PODIUM = 35;
-            public static final double AMP = 122;
+            public static final double AMP = 120;
             public static final double SUB = 53;
-            public static final double TRAP = 95;
+            public static final double NINETY = 95;
+            public static final double TRAP = 114;
             public static final double LOB = 45;
         }
     }

@@ -30,6 +30,7 @@ import frc.robot.commands.shamper.pivot.ShamperPivotManualUpCommand;
 import frc.robot.commands.shamper.pivot.ShamperSubCommand;
 import frc.robot.commands.shamper.shoot.ShamperManualShootCommand;
 import frc.robot.commands.shamper.shoot.ShamperTrapCommand;
+import frc.robot.commands.shamper.shoot.ShamperCustomShotCommand;
 import frc.robot.commands.shamper.shoot.ShamperLobCommand;
 import frc.robot.commands.trap.TrapToggleCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
@@ -127,6 +128,12 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+
+    // JoystickButton customShotButton = new JoystickButton(rotationJoystick, 11);
+    // customShotButton.whileTrue(new ShamperCustomShotCommand(shamper, indexer));
+    // JoystickButton customAngleButton = new JoystickButton(rotationJoystick, 10);
+    // customAngleButton.whileTrue(new ShamperCustomAngle(shamper));
+
     /*
      * Drive Button Bindings
      */
@@ -226,17 +233,19 @@ public class RobotContainer {
      Trigger shamperSubwooferButton = new Trigger(() -> controlPanel.getX() > 0.5);
      Trigger shamperAmpButton = new Trigger(() -> controlPanel.getX() < -0.5);
      JoystickButton shamperClimbHeightButton = new JoystickButton(controlPanel, 9);
+     JoystickButton shamperTrapButton = new JoystickButton(controlPanel, 5);
      JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 7);
-     JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 5);
+    //  JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 5);
 
-     shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
+     shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.NINETY));
      shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.PODIUM));
      shamperAutoAngleButton.whileTrue(new ShamperAimAngleCommand(shamper));
      shamperSubwooferButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
      shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
      shamperClimbHeightButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.CLIMB));
+     shamperTrapButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
      shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
-     shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
+    //  shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
 
     /*
      * Trap Button Bindings

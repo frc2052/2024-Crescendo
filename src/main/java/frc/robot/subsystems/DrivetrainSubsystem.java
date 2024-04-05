@@ -143,7 +143,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         if (fieldCentric) {
             // chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d());
-            System.out.println("field centric driving");
             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                 chassisSpeeds.vxMetersPerSecond * invert, 
                 chassisSpeeds.vyMetersPerSecond * invert, 
