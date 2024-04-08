@@ -268,8 +268,15 @@ public final class Constants {
         public static final double BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
         public static final double BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
 
-        public static final Translation2d BLUE_LOB_POINT = new Translation2d(0, 0);
-        public static final Translation2d RED_LOB_POINT = new Translation2d(0, 0);
+        public static final Translation2d BLUE_LOB_POINT = new Translation2d(Units.inchesToMeters(75), Units.inchesToMeters(280));
+        public static final Translation2d RED_LOB_POINT = new Translation2d(Units.inchesToMeters(575), Units.inchesToMeters(280));
+
+        // lines at wich its safe to lob note to other side
+        public static final double BLUE_LOB_LINE = Units.inchesToMeters(375);
+        public static final double RED_LOB_LINE = Units.inchesToMeters(275);
+
+        public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLYER = 0.1;
+        public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLYER = 0.1;
     }
 
     public static class MusicPlayer {
