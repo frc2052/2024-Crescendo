@@ -276,7 +276,7 @@ public final class Constants {
         public static final double RED_LOB_LINE = Units.inchesToMeters(275);
 
         public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLYER = 0.1;
-        public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLYER = 0.1;
+        public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLYER = -0.1;
     }
 
     public static class MusicPlayer {
