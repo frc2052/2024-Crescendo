@@ -147,6 +147,8 @@ public final class Constants {
     public static class Intake {
         public static final double INTAKE_IN_SPEED_PCT = -1;
         public static final double INTAKE_OUT_SPEED_PCT = 1;
+
+        public static final double FRONT_PIXY_MOUNT_OFFSET_PIXELS = 0;
     }
 
     public static class Indexer {
