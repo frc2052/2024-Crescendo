@@ -284,7 +284,7 @@ public final class Constants {
         public static final Matrix<N3, N1> VISION_STDDEV = VecBuilder.fill(0.05, 0.05, Math.toRadians(99999999));
     }
     public static final class PhotonCamera1 {
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
 
         public static final double X_OFFSET_M = 0.29;
         public static final double Y_OFFSET_M = -0.26;
@@ -301,7 +301,7 @@ public final class Constants {
     }
     public static final class PhotonCamera2 {
         // TODO: make offsets more precise than caleb's eyeballing
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
 
         public static final double X_OFFSET_M = 0.01;
         public static final double Y_OFFSET_M = -0.40;
