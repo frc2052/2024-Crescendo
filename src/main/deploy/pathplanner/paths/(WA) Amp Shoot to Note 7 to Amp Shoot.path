@@ -1,0 +1,97 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.8292964403332503,
+        "y": 5.515804013063089
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.705958948308564,
+        "y": 6.464543275682984
+      },
+      "isLocked": false,
+      "linkedName": "Amp Shoot"
+    },
+    {
+      "anchor": {
+        "x": 8.635333424513004,
+        "y": 5.791895429944707
+      },
+      "prevControl": {
+        "x": 8.63482512725548,
+        "y": 5.76298555964821
+      },
+      "nextControl": {
+        "x": 8.643469084302842,
+        "y": 6.254618503539002
+      },
+      "isLocked": false,
+      "linkedName": "Note 7"
+    },
+    {
+      "anchor": {
+        "x": 1.8292964403332503,
+        "y": 5.515804013063089
+      },
+      "prevControl": {
+        "x": 2.373910571228179,
+        "y": 6.23898696868826
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Amp Shoot"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.0,
+      "rotationDegrees": -148.62,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": -177.02702461906188,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.55,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 540.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -151.16815830716843,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Connector Paths",
+  "previewStartingState": {
+    "rotation": -148.62,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

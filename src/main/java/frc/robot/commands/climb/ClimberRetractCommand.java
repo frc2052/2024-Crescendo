@@ -36,7 +36,6 @@ public class ClimberRetractCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return climber.getEncoderPosition() < 0;
-    return false;
+    return climber.limitSwitchHit();
   }
 }

@@ -109,94 +109,7 @@
     }
   ],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "Shoot Starting Note",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": null
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Intake, Index, Shoot Note 1",
-      "waypointRelativePos": 1.05,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": null
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot Command"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Intake, Index, Shoot Note 2",
-      "waypointRelativePos": 2.15,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": null
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot Command"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Intake, Index, Shoot Note 3",
-      "waypointRelativePos": 3.55,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": null
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": null
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 4.0,
@@ -209,7 +122,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "WIP",
+  "folder": "old",
   "previewStartingState": {
     "rotation": 133.91907581333936,
     "velocity": 0

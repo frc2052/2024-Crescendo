@@ -2,6 +2,9 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Auto": "String Chooser",
+      "/SmartDashboard/Climber Motors Mode": "String Chooser",
+      "/SmartDashboard/Current Idle Mode": "String Chooser",
       "/SmartDashboard/Drive Mode": "String Chooser"
     }
   },

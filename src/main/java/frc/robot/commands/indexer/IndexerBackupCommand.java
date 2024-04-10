@@ -31,7 +31,7 @@ public class IndexerBackupCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(runBackTimer.get());
+    // System.out.println(runBackTimer.get());
     if(runBackTimer.get() < 0.125){
       indexer.slideBack();
     } else {

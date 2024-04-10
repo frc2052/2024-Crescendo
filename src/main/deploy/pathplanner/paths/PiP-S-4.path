@@ -1,0 +1,58 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.7284778050297884,
+        "y": 4.344720358484939
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.356284084893418,
+        "y": 1.1125294718492431
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.832376694710593,
+        "y": 0.7846260485673593
+      },
+      "prevControl": {
+        "x": 5.018036182237182,
+        "y": 1.2896417990794915
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Note 4"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": -179.34145682243644,
+      "rotateFast": true
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 540.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "S54&S45",
+  "previewStartingState": {
+    "rotation": 115.94229548987164,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

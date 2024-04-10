@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2052.swervemodule.SwerveModule;
@@ -15,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -65,7 +68,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         navx = new AHRS(SPI.Port.kMXP, (byte) 200);
 
-        zeroGyro();
+        zeroOdometry();
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
@@ -89,7 +92,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
     }
 
-    private void resetPose (Pose2d pose) {
+    public void resetPose (Pose2d pose) {
         RobotStateEstimator.getInstance().resetOdometry(pose);
     }
 
@@ -98,6 +101,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // currentChassisSpeeds = new ChassisSpeeds(navx.getVelocityX(), navx.getVelocityY)
         robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(),  navx.getRotation2d()));
         debug();
+
+        
+        Logger.recordOutput("drivetrain omega radians", currentChassisSpeeds.omegaRadiansPerSecond);
     }
 
     /**
@@ -128,8 +134,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
             normalizedRotationVelocity * getMaxAngularVelocityRadiansPerSecond()
         );
 
+        // The origin is always blue. When our alliance is red, X and Y need to be inverted
+        var alliance = DriverStation.getAlliance();
+        var invert = 1;
+        if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+            invert = -1;
+        }
+
         if (fieldCentric) {
-            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d());
+            // chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, navx.getRotation2d());
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                chassisSpeeds.vxMetersPerSecond * invert, 
+                chassisSpeeds.vyMetersPerSecond * invert, 
+                chassisSpeeds.omegaRadiansPerSecond, 
+                RobotState.getInstance().getRobotPose().getRotation()
+            );
         }
 
         drive(chassisSpeeds);
@@ -150,9 +169,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return navx;
     }
 
-    public void zeroGyro() {
-        System.out.println("zeroing gyro");
-        navx.reset();
+    public void zeroOdometry() {
+        System.out.println("zeroing odometry");
+
+        if(RobotState.getInstance().isRedAlliance()){
+            resetPose(new Pose2d(RobotState.getInstance().getRobotPose().getTranslation(), new Rotation2d(Math.toRadians(180))));
+        } else {
+            resetPose(new Pose2d(RobotState.getInstance().getRobotPose().getTranslation(), new Rotation2d(0)));
+        }
     }
 
     public void setModuleStates(SwerveModuleState[] swerveModuleStates) {

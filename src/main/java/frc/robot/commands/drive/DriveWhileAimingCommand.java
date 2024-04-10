@@ -6,24 +6,22 @@ package frc.robot.commands.drive;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
-
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.AimingCalculator;
+import frc.robot.util.io.Dashboard;
 
-public class DriveWhileAimingCommand extends Command {
-    protected final DrivetrainSubsystem drivetrain;
+public class DriveWhileAimingCommand extends DriveCommand {
+    private final PIDController rotationController;
+    private SimpleMotorFeedforward rotationFeedForward;
+    protected boolean isOnTarget;
 
-    private final DoubleSupplier xSupplier;
-    private final DoubleSupplier ySupplier;
-    private final BooleanSupplier fieldCentricSupplier;
-    
-    private final SlewRateLimiter xLimiter;
-    private final SlewRateLimiter yLimiter;
+    private RobotState robotState;
 
     /**
      * @param xSupplier supplier for forward velocity.
@@ -36,63 +34,55 @@ public class DriveWhileAimingCommand extends Command {
         BooleanSupplier fieldCentricSupplier,
         DrivetrainSubsystem drivetrain
     ) {
-        this.drivetrain = drivetrain;
+        super(xSupplier, ySupplier, () -> 0, fieldCentricSupplier, drivetrain);
 
-        this.xSupplier = xSupplier;
-        this.ySupplier = ySupplier;
-        this.fieldCentricSupplier = fieldCentricSupplier;
+        rotationController = new PIDController(0.3, 0, 0);
+        rotationController.enableContinuousInput(-Math.PI, Math.PI);
+        rotationController.setTolerance(0.087, 0.087);
 
-        xLimiter = new SlewRateLimiter(2);
-        yLimiter = new SlewRateLimiter(2);
+        rotationFeedForward = new SimpleMotorFeedforward(0.013, 0.013, 0);
 
-        addRequirements(drivetrain);
+        robotState = RobotState.getInstance();
     }
 
-    protected double getX() {
-        return slewAxis(xLimiter, deadBand(-xSupplier.getAsDouble()));
+    @Override
+    public void initialize() {
+        RobotState.getInstance().updateIsHorizontalAiming(true);
     }
+    
+    @Override
+    protected double getRotation() {
+        double goalAngle = AimingCalculator.angleToPoint(AimingCalculator.calculateAimPointSpeaker(robotState.getRobotPose()), robotState.getRobotPose(), robotState.getChassisSpeeds());
+        double currentAngle = robotState.getRotation2d180().getRadians();
+        Dashboard.getInstance().putData("AIM GOAL ANGLE", goalAngle);
+        Dashboard.getInstance().putData("AIM CURRENT ANGLE", currentAngle);
+            
+        double rotation = rotationController.calculate(currentAngle, goalAngle);
 
-    protected double getY() {
-        return slewAxis(yLimiter, deadBand(-ySupplier.getAsDouble()));
-    }
+        // add our rotation
+        rotation = rotation + rotationFeedForward.calculate(rotation);
 
-    private double getRotation() {
-        double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
-        double deltaDegrees = RobotState.getInstance().getRotation2d360().getDegrees() - goalAngleDegrees;
-        Logger.recordOutput("goal angle", goalAngleDegrees);
-        Logger.recordOutput("measured angle", RobotState.getInstance().getRotation2d360().getDegrees());
+        /*
+         *  static friction is 0.61 voltage
+         */
 
-        // return 0;
-        if (Math.abs(deltaDegrees) > 90) {
-            return Math.copySign(0.5, -deltaDegrees);
-        } else if (Math.abs(deltaDegrees) > 45){
-            return Math.copySign(0.25, -deltaDegrees);
-        } else if (Math.abs(deltaDegrees) > 5){
-            return Math.copySign(0.1, -deltaDegrees);
+        isOnTarget = Math.abs(currentAngle - goalAngle) < Math.toRadians(Constants.Drivetrain.AIM_TOLERANCE_DEGREES);
+
+        if(isOnTarget){
+            RobotState.getInstance().updateRotationOnTarget(true);
         } else {
-            return 0;
+            RobotState.getInstance().updateRotationOnTarget(false);
         }
+
+        Logger.recordOutput("aim rot", rotation);
+
+        return rotation;
     }
 
-    @Override
-    public void execute() {
-        drivetrain.drive(getX(), getY(), getRotation(), true);
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        drivetrain.stop();
-    }
-
-    protected double slewAxis(SlewRateLimiter limiter, double value) {
-        return limiter.calculate(Math.copySign(Math.pow(value, 2), value));
-    }
-
-    protected double deadBand(double value) {
-        if (Math.abs(value) <= 0.075) {
-            return 0.0;
-        }
-        // Limit the value to always be in the range of [-1.0, 1.0]
-        return Math.copySign(Math.min(1.0, Math.abs(value)), value);
-    }
+     // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    RobotState.getInstance().updateIsHorizontalAiming(false);
+    RobotState.getInstance().updateRotationOnTarget(false);
+  }
 }

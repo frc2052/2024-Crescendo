@@ -1,0 +1,97 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.8927727086223416,
+        "y": 6.9956624528633675
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.034615529345017,
+        "y": 7.039785045738183
+      },
+      "isLocked": false,
+      "linkedName": "Note 3"
+    },
+    {
+      "anchor": {
+        "x": 8.867509204347936,
+        "y": 7.541778735483292
+      },
+      "prevControl": {
+        "x": 7.92876095648107,
+        "y": 7.397415312497189
+      },
+      "nextControl": {
+        "x": 9.806257452214803,
+        "y": 7.686142158469395
+      },
+      "isLocked": false,
+      "linkedName": "Note 8"
+    },
+    {
+      "anchor": {
+        "x": 1.8292964403332503,
+        "y": 5.515804013063089
+      },
+      "prevControl": {
+        "x": 4.5779914539269795,
+        "y": 5.923655921359497
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Amp Shoot"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": -169.329540793583,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": -148.61959118846895,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Start Intake",
+      "waypointRelativePos": 0.8,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 540.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -149.51143589175828,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Connector Paths",
+  "previewStartingState": {
+    "rotation": -173.63,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

@@ -1,16 +1,22 @@
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.team2052.lib.photonvision.EstimatedRobotPose;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.util.AimingCalculator;
@@ -23,16 +29,25 @@ public class RobotState {
     private Pose2d initialPose;
     private Pose2d robotPose;
     private Pose3d aprilTagVisionPose3d;
+    private List<PhotonTrackedTarget> activeTargets;
+    private boolean visionEnabled;
     private double detectionTime;
-    private Rotation2d navxOffset;
-    private Rotation2d robotRotation2d;
+    private Rotation2d navxRotation;
     private SwerveModulePosition[] swerveModulePositions;
     private ChassisSpeeds chassisSpeeds;
-    private boolean noteDetected;
+    private boolean noteHeld;
+    private boolean noteStaged;
     private boolean musicEnabled;
     private boolean isClimbing;
     private boolean shamperAtGoalAngle;
-    private double autoOffset;
+    private boolean noteDetectorOverride;
+
+    private boolean isShooting;
+    private boolean atGoalRotation;
+    private boolean isVerticalAiming;
+    private boolean isHorizontalAiming;
+    private boolean isIntaking;
+    private boolean isAmpIdle;
 
     public static RobotState getInstance() {
         if (INSTANCE == null) {
@@ -42,25 +57,25 @@ public class RobotState {
         return INSTANCE;
     }
 
-    public boolean isRedAlliance() {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-            return (alliance.get() == DriverStation.Alliance.Red) ? 
-            true : false;
-        } else {
-            return false;
-        }
-    }
-
     private RobotState() {
         initialPose = new Pose2d();
         robotPose = new Pose2d();
         detectionTime = 0.0;
         aprilTagVisionPose3d = new Pose3d();
-        navxOffset = new Rotation2d(0);
-        robotRotation2d = new Rotation2d(0);
+        activeTargets = new ArrayList<PhotonTrackedTarget>();
+        visionEnabled = false;
+        navxRotation = new Rotation2d(0);
         chassisSpeeds = new ChassisSpeeds();
-        noteDetected = false;
+        noteHeld = false;
+        noteStaged = false;
+        noteDetectorOverride = false;
+
+        isShooting = false;
+        atGoalRotation = false;
+        isVerticalAiming = false;
+        isHorizontalAiming = false;
+        isIntaking = false;
+        isAmpIdle = false;
     }  
 
     public boolean hasValidSwerveState() {
@@ -70,24 +85,67 @@ public class RobotState {
     public void addDrivetrainState(DrivetrainState drivetrainState) {
         this.chassisSpeeds = drivetrainState.getChassisSpeeds();
         this.swerveModulePositions = drivetrainState.getModulePositions();
-        this.robotRotation2d = drivetrainState.getRotation2d();
+        this.navxRotation = drivetrainState.getRotation2d();
+    }
+
+    public Rotation2d getGyroRotation() {
+        return navxRotation;
     }
 
     /**
-     * Adds an AprilTag vision tracked translation3d WITHOUT timestamp.
+     * Adds an AprilTag vision update
      */ 
     public void addAprilTagVisionUpdate(EstimatedRobotPose aprilTagVisionPose) {
-        this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
-        this.detectionTime = aprilTagVisionPose.timestampSeconds;
+        if(!(aprilTagVisionPose.estimatedPose.getTranslation() == new Translation3d())){
+            
+            // check if any of the targets have a ambiguity greater than 0.2 to filter out tags that could potentially throw us across the field
+            for (PhotonTrackedTarget target : aprilTagVisionPose.targetsUsed) {
+                if(target.getPoseAmbiguity() > 0.25 && target.getPoseAmbiguity() > 0){
+                    this.aprilTagVisionPose3d = null;
+                    this.detectionTime = 0;
+                    return;
+                }
+            }
+            this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
+            this.detectionTime = aprilTagVisionPose.timestampSeconds;
+            this.activeTargets = aprilTagVisionPose.targetsUsed;
+        } else {
+            System.out.println("EMPTY VISION POSE");
+            this.aprilTagVisionPose3d = null;
+            this.detectionTime = 0;
+        }
+    }
+
+    public List<PhotonTrackedTarget> getActiveTargets() {
+        return activeTargets;
+    }
+
+    public void updateVisionEnabled(boolean visionEnabled) {
+        this.visionEnabled = visionEnabled;
+        Dashboard.getInstance().putData("vision enabled", visionEnabled);
+    }
+
+    public boolean getVisionEnabled() {
+        return visionEnabled;
     }
 
     public void updateRobotPose(Pose2d robotPose) {
-        //this.robotPose = new Pose2d(robotPose.getTranslation(), getRotation2d360());
         this.robotPose = robotPose;
     }
 
-    public void updateNoteDetected(boolean noteDetected) {
-        this.noteDetected = noteDetected;
+    public void updateNoteDetectorOverride(boolean override) {
+        this.noteDetectorOverride = override;
+    }
+
+    public boolean getNoteDetectorOverride(){
+        return noteDetectorOverride;
+    }
+    public void updateNoteHeld(boolean noteHeld) {
+        this.noteHeld = noteHeld;
+    }
+
+    public void updateNoteStaged(boolean noteStaged) {
+        this.noteStaged = noteStaged;
     }
 
     public void updateIsClimbing(boolean isClimbing) {
@@ -106,14 +164,64 @@ public class RobotState {
         return shamperAtGoalAngle;
     }
 
+     public void updateShooting(boolean isShooting){
+        this.isShooting = isShooting;
+    }
+
+    public boolean getShooting(){
+        return isShooting;
+    }
+
+    public void updateAmpIdle(boolean isAmpIdle) {
+        this.isAmpIdle = isAmpIdle;
+    }
+
+    public boolean getAmpIdle(){
+        return isAmpIdle;
+    }
+
+     public void updateRotationOnTarget(boolean isOnTarget){
+        this.atGoalRotation = isOnTarget;
+    }
+
+    public boolean getIsRotationOnTarget(){
+        return atGoalRotation;
+    }
+
+    public void updateIsVerticalAiming(boolean isVerticalAiming){
+        this.isVerticalAiming = isVerticalAiming;
+    }
+
+   public boolean getIsVerticalAiming(){
+        return isVerticalAiming;
+   }
+
+   public void updateIsHorizontalAiming(boolean isHorizontalAiming){
+        this.isHorizontalAiming = isHorizontalAiming;
+   }
+
+   public boolean getIsHorizontalAiming(){
+        return isHorizontalAiming;
+   }
+
+   public void updateIsIntaking(boolean isIntaking){
+        this.isIntaking = isIntaking;
+   }
+
+   public boolean getIsIntaking(){
+        return isIntaking;
+   }
+
+
+
     /**
      * Reset the RobotState's Initial Pose2d and set the NavX Offset. 
      * NavX offset is set when the robot has an inital rotation not facing where you want 0 (forwards) to be.
      */
     public void resetInitialPose(Pose2d initialStartingPose) {
-        navxOffset = new Rotation2d();
-        autoOffset = -  initialStartingPose.getRotation().getRadians() + Math.PI;
-        System.out.println("auto offset of :" + Units.radiansToDegrees(autoOffset));
+        //navxOffset = new Rotation2d();
+        //autoOffset = -initialStartingPose.getRotation().getRadians() + Math.PI;
+        //System.out.println("auto offset of :" + Units.radiansToDegrees(autoOffset));
         initialPose = initialStartingPose;
     }
 
@@ -122,8 +230,17 @@ public class RobotState {
      * 
      * @return Translation2d
      */
-    public Pose3d getVisionPose3d() {
-        return aprilTagVisionPose3d;
+    public Optional<Pose3d> getVisionPose3d() {
+        Optional<Pose3d> visionPose = Optional.empty();
+
+        // if the vision pose doesn't have it's pose at the origin and not null, then it's good
+        if(!(aprilTagVisionPose3d == null)){
+            if (!(aprilTagVisionPose3d.getTranslation() == new Translation3d())){
+                visionPose = Optional.of(aprilTagVisionPose3d);
+            }
+        }
+
+        return visionPose;
     }
 
     /**
@@ -145,31 +262,18 @@ public class RobotState {
      * @return Rotation2d
      */
     public Rotation2d getRotation2d180() {
-        double rotationDegrees = MathUtil.inputModulus(getRotation2dRaw().getDegrees(), -180, 180);
+        double rotationDegrees = MathUtil.inputModulus(getRotation2d().getDegrees(), -180, 180);
 
         return Rotation2d.fromDegrees(rotationDegrees);
     }
 
     public Rotation2d getRotation2d360() {
-        double rotationDegrees = MathUtil.inputModulus(getRotation2dRaw().getDegrees(), 0, 360);
+        double rotationDegrees = MathUtil.inputModulus(getRotation2d().getDegrees(), 0, 360);
         return Rotation2d.fromDegrees(rotationDegrees);
     }
 
-    public Rotation2d getRotation2dRaw() {
-        return robotRotation2d.rotateBy(navxOffset);
-    }
-
-    public void applyNavxOffset(){
-        System.out.println("NavX Offset Applied");
-        this.navxOffset = new Rotation2d(autoOffset);
-    }
-
-    public void clearNavXOffset() {
-        this.navxOffset = new Rotation2d();
-    }
-
-    public void addNavXOffset(double offset){
-        this.navxOffset = new Rotation2d(Units.degreesToRadians(offset));
+    public Rotation2d getRotation2d() {
+        return robotPose.getRotation();
     }
 
     /**
@@ -204,11 +308,13 @@ public class RobotState {
         return robotPose;
     }
 
-    public boolean getNoteDetected() {
-        return noteDetected;
+    public boolean getNoteStagedDetected() {
+        return noteStaged;
     }
 
-
+    public boolean getNoteHeldDetected() {
+        return noteHeld;
+    }
 
     /**
      * Returns the initial Pose2d of the robot since last reset.
@@ -225,6 +331,35 @@ public class RobotState {
     
     public void setMusicEnableStatus(boolean isEnabled) {
         musicEnabled = isEnabled;
+    }
+
+    public boolean isRedAlliance() {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            return (alliance.get() == DriverStation.Alliance.Red) ? true : false;
+        } else {
+            return false;
+        }
+    }
+
+    public Translation2d getSpeakerLocation() {
+        if(isRedAlliance()) {
+            return Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
+        } else {
+            return Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
+        }
+    }
+
+    public Translation2d getSpeakerAimLocation() {
+        if(isRedAlliance()) {
+            return Constants.FieldAndRobot.RED_SPEAKER_AIM_LOCATION;
+        } else {
+            return Constants.FieldAndRobot.BLUE_SPEAKER_AIM_LOCATION;
+        }
+    }
+
+    public double distanceToSpeaker() {
+        return AimingCalculator.calculateDistanceToSpeaker(robotPose);
     }
 
     /**
@@ -281,26 +416,21 @@ public class RobotState {
         return DriverStation.isTest();
     }
 
+
+
     public void output(){
         Logger.recordOutput("Vision Pose", aprilTagVisionPose3d);
         Logger.recordOutput("Robot Position X : ", (robotPose.getX()));
         Logger.recordOutput("Robot Position Y : ", (robotPose.getY()));
         Logger.recordOutput("ROBOT POSE2D", robotPose);
         Logger.recordOutput("Auto Pose", getRobotPoseAuto());
-        Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateDistanceToSpeaker(robotPose));
-        Logger.recordOutput("RAW GYRO", robotRotation2d.getDegrees());
-        Logger.recordOutput("NOTE DETECTOR", noteDetected);
+        Logger.recordOutput("distance calculated hypot", AimingCalculator.calculateAimPointSpeaker(robotPose));
+        Logger.recordOutput("RAW GYRO", navxRotation.getDegrees());
+        Logger.recordOutput("Robot Rotation", robotPose.getRotation().getDegrees());
+        Logger.recordOutput("NOTE STAGED", noteStaged);
+        Logger.recordOutput("NOTE HELD", noteHeld);
         Logger.recordOutput("auto gyro method angle", robotPose.getRotation().getDegrees());
-        Dashboard.getInstance().putData("NOTE DETECTED", noteDetected);
-        // Dashboard.getInstance().putData("Rotation Degrees", robotRotation2d.getDegrees());
-        // Dashboard.getInstance().putData("Robot Position X : ", (robotPose.getX()));
-        // Dashboard.getInstance().putData("Robot Position Y : ", (robotPose.getY()));
-        // Dashboard.getInstance().putData("VISION Robot Position X : ", (aprilTagVisionPose3d.getX()));
-        // Dashboard.getInstance().putData("VISION Robot Position Y : ", (aprilTagVisionPose3d.getY()));
-        // Dashboard.getInstance().putData("VISION Rotational Value Degrees: ", aprilTagVisionPose3d.getRotation().getX());
-        
-        // double goalAngleDegrees = AimingCalculator.calculateAngle(RobotState.getInstance().getRobotPose());
-        // Logger.recordOutput("goal angle",  Math.copySign(goalAngleDegrees, robotPose.getRotation().getDegrees()));
-        // Logger.recordOutput("measured angle", robotRotation2d.getDegrees() % 360);
+        Dashboard.getInstance().putData("NOTE HELD", noteHeld);
+        Dashboard.getInstance().updateIsClimbing(isClimbing);
     }   
 }

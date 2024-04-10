@@ -1,0 +1,83 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/cpath.path
+        "x": 1.3842846515935527,
+        "y": 5.550936522700434
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.384284651593552,
+        "y": 5.550936522700434
+========
+        "x": 1.4189690976582576,
+        "y": 5.543499364603706
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.467542714911886,
+        "y": 5.543499364603706
+>>>>>>>> 9b3aaeddd74a81716e4f5e09613f50b9d1705ebd:src/main/deploy/pathplanner/paths/Center 3.path
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/cpath.path
+        "x": 4.0,
+        "y": 6.0
+      },
+      "prevControl": {
+        "x": 3.0,
+        "y": 6.0
+========
+        "x": 3.1470164484227783,
+        "y": 6.93692455372262
+      },
+      "prevControl": {
+        "x": 3.0292691406108996,
+        "y": 6.626472630330437
+>>>>>>>> 9b3aaeddd74a81716e4f5e09613f50b9d1705ebd:src/main/deploy/pathplanner/paths/Center 3.path
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Note 3"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/cpath.path
+    "maxAcceleration": 4.5,
+========
+    "maxAcceleration": 4.0,
+>>>>>>>> 9b3aaeddd74a81716e4f5e09613f50b9d1705ebd:src/main/deploy/pathplanner/paths/Center 3.path
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 540.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/cpath.path
+    "rotation": 0,
+========
+    "rotation": -145.60821214079442,
+>>>>>>>> 9b3aaeddd74a81716e4f5e09613f50b9d1705ebd:src/main/deploy/pathplanner/paths/Center 3.path
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Starting Paths",
+  "previewStartingState": {
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/cpath.path
+    "rotation": -179.3489396197706,
+========
+    "rotation": 178.7365506948876,
+>>>>>>>> 9b3aaeddd74a81716e4f5e09613f50b9d1705ebd:src/main/deploy/pathplanner/paths/Center 3.path
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

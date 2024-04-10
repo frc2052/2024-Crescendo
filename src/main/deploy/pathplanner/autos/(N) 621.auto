@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.362992428365809,
+      "y": 5.524944777568127
+    },
+    "rotation": 179.8339944808294
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "(WA) Note 6 to Center Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "(WA) Center Shoot to Note 2 Shoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

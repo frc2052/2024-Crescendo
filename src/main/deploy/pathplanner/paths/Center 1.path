@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.8715608929078047,
-        "y": 4.344720358484939
+        "x": 2.784236337703446,
+        "y": 4.203317637404505
       },
       "prevControl": {
-        "x": 1.7473205845127804,
-        "y": 3.677202675375394
+        "x": 1.6599960293084217,
+        "y": 3.5357999542949603
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End Of Center 1"
+      "linkedName": "Note 1"
     }
   ],
   "rotationTargets": [],
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 Note Auto",
+  "folder": "old",
   "previewStartingState": {
     "rotation": -178.6980473274211,
     "velocity": 0

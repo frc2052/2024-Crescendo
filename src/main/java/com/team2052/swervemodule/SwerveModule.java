@@ -3,7 +3,6 @@ package com.team2052.swervemodule;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -85,25 +84,29 @@ public class SwerveModule {
 
     // current limiting?
 
-    // VoltageConfigs driveVoltageConfig = new VoltageConfigs();
-    // driveVoltageConfig.withPeakForwardVoltage(SwerveConstants.MAX_VOLTAGE_VOLTS);
-    // driveVoltageConfig.withPeakReverseVoltage(SwerveConstants.MAX_VOLTAGE_VOLTS);
+    VoltageConfigs driveVoltageConfig = new VoltageConfigs();
+    driveVoltageConfig.withPeakForwardVoltage(SwerveConstants.MAX_VOLTAGE_VOLTS);
+    driveVoltageConfig.withPeakReverseVoltage(SwerveConstants.MAX_VOLTAGE_VOLTS);
 
-    // CurrentLimitsConfigs driveCurrentLimitConfig = new CurrentLimitsConfigs();
-    // driveCurrentLimitConfig.withStatorCurrentLimit(SwerveConstants.DRIVE_STALL_CURRENT_LIMIT_AMPS);
-    // driveCurrentLimitConfig.withSupplyCurrentLimit(SwerveConstants.DRIVE_FREE_CURRENT_LIMIT_AMPS);
-    // checkError(
-    //     "Failed to enable drive motor voltage compensation",
-    //     driveMotor.getConfigurator().apply(driveVoltageConfig, SwerveConstants.CAN_TIMEOUT_SECONDS)
-    // );
+    checkError(
+        "Failed to enable drive motor voltage compensation",
+        driveMotor.getConfigurator().apply(
+            driveVoltageConfig, 
+            SwerveConstants.CAN_TIMEOUT_SECONDS)
+    );
 
-    // checkError(
-    //     "Failed to set steer motor current limit",
-    //     driveMotor.getConfigurator().apply(
-    //         driveCurrentLimitConfig,
-    //         SwerveConstants.CAN_TIMEOUT_SECONDS
-    //     )
-    // );
+    CurrentLimitsConfigs driveCurrentLimitConfig = new CurrentLimitsConfigs();
+    driveCurrentLimitConfig.withSupplyCurrentLimitEnable(true);
+    driveCurrentLimitConfig.withStatorCurrentLimit(SwerveConstants.DRIVE_STALL_CURRENT_LIMIT_AMPS);
+    driveCurrentLimitConfig.withSupplyCurrentLimit(SwerveConstants.DRIVE_FREE_CURRENT_LIMIT_AMPS);
+
+    checkError(
+        "Failed to set steer motor current limit",
+        driveMotor.getConfigurator().apply(
+            driveCurrentLimitConfig,
+            SwerveConstants.CAN_TIMEOUT_SECONDS
+        )
+    );
 
     /*
      * Steer Motor Initialization
@@ -126,15 +129,15 @@ public class SwerveModule {
 
     steerMotor.setInverted(SwerveConstants.SwerveModule.STEER_INVERTED);
 
-    // checkError(
-    //     "Failed to enable steer motor voltage compensation",
-    //     steerMotor.enableVoltageCompensation(SwerveConstants.MAX_VOLTAGE_VOLTS)
-    // );
+    checkError(
+        "Failed to enable steer motor voltage compensation",
+        steerMotor.enableVoltageCompensation(SwerveConstants.MAX_VOLTAGE_VOLTS)
+    );
 
-    // checkError(
-    //     "Failed to set steer motor current limit",
-    //     steerMotor.setSmartCurrentLimit((int) SwerveConstants.STEER_CURRENT_LIMIT_AMPS)
-    // );
+    checkError(
+        "Failed to set steer motor current limit",
+        steerMotor.setSmartCurrentLimit((int) SwerveConstants.STEER_CURRENT_LIMIT_AMPS)
+    );
 
     // Drive Motor encoder initialization
     RelativeEncoder steerEncoder = steerMotor.getEncoder();

@@ -1,14 +1,20 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.9144,
+  "robotLength": 0.9144,
   "holonomicMode": true,
   "pathFolders": [
-    "4 Note Auto",
-    "WIP",
-    "test",
-    "working"
+    "261",
+    "A387",
+    "C2617",
+    "Connector Paths",
+    "C123",
+    "S54&S45",
+    "S56",
+    "Starting Paths",
+    "old"
   ],
   "autoFolders": [
+    "10k",
     "WIP",
     "working autos"
   ],

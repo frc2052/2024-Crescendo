@@ -2,16 +2,11 @@ package frc.robot.auto;
 
 import java.util.function.Supplier;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.commands.auto.backupAuto.BasicAuto;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.util.io.Dashboard;
 
 /**
@@ -62,14 +57,17 @@ public class AutoFactory {
 
     /*
      * This is where all our autos are. Need to use this as our list because when deploying to robot old autos don't get 
-     * cleared and may show up with built in PathPlannerLib SendableChooser
+     * cleared from the RoboRIO and may show up with built in PathPlannerLib Auto Selector
      */
     public static enum Auto {
         NO_AUTO(null),
-        AMP_3(new PathPlannerAuto("Amp 3")),
-        SOURCE_5(new PathPlannerAuto("Source 5")),
-        SOURCE_54(new PathPlannerAuto("Source 54")),
-        CENTER_123(new PathPlannerAuto("Center 123"));
+        AUTO_C2617(new PathPlannerAuto("Auto-C2617")),
+        AUTO_A387(new PathPlannerAuto("Auto-A387")),
+        AUTO_S54(new PathPlannerAuto("Auto-S54")),
+        AUTO_S45(new PathPlannerAuto("Auto-S45")),
+        AUTO_C123(new PathPlannerAuto("Auto-C123")),
+        AUTO_C12387(new PathPlannerAuto("Auto-C12387"));
+
         private final PathPlannerAuto auto;
 
         private Auto(PathPlannerAuto auto) {

@@ -58,6 +58,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledPeriodic() {
     m_robotContainer.precompileAuto();
+    m_robotContainer.resetGyro();
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
@@ -69,6 +70,8 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    
+    RobotState.getInstance().updateVisionEnabled(false);
   }
 
   /** This function is called periodically during autonomous. */
@@ -85,7 +88,8 @@ public class Robot extends LoggedRobot {
       m_autonomousCommand.cancel();
     }
 
-    RobotState.getInstance().applyNavxOffset();
+    RobotState.getInstance().updateVisionEnabled(true);
+    
     // m_robotContainer.robotStatusCommunicator.onRobotTeleop();
   }
 

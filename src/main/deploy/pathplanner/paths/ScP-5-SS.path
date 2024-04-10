@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.7438697954319,
+        "y": 2.6147398448643058
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.370310049834479,
+        "y": 1.4188884425070105
+      },
+      "isLocked": false,
+      "linkedName": "Accurate Note 5"
+    },
+    {
+      "anchor": {
+        "x": 3.423911383591413,
+        "y": 2.99061821867936
+      },
+      "prevControl": {
+        "x": 4.305065048486261,
+        "y": 1.6059481738445958
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Real Source Shoot"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 540.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 149.03624346792643,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "S54&S45",
+  "previewStartingState": {
+    "rotation": -168.2614287932777,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

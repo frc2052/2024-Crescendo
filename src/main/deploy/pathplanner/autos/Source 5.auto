@@ -14,19 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Sub Shoot Command"
+            "name": null
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Source 5"
+            "pathName": "PiP-S-5"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot Command"
+            "name": null
           }
         }
       ]
