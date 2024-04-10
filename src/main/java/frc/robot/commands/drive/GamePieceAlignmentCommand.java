@@ -52,15 +52,15 @@ public class GamePieceAlignmentCommand extends DriveCommand {
         return yController.calculate(yOffset) / 158;
     }
 
-    // @Override
-    // protected double getX() {
-    //     //System.out.println("ALIGNING X: " + drivetrain.getPosition().getX());
-    //     if (goalXMeters.getAsDouble() != 0) {
-    //         return xController.calculate(drivetrain.getPosition().getX());
-    //     } else {
-    //         return 0;
-    //     }
-    // }
+    @Override
+    protected double getX() {
+        //System.out.println("ALIGNING X: " + drivetrain.getPosition().getX());
+        if (goalXMeters.getAsDouble() != 0) {
+            return xController.calculate(drivetrain.getPosition().getX());
+        } else {
+            return 0;
+        }
+    }
 
     @Override
     public boolean isFinished() {

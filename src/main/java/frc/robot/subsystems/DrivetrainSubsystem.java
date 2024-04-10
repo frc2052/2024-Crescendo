@@ -12,7 +12,10 @@ import com.team2052.swervemodule.SwerveModule;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -32,6 +35,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
     final SwerveModule frontRightModule;
     final SwerveModule backLeftModule;
     final SwerveModule backRightModule;
+
+    private final SwerveDriveOdometry odometry;
+
+    // from constants?
+    public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+        // Front left
+        new Translation2d(0.302, 0.298),
+        // Back left
+        new Translation2d(-0.302, 0.178),
+        // Back right
+        new Translation2d(-0.302, -0.178),
+        // Front right
+        new Translation2d(0.302,  -0.298)
+    );
 
     private final AHRS navx;
     
@@ -70,6 +87,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         navx.setAngleAdjustment(0);
 
         zeroOdometry();
+
+        odometry = new SwerveDriveOdometry(kinematics, navx.getRotation2d(), getModulePositions());
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
@@ -170,6 +189,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return navx;
     }
 
+          // getRotation for odometry variable accounting for offset?
+    // public Rotation2d getRotation() {
+    //     return navx.getRotation2d().rotateBy(navxOffset);
+    //  }
+
     public void zeroOdometry() {
         System.out.println("zeroing odometry");
 
@@ -212,6 +236,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
             backRightModule.getPosition(),
             frontRightModule.getPosition()
         };
+    }
+
+    public Pose2d getPosition(){
+        return odometry.getPoseMeters();
     }
 
     public static double getMaxVelocityMetersPerSecond() {
