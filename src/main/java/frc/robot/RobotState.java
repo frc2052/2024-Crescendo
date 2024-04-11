@@ -39,6 +39,7 @@ public class RobotState {
     private boolean noteStaged;
     private boolean musicEnabled;
     private boolean isClimbing;
+    private boolean isLobbing;
     private boolean shamperAtGoalAngle;
     private boolean noteDetectorOverride;
 
@@ -69,6 +70,7 @@ public class RobotState {
         noteHeld = false;
         noteStaged = false;
         noteDetectorOverride = false;
+        isLobbing = false;
 
         isShooting = false;
         atGoalRotation = false;
@@ -154,6 +156,14 @@ public class RobotState {
     
     public boolean getIsClimbing(){
         return isClimbing;
+    }
+
+    public void setIsLobbing(boolean isLobbing) {
+        this.isLobbing = isLobbing;
+    }
+
+    public boolean getIsLobbing() {
+        return isLobbing;
     }
 
     public void updateShamperAtGoalAngle(boolean shamperAtGoalAngle) {

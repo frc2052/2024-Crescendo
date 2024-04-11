@@ -50,12 +50,12 @@ public class RobotStateEstimator {
         }
         
         // if(robotState.getVisionEnabled()){
-            if (!(robotState.getChassisSpeeds().vxMetersPerSecond > 2) && !(robotState.getChassisSpeeds().vxMetersPerSecond > 2) && !(robotState.getChassisSpeeds().omegaRadiansPerSecond > 1.5)){   
+            //if (!(robotState.getChassisSpeeds().vxMetersPerSecond > 2) && !(robotState.getChassisSpeeds().vxMetersPerSecond > 2) && !(robotState.getChassisSpeeds().omegaRadiansPerSecond > 1.5)){   
                 if(robotState.getVisionPose3d().isPresent()){
                     Pose2d visionPose = robotState.getVisionPose3d().get().toPose2d();
                     if(visionPose.getX() > 0 && visionPose.getX() < Units.inchesToMeters(651.157) && visionPose.getY() > 0 && visionPose.getY() < Units.feetToMeters(27)){
                         double distanceToSpeaker = robotState.getSpeakerLocation().getDistance(robotState.getRobotPose().getTranslation());
-                        double xyPower = 3;
+                        double xyPower = 0.75;
                         double rotStds = 99999999;
                         // System.out.println("STDS " + xyStds);
                         List<PhotonTrackedTarget> targets = robotState.getActiveTargets();
@@ -89,7 +89,7 @@ public class RobotStateEstimator {
                         );
                     }
                 }
-            } 
+            //} 
         // }
 
         poseEstimator.update(

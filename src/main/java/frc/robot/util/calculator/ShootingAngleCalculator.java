@@ -100,10 +100,10 @@ public class ShootingAngleCalculator {
 
         // Returns a default shooter configuration if either of the bounds are null
         if (lowerDistanceConfig == null) {
-            System.out.println("No Lower Config");
+            //System.out.println("No Lower Config");
             return shootAngleLookup.get(shootAngleLookup.size() - 1);
         } else if (upperDistanceConfig == null){
-            System.out.println("No Upper Config");
+            //System.out.println("No Upper Config");
             return shootAngleLookup.get(0);
         }
 

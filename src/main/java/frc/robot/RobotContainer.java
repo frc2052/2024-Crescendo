@@ -16,11 +16,13 @@ import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
+import frc.robot.commands.drive.FeedWhileMovingCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperDefaultCommand;
+import frc.robot.commands.shamper.ShamperLobOrShootCommand;
 import frc.robot.commands.shamper.lookup.ShamperAimAngleCommand;
 import frc.robot.commands.shamper.lookup.ShamperShootCommand;
 import frc.robot.commands.shamper.pivot.ShamperAngleCommand;
@@ -43,6 +45,7 @@ import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.util.AimingCalculator;
 import frc.robot.util.io.Dashboard;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -160,8 +163,15 @@ public class RobotContainer {
       drivetrain
     ));
 
-    JoystickButton aimLobButton = new JoystickButton(rotationJoystick, 5);
-    aimLobButton.whileTrue(new ShamperLobCommand(shamper, indexer));
+    // JoystickButton aimLobButton = new JoystickButton(rotationJoystick, 5);
+    // aimLobButton.whileTrue(new ShamperLobCommand(shamper, indexer));
+    JoystickButton autoLobButton = new JoystickButton(rotationJoystick, 5);
+    autoLobButton.onTrue(new InstantCommand(() -> robotState.setIsLobbing(true))).onFalse(new InstantCommand(() -> robotState.setIsLobbing(false)));
+    autoLobButton.whileTrue(new FeedWhileMovingCommand(
+    () -> translationJoystick.getY(), 
+    () -> translationJoystick.getX(), 
+    () -> true, 
+    drivetrain));
 
     // JoystickButton aimToSpeakerUsingOneTag = new JoystickButton(rotationJoystick, 7);
     // aimToSpeakerUsingOneTag.whileTrue(new DriveWhileAimingSpeakerSingleTag(
@@ -215,7 +225,7 @@ public class RobotContainer {
     JoystickButton shamperCustomAngleButton = new JoystickButton(translationJoystick, 7);
     JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
 
-    shamperShootButton.whileTrue(new ShamperShootCommand(shamper, indexer));
+    shamperShootButton.whileTrue(new ShamperLobOrShootCommand(shamper, indexer));
     shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
     shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper, indexer, trapArm));

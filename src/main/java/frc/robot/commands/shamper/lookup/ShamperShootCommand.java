@@ -8,8 +8,8 @@ import frc.robot.util.calculator.ShootAngleConfig;
 import frc.robot.util.calculator.ShootingAngleCalculator;
 
 public class ShamperShootCommand extends Command{
-    private final ShamperSubsystem shamper;
-    private final IndexerSubsystem indexer;
+    protected final ShamperSubsystem shamper;
+    protected final IndexerSubsystem indexer;
 
     public ShamperShootCommand(ShamperSubsystem shamper, IndexerSubsystem indexer) {
         this.shamper = shamper;
