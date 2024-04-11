@@ -14,112 +14,73 @@ import frc.robot.util.AimingCalculator;
 
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 
 import java.util.function.BooleanSupplier;
 
 public class FeedWhileMovingCommand extends DriveCommand {
   private final PIDController rotationController;
-  private final ShamperSubsystem shamper;
-  private final IndexerSubsystem indexer;
-  private final double blueIndexLine;
-  private final double redIndexLine;
-  private double robotSpeed;
+  private SimpleMotorFeedforward rotationFeedForward;
+  private boolean isOnTarget;
   /** Creates a new AimToNoteLobPointCommand. */
   public FeedWhileMovingCommand(        
   DoubleSupplier xSupplier, 
   DoubleSupplier ySupplier,
   BooleanSupplier fieldCentricSupplier,
-  DrivetrainSubsystem drivetrain,
-  ShamperSubsystem shamper,
-  IndexerSubsystem indexer) {
+  DrivetrainSubsystem drivetrain) {
     super(xSupplier, ySupplier, () -> 0.0, fieldCentricSupplier, drivetrain);
 
-    rotationController = new PIDController(2.5, 0, 0.1);
-    rotationController.enableContinuousInput(0, 360);
-    rotationController.setTolerance(2);
+        rotationController = new PIDController(0.3, 0, 0);
+        rotationController.enableContinuousInput(-Math.PI, Math.PI);
+        rotationController.setTolerance(0.087, 0.087);
 
-    this.shamper = shamper;
-    this.indexer = indexer;
+        rotationFeedForward = new SimpleMotorFeedforward(0.013, 0.013, 0);
 
-    blueIndexLine = Constants.FieldAndRobot.BLUE_LOB_LINE;
-    redIndexLine = Constants.FieldAndRobot.RED_LOB_LINE;
-
-    robotSpeed = 0;
-
-    shamper.setShootSpeed(ShamperSpeed.LOB);
+        isOnTarget = false;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shamper);
-    addRequirements(indexer);
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    double speed = Math.sqrt(
-    Math.pow(RobotState.getInstance().getChassisSpeeds().vyMetersPerSecond, 2) +
-    Math.pow(RobotState.getInstance().getChassisSpeeds().vxMetersPerSecond, 2)
-    );
-
-    robotSpeed = speed;
-
-    double angle = 45 + (speed * Constants.FieldAndRobot.FEED_WHILE_MOVING_ANGLE_MULTIPLYER);
-
-    shamper.setAngle(angle);
-
-    double poseX = RobotState.getInstance().getRobotPose().getX();
-
-    if (RobotState.getInstance().isRedAlliance()){
-      if (poseX > redIndexLine && shamper.isAtGoalAngle() && shamper.shooterAtSpeed(ShamperSpeed.LOB.getLower(), ShamperSpeed.LOB.getUpper())) {
-        indexer.indexAll();
-      }
-    } else {
-      if (poseX < blueIndexLine && shamper.isAtGoalAngle() && shamper.shooterAtSpeed(ShamperSpeed.LOB.getLower(), ShamperSpeed.LOB.getUpper())) {
-        indexer.indexAll();
-      }
-    }
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
   }
 
   @Override
   protected double getRotation() {
     Translation2d goalPoint;
+    double multiplier = Constants.FieldAndRobot.FEED_WHILE_MOVING_VELOCITY_MULTIPLIER;
     if (!RobotState.getInstance().isRedAlliance()) {
       goalPoint = Constants.FieldAndRobot.BLUE_LOB_POINT;
+      multiplier = multiplier * -1;
     } else {
       goalPoint = Constants.FieldAndRobot.RED_LOB_POINT;
     }
+    double robotX = RobotState.getInstance().getChassisSpeeds().vxMetersPerSecond;
+    double robotY = RobotState.getInstance().getChassisSpeeds().vyMetersPerSecond;
 
-    goalPoint.plus(new Translation2d(
-      RobotState.getInstance().getChassisSpeeds().vxMetersPerSecond * Constants.FieldAndRobot.FEED_WHILE_MOVING_VELOCITY_MULTIPLYER,
-      RobotState.getInstance().getChassisSpeeds().vyMetersPerSecond * Constants.FieldAndRobot.FEED_WHILE_MOVING_VELOCITY_MULTIPLYER
+    goalPoint = goalPoint.plus(new Translation2d(
+      robotX * multiplier,
+      robotY * multiplier
     ));
 
-    double rotation = AimingCalculator.angleToPoint(goalPoint, RobotState.getInstance().getRobotPose(), RobotState.getInstance().getChassisSpeeds());
+    Logger.recordOutput("Lob Goal Point", goalPoint);
+
+    double currentAngle = RobotState.getInstance().getRobotPose().getRotation().getRadians();
+    double goalAngle = AimingCalculator.angleToPoint(goalPoint, RobotState.getInstance().getRobotPose(), RobotState.getInstance().getChassisSpeeds()) + Math.toRadians(Constants.Drivetrain.AIM_OFFSET_DEGREES);
+
+    double rotation = rotationController.calculate(currentAngle, goalAngle);
+
+    rotation = rotation + rotationFeedForward.calculate(rotation);
+
+    isOnTarget = Math.abs(currentAngle - goalAngle) < Math.toRadians(Constants.Drivetrain.AIM_TOLERANCE_DEGREES);
 
     if(Math.abs(rotation) < 0.04){
       // needs at least 4% power to make robot turn
       rotation = Math.copySign(0.04, rotation);
-  } else if (Math.abs(rotation) > 0.4) {
-      rotation = Math.copySign(0.4, rotation);
-  } 
+    } else if (Math.abs(rotation) > 0.4) {
+        rotation = Math.copySign(0.4, rotation);
+    } 
 
-  return rotation;
+    return rotation;
   }
-  
 }

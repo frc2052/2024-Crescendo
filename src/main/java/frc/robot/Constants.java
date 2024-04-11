@@ -202,7 +202,7 @@ public final class Constants {
         public static final double UPPER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 2;
+        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 50;
 
         public static final double SHOOTER_TOLERANCE_PERCENT = 0.03;
 
@@ -219,7 +219,7 @@ public final class Constants {
 
         public static final double PIVOT_kP = 0.05;
         public static final double PIVOT_kI = 0;
-        public static final double PIVOT_kD = 0.2;
+        public static final double PIVOT_kD = 1;
         public static final double PIVOT_kFF = 0.001;
         
         public static final double PIVOT_RAMP_RATE = 0.5;
@@ -268,16 +268,18 @@ public final class Constants {
         public static final double BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
         public static final double BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
 
-        public static final Translation2d BLUE_LOB_POINT = new Translation2d(Units.inchesToMeters(75), Units.inchesToMeters(280));
-        public static final Translation2d RED_LOB_POINT = new Translation2d(Units.inchesToMeters(575), Units.inchesToMeters(280));
+        public static final Translation2d BLUE_LOB_POINT = new Translation2d(Units.inchesToMeters(95), Units.inchesToMeters(350));
+        public static final Translation2d RED_LOB_POINT = new Translation2d(Units.inchesToMeters(555), Units.inchesToMeters(180));
 
         // lines at wich its safe to lob note to other side
         public static final double BLUE_LOB_LINE = Units.inchesToMeters(375);
         public static final double RED_LOB_LINE = Units.inchesToMeters(275);
 
-        public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLYER = 0.1;
-        public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLYER = -0.1;
-    }
+        public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLIER = 3;
+        public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLIER = -0.2;
+
+        public static final double LOB_SHOOTING_SPEED_MULTIPLIER = 0.4;
+      }
 
     public static class MusicPlayer {
         public static final TalonFX[] INSTRUMENT_TALONFX_PORT_LIST = {ShamperSubsystem.getUpperTalonFX(), ShamperSubsystem.getLowerTalonFX()};

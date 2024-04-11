@@ -70,7 +70,6 @@ public class MegaAutoCommand extends Command {
     shamper.stopShooter();
     intake.stop();
     indexer.stop();
-    System.out.println("WOMP WOMP");
   }
 
   @Override
