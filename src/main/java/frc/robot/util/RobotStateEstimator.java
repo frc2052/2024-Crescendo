@@ -49,48 +49,45 @@ public class RobotStateEstimator {
             );
         }
         
-        // if(robotState.getVisionEnabled()){
-            //if (!(robotState.getChassisSpeeds().vxMetersPerSecond > 2) && !(robotState.getChassisSpeeds().vxMetersPerSecond > 2) && !(robotState.getChassisSpeeds().omegaRadiansPerSecond > 1.5)){   
-                if(robotState.getVisionPose3d().isPresent()){
-                    Pose2d visionPose = robotState.getVisionPose3d().get().toPose2d();
-                    if(visionPose.getX() > 0 && visionPose.getX() < Units.inchesToMeters(651.157) && visionPose.getY() > 0 && visionPose.getY() < Units.feetToMeters(27)){
-                        double distanceToSpeaker = robotState.getSpeakerLocation().getDistance(robotState.getRobotPose().getTranslation());
-                        double xyPower = 0.75;
-                        double rotStds = 99999999;
-                        // System.out.println("STDS " + xyStds);
-                        List<PhotonTrackedTarget> targets = robotState.getActiveTargets();
-                        boolean foundTag1 = false;
-                        boolean foundTag2 = false;
+        if(robotState.getVisionPose3d().isPresent()){
+            Pose2d visionPose = robotState.getVisionPose3d().get().toPose2d();
+            // if vision pose outside of field, it's fake, it's lying
+            if(visionPose.getX() > 0 && visionPose.getX() < Units.inchesToMeters(651.157) && visionPose.getY() > 0 && visionPose.getY() < Units.feetToMeters(27)){
+                double distanceToSpeaker = robotState.getSpeakerLocation().getDistance(robotState.getRobotPose().getTranslation());
+                double xyPower = 2;
+                double rotStds = 99999999;
+                // System.out.println("STDS " + xyStds);
+                List<PhotonTrackedTarget> targets = robotState.getActiveTargets();
+                boolean foundTag1 = false;
+                boolean foundTag2 = false;
 
-                        // check list of seen targets and if we see both speaker tags
-                        for (PhotonTrackedTarget target : targets) {
-                            if(target.getFiducialId() == 3 || target.getFiducialId() == 7){
-                                foundTag1 = true;
-                            } else if (target.getFiducialId() == 4 || target.getFiducialId() == 8){
-                                foundTag2 = true;
-                            }
-                        }
-
-                        // if we are close enough and see both speaker tags, make the pose estimator trust rotation from tags more
-                        if(distanceToSpeaker < 2.5 && foundTag1 && foundTag2) {
-                            rotStds = 0.2;
-                        }
-
-                        if (foundTag1 || foundTag2){
-                            xyPower = 1;
-                        }
-
-                        double xyStds = 0.05 * Math.pow(distanceToSpeaker, xyPower);
-                        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, rotStds));
-
-                        poseEstimator.addVisionMeasurement(
-                            visionPose,
-                            robotState.getVisionDetectionTime()
-                        );
+                // check list of seen targets and if we see both speaker tags
+                for (PhotonTrackedTarget target : targets) {
+                    if(target.getFiducialId() == 3 || target.getFiducialId() == 7){
+                        foundTag1 = true;
+                    } else if (target.getFiducialId() == 4 || target.getFiducialId() == 8){
+                        foundTag2 = true;
                     }
                 }
-            //} 
-        // }
+
+                // if we are close enough and see both speaker tags, make the pose estimator trust rotation from tags more
+                if(distanceToSpeaker < 2.5 && foundTag1 && foundTag2) {
+                    rotStds = 0.2;
+                }
+
+                if (foundTag1 || foundTag2){
+                    xyPower = 1;
+                }
+
+                double xyStds = 0.05 * Math.pow(distanceToSpeaker, xyPower);
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, rotStds));
+
+                poseEstimator.addVisionMeasurement(
+                    visionPose,
+                    robotState.getVisionDetectionTime()
+                );
+            }
+        }
 
         poseEstimator.update(
             robotState.getGyroRotation(), 

@@ -262,7 +262,7 @@ public final class Constants {
 
         public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
 
-        public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 10; //0 will cause an error
+        public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 2.62/0.8; //0 will cause an error
 
         public static final double SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS = 0;
         public static final double RED_SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
