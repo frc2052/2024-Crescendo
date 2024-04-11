@@ -131,7 +131,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer, shamper));
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
     NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
-    NamedCommands.registerCommand("Note Alginemnt Command", new GamePieceAlignmentCommand(1.5, 0, drivetrain, pixy));
+    NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(1.5, .2, drivetrain, pixy));
 
     configureButtonBindings();
   }
@@ -147,11 +147,14 @@ public class RobotContainer {
      * Drive Button Bindings
      */
 
+    JoystickButton gamePieceAlignmentButton = new JoystickButton(translationJoystick, 7);
+    gamePieceAlignmentButton.whileTrue(new GamePieceAlignmentCommand(1.5, -0.1, drivetrain, pixy));
+
+
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
     zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroOdometry()));
 
     JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
-
     driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(
       () -> translationJoystick.getY(), 
       () -> translationJoystick.getX(), 
@@ -228,7 +231,7 @@ public class RobotContainer {
     JoystickButton shamperManualShootButton = new JoystickButton(controlPanel, 12);
     JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
     Trigger shamperIdleToggleButton = new Trigger(() -> controlPanel.getY() > 0.5);
-    JoystickButton shamperCustomAngleButton = new JoystickButton(translationJoystick, 7);
+    // JoystickButton shamperCustomAngleButton = new JoystickButton(translationJoystick, 7);
     JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
 
     shamperShootButton.whileTrue(new ShamperLobOrShootCommand(shamper, indexer));
@@ -236,7 +239,7 @@ public class RobotContainer {
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
     shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper, indexer, trapArm));
     shamperIdleToggleButton.onTrue(new InstantCommand(() -> shamper.toggleCurrentIdle()));
-    shamperCustomAngleButton.onTrue(new ShamperCustomAngle(shamper));
+    // shamperCustomAngleButton.onTrue(new ShamperCustomAngle(shamper));
     shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
 
     /*

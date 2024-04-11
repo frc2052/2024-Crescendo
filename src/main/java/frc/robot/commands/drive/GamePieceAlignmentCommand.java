@@ -11,6 +11,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ForwardPixySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.RobotStateEstimator;
+import frc.robot.util.io.pixy.Pixy2CCC.Block;
 
 public class GamePieceAlignmentCommand extends DriveCommand {
     private final ForwardPixySubsystem pixy;
@@ -18,12 +19,12 @@ public class GamePieceAlignmentCommand extends DriveCommand {
     private final PIDController yController;
 
     private final double goalMeters;
-    private final double xSpeed;
+    private final double driveSpeed;
     private Pose2d startPose;
 
     public GamePieceAlignmentCommand(
         double goalMeters,
-        double xSpeed,
+        double driveSpeed,
         DrivetrainSubsystem drivetrain,
         ForwardPixySubsystem pixy
     ) {
@@ -36,7 +37,7 @@ public class GamePieceAlignmentCommand extends DriveCommand {
         yController.setSetpoint(-Constants.Intake.FRONT_PIXY_MOUNT_OFFSET_PIXELS);
 
         this.goalMeters = goalMeters;
-        this.xSpeed = xSpeed;
+        this.driveSpeed = driveSpeed;
 
         addRequirements(pixy, drivetrain);
     }
@@ -48,15 +49,32 @@ public class GamePieceAlignmentCommand extends DriveCommand {
 
     @Override
     protected double getY() {
-        double yOffset = pixy.xOffsetFromCenter(pixy.findCentermostBlock());
-
-        return yController.calculate(yOffset) / 158;
+        Block myFavoriteNote = pixy.findCentermostBlock();
+        if(myFavoriteNote == null){
+            return 0;
+        } else {
+            System.out.println("centermost block " + (myFavoriteNote.getX()));
+            double yOffset = pixy.xOffsetFromCenter(myFavoriteNote);
+            double ySpeed = -yController.calculate(yOffset) / 158;
+            if(Math.abs(yOffset) < 5){
+                return 0;
+            }
+            if(Math.abs(ySpeed) > driveSpeed){
+                ySpeed = Math.copySign(driveSpeed, ySpeed);
+            }
+            return ySpeed;
+        }
     }
 
     @Override
     protected double getX() {
         //System.out.println("ALIGNING X: " + drivetrain.getPosition().getX());
-        return xSpeed;
+        return driveSpeed;
+    }
+
+    @Override
+    protected boolean isFieldCentric(){
+        return false;
     }
 
     @Override

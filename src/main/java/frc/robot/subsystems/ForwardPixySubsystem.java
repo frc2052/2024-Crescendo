@@ -19,17 +19,17 @@ public class ForwardPixySubsystem extends SubsystemBase{
 
     @Override
     public void periodic() {
-        //findBlocks();
+        // findBlocks();
     }
 
     public void findBlocks(){
         pixy.getCCC().getBlocks();
         ArrayList<Block> blocks = pixy.getCCC().getBlockCache();
 
-        System.out.println(blocks.size());
+        System.out.println("number of blocks " + blocks.size());
 
         for (Block block : blocks){
-            if (block.getSignature() == 1){
+            if (block.getSignature() == 1 && block.getY() > 100){
                 System.out.println("Note Position x = " + block.getX() + " y = " + block.getY());
             }
         }
@@ -43,8 +43,13 @@ public class ForwardPixySubsystem extends SubsystemBase{
             blocks = pixy.getCCC().getBlockCache();
         } catch(Exception e) {
             DriverStation.reportError(e.getMessage(), e.getStackTrace());
+            return null;
         }
 
+        if(blocks == null){
+            return null;
+        }
+        
         Block centerBlock = null;
         for (Block block : blocks){
             if (block.getSignature() == 1) {
@@ -52,19 +57,15 @@ public class ForwardPixySubsystem extends SubsystemBase{
                     centerBlock = block;
                     continue;
                 }
-                if (Math.abs(xOffsetFromCenter(block)) < 39) {
-                    // if (Math.abs(xOffsetFromCenter(block)) < Math.abs(xOffsetFromCenter(centerBlock))) {
-                    //     centerBlock = block;
-                    // }
-                    if (yOffsetFromTop(block) > yOffsetFromTop(centerBlock)) {
-                        centerBlock = block;
-                    }
+
+                if (yOffsetFromTop(block) > yOffsetFromTop(centerBlock)) {
+                    centerBlock = block;
                 }
             }
         }
 
         if (centerBlock != null) {
-            System.out.println(xOffsetFromCenter(centerBlock));
+            // System.out.println(xOffsetFromCenter(centerBlock));
         }
 
         return centerBlock;
@@ -86,26 +87,5 @@ public class ForwardPixySubsystem extends SubsystemBase{
         }
 
         return 0;
-    }
-
-    public Block getMiddleLine(){
-        ArrayList<Block> blocks = pixy.getCCC().getBlockCache();
-
-        Block middleLineBlock = null;
-        for (Block block : blocks){
-            // Pixy cam signature for the white line is 3.
-            if (block.getSignature() == 3){
-                if (middleLineBlock == null) {
-                    middleLineBlock = block;
-                    continue;
-                }
-
-                // Get the lowest block with a signature of 3.
-                if (block.getY() > middleLineBlock.getY()) {
-                    middleLineBlock = block;
-                }
-            }
-        }
-        return middleLineBlock;
     }
 }
