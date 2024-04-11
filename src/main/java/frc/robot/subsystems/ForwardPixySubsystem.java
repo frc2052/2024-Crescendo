@@ -32,12 +32,6 @@ public class ForwardPixySubsystem extends SubsystemBase{
             if (block.getSignature() == 1){
                 System.out.println("Note Position x = " + block.getX() + " y = " + block.getY());
             }
-            // if (block.getSignature() == 2){
-            //     System.out.println("Cube Position x = " + block.getX() + " y = " + block.getY());
-            // }
-            if (block.getSignature() == 3){
-                System.out.println("White Line Position x = " + block.getX() + " y = " + block.getY());
-            }
         }
     }
 
