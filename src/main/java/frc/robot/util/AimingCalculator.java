@@ -169,7 +169,6 @@ public class AimingCalculator {
 
                 aimOffset = pctOff * 0.5;
             }
-            System.out.println("SHIFT " + aimOffset);
 
             if(robotPose.getY() > aimLocation.getY()) { //to the right of speaker
                 // since we are to the left, we want to offset our aim point deeper for a better shot

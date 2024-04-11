@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.1409101334607787,
-        "y": 7.237296985292972
+        "x": 2.8927727086223416,
+        "y": 6.9956624528633675
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.140910133460778,
-        "y": 7.237296985292972
+        "x": 3.892772708622341,
+        "y": 6.9956624528633675
       },
       "isLocked": false,
       "linkedName": "Note 3"
     },
     {
       "anchor": {
-        "x": 8.849300377443981,
-        "y": 8.202012751057465
+        "x": 8.867509204347936,
+        "y": 7.541778735483292
       },
       "prevControl": {
-        "x": 8.349300377443981,
-        "y": 8.202012751057465
+        "x": 8.367509204347936,
+        "y": 7.541778735483292
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "A387",
   "previewStartingState": {
     "rotation": -140.8263420295558,
     "velocity": 0

@@ -16,24 +16,30 @@
     },
     {
       "anchor": {
-        "x": 9.08847065791544,
-        "y": 0.6492670519587607
+        "x": 8.832376694710593,
+        "y": 0.7846260485673593
       },
       "prevControl": {
-        "x": 6.870715119664382,
-        "y": -0.504665516503001
+        "x": 5.018036182237182,
+        "y": 1.2896417990794915
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Note 4"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": -179.34145682243644,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -43,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "S54&S45",
   "previewStartingState": {
     "rotation": 115.94229548987164,
     "velocity": 0

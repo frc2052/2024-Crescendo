@@ -4,19 +4,13 @@
 
 package frc.robot.commands.shamper.pivot;
 
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShamperSubsystem;
+import frc.robot.util.io.Dashboard;
 
 public class ShamperCustomAngle extends Command {
   /** Creates a new ShamperCustomSubShoot. */
-  private ShuffleboardTab tab = Shuffleboard.getTab("custom config");
-
   private ShamperSubsystem shamper;
-  private GenericEntry customShootAngle =
-  tab.add("Custom Shoot Angle", 0).getEntry();
   
   public ShamperCustomAngle(ShamperSubsystem shamper) {
     this.shamper = shamper;
@@ -32,7 +26,7 @@ public class ShamperCustomAngle extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shamper.setAngle(customShootAngle.getDouble(30));
+    shamper.setAngle(Dashboard.getInstance().getManualAngle());
   }
 
   // Called once the command ends or is interrupted.

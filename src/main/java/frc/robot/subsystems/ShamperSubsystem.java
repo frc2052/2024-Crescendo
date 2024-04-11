@@ -122,8 +122,11 @@ public class ShamperSubsystem extends SubsystemBase {
    */
 
   public void setShootSpeed(ShamperSpeed speeds) { 
+
+
     if(speeds.getUpper() == goalSpeedUpper && speeds.getLower() == goalSpeedLower) {
       // do nothing if set speed is already the goal speed
+      System.out.println("Already at goal speed");
       return;
     }
 
@@ -179,6 +182,9 @@ public class ShamperSubsystem extends SubsystemBase {
 
     lowerMotor.setControl(shooterVelocity.withVelocity(0));
     upperMotor.setControl(shooterVelocity.withVelocity(0));
+
+    goalSpeedUpper = 0;
+    goalSpeedLower = 0;
   }
 
   public boolean motorAtSpeed(TalonFX motor, double goalSpeed, double tolerance){
@@ -208,6 +214,8 @@ public class ShamperSubsystem extends SubsystemBase {
   public void stopShooter(){
     upperMotor.set(0);
     lowerMotor.set(0);
+    goalSpeedUpper = 0;
+    goalSpeedLower = 0;
   }
   
   public double getUpperShamperSpeed() {

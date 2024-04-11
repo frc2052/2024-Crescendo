@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 8.811536648948488,
-        "y": 2.8395633046973856
+        "x": 8.7438697954319,
+        "y": 2.6147398448643058
       },
       "prevControl": {
-        "x": 8.667584221223452,
-        "y": 3.554597078908244
+        "x": 8.599917367706864,
+        "y": 3.3297736190751643
       },
       "nextControl": {
-        "x": 8.832537263310334,
-        "y": 2.7352500340898236
+        "x": 8.764870409793746,
+        "y": 2.5104265742567438
       },
       "isLocked": false,
       "linkedName": "Accurate Note 5"
@@ -59,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Connector Paths",
   "previewStartingState": {
     "rotation": 141.58718491387964,
     "velocity": 0

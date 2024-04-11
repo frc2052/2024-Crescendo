@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.811536648948488,
-        "y": 2.8395633046973856
+        "x": 8.7438697954319,
+        "y": 2.6147398448643058
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.437976903351067,
-        "y": 1.6437119023400903
+        "x": 5.370310049834479,
+        "y": 1.4188884425070105
       },
       "isLocked": false,
       "linkedName": "Accurate Note 5"
@@ -33,7 +33,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "S54&S45",
   "previewStartingState": {
     "rotation": -168.2614287932777,
     "velocity": 0

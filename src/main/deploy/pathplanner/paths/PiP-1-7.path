@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.937774223622627,
-        "y": 4.1690578102982165
+        "x": 2.784236337703446,
+        "y": 4.203317637404505
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.03060899885327,
-        "y": 3.9321494198147695
+        "x": 3.2775834782438804,
+        "y": 7.19300130907954
       },
       "isLocked": false,
-      "linkedName": "Note 6"
+      "linkedName": "Note 1"
     },
     {
       "anchor": {
-        "x": 3.8713465457064844,
-        "y": 5.304333453718992
+        "x": 8.66,
+        "y": 5.77
       },
       "prevControl": {
-        "x": 7.574505974563895,
-        "y": 4.099250754407687
+        "x": 5.009231160000782,
+        "y": 6.44095211113499
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Center Shoot"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -39,14 +39,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.80294895611132,
+    "rotation": -179.50075630937107,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Connector Paths",
+  "folder": "C2617",
   "previewStartingState": {
-    "rotation": -179.01437488338024,
+    "rotation": 158.85390582059236,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

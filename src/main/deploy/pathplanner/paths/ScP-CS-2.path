@@ -12,16 +12,16 @@
         "y": 5.527972981871891
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CS"
     },
     {
       "anchor": {
-        "x": 2.8730388230007247,
-        "y": 5.527972981871891
+        "x": 3.0013090795412376,
+        "y": 5.574822688106915
       },
       "prevControl": {
-        "x": 2.8316833439046,
-        "y": 5.527972981871891
+        "x": 2.959953600445113,
+        "y": 5.574822688106915
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +61,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "C2617",
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

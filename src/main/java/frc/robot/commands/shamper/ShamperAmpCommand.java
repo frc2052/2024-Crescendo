@@ -31,7 +31,7 @@ public class ShamperAmpCommand extends Command {
 
     if(shamper.shooterAtSpeed(ShamperSpeed.AMP_SCORE.getLower(), ShamperSpeed.AMP_SCORE.getUpper()) && shamper.isAtGoalAngle()) {
       indexer.indexAmp();
-  }
+    }
   }
 
   // Called once the command ends or is interrupted.

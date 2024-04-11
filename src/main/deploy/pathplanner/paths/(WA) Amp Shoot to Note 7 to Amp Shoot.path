@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 8.471663092489045,
-        "y": 6.31382632628279
+        "x": 8.635333424513004,
+        "y": 5.791895429944707
       },
       "prevControl": {
-        "x": 8.471154795231522,
-        "y": 6.284916455986293
+        "x": 8.63482512725548,
+        "y": 5.76298555964821
       },
       "nextControl": {
-        "x": 8.479798752278883,
-        "y": 6.776549399877085
+        "x": 8.643469084302842,
+        "y": 6.254618503539002
       },
       "isLocked": false,
       "linkedName": "Note 7"
@@ -88,7 +88,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Connector Paths",
   "previewStartingState": {
     "rotation": -148.62,
     "velocity": 0

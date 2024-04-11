@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 9.08847065791544,
-        "y": 0.6492670519587607
+        "x": 8.832376694710593,
+        "y": 0.7846260485673593
       },
       "prevControl": {
-        "x": 5.6571955500014575,
-        "y": 0.2862311190395336
+        "x": 5.40110158679661,
+        "y": 0.4215901156481322
       },
       "nextControl": {
-        "x": 9.321678337583725,
-        "y": 0.6739409020260536
+        "x": 9.065584374378878,
+        "y": 0.8092998986346522
       },
       "isLocked": false,
       "linkedName": "Note 4"
@@ -73,7 +73,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -83,7 +83,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Connector Paths",
   "previewStartingState": {
     "rotation": 136.0908073225193,
     "velocity": 0

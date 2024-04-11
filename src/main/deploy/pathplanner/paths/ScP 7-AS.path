@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.471663092489045,
-        "y": 6.31382632628279
+        "x": 8.635333424513004,
+        "y": 5.791895429944707
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.470185482227889,
-        "y": 7.2956832671656215
+        "x": 6.633855814251847,
+        "y": 6.7737523708275384
       },
       "isLocked": false,
       "linkedName": "Note 7"
@@ -51,7 +51,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -61,7 +61,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "A387",
   "previewStartingState": {
     "rotation": 179.33640293076084,
     "velocity": 0

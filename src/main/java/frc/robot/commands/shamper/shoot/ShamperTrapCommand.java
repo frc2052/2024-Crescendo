@@ -10,6 +10,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
+import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 
 public class ShamperTrapCommand extends Command {
   private ShamperSubsystem shamper;
@@ -30,14 +31,14 @@ public class ShamperTrapCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shamper.setShootSpeedPct(0.25, 0.03);
+    shamper.setShootSpeed(ShamperSpeed.TRAP);
     isFinished = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(shamper.shooterAtSpeed(0.25 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS, 0.03 * Constants.Shamper.SHOOTER_MAX_VELOCITY_RPS)){
+    if(shamper.shooterAtSpeed(ShamperSpeed.TRAP.getLower(), ShamperSpeed.TRAP.getUpper())){
       indexTimer.restart();
       indexer.indexAll();
       if(indexTimer.get() > 0.25) {

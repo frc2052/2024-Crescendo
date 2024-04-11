@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 8.526797053594109,
-        "y": 4.242785408647741
+        "x": 8.937774223622627,
+        "y": 4.1690578102982165
       },
       "prevControl": {
-        "x": 5.354258240613484,
-        "y": 5.890550782528099
+        "x": 5.765235410642003,
+        "y": 5.816823184178575
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "S56",
   "previewStartingState": {
     "rotation": 118.61045966596524,
     "velocity": 0

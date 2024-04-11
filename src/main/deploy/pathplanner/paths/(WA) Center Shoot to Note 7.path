@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 8.471663092489045,
-        "y": 6.31382632628279
+        "x": 8.635333424513004,
+        "y": 5.791895429944707
       },
       "prevControl": {
-        "x": 6.2140204040126825,
-        "y": 8.128769932445211
+        "x": 6.377690736036641,
+        "y": 7.606839036107127
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Connector Paths",
   "previewStartingState": {
     "rotation": 178.10614018083788,
     "velocity": 0

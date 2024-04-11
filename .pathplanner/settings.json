@@ -3,9 +3,15 @@
   "robotLength": 0.9144,
   "holonomicMode": true,
   "pathFolders": [
-    "Connector Paths",
     "261",
-    "Starting Paths"
+    "A387",
+    "C2617",
+    "Connector Paths",
+    "C123",
+    "S54&S45",
+    "S56",
+    "Starting Paths",
+    "old"
   ],
   "autoFolders": [
     "10k",
@@ -13,7 +19,7 @@
     "working autos"
   ],
   "defaultMaxVel": 4.5,
-  "defaultMaxAccel": 3.5,
+  "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 540.0,
   "maxModuleSpeed": 5.21

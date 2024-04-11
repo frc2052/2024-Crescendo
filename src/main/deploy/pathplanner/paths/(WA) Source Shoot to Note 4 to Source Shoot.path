@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 9.08847065791544,
-        "y": 0.6492670519587607
+        "x": 8.832376694710593,
+        "y": 0.7846260485673593
       },
       "prevControl": {
-        "x": 8.0769544525871,
-        "y": 1.1049365707667418
+        "x": 7.8208604893822535,
+        "y": 1.2402955673753402
       },
       "nextControl": {
-        "x": 9.31125574517439,
-        "y": 0.5489064517290013
+        "x": 9.055161781969543,
+        "y": 0.6842654483376
       },
       "isLocked": false,
       "linkedName": "Note 4"
@@ -65,7 +65,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Connector Paths",
   "previewStartingState": {
     "rotation": -178.80441642607525,
     "velocity": 0

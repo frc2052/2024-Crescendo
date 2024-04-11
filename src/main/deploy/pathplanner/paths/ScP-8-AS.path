@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.849300377443981,
-        "y": 8.202012751057465
+        "x": 8.867509204347936,
+        "y": 7.541778735483292
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.986124389069925,
-        "y": 7.950562344766743
+        "x": 8.00433321597388,
+        "y": 7.29032832919257
       },
       "isLocked": false,
       "linkedName": "Note 8"
     },
     {
       "anchor": {
-        "x": 3.7732953069329804,
-        "y": 6.522935956000301
+        "x": 4.519059509960725,
+        "y": 6.6662877922407295
       },
       "prevControl": {
-        "x": 4.019968877203199,
-        "y": 6.572270670054345
+        "x": 4.765733080230943,
+        "y": 6.715622506294774
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,28 +30,10 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.6,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Pre-Shoot Command"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -61,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "A387",
   "previewStartingState": {
     "rotation": -175.9052812803003,
     "velocity": 0

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.811536648948488,
-        "y": 2.8395633046973856
+        "x": 8.7438697954319,
+        "y": 2.6147398448643058
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.128651650616215,
-        "y": 2.214296837675721
+        "x": 7.060984797099627,
+        "y": 1.989473377842641
       },
       "isLocked": false,
       "linkedName": "Accurate Note 5"
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Connector Paths",
   "previewStartingState": {
     "rotation": 178.91542244475957,
     "velocity": 0

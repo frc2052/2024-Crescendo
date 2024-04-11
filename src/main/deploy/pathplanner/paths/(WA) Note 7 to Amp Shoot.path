@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.471663092489045,
-        "y": 6.31382632628279
+        "x": 8.635333424513004,
+        "y": 5.791895429944707
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.302085024092103,
-        "y": 7.626824591365915
+        "x": 6.465755356116062,
+        "y": 7.104893695027832
       },
       "isLocked": false,
       "linkedName": "Note 7"
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Connector Paths",
   "previewStartingState": {
     "rotation": -178.77190350711797,
     "velocity": 0

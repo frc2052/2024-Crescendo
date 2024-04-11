@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.1409101334607787,
-        "y": 7.237296985292972
+        "x": 2.8927727086223416,
+        "y": 6.9956624528633675
       },
       "prevControl": {
-        "x": 2.272619166109614,
-        "y": 6.753816787563346
+        "x": 2.0244817412711766,
+        "y": 6.512182255133741
       },
       "nextControl": null,
       "isLocked": false,
@@ -63,7 +63,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -73,7 +73,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "A387",
   "previewStartingState": {
     "rotation": -119.29136217098423,
     "velocity": 0

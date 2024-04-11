@@ -141,7 +141,7 @@ public final class Constants {
         public static final boolean RIGHT_CLIMBER_MOTOR_INVERTED = true;
         public static final boolean LEFT_CLIMBER_MOTOR_INVERTED = true;
 
-        public static final int CLIMBER_LIMIT_SWITCH_PIN = 9;
+        public static final int CLIMBER_LIMIT_SWITCH_PIN = 7;
     }
 
     public static class Intake {
@@ -198,13 +198,13 @@ public final class Constants {
         public static final double UPPER_SHAMPER_AMP_IDLE_SPEED_RPS = -0.7 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_AMP_IDLE_SPEED_RPS = 0.20 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.3 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.04 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.1 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 2;
+        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 50;
 
         public static final double SHOOTER_TOLERANCE_PERCENT = 0.03;
 
@@ -221,7 +221,7 @@ public final class Constants {
 
         public static final double PIVOT_kP = 0.05;
         public static final double PIVOT_kI = 0;
-        public static final double PIVOT_kD = 0.2;
+        public static final double PIVOT_kD = 1;
         public static final double PIVOT_kFF = 0.001;
         
         public static final double PIVOT_RAMP_RATE = 0.5;
@@ -240,9 +240,10 @@ public final class Constants {
             public static final double INTAKE = 17;
             public static final double DEFAULT = 30;
             public static final double PODIUM = 35;
-            public static final double AMP = 122;
+            public static final double AMP = 120;
             public static final double SUB = 53;
-            public static final double TRAP = 95;
+            public static final double NINETY = 95;
+            public static final double TRAP = 120;
             public static final double LOB = 45;
         }
     }
@@ -269,9 +270,18 @@ public final class Constants {
         public static final double BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
         public static final double BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
 
-        public static final Translation2d BLUE_LOB_POINT = new Translation2d(0, 0);
-        public static final Translation2d RED_LOB_POINT = new Translation2d(0, 0);
-    }
+        public static final Translation2d BLUE_LOB_POINT = new Translation2d(Units.inchesToMeters(95), Units.inchesToMeters(350));
+        public static final Translation2d RED_LOB_POINT = new Translation2d(Units.inchesToMeters(555), Units.inchesToMeters(180));
+
+        // lines at wich its safe to lob note to other side
+        public static final double BLUE_LOB_LINE = Units.inchesToMeters(375);
+        public static final double RED_LOB_LINE = Units.inchesToMeters(275);
+
+        public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLIER = 3;
+        public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLIER = -0.2;
+
+        public static final double LOB_SHOOTING_SPEED_MULTIPLIER = 0.4;
+      }
 
     public static class MusicPlayer {
         public static final TalonFX[] INSTRUMENT_TALONFX_PORT_LIST = {ShamperSubsystem.getUpperTalonFX(), ShamperSubsystem.getLowerTalonFX()};
@@ -285,7 +295,7 @@ public final class Constants {
         public static final Matrix<N3, N1> VISION_STDDEV = VecBuilder.fill(0.05, 0.05, Math.toRadians(99999999));
     }
     public static final class PhotonCamera1 {
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
 
         public static final double X_OFFSET_M = 0.29;
         public static final double Y_OFFSET_M = -0.26;
@@ -302,7 +312,7 @@ public final class Constants {
     }
     public static final class PhotonCamera2 {
         // TODO: make offsets more precise than caleb's eyeballing
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
 
         public static final double X_OFFSET_M = 0.01;
         public static final double Y_OFFSET_M = -0.40;

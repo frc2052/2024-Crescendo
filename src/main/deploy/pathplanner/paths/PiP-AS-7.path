@@ -3,37 +3,43 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.7732953069329804,
-        "y": 6.522935956000301
+        "x": 4.519059509960725,
+        "y": 6.6662877922407295
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.601619726831538,
-        "y": 7.459326090646094
+        "x": 6.382070115738405,
+        "y": 7.182392081679141
       },
       "isLocked": false,
       "linkedName": "8-AS End"
     },
     {
       "anchor": {
-        "x": 8.471663092489045,
-        "y": 6.31382632628279
+        "x": 8.635333424513004,
+        "y": 5.791895429944707
       },
       "prevControl": {
-        "x": 7.527569880101708,
-        "y": 6.729227339733218
+        "x": 7.691240212125666,
+        "y": 6.207296443395135
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Note 7"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.45,
+      "rotationDegrees": 174.94960390093763,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 3.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
@@ -43,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "A387",
   "previewStartingState": {
     "rotation": -149.2645122980798,
     "velocity": 0

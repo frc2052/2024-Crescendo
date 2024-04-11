@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.937774223622627,
-        "y": 4.1690578102982165
+        "x": 3.0013090795412376,
+        "y": 5.574822688106915
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.03060899885327,
-        "y": 3.9321494198147695
+        "x": 2.5276958246224197,
+        "y": 6.018835114593307
       },
       "isLocked": false,
-      "linkedName": "Note 6"
+      "linkedName": "Note 2"
     },
     {
       "anchor": {
-        "x": 3.8713465457064844,
-        "y": 5.304333453718992
+        "x": 2.8927727086223416,
+        "y": 6.9956624528633675
       },
       "prevControl": {
-        "x": 7.574505974563895,
-        "y": 4.099250754407687
+        "x": 1.9850139700279412,
+        "y": 6.127371485512202
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Center Shoot"
+      "linkedName": "Note 3"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.35,
+      "rotationDegrees": -86.76544108999364,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -39,14 +45,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.80294895611132,
+    "rotation": -141.7661748225529,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Connector Paths",
+  "folder": "C123",
   "previewStartingState": {
-    "rotation": -179.01437488338024,
+    "rotation": 178.6360724683972,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
