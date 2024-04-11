@@ -39,6 +39,7 @@ import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ForwardPixySubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LedSubsystem;
@@ -47,6 +48,7 @@ import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.AimingCalculator;
 import frc.robot.util.io.Dashboard;
+import frc.robot.util.io.pixy.Pixy2CCC;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -66,6 +68,7 @@ public class RobotContainer {
   private final ClimberSubsystem climber;
   private final AprilTagSubsystem aprilTag;
   private final LedSubsystem ledSubsystem;
+  private ForwardPixySubsystem pixy;
   // private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
   private final AdvantageScopeSubsystem advantageScope;
@@ -92,6 +95,7 @@ public class RobotContainer {
     // vision = new VisionSubsystem();
     trapArm = new TrapArmSubsystem();
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, indexer);
+    pixy = new ForwardPixySubsystem();
 
 
     // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
@@ -126,6 +130,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer, shamper));
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
     NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
+    NamedCommands.registerCommand("Note Alginemnt Command", new GamePieceAlignmentCommand(1.5, 0, drivetrain, pixy));
 
     configureButtonBindings();
   }
