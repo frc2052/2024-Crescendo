@@ -32,13 +32,10 @@ public class ShamperLobOrShootCommand extends ShamperShootCommand {
   @Override
   public void execute() {
     if(AimingCalculator.calculateDistanceToSpeaker(RobotState.getInstance().getRobotPose()) > 6) {
-      System.out.println("LOB");
       double speed = Math.sqrt(
       Math.pow(RobotState.getInstance().getChassisSpeeds().vyMetersPerSecond, 2) +
       Math.pow(RobotState.getInstance().getChassisSpeeds().vxMetersPerSecond, 2)
       );
-
-      System.out.println(speed);
 
       double angle = 45 + (speed * Constants.FieldAndRobot.FEED_WHILE_MOVING_ANGLE_MULTIPLIER);
 
@@ -70,7 +67,6 @@ public class ShamperLobOrShootCommand extends ShamperShootCommand {
         }
       }
     } else {
-      System.out.println("SPEAKER");
       super.execute();
     }
   }
