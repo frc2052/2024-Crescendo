@@ -17,6 +17,7 @@ import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.FeedWhileMovingCommand;
+import frc.robot.commands.drive.GamePieceAlignmentCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
