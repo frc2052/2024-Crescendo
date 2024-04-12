@@ -3,38 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7284778050297884,
-        "y": 4.344720358484939
+        "x": 7.33,
+        "y": 0.7846260485673593
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.356284084893418,
-        "y": 1.1125294718492431
+        "x": 5.190306528972544,
+        "y": 1.159372818032369
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Short 4"
     },
     {
       "anchor": {
-        "x": 8.832376694710593,
-        "y": 0.7846260485673593
+        "x": 3.423911383591413,
+        "y": 2.99061821867936
       },
       "prevControl": {
-        "x": 5.018036182237182,
-        "y": 1.2896417990794915
+        "x": 5.261746170372097,
+        "y": 1.3038383458806488
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Note 4"
+      "linkedName": "Real Source Shoot"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.65,
-      "rotationDegrees": -179.34145682243644,
-      "rotateFast": true
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 133.40885972880545,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "S54&S45",
   "previewStartingState": {
-    "rotation": 115.94229548987164,
+    "rotation": -176.1859251657095,
     "velocity": 0
   },
   "useDefaultConstraints": true

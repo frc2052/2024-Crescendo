@@ -204,7 +204,7 @@ public final class Constants {
         public static final double UPPER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 50;
+        public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 2;
 
         public static final double SHOOTER_TOLERANCE_PERCENT = 0.03;
 

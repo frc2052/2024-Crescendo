@@ -38,6 +38,10 @@ public class PreShootCommandAuto extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(RobotState.getInstance().getNoteHeldDetected() || RobotState.getInstance().getNoteStagedDetected()){
+      return false;
+    } else {
+      return true;
+    }
   }
 }

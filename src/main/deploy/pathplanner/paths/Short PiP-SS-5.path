@@ -3,35 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7284778050297884,
-        "y": 4.344720358484939
+        "x": 3.423911383591413,
+        "y": 2.99061821867936
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.356284084893418,
-        "y": 1.1125294718492431
+        "x": 5.986643414085687,
+        "y": 0.38645760601079004
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Real Source Shoot"
     },
     {
       "anchor": {
-        "x": 8.832376694710593,
-        "y": 0.7846260485673593
+        "x": 7.24,
+        "y": 2.6147398448643058
       },
       "prevControl": {
-        "x": 5.018036182237182,
-        "y": 1.2896417990794915
+        "x": 5.6118966446206775,
+        "y": 0.9719994332998654
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Note 4"
+      "linkedName": "Short 5"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.65,
-      "rotationDegrees": -179.34145682243644,
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": -165.9637565320735,
       "rotateFast": true
     }
   ],
@@ -45,13 +45,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": -167.49482902101568,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "S54&S45",
   "previewStartingState": {
-    "rotation": 115.94229548987164,
+    "rotation": 143.39213331850493,
     "velocity": 0
   },
   "useDefaultConstraints": true

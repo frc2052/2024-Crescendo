@@ -102,7 +102,7 @@ public class RobotState {
             
             // check if any of the targets have a ambiguity greater than 0.2 to filter out tags that could potentially throw us across the field
             for (PhotonTrackedTarget target : aprilTagVisionPose.targetsUsed) {
-                if(target.getPoseAmbiguity() > 0.25 && target.getPoseAmbiguity() > 0){
+                if(target.getPoseAmbiguity() > 0.15 && target.getPoseAmbiguity() > 0){
                     this.aprilTagVisionPose3d = null;
                     this.detectionTime = 0;
                     return;

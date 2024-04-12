@@ -67,7 +67,8 @@ public class AutoFactory {
         AUTO_S45(new PathPlannerAuto("Auto-S45")),
         AUTO_C123(new PathPlannerAuto("Auto-C123")),
         AUTO_C12387(new PathPlannerAuto("Auto-C12387")),
-        alignment_test_auto(new PathPlannerAuto("alignment test auto"));
+        ALIGNMENT_4(new PathPlannerAuto("Alignment 45"));
+        // alignment_test_auto(new PathPlannerAuto("alignment test auto"));
 
         private final PathPlannerAuto auto;
 

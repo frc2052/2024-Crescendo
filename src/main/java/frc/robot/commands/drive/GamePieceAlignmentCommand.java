@@ -19,12 +19,15 @@ public class GamePieceAlignmentCommand extends DriveCommand {
     private final PIDController yController;
 
     private final double goalMeters;
-    private final double driveSpeed;
+    private final double backwardsSpeed;
+    private final double sidewaysSpeed;
+
     private Pose2d startPose;
 
     public GamePieceAlignmentCommand(
         double goalMeters,
-        double driveSpeed,
+        double backwardsSpeed,
+        double sidewaysSpeed,
         DrivetrainSubsystem drivetrain,
         ForwardPixySubsystem pixy
     ) {
@@ -32,12 +35,13 @@ public class GamePieceAlignmentCommand extends DriveCommand {
 
         this.pixy = pixy;
 
-        yController = new PIDController(1, 0, 0);
-        yController.setTolerance(5);
+        yController = new PIDController(.1, 0, 0);
+        yController.setTolerance(30);
         yController.setSetpoint(-Constants.Intake.FRONT_PIXY_MOUNT_OFFSET_PIXELS);
 
         this.goalMeters = goalMeters;
-        this.driveSpeed = driveSpeed;
+        this.backwardsSpeed = backwardsSpeed;
+        this.sidewaysSpeed = sidewaysSpeed;
 
         addRequirements(pixy, drivetrain);
     }
@@ -59,8 +63,8 @@ public class GamePieceAlignmentCommand extends DriveCommand {
             if(Math.abs(yOffset) < 5){
                 return 0;
             }
-            if(Math.abs(ySpeed) > driveSpeed){
-                ySpeed = Math.copySign(driveSpeed, ySpeed);
+            if(Math.abs(ySpeed) > sidewaysSpeed){
+                ySpeed = Math.copySign(sidewaysSpeed, ySpeed);
             }
             return ySpeed;
         }
@@ -69,7 +73,7 @@ public class GamePieceAlignmentCommand extends DriveCommand {
     @Override
     protected double getX() {
         //System.out.println("ALIGNING X: " + drivetrain.getPosition().getX());
-        return driveSpeed;
+        return backwardsSpeed;
     }
 
     @Override

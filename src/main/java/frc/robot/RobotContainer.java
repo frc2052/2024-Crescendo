@@ -57,6 +57,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -131,7 +132,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer, shamper));
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
     NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
-    NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(1.5, .2, drivetrain, pixy));
+    NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(1, -.4, -.3, drivetrain, pixy));
 
     configureButtonBindings();
   }
@@ -143,12 +144,17 @@ public class RobotContainer {
     // JoystickButton customAngleButton = new JoystickButton(rotationJoystick, 10);
     // customAngleButton.whileTrue(new ShamperCustomAngle(shamper));
 
+    // ParallelDeadlineGroup specialIntakeCommand = new ParallelDeadlineGroup(
+    //   new IntakeCommandAuto(intake, indexer, shamper), 
+    //   new GamePieceAlignmentCommand(1.5, -0.4, drivetrain, pixy
+    // ));
+
     /*
      * Drive Button Bindings
      */
 
-    JoystickButton gamePieceAlignmentButton = new JoystickButton(translationJoystick, 7);
-    gamePieceAlignmentButton.whileTrue(new GamePieceAlignmentCommand(1.5, -0.1, drivetrain, pixy));
+    // JoystickButton gamePieceAlignmentButton = new JoystickButton(translationJoystick, 7);
+    // gamePieceAlignmentButton.whileTrue(specialIntakeCommand);
 
 
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
