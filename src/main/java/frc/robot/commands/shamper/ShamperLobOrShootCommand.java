@@ -46,8 +46,8 @@ public class ShamperLobOrShootCommand extends ShamperShootCommand {
         upperSpeed = ShamperSpeed.LOB.getUpper() - (ShamperSpeed.LOB.getUpper() * Constants.FieldAndRobot.LOB_SHOOTING_SPEED_MULTIPLIER);
         lowerSpeed = ShamperSpeed.LOB.getLower() - (ShamperSpeed.LOB.getLower() * Constants.FieldAndRobot.LOB_SHOOTING_SPEED_MULTIPLIER);
         shamper.setShootSpeed(
-          ShamperSpeed.LOB.getUpper() - (ShamperSpeed.LOB.getUpper() * Constants.FieldAndRobot.LOB_SHOOTING_SPEED_MULTIPLIER),
-          ShamperSpeed.LOB.getLower() - (ShamperSpeed.LOB.getLower() * Constants.FieldAndRobot.LOB_SHOOTING_SPEED_MULTIPLIER)
+          upperSpeed,
+          lowerSpeed
         );
       } else {
         upperSpeed = ShamperSpeed.LOB.getUpper();

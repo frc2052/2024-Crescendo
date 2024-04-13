@@ -172,19 +172,30 @@ public class AimingCalculator {
             Translation2d robotVelo = new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond).rotateBy(angleToTarget);
 
             double flyTime = Math.hypot(xDistance, yDistance) / Constants.FieldAndRobot.NOTE_SPEED_IN_METERS_PER_SECOND;
-            System.out.println("Fly time: " + flyTime);
+            // System.out.println("Fly time: " + flyTime);
             double offset = flyTime * robotVelo.getX();
-            System.out.println("Offset " + offset);
+            // System.out.println("Offset " + offset);
 
             return Math.hypot(xDistance, yDistance) + offset;
         } else { // red alliance
             Translation2d aimLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
 
+
             double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
             double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
             Dashboard.getInstance().putData("Calculated hypot to speaker",  Math.hypot(xDistance, yDistance));
-            
-            return Math.hypot(xDistance, yDistance) + Math.hypot(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond);
+
+            Translation2d robotPos = robotPose.getTranslation();
+            Rotation2d angleToTarget = aimLocation.minus(robotPos).getAngle();
+    
+            Translation2d robotVelo = new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond).rotateBy(angleToTarget);
+
+            double flyTime = Math.hypot(xDistance, yDistance) / Constants.FieldAndRobot.NOTE_SPEED_IN_METERS_PER_SECOND;
+            // System.out.println("Fly time: " + flyTime);
+            double offset = flyTime * robotVelo.getX();
+            // System.out.println("Offset " + offset);
+
+            return Math.hypot(xDistance, yDistance) - offset;
         }
     }
     

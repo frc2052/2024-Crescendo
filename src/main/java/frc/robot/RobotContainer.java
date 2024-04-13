@@ -12,10 +12,12 @@ import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
 import frc.robot.commands.auto.commands.shamper.PreShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
+import frc.robot.commands.auto.commands.shamper.WindUpCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
+import frc.robot.commands.drive.DriveWhileLobbingCommand;
 import frc.robot.commands.drive.FeedWhileMovingCommand;
 import frc.robot.commands.drive.GamePieceAlignmentCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
@@ -129,10 +131,10 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Sub Shoot Command", new ShootSubCommandAuto(shamper, indexer));
-    NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer, shamper));
+    NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer));
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
     NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
-    NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(1, -.4, -.3, drivetrain, pixy));
+    NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(2, -.6, -.4, drivetrain, pixy));
 
     configureButtonBindings();
   }
@@ -145,16 +147,16 @@ public class RobotContainer {
     // customAngleButton.whileTrue(new ShamperCustomAngle(shamper));
 
     // ParallelDeadlineGroup specialIntakeCommand = new ParallelDeadlineGroup(
-    //   new IntakeCommandAuto(intake, indexer, shamper), 
-    //   new GamePieceAlignmentCommand(1.5, -0.4, drivetrain, pixy
-    // ));
+    //   new IntakeCommandAuto(intake, indexer), 
+    //   new GamePieceAlignmentCommand(2, -.4, -.3, drivetrain, pixy)
+    // );
+
+    // JoystickButton gamePieceAlignmentButton = new JoystickButton(translationJoystick, 7);
+    // gamePieceAlignmentButton.whileTrue(specialIntakeCommand);
 
     /*
      * Drive Button Bindings
      */
-
-    // JoystickButton gamePieceAlignmentButton = new JoystickButton(translationJoystick, 7);
-    // gamePieceAlignmentButton.whileTrue(specialIntakeCommand);
 
 
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
@@ -182,11 +184,17 @@ public class RobotContainer {
     // aimLobButton.whileTrue(new ShamperLobCommand(shamper, indexer));
     JoystickButton autoLobButton = new JoystickButton(rotationJoystick, 5);
     autoLobButton.onTrue(new InstantCommand(() -> robotState.setIsLobbing(true))).onFalse(new InstantCommand(() -> robotState.setIsLobbing(false)));
-    autoLobButton.whileTrue(new FeedWhileMovingCommand(
-    () -> translationJoystick.getY(), 
-    () -> translationJoystick.getX(), 
-    () -> true, 
-    drivetrain));
+    // autoLobButton.whileTrue(new FeedWhileMovingCommand(
+    // () -> translationJoystick.getY(), 
+    // () -> translationJoystick.getX(), 
+    // () -> true, 
+    // drivetrain));
+
+    autoLobButton.whileTrue(new DriveWhileLobbingCommand(
+      () -> translationJoystick.getY(), 
+      () -> translationJoystick.getX(), 
+      () -> true, 
+      drivetrain));
 
     // JoystickButton aimToSpeakerUsingOneTag = new JoystickButton(rotationJoystick, 7);
     // aimToSpeakerUsingOneTag.whileTrue(new DriveWhileAimingSpeakerSingleTag(

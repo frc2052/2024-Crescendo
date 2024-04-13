@@ -35,7 +35,7 @@ public class GamePieceAlignmentCommand extends DriveCommand {
 
         this.pixy = pixy;
 
-        yController = new PIDController(.1, 0, 0);
+        yController = new PIDController(.02, 0, 0);
         yController.setTolerance(30);
         yController.setSetpoint(-Constants.Intake.FRONT_PIXY_MOUNT_OFFSET_PIXELS);
 
@@ -54,13 +54,13 @@ public class GamePieceAlignmentCommand extends DriveCommand {
     @Override
     protected double getY() {
         Block myFavoriteNote = pixy.findCentermostBlock();
-        if(myFavoriteNote == null){
+        if(myFavoriteNote == null || RobotState.getInstance().getNoteHeldDetected()){
             return 0;
         } else {
             System.out.println("centermost block " + (myFavoriteNote.getX()));
             double yOffset = pixy.xOffsetFromCenter(myFavoriteNote);
             double ySpeed = -yController.calculate(yOffset) / 158;
-            if(Math.abs(yOffset) < 5){
+            if(Math.abs(yOffset) < 25){
                 return 0;
             }
             if(Math.abs(ySpeed) > sidewaysSpeed){
@@ -85,7 +85,7 @@ public class GamePieceAlignmentCommand extends DriveCommand {
     public boolean isFinished() {
         if (RobotState.getInstance().getRobotPose().getTranslation().getDistance(startPose.getTranslation()) > goalMeters){
             return true;
-        } else if(RobotState.getInstance().getNoteHeldDetected()){
+        } else if(RobotState.getInstance().getNoteStagedDetected()){
             return true;
         } else {
             return false;

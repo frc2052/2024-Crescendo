@@ -201,8 +201,8 @@ public final class Constants {
         public static final double UPPER_SHAMPER_TRAP_SPEED_RPS = 0.04 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_TRAP_SPEED_RPS = 0.1 * SHOOTER_MAX_VELOCITY_RPS;
 
-        public static final double UPPER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_LOB_SPEED_RPS = 0.5 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_LOB_SPEED_RPS = 0.45 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_LOB_SPEED_RPS = 0.45 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double DEAD_ZONE_SHOOTER_SPEED_RPS = 2;
 
@@ -262,7 +262,7 @@ public final class Constants {
 
         public static final double GRAVITY_IN_METERS_PER_SECOND_SQUARED = 9.805665;
 
-        public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 2.62/0.8; //0 will cause an error
+        public static final double NOTE_SPEED_IN_METERS_PER_SECOND = 5;//2.62/0.8; //0 will cause an error
 
         public static final double SPEAKER_TARGET_VERTICAL_OFFSET_IN_METERS = 0;
         public static final double RED_SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
@@ -270,17 +270,20 @@ public final class Constants {
         public static final double BLUE_SPEAKER_TARGET_X_OFFSET_IN_METERS = 0;
         public static final double BLUE_SPEAKER_TARGET_Y_OFFSET_IN_METERS = 0;
 
-        public static final Translation2d BLUE_LOB_POINT = new Translation2d(Units.inchesToMeters(95), Units.inchesToMeters(350));
-        public static final Translation2d RED_LOB_POINT = new Translation2d(Units.inchesToMeters(555), Units.inchesToMeters(180));
+        // public static final Translation2d BLUE_LOB_POINT = new Translation2d(Units.inchesToMeters(95), Units.inchesToMeters(350));
+        public static final Translation2d BLUE_LOB_POINT = new Translation2d(Units.inchesToMeters(95), Units.inchesToMeters(250));
+        public static final Translation2d RED_LOB_POINT = new Translation2d(Units.inchesToMeters(555), Units.inchesToMeters(250));
+
+        public static final double SHOT_DEGREES_PER_METER = 1;
 
         // lines at wich its safe to lob note to other side
-        public static final double BLUE_LOB_LINE = Units.inchesToMeters(375);
-        public static final double RED_LOB_LINE = Units.inchesToMeters(275);
+        public static final double BLUE_LOB_LINE = Units.inchesToMeters(390);
+        public static final double RED_LOB_LINE = Units.inchesToMeters(260);
 
-        public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLIER = 3;
+        public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLIER = 0.75;
         public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLIER = -0.2;
 
-        public static final double LOB_SHOOTING_SPEED_MULTIPLIER = 0.4;
+        public static final double LOB_SHOOTING_SPEED_MULTIPLIER = 0.01;
       }
 
     public static class MusicPlayer {

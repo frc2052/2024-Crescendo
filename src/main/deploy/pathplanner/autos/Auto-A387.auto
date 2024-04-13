@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Sub Shoot Command"
+            "name": "Shoot Command"
           }
         },
         {
@@ -34,7 +34,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 0.25
                       }
                     }
                   ]
@@ -44,6 +44,12 @@
                 "type": "named",
                 "data": {
                   "name": "Intake Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
                 }
               }
             ]
@@ -76,9 +82,9 @@
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 1.0
+                        "name": "Note Alignment Command"
                       }
                     }
                   ]
@@ -88,6 +94,12 @@
                 "type": "named",
                 "data": {
                   "name": "Intake Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
                 }
               }
             ]
@@ -107,6 +119,12 @@
                 "type": "named",
                 "data": {
                   "name": "Pre-Shoot Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
                 }
               }
             ]
@@ -139,9 +157,9 @@
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 1.0
+                        "name": "Note Alignment Command"
                       }
                     }
                   ]
@@ -151,6 +169,12 @@
                 "type": "named",
                 "data": {
                   "name": "Intake Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
                 }
               }
             ]
@@ -170,6 +194,12 @@
                 "type": "named",
                 "data": {
                   "name": "Pre-Shoot Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
                 }
               }
             ]

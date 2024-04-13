@@ -11,10 +11,10 @@ import frc.robot.util.AimingCalculator;
 import frc.robot.util.calculator.ShootAngleConfig;
 import frc.robot.util.calculator.ShootingAngleCalculator;
 
-public class PreShootCommandAuto extends Command {
+public class WindUpCommandAuto extends Command {
   private ShamperSubsystem shamper;
   /** Creates a new PreShootCommandAuto. */
-  public PreShootCommandAuto(ShamperSubsystem shamper) {
+  public WindUpCommandAuto(ShamperSubsystem shamper) {
     this.shamper = shamper;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -27,7 +27,6 @@ public class PreShootCommandAuto extends Command {
   @Override
   public void execute() {
     ShootAngleConfig config = ShootingAngleCalculator.getInstance().getShooterConfig(AimingCalculator.calculateDistanceToSpeaker(RobotState.getInstance().getRobotPose()));
-    shamper.setAngle(config.getAngleDegrees());
     shamper.setShootSpeed(config.getLowerShooterSpeedVelocityRPS(), config.getUpperShooterSpeedVelocityRPS());
   }
 

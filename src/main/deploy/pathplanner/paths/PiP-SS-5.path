@@ -8,33 +8,43 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.32646880678377,
-        "y": 0.6314843398917571
+        "x": 4.253439605310023,
+        "y": 2.025974722420201
       },
       "isLocked": false,
       "linkedName": "Real Source Shoot"
     },
     {
       "anchor": {
-        "x": 8.7438697954319,
-        "y": 2.6147398448643058
+        "x": 5.881245885173652,
+        "y": 1.3350353662190912
       },
       "prevControl": {
-        "x": 6.373720468064967,
-        "y": 0.524765642635467
+        "x": 5.576764134983334,
+        "y": 1.3701678758564357
+      },
+      "nextControl": {
+        "x": 6.008115644159787,
+        "y": 1.3203965478745372
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.380232963033685,
+        "y": 1.592673770226285
+      },
+      "prevControl": {
+        "x": 6.583896077920541,
+        "y": 1.2647703469444034
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Accurate Note 5"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": -165.9637565320735,
-      "rotateFast": true
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,7 +55,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -167.49482902101568,
+    "rotation": -130.81508387488196,
     "rotateFast": false
   },
   "reversed": false,

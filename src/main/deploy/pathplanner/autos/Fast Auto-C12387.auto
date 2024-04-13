@@ -5,12 +5,37 @@
       "x": 1.3633965729469937,
       "y": 5.527972981871891
     },
-    "rotation": 180.0
+    "rotation": 178.63130592246873
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "StPSS-CS-P1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Aim Speaker Command"
+          }
+        },
         {
           "type": "named",
           "data": {
@@ -22,13 +47,44 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "PiP-P1-1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Command"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
                 "type": "sequential",
                 "data": {
                   "commands": [
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "ScP-CS-2"
+                        "pathName": "PiPSS1-2-3"
                       }
                     },
                     {
@@ -72,13 +128,50 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "PiP-P3-3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Aim Speaker Command"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Command"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
                 "type": "sequential",
                 "data": {
                   "commands": [
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "PiP-2-6"
+                        "pathName": "PiPS-3-8"
                       }
                     },
                     {
@@ -112,7 +205,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ScP-6-CS"
+                  "pathName": "ScP-8-AS"
                 }
               },
               {
@@ -147,57 +240,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "PiP-P1-1"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.5
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake Command"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pre-Shoot Command"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Aim Speaker Command"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot Command"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "PiP-1-7"
+                        "pathName": "PiP-AS-7"
                       }
                     },
                     {
