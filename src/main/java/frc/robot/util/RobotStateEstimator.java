@@ -54,7 +54,7 @@ public class RobotStateEstimator {
             // if vision pose outside of field, it's fake, it's lying
             if(visionPose.getX() > 0 && visionPose.getX() < Units.inchesToMeters(651.157) && visionPose.getY() > 0 && visionPose.getY() < Units.feetToMeters(27)){
                 double distanceToSpeaker = robotState.getSpeakerLocation().getDistance(robotState.getRobotPose().getTranslation());
-                double xyPower = 2;
+                double xyPower = 1;
                 double rotStds = 99999999;
                 // System.out.println("STDS " + xyStds);
                 List<PhotonTrackedTarget> targets = robotState.getActiveTargets();
@@ -79,7 +79,7 @@ public class RobotStateEstimator {
                     xyPower = 1;
                 }
 
-                double xyStds = 0.05 * Math.pow(distanceToSpeaker, xyPower);
+                double xyStds = 0.03 * Math.pow(distanceToSpeaker, xyPower);
                 poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, rotStds));
 
                 poseEstimator.addVisionMeasurement(

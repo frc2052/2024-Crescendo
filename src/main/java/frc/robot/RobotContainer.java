@@ -246,7 +246,7 @@ public class RobotContainer {
     JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
     Trigger shamperIdleToggleButton = new Trigger(() -> controlPanel.getY() > 0.5);
     // JoystickButton shamperCustomAngleButton = new JoystickButton(translationJoystick, 7);
-    JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
+    // JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
 
     shamperShootButton.whileTrue(new ShamperLobOrShootCommand(shamper, indexer));
     shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
@@ -254,7 +254,7 @@ public class RobotContainer {
     shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper, indexer, trapArm));
     shamperIdleToggleButton.onTrue(new InstantCommand(() -> shamper.toggleCurrentIdle()));
     // shamperCustomAngleButton.onTrue(new ShamperCustomAngle(shamper));
-    shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
+    // shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
 
     /*
      *  Shamper Angle Button Bindings

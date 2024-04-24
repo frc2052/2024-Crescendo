@@ -277,8 +277,10 @@ public final class Constants {
         public static final double SHOT_DEGREES_PER_METER = 1;
 
         // lines at wich its safe to lob note to other side
-        public static final double BLUE_LOB_LINE = Units.inchesToMeters(380);
-        public static final double RED_LOB_LINE = Units.inchesToMeters(250);
+        // red line 422 inches
+        // blue line 231 inches
+        public static final double BLUE_LOB_LINE = Units.inchesToMeters(413);
+        public static final double RED_LOB_LINE = Units.inchesToMeters(240);
 
         public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLIER = 0.75;
         public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLIER = -0.2;
