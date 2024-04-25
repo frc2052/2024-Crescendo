@@ -20,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -36,7 +37,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     final SwerveModule backLeftModule;
     final SwerveModule backRightModule;
 
-    private final SwerveDriveOdometry odometry;
+    private boolean collisionDetected = false;
+    
+    private double last_world_linear_accel_x = 0;
+    private double last_world_linear_accel_y = 0;
 
     // from constants?
     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
@@ -87,8 +91,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         zeroOdometry();
 
-        odometry = new SwerveDriveOdometry(kinematics, navx.getRotation2d(), getModulePositions());
-
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
             () -> robotState.getRobotPoseAuto(), // Robot pose supplier for auot (correct range -180-180)
@@ -120,6 +122,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // currentChassisSpeeds = new ChassisSpeeds(navx.getVelocityX(), navx.getVelocityY)
         robotState.addDrivetrainState(new DrivetrainState(currentChassisSpeeds, getModulePositions(),  navx.getRotation2d()));
         debug();
+
+        // straight from kauai labs docs
+
+        double curr_world_linear_accel_x = navx.getWorldLinearAccelX();
+        double currentJerkX = curr_world_linear_accel_x - last_world_linear_accel_x;
+        last_world_linear_accel_x = curr_world_linear_accel_x;
+        double curr_world_linear_accel_y = navx.getWorldLinearAccelY();
+        double currentJerkY = curr_world_linear_accel_y - last_world_linear_accel_y;
+        last_world_linear_accel_y = curr_world_linear_accel_y;
+        
+        if ((Math.abs(currentJerkX) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G) || (Math.abs(currentJerkY) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G)) {
+            collisionDetected = true;
+        }
+
+        robotState.updateCollisionDetected(collisionDetected);
+
+        SmartDashboard.putBoolean("CollisionDetected", collisionDetected);
 
         
         Logger.recordOutput("drivetrain omega radians", currentChassisSpeeds.omegaRadiansPerSecond);
@@ -235,10 +254,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
             backRightModule.getPosition(),
             frontRightModule.getPosition()
         };
-    }
-
-    public Pose2d getPosition(){
-        return odometry.getPoseMeters();
     }
 
     public static double getMaxVelocityMetersPerSecond() {

@@ -119,6 +119,8 @@ public final class Constants {
         public static final double AIM_TOLERANCE_DEGREES = 2.5;
 
         public static final double LOB_ANGLE = 210;
+
+        public static final double COLLISION_THRESHOLD_DELTA_G = 0.5f;
     }
     
     public static class MotorConstants {
@@ -297,6 +299,26 @@ public final class Constants {
 
         public static final Matrix<N3, N1> VISION_STDDEV = VecBuilder.fill(0.05, 0.05, Math.toRadians(99999999));
     }
+
+    //front left cam
+    public static final class PhotonCamera0 {
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_000";
+
+        public static final double X_OFFSET_M = 0;
+        public static final double Y_OFFSET_M = 0;
+        public static final double Z_OFFSET_M = 0;
+
+        public static final double THETA_X_OFFSET_DEGREES = 0; // roll
+        public static final double THETA_Y_OFFSET_DEGREES = 0; // pitch
+        public static final double THETA_Z_OFFSET_DEGREES = 0; // yaw
+
+        public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
+            new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 
+            new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
+        );
+    }
+
+    // front right cam
     public static final class PhotonCamera1 {
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
 
@@ -313,17 +335,36 @@ public final class Constants {
             new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
         );
     }
+
+    // back left cam
     public static final class PhotonCamera2 {
-        // TODO: make offsets more precise than caleb's eyeballing
         public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
 
-        public static final double X_OFFSET_M = 0.01;
-        public static final double Y_OFFSET_M = -0.40;
-        public static final double Z_OFFSET_M = 0.31;
+        public static final double X_OFFSET_M = 0;
+        public static final double Y_OFFSET_M = 0;
+        public static final double Z_OFFSET_M = 0;
 
-        public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll
-        public static final double THETA_Y_OFFSET_DEGREES = -15; // pitch
-        public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
+        public static final double THETA_X_OFFSET_DEGREES = 0; // roll
+        public static final double THETA_Y_OFFSET_DEGREES = 0; // pitch
+        public static final double THETA_Z_OFFSET_DEGREES = 0; // yaw
+
+        public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
+            new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 
+            new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
+        );
+    }
+
+    // back right cam
+    public static final class PhotonCamera3 {
+        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_003";
+
+        public static final double X_OFFSET_M = 0;
+        public static final double Y_OFFSET_M = 0;
+        public static final double Z_OFFSET_M = 0;
+
+        public static final double THETA_X_OFFSET_DEGREES = 0; // roll
+        public static final double THETA_Y_OFFSET_DEGREES = 0; // pitch
+        public static final double THETA_Z_OFFSET_DEGREES = 0; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
             new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 

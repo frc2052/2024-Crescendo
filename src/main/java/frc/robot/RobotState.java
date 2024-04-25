@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.team2052.lib.photonvision.EstimatedRobotPose;
+import com.team2052.lib.photonvision.VisionUpdate;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.MathUtil;
@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.util.AimingCalculator;
@@ -28,10 +29,7 @@ public class RobotState {
 
     private Pose2d initialPose;
     private Pose2d robotPose;
-    private Pose3d aprilTagVisionPose3d;
-    private List<PhotonTrackedTarget> activeTargets;
     private boolean visionEnabled;
-    private double detectionTime;
     private Rotation2d navxRotation;
     private SwerveModulePosition[] swerveModulePositions;
     private ChassisSpeeds chassisSpeeds;
@@ -42,6 +40,9 @@ public class RobotState {
     private boolean isLobbing;
     private boolean shamperAtGoalAngle;
     private boolean noteDetectorOverride;
+    private boolean collisionDetected;
+
+    private List<VisionUpdate> visionUpdates;
 
     private boolean isShooting;
     private boolean atGoalRotation;
@@ -61,9 +62,6 @@ public class RobotState {
     private RobotState() {
         initialPose = new Pose2d();
         robotPose = new Pose2d();
-        detectionTime = 0.0;
-        aprilTagVisionPose3d = new Pose3d();
-        activeTargets = new ArrayList<PhotonTrackedTarget>();
         visionEnabled = false;
         navxRotation = new Rotation2d(0);
         chassisSpeeds = new ChassisSpeeds();
@@ -71,6 +69,9 @@ public class RobotState {
         noteStaged = false;
         noteDetectorOverride = false;
         isLobbing = false;
+        collisionDetected = false;
+
+        visionUpdates = new ArrayList<VisionUpdate> ();
 
         isShooting = false;
         atGoalRotation = false;
@@ -97,29 +98,21 @@ public class RobotState {
     /**
      * Adds an AprilTag vision update
      */ 
-    public void addAprilTagVisionUpdate(EstimatedRobotPose aprilTagVisionPose) {
-        if(!(aprilTagVisionPose.estimatedPose.getTranslation() == new Translation3d())){
-            
-            // check if any of the targets have a ambiguity greater than 0.2 to filter out tags that could potentially throw us across the field
-            for (PhotonTrackedTarget target : aprilTagVisionPose.targetsUsed) {
-                if(target.getPoseAmbiguity() > 0.15 && target.getPoseAmbiguity() > 0){
-                    this.aprilTagVisionPose3d = null;
-                    this.detectionTime = 0;
-                    return;
+    public void addAprilTagVisionUpdates(List<VisionUpdate> unfilteredVisionUpdates) {
+        for(VisionUpdate visionUpdate : unfilteredVisionUpdates) {
+            // if vision pose outside of field, it's fake, it's lying
+            if(!(visionUpdate.estimatedPose.getTranslation() == new Translation3d()) && visionUpdate.estimatedPose.getTranslation().getX() < Units.inchesToMeters(651.157) && visionUpdate.estimatedPose.getTranslation().getY() < Units.feetToMeters(27)){
+                
+                // check if any of the targets have a ambiguity greater than a set amount to filter out tags that could potentially throw us across the field
+                for (PhotonTrackedTarget target : visionUpdate.targetsUsed) {
+                    if(target.getPoseAmbiguity() < 0.15){
+                        visionUpdates.add(visionUpdate);
+                    }
                 }
+            } else {
+                System.out.println("REJECTED VISION FROM: " + visionUpdate.camera.getName());
             }
-            this.aprilTagVisionPose3d = aprilTagVisionPose.estimatedPose;
-            this.detectionTime = aprilTagVisionPose.timestampSeconds;
-            this.activeTargets = aprilTagVisionPose.targetsUsed;
-        } else {
-            System.out.println("EMPTY VISION POSE");
-            this.aprilTagVisionPose3d = null;
-            this.detectionTime = 0;
         }
-    }
-
-    public List<PhotonTrackedTarget> getActiveTargets() {
-        return activeTargets;
     }
 
     public void updateVisionEnabled(boolean visionEnabled) {
@@ -156,6 +149,14 @@ public class RobotState {
     
     public boolean getIsClimbing(){
         return isClimbing;
+    }
+
+    public void updateCollisionDetected(boolean collisionDetected){
+        this.collisionDetected = collisionDetected;
+    }
+
+    public boolean getCollisionDetected(){
+        return collisionDetected;
     }
 
     public void setIsLobbing(boolean isLobbing) {
@@ -222,47 +223,13 @@ public class RobotState {
         return isIntaking;
    }
 
-
-
     /**
-     * Reset the RobotState's Initial Pose2d and set the NavX Offset. 
-     * NavX offset is set when the robot has an inital rotation not facing where you want 0 (forwards) to be.
-     */
-    public void resetInitialPose(Pose2d initialStartingPose) {
-        //navxOffset = new Rotation2d();
-        //autoOffset = -initialStartingPose.getRotation().getRadians() + Math.PI;
-        initialPose = initialStartingPose;
-    }
-
-    /**
-     * Returns the latest AprilTag vision detection robot translation in Translation2d
+     * Returns the latest AprilTag vision updates
      * 
-     * @return Translation2d
+     * @return List<VisionUpdate>
      */
-    public Optional<Pose3d> getVisionPose3d() {
-        Optional<Pose3d> visionPose = Optional.empty();
-
-        // if the vision pose doesn't have it's pose at the origin and not null, then it's good
-        if(!(aprilTagVisionPose3d == null)){
-            if (!(aprilTagVisionPose3d.getTranslation() == new Translation3d())){
-                visionPose = Optional.of(aprilTagVisionPose3d);
-            }
-        }
-
-        return visionPose;
-    }
-
-    /**
-     * Returns the latest AprilTag Vision detection time. This is when (on the raspberry pi) the Translation3d was last updated.
-     * 
-     * @return double
-     */
-    public double getVisionDetectionTime() {
-        if(detectionTime == 0.0){
-            return Timer.getFPGATimestamp();
-        } else {
-            return detectionTime;
-        }
+    public List<VisionUpdate> getVisionUpdates() {
+        return visionUpdates;
     }
 
     /**
@@ -428,7 +395,10 @@ public class RobotState {
 
 
     public void output(){
-        Logger.recordOutput("Vision Pose", aprilTagVisionPose3d);
+        for(VisionUpdate visionUpdate : visionUpdates){
+            Logger.recordOutput("Vision Pose For " + visionUpdate.camera.getName(), visionUpdate.estimatedPose);
+        }
+
         Logger.recordOutput("Robot Position X : ", (robotPose.getX()));
         Logger.recordOutput("Robot Position Y : ", (robotPose.getY()));
         Logger.recordOutput("ROBOT POSE2D", robotPose);

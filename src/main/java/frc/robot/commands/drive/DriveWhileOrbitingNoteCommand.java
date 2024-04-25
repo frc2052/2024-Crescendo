@@ -11,7 +11,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotState;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.NoteVisionSubsystem;
 
 public class DriveWhileOrbitingNoteCommand extends Command {
     protected final DrivetrainSubsystem drivetrain;
@@ -35,7 +35,7 @@ public class DriveWhileOrbitingNoteCommand extends Command {
         DoubleSupplier ySupplier,
         BooleanSupplier fieldCentricSupplier,
         DrivetrainSubsystem drivetrain,
-        VisionSubsystem vision
+        NoteVisionSubsystem vision
     ) {
         DoubleSupplier rotationSupplier = new DoubleSupplier() {
             @Override
