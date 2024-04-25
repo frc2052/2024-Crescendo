@@ -54,18 +54,22 @@ public class ShamperLobOrShootCommand extends ShamperShootCommand {
         lowerSpeed = ShamperSpeed.LOB.getLower();
         shamper.setShootSpeed(ShamperSpeed.LOB);
       }
-      
-      double poseX = RobotState.getInstance().getRobotPose().getX();
 
-      if (RobotState.getInstance().isRedAlliance()){
-        if (poseX > redIndexLine && shamper.shooterAtSpeed(lowerSpeed, upperSpeed)) {
-          indexer.indexAll();
-        }
-      } else {
-        if (poseX < blueIndexLine && shamper.shooterAtSpeed(lowerSpeed, upperSpeed)) {
-          indexer.indexAll();
-        }
+      if (shamper.shooterAtSpeed(lowerSpeed, upperSpeed) && shamper.isAtGoalAngle(4)) {
+        indexer.indexAll();
       }
+      
+      // double poseX = RobotState.getInstance().getRobotPose().getX();
+
+      // if (RobotState.getInstance().isRedAlliance()){
+      //   if (poseX > redIndexLine && shamper.shooterAtSpeed(lowerSpeed, upperSpeed)) {
+      //     indexer.indexAll();
+      //   }
+      // } else {
+      //   if (poseX < blueIndexLine && shamper.shooterAtSpeed(lowerSpeed, upperSpeed)) {
+      //     indexer.indexAll();
+      //   }
+      // }
     } else {
       super.execute();
     }

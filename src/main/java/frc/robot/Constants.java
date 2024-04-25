@@ -188,8 +188,8 @@ public final class Constants {
         public static final double LOWER_SHAMPER_SPEAKER_SPEED_RPS = 0.9 * SHOOTER_MAX_VELOCITY_RPS;
 
         // idle can't be the same as our shot at sub because the idle logic won't start idle again
-        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.299 * SHOOTER_MAX_VELOCITY_RPS;
-        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.299 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double UPPER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.399 * SHOOTER_MAX_VELOCITY_RPS;
+        public static final double LOWER_SHAMPER_SPEAKER_IDLE_SPEED_RPS = 0.399 * SHOOTER_MAX_VELOCITY_RPS;
 
         public static final double UPPER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
         public static final double LOWER_SHAMPER_SUB_SPEED_RPS = 0.7 * SHOOTER_MAX_VELOCITY_RPS;
@@ -279,8 +279,10 @@ public final class Constants {
         public static final double SHOT_DEGREES_PER_METER = 1;
 
         // lines at wich its safe to lob note to other side
-        public static final double BLUE_LOB_LINE = Units.inchesToMeters(390);
-        public static final double RED_LOB_LINE = Units.inchesToMeters(260);
+        // red line 422 inches
+        // blue line 231 inches
+        public static final double BLUE_LOB_LINE = Units.inchesToMeters(413);
+        public static final double RED_LOB_LINE = Units.inchesToMeters(240);
 
         public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLIER = 0.75;
         public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLIER = -0.2;
