@@ -99,6 +99,7 @@ public class RobotState {
      * Adds an AprilTag vision update
      */ 
     public void addAprilTagVisionUpdates(List<VisionUpdate> unfilteredVisionUpdates) {
+        visionUpdates.clear();
         for(VisionUpdate visionUpdate : unfilteredVisionUpdates) {
             // if vision pose outside of field, it's fake, it's lying
             if(!(visionUpdate.estimatedPose.getTranslation() == new Translation3d()) && visionUpdate.estimatedPose.getTranslation().getX() < Units.inchesToMeters(651.157) && visionUpdate.estimatedPose.getTranslation().getY() < Units.feetToMeters(27)){
@@ -395,9 +396,9 @@ public class RobotState {
 
 
     public void output(){
-        for(VisionUpdate visionUpdate : visionUpdates){
-            Logger.recordOutput("Vision Pose For " + visionUpdate.camera.getName(), visionUpdate.estimatedPose);
-        }
+        // for(VisionUpdate visionUpdate : visionUpdates){
+        //     Logger.recordOutput("Vision Pose For " + visionUpdate.camera.getName(), visionUpdate.estimatedPose);
+        // }
 
         Logger.recordOutput("Robot Position X : ", (robotPose.getX()));
         Logger.recordOutput("Robot Position Y : ", (robotPose.getY()));

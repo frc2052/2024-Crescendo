@@ -39,8 +39,8 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotPeriodic() {
-    RobotStateEstimator.getInstance().updateRobotPoseEstimator();
-    RobotState.getInstance().output();
+    //RobotStateEstimator.getInstance().updateRobotPoseEstimator();
+    // RobotState.getInstance().output();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -70,8 +70,6 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    
-    RobotState.getInstance().updateVisionEnabled(false);
   }
 
   /** This function is called periodically during autonomous. */
@@ -87,8 +85,6 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    RobotState.getInstance().updateVisionEnabled(true);
     
     // m_robotContainer.robotStatusCommunicator.onRobotTeleop();
   }

@@ -39,8 +39,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     private boolean collisionDetected = false;
     
-    private double last_world_linear_accel_x = 0;
-    private double last_world_linear_accel_y = 0;
+    private double lastAccelX = 0;
+    private double lastAccelY = 0;
 
     // from constants?
     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
@@ -125,21 +125,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // straight from kauai labs docs
 
-        double curr_world_linear_accel_x = navx.getWorldLinearAccelX();
-        double currentJerkX = curr_world_linear_accel_x - last_world_linear_accel_x;
-        last_world_linear_accel_x = curr_world_linear_accel_x;
-        double curr_world_linear_accel_y = navx.getWorldLinearAccelY();
-        double currentJerkY = curr_world_linear_accel_y - last_world_linear_accel_y;
-        last_world_linear_accel_y = curr_world_linear_accel_y;
+        // double currAccelX = navx.getWorldLinearAccelX();
+        // double currentJerkX = currAccelX - lastAccelX;
+        // lastAccelY = currAccelX;
+        // double currAccelY = navx.getWorldLinearAccelY();
+        // double currentJerkY = currAccelY - lastAccelY;
+        // lastAccelY = currAccelY;
         
-        if ((Math.abs(currentJerkX) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G) || (Math.abs(currentJerkY) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G)) {
-            collisionDetected = true;
-        }
+        // if ((Math.abs(currentJerkX) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G) || (Math.abs(currentJerkY) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G)) {
+        //     collisionDetected = true;
+        // }
 
-        robotState.updateCollisionDetected(collisionDetected);
+        // robotState.updateCollisionDetected(collisionDetected);
 
-        SmartDashboard.putBoolean("CollisionDetected", collisionDetected);
-
+        // SmartDashboard.putBoolean("CollisionDetected", collisionDetected);
         
         Logger.recordOutput("drivetrain omega radians", currentChassisSpeeds.omegaRadiansPerSecond);
     }

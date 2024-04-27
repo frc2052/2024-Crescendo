@@ -173,8 +173,6 @@ public class PhotonCamera implements AutoCloseable {
         InstanceCount++;
 
         robotToCamera = new Transform3d();
-
-        poseEstimator = new PhotonPoseEstimator(tagLayout, strategy, this, robotToCamera);
     }
 
     /**
@@ -187,6 +185,8 @@ public class PhotonCamera implements AutoCloseable {
         this.robotToCamera = robotToCamera;
         this.tagLayout = tagLayout;
         this.strategy = strategy;
+        
+        this.poseEstimator = new PhotonPoseEstimator(tagLayout, strategy, this, robotToCamera);
     }
 
     /*

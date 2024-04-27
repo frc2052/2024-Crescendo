@@ -304,14 +304,14 @@ public final class Constants {
 
     //front left cam
     public static final class PhotonCamera0 {
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_000";
+        public static final String CAMERA_NAME = "KrawlerCam_FL_000";
 
-        public static final double X_OFFSET_M = 0;
-        public static final double Y_OFFSET_M = 0;
-        public static final double Z_OFFSET_M = 0;
+        public static final double X_OFFSET_M = 0.29;
+        public static final double Y_OFFSET_M = 0.26;
+        public static final double Z_OFFSET_M = 0.25;
 
         public static final double THETA_X_OFFSET_DEGREES = 0; // roll
-        public static final double THETA_Y_OFFSET_DEGREES = 0; // pitch
+        public static final double THETA_Y_OFFSET_DEGREES = -45; // pitch
         public static final double THETA_Z_OFFSET_DEGREES = 0; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
@@ -322,14 +322,14 @@ public final class Constants {
 
     // front right cam
     public static final class PhotonCamera1 {
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
+        public static final String CAMERA_NAME = "KrawlerCam_FR_001";
 
         public static final double X_OFFSET_M = 0.29;
         public static final double Y_OFFSET_M = -0.26;
         public static final double Z_OFFSET_M = 0.25;
 
         public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll
-        public static final double THETA_Y_OFFSET_DEGREES = -29.536; // pitch
+        public static final double THETA_Y_OFFSET_DEGREES = -30; // pitch
         public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
@@ -340,15 +340,15 @@ public final class Constants {
 
     // back left cam
     public static final class PhotonCamera2 {
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
+        public static final String CAMERA_NAME = "KrawlerCam_BL_002";
 
-        public static final double X_OFFSET_M = 0;
-        public static final double Y_OFFSET_M = 0;
-        public static final double Z_OFFSET_M = 0;
+        public static final double X_OFFSET_M = -0.350;
+        public static final double Y_OFFSET_M = 0.202;
+        public static final double Z_OFFSET_M = 0.318;
 
         public static final double THETA_X_OFFSET_DEGREES = 0; // roll
-        public static final double THETA_Y_OFFSET_DEGREES = 0; // pitch
-        public static final double THETA_Z_OFFSET_DEGREES = 0; // yaw
+        public static final double THETA_Y_OFFSET_DEGREES = -17; // pitch
+        public static final double THETA_Z_OFFSET_DEGREES = 178; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
             new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 
@@ -358,15 +358,15 @@ public final class Constants {
 
     // back right cam
     public static final class PhotonCamera3 {
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_003";
+        public static final String CAMERA_NAME = "KrawlerCam_BR_003";
 
-        public static final double X_OFFSET_M = 0;
-        public static final double Y_OFFSET_M = 0;
-        public static final double Z_OFFSET_M = 0;
+        public static final double X_OFFSET_M = -0.350;
+        public static final double Y_OFFSET_M = -0.210;
+        public static final double Z_OFFSET_M = 0.318;
 
         public static final double THETA_X_OFFSET_DEGREES = 0; // roll
-        public static final double THETA_Y_OFFSET_DEGREES = 0; // pitch
-        public static final double THETA_Z_OFFSET_DEGREES = 0; // yaw
+        public static final double THETA_Y_OFFSET_DEGREES = -15; // pitch
+        public static final double THETA_Z_OFFSET_DEGREES = -178; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
             new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 

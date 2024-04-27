@@ -67,7 +67,7 @@ public class RobotStateEstimator {
         
         for(VisionUpdate visionUpdate : robotState.getVisionUpdates()){
             Pose2d visionPose = visionUpdate.estimatedPose.toPose2d();
-            double xyStds = 0.05;
+            double xyStds = 0.075;
             double rotStds = 99999999;
 
             List<PhotonTrackedTarget> targets = visionUpdate.targetsUsed;
