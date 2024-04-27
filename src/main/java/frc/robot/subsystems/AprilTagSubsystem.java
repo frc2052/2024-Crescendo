@@ -25,10 +25,10 @@ public class AprilTagSubsystem extends SubsystemBase{
     private RobotState robotState = RobotState.getInstance();
     private List<PhotonCamera> cameras = new ArrayList<PhotonCamera> ();
     private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-    private PhotonCamera camera0 = new PhotonCamera(Constants.PhotonCamera0.CAMERA_NAME, Constants.PhotonCamera0.ROBOT_TO_CAMERA_METERS, aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR);
+    // private PhotonCamera camera0 = new PhotonCamera(Constants.PhotonCamera0.CAMERA_NAME, Constants.PhotonCamera0.ROBOT_TO_CAMERA_METERS, aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR);
     private PhotonCamera camera1 = new PhotonCamera(Constants.PhotonCamera1.CAMERA_NAME, Constants.PhotonCamera1.ROBOT_TO_CAMERA_METERS, aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR);
-    private PhotonCamera camera2 = new PhotonCamera(Constants.PhotonCamera2.CAMERA_NAME, Constants.PhotonCamera2.ROBOT_TO_CAMERA_METERS, aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR);
-    private PhotonCamera camera3 = new PhotonCamera(Constants.PhotonCamera3.CAMERA_NAME, Constants.PhotonCamera3.ROBOT_TO_CAMERA_METERS, aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR);
+    // private PhotonCamera camera2 = new PhotonCamera(Constants.PhotonCamera2.CAMERA_NAME, Constants.PhotonCamera2.ROBOT_TO_CAMERA_METERS, aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR);
+    // private PhotonCamera camera3 = new PhotonCamera(Constants.PhotonCamera3.CAMERA_NAME, Constants.PhotonCamera3.ROBOT_TO_CAMERA_METERS, aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR);
   
     public static AprilTagSubsystem getInstance(){
         if (INSTANCE == null){
@@ -39,10 +39,10 @@ public class AprilTagSubsystem extends SubsystemBase{
     }
 
     private AprilTagSubsystem() {
-        cameras.add(camera0);
+        // cameras.add(camera0);
         cameras.add(camera1);
-        cameras.add(camera2);
-        cameras.add(camera3);
+        // cameras.add(camera2);
+        // cameras.add(camera3);
     }
 
     @Override
