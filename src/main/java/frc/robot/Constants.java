@@ -120,7 +120,7 @@ public final class Constants {
 
         public static final double LOB_ANGLE = 210;
 
-        public static final double COLLISION_THRESHOLD_DELTA_G = 0.5f;
+        public static final double COLLISION_THRESHOLD_DELTA_G = 1f;
     }
     
     public static class MotorConstants {
@@ -235,9 +235,9 @@ public final class Constants {
         public static final double PIVOT_DEADZONE_DEGREES = 1;
 
         public static class Angle {
-            public static final double MINIMUM  = 12;
+            public static final double MINIMUM  = 9;
             public static final double MAXIMUM = 124;
-            public static final double CLIMB = 13;
+            public static final double CLIMB = 10;
             public static final double AUTO_INTAKE = 30;
             public static final double INTAKE = 17;
             public static final double DEFAULT = 30;
@@ -283,6 +283,9 @@ public final class Constants {
         // blue line 231 inches
         public static final double BLUE_LOB_LINE = Units.inchesToMeters(413);
         public static final double RED_LOB_LINE = Units.inchesToMeters(240);
+        
+        public static final double BLUE_WING_LINE = Units.inchesToMeters(240);
+        public static final double RED_WING_LINE = Units.inchesToMeters(410);
 
         public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLIER = 0.75;
         public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLIER = -0.2;

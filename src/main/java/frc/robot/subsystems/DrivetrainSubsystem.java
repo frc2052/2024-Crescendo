@@ -125,20 +125,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // straight from kauai labs docs
 
-        // double currAccelX = navx.getWorldLinearAccelX();
-        // double currentJerkX = currAccelX - lastAccelX;
-        // lastAccelY = currAccelX;
-        // double currAccelY = navx.getWorldLinearAccelY();
-        // double currentJerkY = currAccelY - lastAccelY;
-        // lastAccelY = currAccelY;
+        double currAccelX = navx.getWorldLinearAccelX();
+        double currentJerkX = currAccelX - lastAccelX;
+        lastAccelY = currAccelX;
+        double currAccelY = navx.getWorldLinearAccelY();
+        double currentJerkY = currAccelY - lastAccelY;
+        lastAccelY = currAccelY;
         
-        // if ((Math.abs(currentJerkX) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G) || (Math.abs(currentJerkY) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G)) {
-        //     collisionDetected = true;
-        // }
+        if ((Math.abs(currentJerkX) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G) || (Math.abs(currentJerkY) > Constants.Drivetrain.COLLISION_THRESHOLD_DELTA_G)) {
+            collisionDetected = true;
+        } else {
+            collisionDetected = false;
+        }
 
-        // robotState.updateCollisionDetected(collisionDetected);
+        robotState.updateCollisionDetected(collisionDetected);
 
-        // SmartDashboard.putBoolean("CollisionDetected", collisionDetected);
+        SmartDashboard.putBoolean("CollisionDetected", collisionDetected);
         
         Logger.recordOutput("drivetrain omega radians", currentChassisSpeeds.omegaRadiansPerSecond);
     }
