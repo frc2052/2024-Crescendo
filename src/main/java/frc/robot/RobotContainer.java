@@ -39,10 +39,12 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LedSubsystem;
+import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.Joystick;
@@ -60,7 +62,7 @@ public class RobotContainer {
   private final ClimberSubsystem climber;
   private final AprilTagSubsystem aprilTag;
   private final LedSubsystem ledSubsystem;
-  // private final MusicPlayerSubsystem musicPlayer;
+  private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
   private final AdvantageScopeSubsystem advantageScope;
   private final TrapArmSubsystem trapArm;
@@ -72,7 +74,7 @@ public class RobotContainer {
   private final Joystick controlPanel;
 
   public static boolean musicOn;
-  // public RobotStatusCommunicator robotStatusCommunicator;
+  public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = new DrivetrainSubsystem();
@@ -82,13 +84,13 @@ public class RobotContainer {
     climber = new ClimberSubsystem();
     aprilTag = AprilTagSubsystem.getInstance();
     ledSubsystem = LedSubsystem.getInstance();
-    // musicPlayer = new MusicPlayerSubsystem();
+    musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     trapArm = new TrapArmSubsystem();
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, indexer);
 
 
-    // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
+    robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
     ledSubsystem.enableLEDs();
