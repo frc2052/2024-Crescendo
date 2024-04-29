@@ -61,6 +61,10 @@ public class DriveCommand extends Command {
         return slewAxis(rotationLimiter, deadBand(-rotationSupplier.getAsDouble()));
     }
 
+    protected boolean isFieldCentric(){
+        return fieldCentricSupplier.getAsBoolean();
+    }
+
     // @Override
     // public void execute() {
     //     drivetrain.drive(getX(), getY(), getRotation(), fieldCentricSupplier.getAsBoolean());
@@ -68,7 +72,7 @@ public class DriveCommand extends Command {
 
     @Override
     public void execute() {
-        drivetrain.drive(getX(), getY(), getRotation(), fieldCentricSupplier.getAsBoolean());
+        drivetrain.drive(getX(), getY(), getRotation(), isFieldCentric());
     }
 
     @Override
@@ -87,4 +91,9 @@ public class DriveCommand extends Command {
         // Limit the value to always be in the range of [-1.0, 1.0]
         return Math.copySign(Math.min(1.0, Math.abs(value)), value);
     }
+
+    // public Pose2d getPosition(){
+    //     return drivetrain.get
+
+    // }
 }

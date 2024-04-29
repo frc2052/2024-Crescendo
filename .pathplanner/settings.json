@@ -1,19 +1,26 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.9144,
+  "robotLength": 0.9144,
   "holonomicMode": true,
   "pathFolders": [
-    "4 Note Auto",
-    "WIP",
-    "test",
-    "working"
+    "261",
+    "A387",
+    "C123",
+    "C2617",
+    "Connector Paths",
+    "Fast c12387",
+    "S54&S45",
+    "S56",
+    "Starting Paths",
+    "old"
   ],
   "autoFolders": [
+    "10k",
     "WIP",
     "working autos"
   ],
   "defaultMaxVel": 4.5,
-  "defaultMaxAccel": 4.0,
+  "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 540.0,
   "maxModuleSpeed": 5.21

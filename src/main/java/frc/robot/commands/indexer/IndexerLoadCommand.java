@@ -19,12 +19,16 @@ public class IndexerLoadCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    indexer.loadAll();
+    indexer.load();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(indexer.getNoteHeld()) {
+      indexer.loadSlow();
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -35,6 +39,6 @@ public class IndexerLoadCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return indexer.getNoteDetector();
+    return indexer.getNoteStaged();
   }
 }

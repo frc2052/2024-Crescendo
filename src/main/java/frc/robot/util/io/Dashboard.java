@@ -20,7 +20,9 @@ public class Dashboard {
     private final NetworkTable rPiTable;
 
     private final SendableChooser<DriveMode> driveModeChooser;
+    private final SendableChooser<Idle> shamperIdleModeChooser;
     private final SendableChooser<Auto> autoChooser;
+    private final SendableChooser<ClimberMode> climberModeChooser;
 
     public static Dashboard getInstance() {
         if (INSTANCE == null) {
@@ -31,7 +33,6 @@ public class Dashboard {
     }
 
     private Dashboard() {
-
         ntinst = NetworkTableInstance.getDefault();
         rPiTable = ntinst.getTable("RaspberryPi");
 
@@ -42,6 +43,12 @@ public class Dashboard {
         driveModeChooser.addOption(DriveMode.ROBOT_CENTRIC.name(), DriveMode.ROBOT_CENTRIC);
         driveModeChooser.setDefaultOption(DriveMode.FIELD_CENTRIC.name(), DriveMode.FIELD_CENTRIC);
         SmartDashboard.putData(Constants.Dashboard.DRIVE_MODE_KEY, driveModeChooser);
+
+        shamperIdleModeChooser = new SendableChooser<Idle>();
+        shamperIdleModeChooser.addOption(Idle.NO_IDLE.name(), Idle.NO_IDLE);
+        shamperIdleModeChooser.addOption(Idle.IDLE.name(), Idle.IDLE);
+        shamperIdleModeChooser.setDefaultOption(Idle.IDLE.name(), Idle.IDLE);
+        SmartDashboard.putData(Constants.Dashboard.IDLE_CHOOSER_KEY, shamperIdleModeChooser);
         
         autoChooser = new SendableChooser<Auto>();
         for (Auto auto : Auto.values()) {
@@ -49,6 +56,18 @@ public class Dashboard {
         }
         autoChooser.setDefaultOption(Auto.NO_AUTO.name(), Auto.NO_AUTO);
         SmartDashboard.putData("Auto", autoChooser);
+
+        climberModeChooser = new SendableChooser<ClimberMode>();
+        climberModeChooser.addOption(ClimberMode.BRAKE.name(), ClimberMode.BRAKE);
+        climberModeChooser.addOption(ClimberMode.COAST.name(), ClimberMode.COAST);
+        climberModeChooser.setDefaultOption(ClimberMode.BRAKE.name(), ClimberMode.BRAKE);
+        SmartDashboard.putData(Constants.Dashboard.CLIMBER_MODE_KEY, climberModeChooser);
+        
+        SmartDashboard.putString(Constants.Dashboard.IDLE_MODE_KEY, ShamperIdleMode.SPEAKER_IDLE.name());
+
+        SmartDashboard.putNumber("Shamper Angle Manual", 0);
+        SmartDashboard.putNumber("Shamper Shot Manual Upper", 0);
+        SmartDashboard.putNumber("Shamper Shot Manual Lower", 0);
     }
 
     public <V> void putData(String key, V value) {
@@ -79,12 +98,35 @@ public class Dashboard {
         return rPiTable;
     }
 
+    public double getManualAngle() {
+        return SmartDashboard.getNumber("Shamper Angle Manual", 30);
+    }
+
+    public double getManualShotUpper() {
+        return SmartDashboard.getNumber("Shamper Shot Manual Upper", 0);
+    }
+    public double getManualShotLower() {
+        return SmartDashboard.getNumber("Shamper Shot Manual Lower", 0);
+    }
+
     public boolean pixyCamBroken() {
         return SmartDashboard.getBoolean("Pixy Cam Broken", false);
     }
 
     public boolean isFieldCentric() {
         return driveModeChooser.getSelected() == DriveMode.FIELD_CENTRIC;      
+    }
+
+    public boolean isClimberCoast() {
+        return climberModeChooser.getSelected() == ClimberMode.COAST;
+    }
+
+    public void updateIsClimbing(boolean isClimbing) {
+        SmartDashboard.putBoolean("Is Climbing", isClimbing);
+    }
+    
+    public boolean shouldIdle() {
+        return shamperIdleModeChooser.getSelected() == Idle.IDLE;
     }
 
     public Auto getAuto() {
@@ -95,5 +137,20 @@ public class Dashboard {
     public static enum DriveMode {
         FIELD_CENTRIC,
         ROBOT_CENTRIC;
+    }
+
+    public static enum ClimberMode {
+        BRAKE,
+        COAST;
+    }
+
+    public static enum Idle {
+        NO_IDLE,
+        IDLE;
+    }
+
+    public static enum ShamperIdleMode {
+        SPEAKER_IDLE,
+        AMP_IDLE;
     }
 }

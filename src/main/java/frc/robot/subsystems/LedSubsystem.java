@@ -15,7 +15,7 @@ import frc.robot.util.io.Dashboard;
 public class LedSubsystem extends SubsystemBase {
     private static LedSubsystem INSTANCE;
     
-    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4, codeChannel5, codeChannel6, codeChannel7;
+    private final DigitalOutput codeChannel1, codeChannel2, codeChannel3, codeChannel4;
 
     private LEDStatusMode currentStatusMode;
 
@@ -28,9 +28,7 @@ public class LedSubsystem extends SubsystemBase {
         codeChannel2 = new DigitalOutput(Constants.LEDs.CHANNEL_2_PIN);
         codeChannel3 = new DigitalOutput(Constants.LEDs.CHANNEL_3_PIN);
         codeChannel4 = new DigitalOutput(Constants.LEDs.CHANNEL_4_PIN);
-        codeChannel5 = new DigitalOutput(Constants.LEDs.CHANNEL_5_PIN);
-        codeChannel6 = new DigitalOutput(Constants.LEDs.CHANNEL_6_PIN);
-        codeChannel7 = new DigitalOutput(Constants.LEDs.CHANNEL_7_PIN);
+        // codeChannel5 = new DigitalOutput(Constants.LEDs.CHANNEL_5_PIN);
         robotDisabled = true;
 
         currentStatusMode = LEDStatusMode.OFF;
@@ -47,16 +45,19 @@ public class LedSubsystem extends SubsystemBase {
     }
 
     public static enum LEDStatusMode {
-        OFF(5), // have to do 5 because we don't have pin 8 and it reads pin 8 high when sending 0
-        CONE(1),
-        CUBE(2),
-        DISABLED_RED_PULSE(3),
-        DISABLED_BLUE_PULSE(4),
-        NO_AUTO(5),
-        NOTE_DETECTED(6),
-        RAINBOW(7),
-        LAVA(8),
-        WATER(9);
+        OFF(0), 
+        DANGER(1),
+        INTAKE(2),
+        HAS_NOTE(3),
+        AIMING(4),
+        AIMING_ON_TARGET(5),
+        SHOOTING(6),
+        SHOOTING_ON_TARGET(7),
+        DONE_SHOOTING(8),
+        NO_AUTO(9),
+        BLUE_AUTO(10),
+        RED_AUTO(11),
+        AMP_IDLE(12);
 
         private final int code;
 
@@ -73,41 +74,71 @@ public class LedSubsystem extends SubsystemBase {
     public void periodic() {
         int code = 5;
         if(!disableLEDs) {
+
+            // disabled 
+
             if (DriverStation.isDisabled()) {
-                // If disabled, finds gets the alliance color from the driver station and pulses that. Only pulses color if connected to station or FMS, else pulses default disabled color (Firefl status mode)
+                // If disabled, gets the alliance color from the driver station and pulses that. Only pulses color if connected to station or FMS, else pulses default disabled color (Firefl status mode)
                 Auto selected = Dashboard.getInstance().getAuto();
                 if (selected == Auto.NO_AUTO || selected == null){
                     currentStatusMode = LEDStatusMode.NO_AUTO;
                 } else if (RobotState.getInstance().isRedAlliance()) {
-                    currentStatusMode = LEDStatusMode.LAVA;
+                    currentStatusMode = LEDStatusMode.RED_AUTO;
                 } else if (!RobotState.getInstance().isRedAlliance()) {
-                    currentStatusMode = LEDStatusMode.WATER;
+                   currentStatusMode = LEDStatusMode.BLUE_AUTO; 
                 } else {
                     currentStatusMode = LEDStatusMode.OFF; // Reaches here if DriverStation.getAlliance returns Invalid, which just means it can't determine our alliance and we do cool default effect
                 }
+
+            // autonomous LED status modes
+
             } else if (DriverStation.isAutonomous()) {
-                if(RobotState.getInstance().getNoteDetected()){
-                    currentStatusMode = LEDStatusMode.NOTE_DETECTED;
+                if(RobotState.getInstance().getNoteHeldDetected()){
+                    currentStatusMode = LEDStatusMode.HAS_NOTE;
                 } else if (RobotState.getInstance().getIsShamperAtGoalAngle()){
-                    currentStatusMode = LEDStatusMode.RAINBOW;
+                    // currentStatusMode = LEDStatusMode.AIMING;
                 } else {
                     if (RobotState.getInstance().isRedAlliance()) {
-                        currentStatusMode = LEDStatusMode.LAVA;
+                        currentStatusMode = LEDStatusMode.RED_AUTO;
                     } else if (!RobotState.getInstance().isRedAlliance()) {
-                        currentStatusMode = LEDStatusMode.WATER;
+                        currentStatusMode = LEDStatusMode.BLUE_AUTO;
                     }
                 }
             }
 
-            if (DriverStation.isTeleopEnabled()) {
-                if(RobotState.getInstance().getNoteDetected() && RobotState.getInstance().getIsShamperAtGoalAngle()){
-                    currentStatusMode = LEDStatusMode.CUBE;
-                } else if(RobotState.getInstance().getNoteDetected()){
-                    currentStatusMode = LEDStatusMode.CONE;
-                } else {
-                    currentStatusMode = LEDStatusMode.NO_AUTO;
-                }
+            // teleop LED status modes
 
+            if (DriverStation.isTeleopEnabled()) {
+                // shooting
+                if(RobotState.getInstance().getShooting()){
+                    if(!RobotState.getInstance().getNoteHeldDetected()){
+                        currentStatusMode = LEDStatusMode.DANGER;
+                                        } else if (RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().getIsShamperAtGoalAngle() && RobotState.getInstance().getIsRotationOnTarget()){
+                        currentStatusMode = LEDStatusMode.SHOOTING_ON_TARGET;
+                    } else {
+                        currentStatusMode = LEDStatusMode.SHOOTING;
+                    } 
+                }
+                //  aimed
+                else if (RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().getIsShamperAtGoalAngle() && RobotState.getInstance().getIsRotationOnTarget()){
+                    currentStatusMode = LEDStatusMode.AIMING_ON_TARGET;
+                } 
+                // aiming
+                else if (RobotState.getInstance().getIsVerticalAiming() || RobotState.getInstance().getIsHorizontalAiming())
+                {
+                    currentStatusMode = LEDStatusMode.AIMING;
+                } else if (RobotState.getInstance().getAmpIdle()){
+                    currentStatusMode = LEDStatusMode.AMP_IDLE;
+                }
+                else {
+                    if(RobotState.getInstance().getNoteHeldDetected()){
+                        currentStatusMode = LEDStatusMode.HAS_NOTE;
+                    } else if (RobotState.getInstance().getIsIntaking()){
+                        currentStatusMode = LEDStatusMode.INTAKE;
+                    } else {
+                        currentStatusMode = LEDStatusMode.OFF;
+                    }
+                }
             }
 
             code = currentStatusMode.code;
@@ -122,9 +153,7 @@ public class LedSubsystem extends SubsystemBase {
         codeChannel2.set((code & 2) > 0);   // 2^1
         codeChannel3.set((code & 4) > 0);   // 2^2
         codeChannel4.set((code & 8) > 0);   // 2^3
-        codeChannel5.set((code & 16) > 0);  // 2^4
-        codeChannel6.set((code & 32) > 0);
-        codeChannel7.set((code & 64) > 0);    
+        // codeChannel5.set((code & 16) > 0);  // 2^4
     }
 
     public void setLEDStatusMode(LEDStatusMode statusMode) {

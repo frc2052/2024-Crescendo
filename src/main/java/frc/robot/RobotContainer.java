@@ -7,49 +7,61 @@ package frc.robot;
 import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimberSlowRetractCommand;
+import frc.robot.commands.auto.commands.IntakeCommandAuto;
 import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
-import frc.robot.commands.auto.commands.shoot.ShootAutoLowCommand;
-import frc.robot.commands.auto.commands.shoot.ShootCommandAuto;
-import frc.robot.commands.auto.commands.shoot.ShootSubCommandAuto;
+import frc.robot.commands.auto.commands.shamper.PreShootCommandAuto;
+import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
+import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
+import frc.robot.commands.auto.commands.shamper.WindUpCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
+import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
-import frc.robot.commands.indexer.IndexerBackupCommand;
+import frc.robot.commands.drive.DriveWhileLobbingCommand;
+import frc.robot.commands.drive.FeedWhileMovingCommand;
+import frc.robot.commands.drive.GamePieceAlignmentCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
-import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
-import frc.robot.commands.shamper.ShamperAngleCommand;
 import frc.robot.commands.shamper.ShamperDefaultCommand;
-import frc.robot.commands.shamper.ShamperIdleCommand;
-import frc.robot.commands.shamper.ShamperManualShootCommand;
-import frc.robot.commands.shamper.ShamperPivotManualDownCommand;
-import frc.robot.commands.shamper.ShamperPivotManualUpCommand;
-import frc.robot.commands.shamper.ShamperSubCommand;
-import frc.robot.commands.shamper.ShamperTrapCommand;
-import frc.robot.commands.shamper.ShamperWindDownCommand;
-import frc.robot.commands.shamper.lookup.ShamperAutoAngleCommand;
-import frc.robot.commands.shamper.lookup.ShamperAutoShootCommand;
-import frc.robot.commands.trap.TrapReleaseCommand;
+import frc.robot.commands.shamper.ShamperLobOrShootCommand;
+import frc.robot.commands.shamper.lookup.ShamperAimAngleCommand;
+import frc.robot.commands.shamper.lookup.ShamperShootCommand;
+import frc.robot.commands.shamper.pivot.ShamperAngleCommand;
+import frc.robot.commands.shamper.pivot.ShamperCustomAngle;
+import frc.robot.commands.shamper.pivot.ShamperPivotManualDownCommand;
+import frc.robot.commands.shamper.pivot.ShamperPivotManualUpCommand;
+import frc.robot.commands.shamper.pivot.ShamperSubCommand;
+import frc.robot.commands.shamper.shoot.ShamperManualShootCommand;
+import frc.robot.commands.shamper.shoot.ShamperTrapCommand;
+import frc.robot.commands.shamper.shoot.ShamperCustomShotCommand;
+import frc.robot.commands.shamper.shoot.ShamperLobCommand;
+import frc.robot.commands.trap.TrapToggleCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.AdvantageScopeSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ForwardPixySubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.util.AimingCalculator;
 import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
+import frc.robot.util.io.pixy.Pixy2CCC;
+
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -62,6 +74,7 @@ public class RobotContainer {
   private final ClimberSubsystem climber;
   private final AprilTagSubsystem aprilTag;
   private final LedSubsystem ledSubsystem;
+  private ForwardPixySubsystem pixy;
   private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
   private final AdvantageScopeSubsystem advantageScope;
@@ -88,6 +101,7 @@ public class RobotContainer {
     // vision = new VisionSubsystem();
     trapArm = new TrapArmSubsystem();
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, indexer);
+    pixy = new ForwardPixySubsystem();
 
 
     robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
@@ -109,7 +123,7 @@ public class RobotContainer {
           translationJoystick::getX,
           // Rotation velocity supplier.
           rotationJoystick::getX,
-          () -> true,
+          Dashboard.getInstance()::isFieldCentric,
           //Dashboard.getInstance()::isFieldCentric,
           drivetrain
       )
@@ -117,30 +131,40 @@ public class RobotContainer {
 
     shamper.setDefaultCommand(new ShamperDefaultCommand(shamper));
 
-    NamedCommands.registerCommand("Robot Angle Align", new AimToSpeakerCommand(drivetrain));
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Sub Shoot Command", new ShootSubCommandAuto(shamper, indexer));
-    NamedCommands.registerCommand("Indexer Backup", new IndexerBackupCommand(indexer));
-    NamedCommands.registerCommand("Manual Angle", new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
-    NamedCommands.registerCommand("Manual Shoot", new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_IDLE));
-    NamedCommands.registerCommand("Manual Index", new IndexerIndexCommand(indexer));
-    NamedCommands.registerCommand("ShootAutoLow", new ShootAutoLowCommand(shamper, indexer));
-
-    NamedCommands.registerCommand("Intake", new IntakeCommand(intake, indexer, shamper));
+    NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer));
+    NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
+    NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
+    NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(2, -.6, -.4, drivetrain, pixy));
 
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
 
+    // JoystickButton customShotButton = new JoystickButton(rotationJoystick, 11);
+    // customShotButton.whileTrue(new ShamperCustomShotCommand(shamper, indexer));
+    // JoystickButton customAngleButton = new JoystickButton(rotationJoystick, 10);
+    // customAngleButton.whileTrue(new ShamperCustomAngle(shamper));
+
+    // ParallelDeadlineGroup specialIntakeCommand = new ParallelDeadlineGroup(
+    //   new IntakeCommandAuto(intake, indexer), 
+    //   new GamePieceAlignmentCommand(2, -.4, -.3, drivetrain, pixy)
+    // );
+
+    // JoystickButton gamePieceAlignmentButton = new JoystickButton(translationJoystick, 7);
+    // gamePieceAlignmentButton.whileTrue(specialIntakeCommand);
+
     /*
-     * Drive Commands
+     * Drive Button Bindings
      */
 
-    JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
-    zeroGyroButton.onTrue(new InstantCommand(() -> {drivetrain.zeroGyro(); RobotState.getInstance().clearNavXOffset();}));
-    JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
 
+    JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
+    zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroOdometry()));
+
+    JoystickButton driveWhileAimingButton = new JoystickButton(rotationJoystick, 2);
     driveWhileAimingButton.whileTrue(new DriveWhileAimingCommand(
       () -> translationJoystick.getY(), 
       () -> translationJoystick.getX(), 
@@ -148,25 +172,63 @@ public class RobotContainer {
       drivetrain
     ));
 
+    JoystickButton aimToAmpButton = new JoystickButton(rotationJoystick, 4);
+    Rotation2d ampDirection = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 90 : 270);
+    aimToAmpButton.whileTrue(new DriveWhileAimAmpCommand(
+      () -> translationJoystick.getY(), 
+      () -> translationJoystick.getX(),  
+      () -> ampDirection,
+      Dashboard.getInstance()::isFieldCentric,
+      drivetrain
+    ));
+
+    // JoystickButton aimLobButton = new JoystickButton(rotationJoystick, 5);
+    // aimLobButton.whileTrue(new ShamperLobCommand(shamper, indexer));
+    JoystickButton autoLobButton = new JoystickButton(rotationJoystick, 5);
+    autoLobButton.onTrue(new InstantCommand(() -> robotState.setIsLobbing(true))).onFalse(new InstantCommand(() -> robotState.setIsLobbing(false)));
+    // autoLobButton.whileTrue(new FeedWhileMovingCommand(
+    // () -> translationJoystick.getY(), 
+    // () -> translationJoystick.getX(), 
+    // () -> true, 
+    // drivetrain));
+
+    autoLobButton.whileTrue(new DriveWhileLobbingCommand(
+      () -> translationJoystick.getY(), 
+      () -> translationJoystick.getX(), 
+      () -> true, 
+      drivetrain));
+
+    // JoystickButton aimToSpeakerUsingOneTag = new JoystickButton(rotationJoystick, 7);
+    // aimToSpeakerUsingOneTag.whileTrue(new DriveWhileAimingSpeakerSingleTag(
+    // () -> translationJoystick.getX(), 
+    // () -> translationJoystick.getY(), 
+    // Dashboard.getInstance()::isFieldCentric, 
+    // drivetrain
+    // ));
+
     /*
      *  Climber Button Bindings
      */
     JoystickButton climberRetractButton = new JoystickButton(controlPanel, 6);
     JoystickButton climberExtendButton = new JoystickButton(controlPanel, 1);
     JoystickButton climberManualRetractSlow = new JoystickButton(controlPanel, 4);
+    JoystickButton resetIsClimbingButton = new JoystickButton(rotationJoystick, 6);
 
     climberRetractButton.whileTrue(new ClimberRetractCommand(climber));
     climberExtendButton.whileTrue(new ClimberExtendCommand(climber));
     climberManualRetractSlow.whileTrue(new ClimberSlowRetractCommand(climber));
+    resetIsClimbingButton.whileTrue(new InstantCommand(() -> robotState.updateIsClimbing(false)));
 
     /*
      * Intake Button Bindings
      */
 
     JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
+    JoystickButton intakeOverrideButton = new JoystickButton(translationJoystick, 5);
     JoystickButton outtakeButton = new JoystickButton(translationJoystick, 3);
     
     intakeInButton.whileTrue(new IntakeThenBackupCommand(intake, indexer, shamper));
+    intakeOverrideButton.onTrue(new InstantCommand(() -> robotState.updateNoteDetectorOverride(true))).onFalse(new InstantCommand(() -> robotState.updateNoteDetectorOverride(false)));
     outtakeButton.whileTrue(new OuttakeCommand(intake, indexer, shamper));
 
     /*
@@ -174,28 +236,27 @@ public class RobotContainer {
      */
 
     JoystickButton indexManualButton = new JoystickButton(controlPanel, 10);
-    JoystickButton indexBackButton = new JoystickButton(rotationJoystick, 6);
     indexManualButton.whileTrue(new IndexerIndexCommand(indexer));
-    indexBackButton.onTrue(new IndexerBackupCommand(indexer));
+
     /*
      *  Shooter Button Bindings
      */
 
     JoystickButton shamperShootButton = new JoystickButton(rotationJoystick, 1);
-    JoystickButton shamperWindDownButton = new JoystickButton(rotationJoystick, 5);
     JoystickButton shamperAmpShootButton = new JoystickButton(controlPanel, 11);
     JoystickButton shamperManualShootButton = new JoystickButton(controlPanel, 12);
     JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
-    Trigger shamperIdleButton = new Trigger(() -> controlPanel.getY() > 0.5);
-    JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
+    Trigger shamperIdleToggleButton = new Trigger(() -> controlPanel.getY() > 0.5);
+    // JoystickButton shamperCustomAngleButton = new JoystickButton(translationJoystick, 7);
+    // JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
 
-    shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
-    shamperShootButton.whileTrue(new ShamperAutoShootCommand(shamper, indexer));
-    shamperWindDownButton.whileTrue(new ShamperWindDownCommand(shamper));
+    shamperShootButton.whileTrue(new ShamperLobOrShootCommand(shamper, indexer));
     shamperAmpShootButton.whileTrue(new ShamperAmpCommand(shamper, indexer));
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
-    shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper));
-    shamperIdleButton.whileTrue(new ShamperIdleCommand(shamper));
+    shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper, indexer, trapArm));
+    shamperIdleToggleButton.onTrue(new InstantCommand(() -> shamper.toggleCurrentIdle()));
+    // shamperCustomAngleButton.onTrue(new ShamperCustomAngle(shamper));
+    // shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
 
     /*
      *  Shamper Angle Button Bindings
@@ -203,24 +264,23 @@ public class RobotContainer {
 
      JoystickButton shamper90Button = new JoystickButton(controlPanel, 8);
      Trigger shamperPodiumButton = new Trigger(() -> controlPanel.getY() < -0.5);
-     JoystickButton shamperPodiumDriverButton = new JoystickButton(rotationJoystick, 4);
      JoystickButton shamperAutoAngleButton = new JoystickButton(rotationJoystick, 3);
      Trigger shamperSubwooferButton = new Trigger(() -> controlPanel.getX() > 0.5);
      Trigger shamperAmpButton = new Trigger(() -> controlPanel.getX() < -0.5);
      JoystickButton shamperClimbHeightButton = new JoystickButton(controlPanel, 9);
+     JoystickButton shamperTrapButton = new JoystickButton(controlPanel, 5);
      JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 7);
-     JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 5);
+    //  JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 5);
 
-     shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
+     shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.NINETY));
      shamperPodiumButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.PODIUM));
-     shamperPodiumDriverButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.DEFAULT));
-     shamperAutoAngleButton.onTrue(new ShamperAutoAngleCommand(shamper, indexer));
+     shamperAutoAngleButton.whileTrue(new ShamperAimAngleCommand(shamper));
      shamperSubwooferButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.SUB));
      shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
      shamperClimbHeightButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.CLIMB));
-     shamperManualUpButton.onTrue(new ShamperPivotManualUpCommand(shamper));
-     shamperManualDownButton.onTrue(new ShamperPivotManualDownCommand(shamper));
-
+     shamperTrapButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
+     shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
+    //  shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
 
     /*
      * Trap Button Bindings
@@ -228,7 +288,7 @@ public class RobotContainer {
 
     JoystickButton trapReleaseButton = new JoystickButton(controlPanel, 3);
 
-    trapReleaseButton.whileTrue(new TrapReleaseCommand(trapArm));
+    trapReleaseButton.whileTrue(new TrapToggleCommand(trapArm));
     
     /*
      * Music Player Toggle
@@ -254,11 +314,14 @@ public class RobotContainer {
           autoFactory.recompile();
       }
   }
+
   public Command getAutonomousCommand() {
     return autoFactory.getCompiledAuto();
   }
 
   public void resetGyro(){
-    drivetrain.zeroGyro();
+    // if (RobotState.getInstance().gyroResetNeeded()){
+    //   drivetrain.zeroOdometry();
+    // }
   }
 }

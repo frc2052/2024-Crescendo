@@ -9,6 +9,7 @@ import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
+import frc.robot.util.io.Dashboard;
 
 public class ShamperDefaultCommand extends Command {
   private ShamperSubsystem shamper;
@@ -22,20 +23,46 @@ public class ShamperDefaultCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if(!RobotState.getInstance().getIsClimbing() && !RobotState.getInstance().getNoteDetected() && shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT) {
+    // if(RobotState.getInstance().getIsClimbing()) {
+    //   return;
+    // }
+    if(Dashboard.getInstance().shouldIdle()) {
+      // if(RobotState.getInstance().getNoteHeldDetected()){
+        switch (shamper.getCurrentIdleMode()) {
+          case SPEAKER_IDLE:
+            shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
+            break;
+          case AMP_IDLE:
+            shamper.setShootSpeed(ShamperSpeed.AMP_IDLE);
+            break;
+        }
+      // }
+    } else {
+      shamper.windDownShooter();
+    }
+    
+    if(RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().isInWing()) {
+      shamper.setAngle(Constants.Shamper.Angle.PODIUM);
+    }
+
+
+    // if((!RobotState.getInstance().getNoteStagedDetected() && !RobotState.getInstance().getNoteHeldDetected()) &&
+    //     shamper.getShamperAngle() > Constants.Shamper.Angle.DEFAULT
+    //   ) {
     //   shamper.setAngle(Constants.Shamper.Angle.DEFAULT);
     // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    // shamper.stopShooter();
+  }
 
   // Returns true when the command should end.
   @Override

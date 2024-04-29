@@ -36,13 +36,13 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        recordIntakeData();
-        recordShamperData();
-        recordClimberData();
-        recordDrivetrainData();
-        recordMusicPlayerData();
-        recordIndexerData();
-        recordTrapArmData();
+        // recordIntakeData();
+        // recordShamperData();
+        // recordClimberData();
+        // recordDrivetrainData();
+        // recordMusicPlayerData();
+        // recordIndexerData();
+        // recordTrapArmData();
 
     }
 
@@ -57,7 +57,7 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     public static void recordIndexerData() {}
 
     public static void recordTrapArmData() {
-        String trapArmFolder = "TrapArm_";
+        // String trapArmFolder = "TrapArm_";
 
         // Logger.recordOutput(folder+trapArmFolder+"Trap Arm Position", 
         // trapArmSubsystem.getPosition());
@@ -77,8 +77,8 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
     public static void recordClimberData () {
         String climberFolder = "Climber_";
 
-        Logger.recordOutput(folder+climberFolder+"Climber Encoder Position", 
-        climberSubsystem.getEncoderPosition());
+        Logger.recordOutput(folder+climberFolder+"Limit Switch Hit", 
+        climberSubsystem.limitSwitchHit());
     }
 
     public static void recordMusicPlayerData() {

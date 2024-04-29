@@ -6,14 +6,20 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
+import frc.robot.util.io.Dashboard;
 
 public class ClimberSubsystem extends SubsystemBase{
  
     private final CANSparkMax leftClimberMotor;
     private final CANSparkMax rightClimberMotor;
+
+    private final DigitalInput limitSwitch;
+
+    private boolean isCoast;
 
     public ClimberSubsystem() {
         leftClimberMotor = new CANSparkMax(Constants.CAN.LEFT_CLIMBER_MOTOR, MotorType.kBrushless);
@@ -25,15 +31,19 @@ public class ClimberSubsystem extends SubsystemBase{
         rightClimberMotor.setInverted(Constants.Climber.LEFT_CLIMBER_MOTOR_INVERTED);
 
         rightClimberMotor.follow(leftClimberMotor);
+
+        limitSwitch = new DigitalInput(Constants.Climber.CLIMBER_LIMIT_SWITCH_PIN);
+
+        isCoast = false;
     }
 
     public void extend(boolean override) {
         leftClimberMotor.set(Constants.Climber.CLIMBER_MOTOR_PCT);
-        RobotState.getInstance().updateIsClimbing(true);
     }
 
     public void retract(boolean override) {
         leftClimberMotor.set(-Constants.Climber.CLIMBER_MOTOR_PCT);
+        RobotState.getInstance().updateIsClimbing(true);
     }
 
     public void retractSlow(boolean override) {
@@ -47,22 +57,30 @@ public class ClimberSubsystem extends SubsystemBase{
         leftClimberMotor.set(0);
     }
 
-    public void zeroEncoder() {
-        //leftClimberMotor.setSelectedSensorPosition(0);
+    public boolean limitSwitchHit() {
+        return !limitSwitch.get();
     }
 
-    public double getEncoderPosition() {
-        return leftClimberMotor.getEncoder().getPosition();
-    }
+    public void setCoast(boolean isCoast){
+        if(isCoast == this.isCoast){
+            return;
+        }
 
-    public boolean getEncoderIsAbove(double ticks) {
-        //return leftClimberMotor.getSelectedSensorPosition() >= ticks;
-        return false;
+        if(isCoast){
+            leftClimberMotor.setIdleMode(IdleMode.kCoast);
+            rightClimberMotor.setIdleMode(IdleMode.kCoast);
+        } else {
+            leftClimberMotor.setIdleMode(IdleMode.kBrake);
+            rightClimberMotor.setIdleMode(IdleMode.kBrake);
+        }
+
+        this.isCoast = isCoast;
     }
 
 @Override
 public void periodic() {
     Logger.recordOutput("Climber Encoder Value", leftClimberMotor.getEncoder().getPosition());
+    setCoast(Dashboard.getInstance().isClimberCoast());
 }
 
 }

@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.8713465457064844,
+        "y": 5.304333453718992
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.1548044271683784,
+        "y": 5.451535866799412
+      },
+      "isLocked": false,
+      "linkedName": "Center Shoot"
+    },
+    {
+      "anchor": {
+        "x": 2.613922488900611,
+        "y": 4.133925300660873
+      },
+      "prevControl": {
+        "x": 2.3639224889006116,
+        "y": 5.633925300660874
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Note 1"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 540.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 163.15831625424917,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Connector Paths",
+  "previewStartingState": {
+    "rotation": 179.41113748809624,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}
