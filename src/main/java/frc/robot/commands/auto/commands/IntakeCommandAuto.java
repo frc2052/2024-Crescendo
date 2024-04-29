@@ -9,18 +9,18 @@ import frc.robot.subsystems.ShamperSubsystem;
 public class IntakeCommandAuto extends Command {
     private final IntakeSubsystem intake;
     private final IndexerSubsystem indexer;
-    private final ShamperSubsystem shamper;
+    // private final ShamperSubsystem shamper;
 
-    public IntakeCommandAuto(IntakeSubsystem intake, IndexerSubsystem indexer, ShamperSubsystem shamper) {
+    public IntakeCommandAuto(IntakeSubsystem intake, IndexerSubsystem indexer) {
         this.intake = intake;
         this.indexer = indexer;
-        this.shamper = shamper;
-        addRequirements(intake, indexer, shamper);
+        // this.shamper = shamper;
+        addRequirements(intake, indexer);
     }
     @Override
     public void initialize(){
         //shamper.windDownShooter();
-        shamper.setAngle(Constants.Shamper.Angle.AUTO_INTAKE);
+        // shamper.setAngle(Constants.Shamper.Angle.AUTO_INTAKE);
     }
 
     @Override

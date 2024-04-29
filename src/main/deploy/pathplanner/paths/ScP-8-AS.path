@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.867509204347936,
-        "y": 7.541778735483292
+        "x": 6.724426116469921,
+        "y": 7.623754591303762
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.00433321597388,
-        "y": 7.29032832919257
+        "x": 5.861250128095865,
+        "y": 7.37230418501304
       },
       "isLocked": false,
       "linkedName": "Note 8"
@@ -33,13 +33,13 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -157.1663458220824,
+    "rotation": -166.99508876669717,
     "rotateFast": false
   },
   "reversed": false,

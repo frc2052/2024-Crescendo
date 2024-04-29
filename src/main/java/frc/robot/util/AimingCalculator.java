@@ -96,10 +96,10 @@ public class AimingCalculator {
 
         Translation2d robotVelo = new Translation2d(robotChassisSpeeds.vxMetersPerSecond, robotChassisSpeeds.vyMetersPerSecond).rotateBy(angleToTarget);
 
-        double flyTime = 0.0;
+        double flyTime = 0.5;
         double uncorrectedShot = flyTime * robotVelo.getY();
 
-        double correction = -Math.atan2(uncorrectedShot, distanceToTarget);
+        double correction = Math.atan2(uncorrectedShot, distanceToTarget);
 
         double setpointAngle = MathUtil.inputModulus(angleToTarget.getRadians() + correction, -Math.PI, Math.PI);
         Logger.recordOutput("setpoint", setpointAngle);
@@ -155,6 +155,47 @@ public class AimingCalculator {
             Dashboard.getInstance().putData("Calculated hypot to speaker",  Math.hypot(xDistance, yDistance));
             
             return Math.hypot(xDistance, yDistance);
+        }
+    }
+
+    public static double calculateDistanceToSpeakerWithVelocity(Pose2d robotPose, ChassisSpeeds chassisSpeeds) {
+        if(!RobotState.getInstance().isRedAlliance()) { // blue alliance
+            Translation2d aimLocation = Constants.FieldAndRobot.BLUE_SPEAKER_LOCATION;
+
+            double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
+            double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
+            Dashboard.getInstance().putData("Calculated hypot to speaker",  Math.hypot(xDistance, yDistance));
+
+            Translation2d robotPos = robotPose.getTranslation();
+            Rotation2d angleToTarget = aimLocation.minus(robotPos).getAngle();
+    
+            Translation2d robotVelo = new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond).rotateBy(angleToTarget);
+
+            double flyTime = Math.hypot(xDistance, yDistance) / Constants.FieldAndRobot.NOTE_SPEED_IN_METERS_PER_SECOND;
+            // System.out.println("Fly time: " + flyTime);
+            double offset = flyTime * robotVelo.getX();
+            // System.out.println("Offset " + offset);
+
+            return Math.hypot(xDistance, yDistance) + offset;
+        } else { // red alliance
+            Translation2d aimLocation = Constants.FieldAndRobot.RED_SPEAKER_LOCATION;
+
+
+            double xDistance = Math.abs(aimLocation.getX() - robotPose.getX());
+            double yDistance = Math.abs(aimLocation.getY() - robotPose.getY());
+            Dashboard.getInstance().putData("Calculated hypot to speaker",  Math.hypot(xDistance, yDistance));
+
+            Translation2d robotPos = robotPose.getTranslation();
+            Rotation2d angleToTarget = aimLocation.minus(robotPos).getAngle();
+    
+            Translation2d robotVelo = new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond).rotateBy(angleToTarget);
+
+            double flyTime = Math.hypot(xDistance, yDistance) / Constants.FieldAndRobot.NOTE_SPEED_IN_METERS_PER_SECOND;
+            // System.out.println("Fly time: " + flyTime);
+            double offset = flyTime * robotVelo.getX();
+            // System.out.println("Offset " + offset);
+
+            return Math.hypot(xDistance, yDistance) - offset;
         }
     }
     

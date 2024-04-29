@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 8.832376694710593,
-        "y": 0.7846260485673593
+        "x": 6.841534481927736,
+        "y": 0.9368669236625209
       },
       "prevControl": {
-        "x": 5.40110158679661,
-        "y": 0.4215901156481322
+        "x": 3.4102593740137532,
+        "y": 0.5738309907432938
       },
       "nextControl": {
-        "x": 9.065584374378878,
-        "y": 0.8092998986346522
+        "x": 7.074742161596021,
+        "y": 0.9615407737298138
       },
       "isLocked": false,
       "linkedName": "Note 4"
@@ -73,7 +73,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },

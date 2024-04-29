@@ -13,13 +13,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class VisionSubsystem extends SubsystemBase {
+public class NoteVisionSubsystem extends SubsystemBase {
   private static PhotonCamera noteCamera;
   private static boolean hasTarget; 
   private static Transform3d fieldToCamera;
   private static Pose2d targetPose;
   /** Creates a new VisionSubsystem. */
-  public VisionSubsystem() {
+  public NoteVisionSubsystem() {
     noteCamera = new PhotonCamera("Note Detection Camera Team 2052");
   }
 

@@ -46,26 +46,30 @@ public class ShamperLobOrShootCommand extends ShamperShootCommand {
         upperSpeed = ShamperSpeed.LOB.getUpper() - (ShamperSpeed.LOB.getUpper() * Constants.FieldAndRobot.LOB_SHOOTING_SPEED_MULTIPLIER);
         lowerSpeed = ShamperSpeed.LOB.getLower() - (ShamperSpeed.LOB.getLower() * Constants.FieldAndRobot.LOB_SHOOTING_SPEED_MULTIPLIER);
         shamper.setShootSpeed(
-          ShamperSpeed.LOB.getUpper() - (ShamperSpeed.LOB.getUpper() * Constants.FieldAndRobot.LOB_SHOOTING_SPEED_MULTIPLIER),
-          ShamperSpeed.LOB.getLower() - (ShamperSpeed.LOB.getLower() * Constants.FieldAndRobot.LOB_SHOOTING_SPEED_MULTIPLIER)
+          upperSpeed,
+          lowerSpeed
         );
       } else {
         upperSpeed = ShamperSpeed.LOB.getUpper();
         lowerSpeed = ShamperSpeed.LOB.getLower();
         shamper.setShootSpeed(ShamperSpeed.LOB);
       }
-      
-      double poseX = RobotState.getInstance().getRobotPose().getX();
 
-      if (RobotState.getInstance().isRedAlliance()){
-        if (poseX > redIndexLine && shamper.shooterAtSpeed(lowerSpeed, upperSpeed)) {
-          indexer.indexAll();
-        }
-      } else {
-        if (poseX < blueIndexLine && shamper.shooterAtSpeed(lowerSpeed, upperSpeed)) {
-          indexer.indexAll();
-        }
+      if (shamper.shooterAtSpeed(lowerSpeed, upperSpeed) && shamper.isAtGoalAngle(4)) {
+        indexer.indexAll();
       }
+      
+      // double poseX = RobotState.getInstance().getRobotPose().getX();
+
+      // if (RobotState.getInstance().isRedAlliance()){
+      //   if (poseX > redIndexLine && shamper.shooterAtSpeed(lowerSpeed, upperSpeed)) {
+      //     indexer.indexAll();
+      //   }
+      // } else {
+      //   if (poseX < blueIndexLine && shamper.shooterAtSpeed(lowerSpeed, upperSpeed)) {
+      //     indexer.indexAll();
+      //   }
+      // }
     } else {
       super.execute();
     }

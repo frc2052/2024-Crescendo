@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import com.team2052.lib.photonvision.VisionUpdate;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -49,53 +51,50 @@ public class RobotStateEstimator {
             );
         }
         
-        // if(robotState.getVisionEnabled()){
-            //if (!(robotState.getChassisSpeeds().vxMetersPerSecond > 2) && !(robotState.getChassisSpeeds().vxMetersPerSecond > 2) && !(robotState.getChassisSpeeds().omegaRadiansPerSecond > 1.5)){   
-                if(robotState.getVisionPose3d().isPresent()){
-                    Pose2d visionPose = robotState.getVisionPose3d().get().toPose2d();
-                    if(visionPose.getX() > 0 && visionPose.getX() < Units.inchesToMeters(651.157) && visionPose.getY() > 0 && visionPose.getY() < Units.feetToMeters(27)){
-                        double distanceToSpeaker = robotState.getSpeakerLocation().getDistance(robotState.getRobotPose().getTranslation());
-                        double xyPower = 0.75;
-                        double rotStds = 99999999;
-                        // System.out.println("STDS " + xyStds);
-                        List<PhotonTrackedTarget> targets = robotState.getActiveTargets();
-                        boolean foundTag1 = false;
-                        boolean foundTag2 = false;
+        /*
+         *  Odometry updates
+         */
+        if(!robotState.getCollisionDetected()){
+            poseEstimator.update(
+                robotState.getGyroRotation(), 
+                robotState.getModulePositions()
+            );
+        }
 
-                        // check list of seen targets and if we see both speaker tags
-                        for (PhotonTrackedTarget target : targets) {
-                            if(target.getFiducialId() == 3 || target.getFiducialId() == 7){
-                                foundTag1 = true;
-                            } else if (target.getFiducialId() == 4 || target.getFiducialId() == 8){
-                                foundTag2 = true;
-                            }
-                        }
+        /*
+         * Vision updates
+         */
+        
+        for(VisionUpdate visionUpdate : robotState.getVisionUpdates()){
+            Pose2d visionPose = visionUpdate.estimatedPose.toPose2d();
+            double xyStds = 0.25;
+            double rotStds = 99999999;
 
-                        // if we are close enough and see both speaker tags, make the pose estimator trust rotation from tags more
-                        if(distanceToSpeaker < 2.5 && foundTag1 && foundTag2) {
-                            rotStds = 0.2;
-                        }
+            List<PhotonTrackedTarget> targets = visionUpdate.targetsUsed;
+            boolean foundTag1 = false;
+            boolean foundTag2 = false;
 
-                        if (foundTag1 || foundTag2){
-                            xyPower = 1;
-                        }
-
-                        double xyStds = 0.05 * Math.pow(distanceToSpeaker, xyPower);
-                        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, rotStds));
-
-                        poseEstimator.addVisionMeasurement(
-                            visionPose,
-                            robotState.getVisionDetectionTime()
-                        );
-                    }
+            // check list of seen targets and if we see both speaker tags
+            for (PhotonTrackedTarget target : targets) {
+                if(target.getFiducialId() == 3 || target.getFiducialId() == 7){
+                    foundTag1 = true;
+                } else if (target.getFiducialId() == 4 || target.getFiducialId() == 8){
+                    foundTag2 = true;
                 }
-            //} 
-        // }
+            }
 
-        poseEstimator.update(
-            robotState.getGyroRotation(), 
-            robotState.getModulePositions()
-        );
+            // if we see both speaker tags, make the pose estimator trust rotation from tags more
+            if(foundTag1 && foundTag2) {
+                rotStds = 0.2;
+            }
+
+            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, rotStds));
+
+            poseEstimator.addVisionMeasurement(
+                visionPose,
+                visionUpdate.timestampSeconds
+            );
+        }
 
         robotState.updateRobotPose(poseEstimator.getEstimatedPosition()); 
     }

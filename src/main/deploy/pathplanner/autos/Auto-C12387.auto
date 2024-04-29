@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3972579543332604,
-      "y": 5.470436389883433
+      "x": 1.3633965729469937,
+      "y": 5.527972981871891
     },
     "rotation": 176.82016988013604
   },
@@ -182,9 +182,9 @@
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 1.0
+                        "name": "Note Alignment Command"
                       }
                     }
                   ]
@@ -206,9 +206,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "ScP-8-AS"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ScP-8-AS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              }
+            ]
           }
         },
         {
@@ -238,9 +257,9 @@
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 1.0
+                        "name": "Note Alignment Command"
                       }
                     }
                   ]
@@ -262,9 +281,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "ScP 7-AS"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ScP 7-AS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pre-Shoot Command"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Command"
+                }
+              }
+            ]
           }
         },
         {

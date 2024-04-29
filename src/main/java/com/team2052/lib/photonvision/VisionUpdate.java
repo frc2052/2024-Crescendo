@@ -31,7 +31,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import com.team2052.lib.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /** An estimated pose based on pipeline result */
-public class EstimatedRobotPose {
+public class VisionUpdate {
     /** The estimated pose */
     public final Pose3d estimatedPose;
 
@@ -44,20 +44,24 @@ public class EstimatedRobotPose {
     /** The strategy actually used to produce this pose */
     public final PoseStrategy strategy;
 
+    public final PhotonCamera camera;
+
     /**
      * Constructs an EstimatedRobotPose
      *
      * @param estimatedPose estimated pose
      * @param timestampSeconds timestamp of the estimate
      */
-    public EstimatedRobotPose(
+    public VisionUpdate(
             Pose3d estimatedPose,
             double timestampSeconds,
             List<PhotonTrackedTarget> targetsUsed,
-            PoseStrategy strategy) {
+            PoseStrategy strategy,
+            PhotonCamera camera) {
         this.estimatedPose = estimatedPose;
         this.timestampSeconds = timestampSeconds;
         this.targetsUsed = targetsUsed;
         this.strategy = strategy;
+        this.camera = camera;
     }
 }

@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.937774223622627,
-        "y": 4.1690578102982165
+        "x": 6.87666699156508,
+        "y": 4.04023860829462
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.168602069893705,
-        "y": 3.2415651860822
+        "x": 4.136331239852207,
+        "y": 4.883418839590889
       },
       "isLocked": false,
       "linkedName": "Note 6"
     },
     {
       "anchor": {
-        "x": 2.182352826244115,
-        "y": 4.864402805728689
+        "x": 3.1994643161896867,
+        "y": 5.550936522700434
       },
       "prevControl": {
-        "x": 3.247982649811454,
-        "y": 6.936460795998516
+        "x": 3.9878622745336614,
+        "y": 5.249911847696371
+      },
+      "nextControl": {
+        "x": 2.5553683061717036,
+        "y": 5.796864090161846
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.2040432097982583,
+        "y": 4.50867207012588
+      },
+      "prevControl": {
+        "x": 1.5131038535971493,
+        "y": 5.4806715034257465
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "6-CS End"
+      "linkedName": "Pre-Note-1"
     }
   ],
   "rotationTargets": [],
@@ -33,13 +49,13 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 138.36646066342982,
+    "rotation": 152.8503183022168,
     "rotateFast": false
   },
   "reversed": false,

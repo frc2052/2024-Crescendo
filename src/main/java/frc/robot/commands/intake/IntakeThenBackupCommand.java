@@ -17,11 +17,7 @@ public class IntakeThenBackupCommand extends SequentialCommandGroup {
   public IntakeThenBackupCommand(IntakeSubsystem intake, IndexerSubsystem indexer, ShamperSubsystem shamper) {
     addCommands(
       new IntakeCommand(intake, indexer, shamper),
-      new ParallelDeadlineGroup(
-        new WaitCommand(1),
-        new IndexerBackupCommand(indexer),
-        new IntakeReverseCommand(intake)
-      )
+      new IntakeReverseCommand(intake)
     );
   }
 }

@@ -126,7 +126,6 @@ public class ShamperSubsystem extends SubsystemBase {
 
     if(speeds.getUpper() == goalSpeedUpper && speeds.getLower() == goalSpeedLower) {
       // do nothing if set speed is already the goal speed
-      System.out.println("Already at goal speed");
       return;
     }
 

@@ -4,6 +4,7 @@
 
 package frc.robot.commands.auto.commands.drive;
 
+import frc.robot.RobotState;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
@@ -16,7 +17,7 @@ public class AimToSpeakerCommand extends DriveWhileAimingCommand {
 
     @Override
     public boolean isFinished(){
-        if(super.isOnTarget){
+        if(super.isOnTarget || !(RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().getNoteStagedDetected())){
             return true;
         } else {
             return false;

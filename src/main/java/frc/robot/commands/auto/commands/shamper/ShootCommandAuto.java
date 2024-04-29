@@ -18,7 +18,6 @@ import frc.robot.util.calculator.ShootingAngleCalculator;
 public class ShootCommandAuto extends Command {
     private final ShamperSubsystem shamper;
     private final IndexerSubsystem indexer;
-    private double indexStartTime = 0;
     private ShootAngleConfig config;
 
     public ShootCommandAuto(ShamperSubsystem shamper, IndexerSubsystem indexer) {
@@ -29,8 +28,6 @@ public class ShootCommandAuto extends Command {
 
   @Override
   public void initialize() {
-    indexStartTime = 0;
-    RobotState.getInstance().updateVisionEnabled(true);
   }
 
   protected ShootAngleConfig getTargetAngle(){
@@ -46,22 +43,16 @@ public class ShootCommandAuto extends Command {
 
     if(shamper.shooterAtSpeed(config.getLowerShooterSpeedVelocityRPS(), config.getUpperShooterSpeedVelocityRPS()) && shamper.isAtGoalAngle()) {
         indexer.indexAll();
-        if(indexStartTime == 0){
-          indexStartTime = Timer.getFPGATimestamp();
-        }
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-    shamper.windDownShooter();
     indexer.stop();
-    
-    RobotState.getInstance().updateVisionEnabled(false);
   }
 
   @Override
   public boolean isFinished() {
-    return (!indexer.getNoteHeld() && !indexer.getNoteStaged());
+    return !(RobotState.getInstance().getNoteHeldDetected() || RobotState.getInstance().getNoteStagedDetected());
   }
 }
