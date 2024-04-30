@@ -35,8 +35,9 @@ public class GamePieceAlignmentCommand extends DriveCommand {
 
         this.pixy = pixy;
 
-        yController = new PIDController(.02, 0, 0);
-        yController.setTolerance(30);
+        yController = new PIDController(2.5, 0, 0.15);
+        yController.enableContinuousInput(-158, 158);
+        yController.setTolerance(10);
         yController.setSetpoint(-Constants.Intake.FRONT_PIXY_MOUNT_OFFSET_PIXELS);
 
         this.goalMeters = goalMeters;
@@ -52,20 +53,22 @@ public class GamePieceAlignmentCommand extends DriveCommand {
     }
 
     @Override
-    protected double getY() {
+    protected double getRotation() {
         Block myFavoriteNote = pixy.findCentermostBlock();
-        if(myFavoriteNote == null || RobotState.getInstance().getNoteHeldDetected()){
+        if(myFavoriteNote == null || RobotState.getInstance().getNoteHeldDetected()) {
+            System.out.println("no note :(");
             return 0;
         } else {
-            System.out.println("centermost block " + (myFavoriteNote.getX()));
             double yOffset = pixy.xOffsetFromCenter(myFavoriteNote);
-            double ySpeed = -yController.calculate(yOffset) / 158;
-            if(Math.abs(yOffset) < 25){
-                return 0;
+            double ySpeed = yController.calculate(yOffset) / 316;
+            if(yController.atSetpoint()) {
+                ySpeed = 0;
             }
+
             if(Math.abs(ySpeed) > sidewaysSpeed){
                 ySpeed = Math.copySign(sidewaysSpeed, ySpeed);
             }
+
             return ySpeed;
         }
     }

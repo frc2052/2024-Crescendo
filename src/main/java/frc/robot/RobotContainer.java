@@ -17,6 +17,7 @@ import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
+import frc.robot.commands.drive.DriveWhileGamePieceAlign;
 import frc.robot.commands.drive.DriveWhileLobbingCommand;
 import frc.robot.commands.drive.FeedWhileMovingCommand;
 import frc.robot.commands.drive.GamePieceAlignmentCommand;
@@ -146,13 +147,22 @@ public class RobotContainer {
     // JoystickButton customAngleButton = new JoystickButton(rotationJoystick, 10);
     // customAngleButton.whileTrue(new ShamperCustomAngle(shamper));
 
-    // ParallelDeadlineGroup specialIntakeCommand = new ParallelDeadlineGroup(
-    //   new IntakeCommandAuto(intake, indexer), 
-    //   new GamePieceAlignmentCommand(2, -.4, -.3, drivetrain, pixy)
-    // );
+    JoystickButton gamePieceDriveButton = new JoystickButton(rotationJoystick, 10);
+    gamePieceDriveButton.whileTrue(new DriveWhileGamePieceAlign(
+      () -> translationJoystick.getY(), 
+      () -> translationJoystick.getX(), 
+       0.3, 
+      drivetrain, 
+      pixy)
+    );
 
-    // JoystickButton gamePieceAlignmentButton = new JoystickButton(translationJoystick, 7);
-    // gamePieceAlignmentButton.whileTrue(specialIntakeCommand);
+    ParallelDeadlineGroup specialIntakeCommand = new ParallelDeadlineGroup(
+      new IntakeCommandAuto(intake, indexer), 
+      new GamePieceAlignmentCommand(2, -.4, .3, drivetrain, pixy)
+    );
+
+    JoystickButton gamePieceAlignmentButton = new JoystickButton(translationJoystick, 7);
+    gamePieceAlignmentButton.whileTrue(specialIntakeCommand);
 
     /*
      * Drive Button Bindings

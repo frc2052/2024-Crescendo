@@ -14,7 +14,8 @@ public class ForwardPixySubsystem extends SubsystemBase{
 
     public ForwardPixySubsystem(){
         pixy = Pixy2.createInstance(new SPILink()); // Creates a new Pixy2 camera using SPILink
-		pixy.init(); // Initializes the camera and prepares to send/receive data
+		int result = pixy.init(); // Initializes the camera and prepares to send/receive data
+        System.out.println("pixy init result: "+ result);
     }
 
     @Override
@@ -62,10 +63,6 @@ public class ForwardPixySubsystem extends SubsystemBase{
                     centerBlock = block;
                 }
             }
-        }
-
-        if (centerBlock != null) {
-            // System.out.println(xOffsetFromCenter(centerBlock));
         }
 
         return centerBlock;
