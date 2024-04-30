@@ -19,7 +19,9 @@ import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.DriveWhileLobbingCommand;
 import frc.robot.commands.drive.FeedWhileMovingCommand;
+import frc.robot.commands.drive.GamePieceAlignmentAmpSideCommand;
 import frc.robot.commands.drive.GamePieceAlignmentCommand;
+import frc.robot.commands.drive.GamePieceAlignmentSourceSideCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
@@ -135,6 +137,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
     NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
     NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(2, -.6, -.4, drivetrain, pixy));
+    NamedCommands.registerCommand("Game Piece Alignment Source Side", new GamePieceAlignmentSourceSideCommand(2, -.6, -.4, drivetrain, pixy));
+    NamedCommands.registerCommand("Game Piece Alignment Amp Side", new GamePieceAlignmentAmpSideCommand(2, -.6, -.4, drivetrain, pixy));
 
     configureButtonBindings();
   }

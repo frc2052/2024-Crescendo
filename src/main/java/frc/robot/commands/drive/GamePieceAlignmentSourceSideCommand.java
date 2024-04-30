@@ -14,7 +14,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.util.RobotStateEstimator;
 import frc.robot.util.io.pixy.Pixy2CCC.Block;
 
-public class GamePieceAlignmentCommand extends DriveCommand {
+public class GamePieceAlignmentSourceSideCommand extends DriveCommand {
     private final ForwardPixySubsystem pixy;
 
     private final PIDController yController;
@@ -26,7 +26,7 @@ public class GamePieceAlignmentCommand extends DriveCommand {
 
     private Pose2d startPose;
 
-    public GamePieceAlignmentCommand(
+    public GamePieceAlignmentSourceSideCommand(
         double goalMeters,
         double backwardsSpeed,
         double sidewaysSpeed,
@@ -44,7 +44,7 @@ public class GamePieceAlignmentCommand extends DriveCommand {
         this.goalMeters = goalMeters;
         this.backwardsSpeed = backwardsSpeed;
         this.sidewaysSpeed = sidewaysSpeed;
-        rotationSpeed = .01;
+        rotationSpeed = 0;
 
         addRequirements(pixy, drivetrain);
     }
