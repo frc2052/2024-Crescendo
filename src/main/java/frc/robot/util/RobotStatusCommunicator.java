@@ -30,7 +30,7 @@ public class RobotStatusCommunicator {
     }
 
     public void onRobotPeriodic() {
-        if (DriverStation.getMatchTime() >= 180 && !hasRunTwentySeconds) {
+        if (DriverStation.getMatchTime() >= 130 && !hasRunTwentySeconds) {
             onTwentySecondsLeft();
             hasRunTwentySeconds = true;
         }
