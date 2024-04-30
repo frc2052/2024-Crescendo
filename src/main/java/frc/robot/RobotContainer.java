@@ -14,14 +14,13 @@ import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
 import frc.robot.commands.auto.commands.shamper.WindUpCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
+import frc.robot.commands.drive.AutoCenterLineNotePickupCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.DriveWhileLobbingCommand;
 import frc.robot.commands.drive.FeedWhileMovingCommand;
-import frc.robot.commands.drive.GamePieceAlignmentAmpSideCommand;
 import frc.robot.commands.drive.GamePieceAlignmentCommand;
-import frc.robot.commands.drive.GamePieceAlignmentSourceSideCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
@@ -137,9 +136,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
     NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
     NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(2, -.6, -.4, drivetrain, pixy));
-    NamedCommands.registerCommand("Game Piece Alignment Source Side", new GamePieceAlignmentSourceSideCommand(2, -.6, -.4, drivetrain, pixy));
-    NamedCommands.registerCommand("Game Piece Alignment Amp Side", new GamePieceAlignmentAmpSideCommand(2, -.6, -.4, drivetrain, pixy));
-
+      
+      Rotation2d towardsAmpSide = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 90 : 270);
+      Rotation2d towardsSourceSide = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 270 : 90);
+      // TODO: make it stop being mad about the parameters for AutoCenterLineNotePickupCommand
+    // NamedCommands.registerCommand("Game Piece Alignment Towards Amp", new AutoCenterLineNotePickupCommand(2, -.6, -.4, towardsAmpSide, drivetrain, pixy));
+    // NamedCommands.registerCommand("Game Piece Alignment Towards Source", new AutoCenterLineNotePickupCommand(2, -.6, -.4, towardsSourceSide, drivetrain, pixy));
     configureButtonBindings();
   }
 
