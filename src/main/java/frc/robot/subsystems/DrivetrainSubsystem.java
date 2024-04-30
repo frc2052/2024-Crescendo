@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2052.swervemodule.SwerveModule;
@@ -273,6 +274,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
 
         //return 6 * Math.PI;
+    }
+
+    public TalonFX[] getDriveMotors() {
+        TalonFX[] driveMotorArray = {frontLeftModule.getTalonFX(), frontRightModule.getTalonFX(), backRightModule.getTalonFX(), backLeftModule.getTalonFX()};
+        return driveMotorArray;
     }
 
     public void debug() {

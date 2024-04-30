@@ -86,7 +86,6 @@ public class Robot extends LoggedRobot {
       m_autonomousCommand.cancel();
     }
 
-    RobotState.getInstance().applyNavxOffset();
     m_robotContainer.robotStatusCommunicator.onRobotTeleop();
   }
 

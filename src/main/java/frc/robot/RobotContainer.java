@@ -23,6 +23,7 @@ import frc.robot.commands.drive.GamePieceAlignmentCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
+import frc.robot.commands.music.PlayFOTBCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperDefaultCommand;
 import frc.robot.commands.shamper.ShamperLobOrShootCommand;
@@ -295,6 +296,9 @@ public class RobotContainer {
      */
     // JoystickButton toggleMusicPlayerButton = new JoystickButton(controlPanel, 2);
     // toggleMusicPlayerButton.onTrue(toggleMusic());
+
+    JoystickButton musictest = new JoystickButton(translationJoystick, 10);
+    musictest.onTrue(new PlayFOTBCommand(musicPlayer));
   }
 
   // public Command toggleMusic() {
