@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotState;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -21,6 +22,7 @@ public class GamePieceAlignmentCommand extends DriveCommand {
     private final double goalMeters;
     private final double backwardsSpeed;
     private final double sidewaysSpeed;
+    private final double rotationSpeed;
 
     private Pose2d startPose;
 
@@ -39,10 +41,11 @@ public class GamePieceAlignmentCommand extends DriveCommand {
         yController.enableContinuousInput(-158, 158);
         yController.setTolerance(10);
         yController.setSetpoint(-Constants.Intake.FRONT_PIXY_MOUNT_OFFSET_PIXELS);
-
+        
         this.goalMeters = goalMeters;
         this.backwardsSpeed = backwardsSpeed;
         this.sidewaysSpeed = sidewaysSpeed;
+        rotationSpeed = .01;
 
         addRequirements(pixy, drivetrain);
     }
@@ -53,12 +56,15 @@ public class GamePieceAlignmentCommand extends DriveCommand {
     }
 
     @Override
-    protected double getRotation() {
+    protected double getY() {
         Block myFavoriteNote = pixy.findCentermostBlock();
-        if(myFavoriteNote == null || RobotState.getInstance().getNoteHeldDetected()) {
-            System.out.println("no note :(");
+        if(RobotState.getInstance().getNoteHeldDetected()) {
+            return 0;
+        } else if (myFavoriteNote == null) {
             return 0;
         } else {
+            
+            System.out.println("centermost block " + (myFavoriteNote.getX()));
             double yOffset = pixy.xOffsetFromCenter(myFavoriteNote);
             double ySpeed = yController.calculate(yOffset) / 316;
             if(yController.atSetpoint()) {
@@ -77,6 +83,19 @@ public class GamePieceAlignmentCommand extends DriveCommand {
     protected double getX() {
         //System.out.println("ALIGNING X: " + drivetrain.getPosition().getX());
         return backwardsSpeed;
+    }
+
+    @Override
+    protected double getRotation(){
+        Block myFavoriteNote = pixy.findCentermostBlock();
+
+        if (RobotState.getInstance().getNoteHeldDetected() || myFavoriteNote != null){
+            return 0;
+        } else {
+            return -3;
+        }
+
+    
     }
 
     @Override
