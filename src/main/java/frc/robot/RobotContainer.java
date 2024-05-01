@@ -12,7 +12,6 @@ import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
 import frc.robot.commands.auto.commands.shamper.PreShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
-import frc.robot.commands.auto.commands.shamper.WindUpCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.AutoCenterLineNotePickupCommand;
 import frc.robot.commands.drive.DriveCommand;
@@ -20,7 +19,6 @@ import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
 import frc.robot.commands.drive.DriveWhileGamePieceAlign;
 import frc.robot.commands.drive.DriveWhileLobbingCommand;
-import frc.robot.commands.drive.FeedWhileMovingCommand;
 import frc.robot.commands.drive.GamePieceAlignmentCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
@@ -141,8 +139,8 @@ public class RobotContainer {
       Rotation2d towardsAmpSide = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 90 : 270);
       Rotation2d towardsSourceSide = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 270 : 90);
       // TODO: make it stop being mad about the parameters for AutoCenterLineNotePickupCommand
-    // NamedCommands.registerCommand("Game Piece Alignment Towards Amp", new AutoCenterLineNotePickupCommand(2, -.6, -.4, towardsAmpSide, drivetrain, pixy));
-    // NamedCommands.registerCommand("Game Piece Alignment Towards Source", new AutoCenterLineNotePickupCommand(2, -.6, -.4, towardsSourceSide, drivetrain, pixy));
+    NamedCommands.registerCommand("Game Piece Alignment Towards Amp", new AutoCenterLineNotePickupCommand(2.0, -.6, -.4, () -> towardsAmpSide, drivetrain, pixy, intake));
+    NamedCommands.registerCommand("Game Piece Alignment Towards Source", new AutoCenterLineNotePickupCommand(2, -.6, -.4, () -> towardsSourceSide, drivetrain, pixy, intake));
     configureButtonBindings();
   }
 
@@ -153,11 +151,13 @@ public class RobotContainer {
     // JoystickButton customAngleButton = new JoystickButton(rotationJoystick, 10);
     // customAngleButton.whileTrue(new ShamperCustomAngle(shamper));
 
-    JoystickButton gamePieceDriveButton = new JoystickButton(rotationJoystick, 10);
+    JoystickButton gamePieceDriveButton = new JoystickButton(translationJoystick, 5);
     gamePieceDriveButton.whileTrue(new DriveWhileGamePieceAlign(
       () -> translationJoystick.getY(), 
-      () -> translationJoystick.getX(), 
-       0.3, 
+      () -> translationJoystick.getX(),
+      () -> rotationJoystick.getX(), 
+      0.5, 
+      1,
       drivetrain, 
       pixy)
     );
@@ -200,25 +200,12 @@ public class RobotContainer {
     // aimLobButton.whileTrue(new ShamperLobCommand(shamper, indexer));
     JoystickButton autoLobButton = new JoystickButton(rotationJoystick, 5);
     autoLobButton.onTrue(new InstantCommand(() -> robotState.setIsLobbing(true))).onFalse(new InstantCommand(() -> robotState.setIsLobbing(false)));
-    // autoLobButton.whileTrue(new FeedWhileMovingCommand(
-    // () -> translationJoystick.getY(), 
-    // () -> translationJoystick.getX(), 
-    // () -> true, 
-    // drivetrain));
 
     autoLobButton.whileTrue(new DriveWhileLobbingCommand(
       () -> translationJoystick.getY(), 
       () -> translationJoystick.getX(), 
       () -> true, 
       drivetrain));
-
-    // JoystickButton aimToSpeakerUsingOneTag = new JoystickButton(rotationJoystick, 7);
-    // aimToSpeakerUsingOneTag.whileTrue(new DriveWhileAimingSpeakerSingleTag(
-    // () -> translationJoystick.getX(), 
-    // () -> translationJoystick.getY(), 
-    // Dashboard.getInstance()::isFieldCentric, 
-    // drivetrain
-    // ));
 
     /*
      *  Climber Button Bindings
@@ -238,7 +225,7 @@ public class RobotContainer {
      */
 
     JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
-    JoystickButton intakeOverrideButton = new JoystickButton(translationJoystick, 5);
+    JoystickButton intakeOverrideButton = new JoystickButton(translationJoystick, 4);
     JoystickButton outtakeButton = new JoystickButton(translationJoystick, 3);
     
     intakeInButton.whileTrue(new IntakeThenBackupCommand(intake, indexer, shamper));

@@ -27,10 +27,10 @@ public class ForwardPixySubsystem extends SubsystemBase{
         pixy.getCCC().getBlocks();
         ArrayList<Block> blocks = pixy.getCCC().getBlockCache();
 
-        System.out.println("number of blocks " + blocks.size());
+        // System.out.println("number of blocks " + blocks.size());
 
         for (Block block : blocks){
-            if (block.getSignature() == 1 && block.getY() > 100){
+            if (block.getSignature() == 1 && block.getY() < 200){
                 System.out.println("Note Position x = " + block.getX() + " y = " + block.getY());
             }
         }
@@ -82,6 +82,7 @@ public class ForwardPixySubsystem extends SubsystemBase{
         if (block != null) {
             return block.getY();
         }
+
 
         return 0;
     }

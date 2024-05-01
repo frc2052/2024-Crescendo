@@ -67,7 +67,8 @@ public class RobotStateEstimator {
         
         for(VisionUpdate visionUpdate : robotState.getVisionUpdates()){
             Pose2d visionPose = visionUpdate.estimatedPose.toPose2d();
-            double xyStds = 0.25;
+            double xyStds = 100;
+            double highestAmbiguity = 0;
             double rotStds = 99999999;
 
             List<PhotonTrackedTarget> targets = visionUpdate.targetsUsed;
@@ -81,12 +82,18 @@ public class RobotStateEstimator {
                 } else if (target.getFiducialId() == 4 || target.getFiducialId() == 8){
                     foundTag2 = true;
                 }
+
+                if(highestAmbiguity < target.getPoseAmbiguity()) {
+                    highestAmbiguity = target.getPoseAmbiguity();
+                }
             }
 
             // if we see both speaker tags, make the pose estimator trust rotation from tags more
-            if(foundTag1 && foundTag2) {
+            if(foundTag1 && foundTag2 && highestAmbiguity < 0.05) {
                 rotStds = 0.2;
             }
+
+            xyStds = xyStds * highestAmbiguity;
 
             poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(xyStds, xyStds, rotStds));
 
