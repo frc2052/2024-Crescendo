@@ -174,7 +174,6 @@ public class RobotContainer {
      * Drive Button Bindings
      */
 
-
     JoystickButton zeroGyroButton = new JoystickButton(translationJoystick, 9);
     zeroGyroButton.onTrue(new InstantCommand(() -> drivetrain.zeroOdometry()));
 

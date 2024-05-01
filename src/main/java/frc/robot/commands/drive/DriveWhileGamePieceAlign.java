@@ -16,17 +16,12 @@ public class DriveWhileGamePieceAlign extends DriveCommand {
     private final ForwardPixySubsystem pixy;
 
     private final PIDController rotationController;
-    private DoubleSupplier rotationalSupplier;
-    private DoubleSupplier xSupplier;
-    private DoubleSupplier ySupplier;
 
     private Block myFavoriteNote;
     private boolean blind;
 
     private final double maxRotationalSpeed;
     private final double maxTranslationalSpeed;
-
-    private Pose2d startPose;
 
     public DriveWhileGamePieceAlign(
         DoubleSupplier xSupplier, 
@@ -37,7 +32,7 @@ public class DriveWhileGamePieceAlign extends DriveCommand {
         DrivetrainSubsystem drivetrain,
         ForwardPixySubsystem pixy
     ) {
-        super(()-> 0, () -> 0, () -> 0, () -> false, drivetrain);
+        super(xSupplier, ySupplier, rotationalSupplier, () -> false, drivetrain);
 
         this.pixy = pixy;
 
@@ -45,10 +40,6 @@ public class DriveWhileGamePieceAlign extends DriveCommand {
         rotationController.enableContinuousInput(-158, 158);
         rotationController.setTolerance(5);
         rotationController.setSetpoint(-Constants.Intake.FRONT_PIXY_MOUNT_OFFSET_PIXELS);
-
-        this.rotationalSupplier = rotationalSupplier;
-        this.xSupplier = xSupplier;
-        this.ySupplier = ySupplier;
 
         this.maxRotationalSpeed = maxRotationalSpeed;
         this.maxTranslationalSpeed = maxTranslationalSpeed;
@@ -61,11 +52,13 @@ public class DriveWhileGamePieceAlign extends DriveCommand {
     @Override
     public void execute(){
         myFavoriteNote = pixy.findCentermostBlock();
+
         if(myFavoriteNote == null) {
             blind = true;
         } else { 
             blind = false;
         }
+
         super.execute();
     }
 
@@ -73,7 +66,7 @@ public class DriveWhileGamePieceAlign extends DriveCommand {
     protected double getRotation() {
         if(blind || RobotState.getInstance().getNoteHeldDetected()) {
             System.out.println("no note :(");
-            return -rotationalSupplier.getAsDouble();
+            return super.getRotation();
         } else {
             double xOffset = pixy.xOffsetFromCenter(myFavoriteNote);
             double rotationSpeed = rotationController.calculate(xOffset) / 316;
@@ -91,9 +84,9 @@ public class DriveWhileGamePieceAlign extends DriveCommand {
         double yOffset = pixy.yOffsetFromTop(myFavoriteNote);
 
         if(blind || RobotState.getInstance().getNoteHeldDetected()) {
-            return -xSupplier.getAsDouble();
+            return super.getX();
         } else {
-            double pctOff = Math.abs(yOffset) / 158 * 5;
+            double pctOff = Math.abs(yOffset) / 158 * 3;
 
             if (pctOff > 1) {
                 pctOff = 1;
@@ -108,9 +101,9 @@ public class DriveWhileGamePieceAlign extends DriveCommand {
         double xOffset = pixy.xOffsetFromCenter(myFavoriteNote);
 
         if(blind || RobotState.getInstance().getNoteHeldDetected()) {
-            return -ySupplier.getAsDouble();
+            return super.getY();
         } else {
-            double pctOff = xOffset / 158 * 5;
+            double pctOff = xOffset / 158;
 
             if(pctOff > 1) {
                 pctOff = 1;
