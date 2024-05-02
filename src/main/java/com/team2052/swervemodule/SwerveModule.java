@@ -210,6 +210,10 @@ public class SwerveModule {
         );
     }
 
+    public TalonFX getTalonFX(){
+        return driveMotor;
+    }
+
     public static double getMaxVelocityMetersPerSecond() {
         /*
          * The formula for calculating the theoretical maximum velocity is:

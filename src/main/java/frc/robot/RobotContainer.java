@@ -25,6 +25,7 @@ import frc.robot.commands.drive.GamePieceAlignmentCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.intake.IntakeThenBackupCommand;
 import frc.robot.commands.intake.OuttakeCommand;
+import frc.robot.commands.music.PlayFOTBCommand;
 import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperDefaultCommand;
 import frc.robot.commands.shamper.ShamperLobOrShootCommand;
@@ -48,10 +49,12 @@ import frc.robot.subsystems.ForwardPixySubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LedSubsystem;
+import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.AimingCalculator;
+import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 import frc.robot.util.io.pixy.Pixy2CCC;
 
@@ -75,7 +78,7 @@ public class RobotContainer {
   private final AprilTagSubsystem aprilTag;
   private final LedSubsystem ledSubsystem;
   private final ForwardPixySubsystem pixy;
-  // private final MusicPlayerSubsystem musicPlayer;
+  private final MusicPlayerSubsystem musicPlayer;
   // private final VisionSubsystem vision;
   private final AdvantageScopeSubsystem advantageScope;
   private final TrapArmSubsystem trapArm;
@@ -87,7 +90,7 @@ public class RobotContainer {
   private final Joystick controlPanel;
 
   public static boolean musicOn;
-  // public RobotStatusCommunicator robotStatusCommunicator;
+  public RobotStatusCommunicator robotStatusCommunicator;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = new DrivetrainSubsystem();
@@ -97,14 +100,14 @@ public class RobotContainer {
     climber = new ClimberSubsystem();
     aprilTag = AprilTagSubsystem.getInstance();
     ledSubsystem = LedSubsystem.getInstance();
-    // musicPlayer = new MusicPlayerSubsystem();
+    musicPlayer = new MusicPlayerSubsystem();
     // vision = new VisionSubsystem();
     trapArm = new TrapArmSubsystem();
     advantageScope = new AdvantageScopeSubsystem(intake, shamper, climber, drivetrain, indexer);
     pixy = new ForwardPixySubsystem();
 
 
-    // robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
+    robotStatusCommunicator = new RobotStatusCommunicator(musicPlayer);
 
     musicOn = true;
     ledSubsystem.enableLEDs();
@@ -300,6 +303,9 @@ public class RobotContainer {
      */
     // JoystickButton toggleMusicPlayerButton = new JoystickButton(controlPanel, 2);
     // toggleMusicPlayerButton.onTrue(toggleMusic());
+
+    JoystickButton musictest = new JoystickButton(translationJoystick, 10);
+    musictest.onTrue(new PlayFOTBCommand(musicPlayer));
   }
 
   // public Command toggleMusic() {
