@@ -14,7 +14,8 @@ public class ForwardPixySubsystem extends SubsystemBase{
 
     public ForwardPixySubsystem(){
         pixy = Pixy2.createInstance(new SPILink()); // Creates a new Pixy2 camera using SPILink
-		pixy.init(); // Initializes the camera and prepares to send/receive data
+		int result = pixy.init(); // Initializes the camera and prepares to send/receive data
+        System.out.println("pixy init result: "+ result);
     }
 
     @Override
@@ -26,10 +27,10 @@ public class ForwardPixySubsystem extends SubsystemBase{
         pixy.getCCC().getBlocks();
         ArrayList<Block> blocks = pixy.getCCC().getBlockCache();
 
-        System.out.println("number of blocks " + blocks.size());
+        // System.out.println("number of blocks " + blocks.size());
 
         for (Block block : blocks){
-            if (block.getSignature() == 1 && block.getY() > 100){
+            if (block.getSignature() == 1 && block.getY() < 200){
                 System.out.println("Note Position x = " + block.getX() + " y = " + block.getY());
             }
         }
@@ -64,10 +65,6 @@ public class ForwardPixySubsystem extends SubsystemBase{
             }
         }
 
-        if (centerBlock != null) {
-            // System.out.println(xOffsetFromCenter(centerBlock));
-        }
-
         return centerBlock;
     }
 
@@ -85,6 +82,7 @@ public class ForwardPixySubsystem extends SubsystemBase{
         if (block != null) {
             return block.getY();
         }
+
 
         return 0;
     }

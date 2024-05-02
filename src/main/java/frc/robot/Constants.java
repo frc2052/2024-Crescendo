@@ -287,6 +287,9 @@ public final class Constants {
         public static final double BLUE_WING_LINE = Units.inchesToMeters(240);
         public static final double RED_WING_LINE = Units.inchesToMeters(410);
 
+        public static final double CENTER_LINE_HAMBURGER = Units.inchesToMeters(325.6);
+        public static final double CENTER_LINE_HOTDOG = Units.inchesToMeters(161.63);
+
         public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLIER = 0.75;
         public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLIER = -0.2;
 

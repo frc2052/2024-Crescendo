@@ -46,9 +46,9 @@ public class ShamperDefaultCommand extends Command {
       shamper.windDownShooter();
     }
     
-    if(RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().isInWing()) {
-      shamper.setAngle(Constants.Shamper.Angle.PODIUM);
-    }
+    // if(RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().isInWing()) {
+    //   shamper.setAngle(Constants.Shamper.Angle.PODIUM);
+    // }
 
 
     // if((!RobotState.getInstance().getNoteStagedDetected() && !RobotState.getInstance().getNoteHeldDetected()) &&
