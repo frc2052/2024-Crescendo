@@ -1,6 +1,5 @@
-package frc.robot.commands.drive;
+package frc.robot.commands.auto.drive;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -8,25 +7,22 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotState;
-import frc.robot.Constants.Intake;
+import frc.robot.commands.drive.DriveCommand;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ForwardPixySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.util.RobotStateEstimator;
 import frc.robot.util.io.pixy.Pixy2CCC.Block;
 
-public class AutoCenterLineNotePickupCommand extends DriveCommand {
-    private final ForwardPixySubsystem pixy;
+public class AutoCenterLineNotePickupCommand extends AutoDriveWhileGamePieceAlign {
 
     private final PIDController yController;
     private final PIDController rotationController;
     private final Supplier<Rotation2d> goalRotation;
 
-    private final double goalMeters;
-    private final double backwardsSpeed;
-    private final double sidewaysSpeed;
+    // private final double goalMeters;
+    // private final double backwardsSpeed;
+    // private final double sidewaysSpeed;
     private double startTime;
     
     private boolean isStage1;
@@ -38,18 +34,17 @@ public class AutoCenterLineNotePickupCommand extends DriveCommand {
 
     private double centerLineXLocation = 16.459;
 
-    public AutoCenterLineNotePickupCommand(
-        double goalMeters,
-        double backwardsSpeed,
-        double sidewaysSpeed,
+    public int stage = 1;
+
+    public AutoCenterLineNotePickupCommand (
+        double maxRotationalSpeed,
+        double maxTranslationalSpeed,
         Supplier<Rotation2d> goalRotation,
         DrivetrainSubsystem drivetrain,
         ForwardPixySubsystem pixy,
         IntakeSubsystem intake
     ) {
-        super(() -> 0, () -> 0, () -> 0, () -> false, drivetrain);
-
-        this.pixy = pixy;
+        super(maxRotationalSpeed, maxTranslationalSpeed, drivetrain, pixy);
 
         yController = new PIDController(.02, 0, 0);
         yController.setTolerance(30);
@@ -59,12 +54,12 @@ public class AutoCenterLineNotePickupCommand extends DriveCommand {
         rotationController.enableContinuousInput(0, 360);
         rotationController.setTolerance(2);
         
-        this.goalMeters = goalMeters;
-        this.backwardsSpeed = backwardsSpeed;
-        this.sidewaysSpeed = sidewaysSpeed;
+        // this.goalMeters = goalMeters;
+        // this.backwardsSpeed = backwardsSpeed;
+        // this.sidewaysSpeed = sidewaysSpeed;
         this.goalRotation = goalRotation;
 
-        addRequirements(pixy, drivetrain);
+        // addRequirements(pixy, drivetrain);
     }
 
     // STAGE 1: first attempt at pickup
@@ -105,36 +100,41 @@ public class AutoCenterLineNotePickupCommand extends DriveCommand {
 
     @Override
     public void initialize() {
-        isStage1 = true;
-        isStage2 = false;
-        isStage3 = false;
-        isStage4 = false;
+        stage = 1;
+        System.out.println("stage 1");
         startPose = RobotState.getInstance().getRobotPose();
         startTime = Timer.getFPGATimestamp();
         rotationController.setSetpoint(goalRotation.get().getDegrees());
     };
 
     @Override
+    public void execute(){
+        System.out.println("stage = " + stage);
+        super.execute();
+    }
+
+    @Override
     protected double getY() {
-        if (getStage1() || getStage3()){
+        if (stage == 1 || stage == 3){
         // if stages 1 or 3, move horizontally to align with note
-            Block myFavoriteNote = pixy.findCentermostBlock();
-            if(RobotState.getInstance().getNoteHeldDetected()) {
-                return 0;
-            } else if (myFavoriteNote == null) {
-                return 0;
-            } else {
-                System.out.println("centermost block " + (myFavoriteNote.getX()));
-                double yOffset = pixy.xOffsetFromCenter(myFavoriteNote);
-                double ySpeed = -yController.calculate(yOffset) / 158;
-                if(Math.abs(yOffset) < 25){
-                    return 0;
-                }
-                if(Math.abs(ySpeed) > sidewaysSpeed){
-                    ySpeed = Math.copySign(sidewaysSpeed, ySpeed);
-                }
-                return ySpeed;
-            }
+            return super.getY();
+            // Block myFavoriteNote = pixy.findCentermostBlock();
+            // if(RobotState.getInstance().getNoteHeldDetected()) {
+            //     return 0;
+            // } else if (myFavoriteNote == null) {
+            //     return 0;
+            // } else {
+            //     System.out.println("centermost block " + (myFavoriteNote.getX()));
+            //     double yOffset = pixy.xOffsetFromCenter(myFavoriteNote);
+            //     double ySpeed = -yController.calculate(yOffset) / 158;
+            //     if(Math.abs(yOffset) < 25){
+            //         return 0;
+            //     }
+            //     if(Math.abs(ySpeed) > sidewaysSpeed){
+            //         ySpeed = Math.copySign(sidewaysSpeed, ySpeed);
+            //     }
+            //     return ySpeed;
+            // }
         // if stage 2 no horizontal movement so it can rotate       
         } else {
             return 0; 
@@ -143,29 +143,26 @@ public class AutoCenterLineNotePickupCommand extends DriveCommand {
 
     @Override
     protected double getX() {
-        if(getStage1()){
+        if(stage == 1){
+            System.out.println(RobotState.getInstance().getRobotPose().getX());
         // during stage 1, if we have not yet reached the center line, drive backwards, then enter stage 2 (rotation)
             if (RobotState.getInstance().getRobotPose().getX() < centerLineXLocation){
-                return backwardsSpeed;
+                //return backwardsSpeed;
+                return super.getX();
             } else {
-                setStage1(false);
-                setStage2(true);
-                setStage3(false);
-                setStage4(false);
+                stage = 2;
                 return 0;
             }
-        } else if (getStage2()){
+        } else if (stage == 2){
             return 0;
         } else {
             // during stage 3, if robot sees note drive backwards until we intake that note
-            Block myFavoriteNote = pixy.findCentermostBlock();
-            if (myFavoriteNote != null) {
-                return backwardsSpeed;
+            // Block myFavoriteNote = pixy.findCentermostBlock();
+            if (stage == 3) {
+                // return backwardsSpeed;
+                return super.getX();
             } else {
-                setStage1(false);
-                setStage2(false);
-                setStage3(false);
-                setStage4(true);
+                stage = 4;
                 return 0;
             }
         }
@@ -174,7 +171,8 @@ public class AutoCenterLineNotePickupCommand extends DriveCommand {
     @Override
     protected double getRotation(){
         if(getStage1()){
-            return 0;
+            // return 0;
+            return super.getRotation();
         } else if (getStage2()){
             double gyroDegrees = RobotState.getInstance().getRotation2d360().getDegrees();
 
@@ -183,14 +181,12 @@ public class AutoCenterLineNotePickupCommand extends DriveCommand {
             if (!rotationController.atSetpoint()) {
                 return rotationValue + Math.copySign(0.025, rotationValue);
             } else {
-                setStage1(false);
-                setStage2(false);
-                setStage3(true);
-                setStage4(false);
+                stage = 2;
                 return 0;
             }
         } else { 
-            return 0;
+            // return 0;
+            return super.getRotation();
         }
     }
 
@@ -201,7 +197,7 @@ public class AutoCenterLineNotePickupCommand extends DriveCommand {
 
     @Override
     public boolean isFinished() {
-        if (RobotState.getInstance().getNoteHeldDetected() || RobotState.getInstance().getNoteStagedDetected() || getStage4()){
+        if (RobotState.getInstance().getNoteHeldDetected() || RobotState.getInstance().getNoteStagedDetected() || stage == 4){
             return true;
         } else {
             return false;

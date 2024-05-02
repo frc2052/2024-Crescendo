@@ -12,8 +12,10 @@ import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
 import frc.robot.commands.auto.commands.shamper.PreShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
 import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
+import frc.robot.commands.auto.drive.AutoCenterLineNotePickupCommand;
+import frc.robot.commands.auto.drive.AutoCenterLinePickupCommand;
+import frc.robot.commands.auto.drive.AutoDriveWhileGamePieceAlign;
 import frc.robot.commands.climb.ClimberExtendCommand;
-import frc.robot.commands.drive.AutoCenterLineNotePickupCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimAmpCommand;
 import frc.robot.commands.drive.DriveWhileAimingCommand;
@@ -139,8 +141,8 @@ public class RobotContainer {
       Rotation2d towardsAmpSide = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 90 : 270);
       Rotation2d towardsSourceSide = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 270 : 90);
       // TODO: make it stop being mad about the parameters for AutoCenterLineNotePickupCommand
-    NamedCommands.registerCommand("Game Piece Alignment Towards Amp", new AutoCenterLineNotePickupCommand(2.0, -.6, -.4, () -> towardsAmpSide, drivetrain, pixy, intake));
-    NamedCommands.registerCommand("Game Piece Alignment Towards Source", new AutoCenterLineNotePickupCommand(2, -.6, -.4, () -> towardsSourceSide, drivetrain, pixy, intake));
+    // NamedCommands.registerCommand("Game Piece Alignment Towards Amp", new AutoCenterLineNotePickupCommand(2.0, -.6, -.4, () -> towardsAmpSide, drivetrain, pixy, intake));
+    // NamedCommands.registerCommand("Game Piece Alignment Towards Source", new AutoCenterLineNotePickupCommand(2, -.6, -.4, () -> towardsSourceSide, drivetrain, pixy, intake));
     configureButtonBindings();
   }
 
@@ -226,10 +228,14 @@ public class RobotContainer {
     JoystickButton intakeInButton = new JoystickButton(translationJoystick, 1);
     JoystickButton intakeOverrideButton = new JoystickButton(translationJoystick, 4);
     JoystickButton outtakeButton = new JoystickButton(translationJoystick, 3);
-    
+
+      JoystickButton autoDriveWhileIntake = new JoystickButton(translationJoystick, 11);
+      // autoDriveWhileIntake.whileTrue(new AutoCenterLineNotePickupCommand(0.5, 1, () -> Rotation2d.fromDegrees(90), drivetrain, pixy, intake));
+      autoDriveWhileIntake.whileTrue(new AutoCenterLinePickupCommand(drivetrain, pixy, intake, indexer, shamper));
     intakeInButton.whileTrue(new IntakeThenBackupCommand(intake, indexer, shamper));
     intakeOverrideButton.onTrue(new InstantCommand(() -> robotState.updateNoteDetectorOverride(true))).onFalse(new InstantCommand(() -> robotState.updateNoteDetectorOverride(false)));
     outtakeButton.whileTrue(new OuttakeCommand(intake, indexer, shamper));
+    
 
     /*
      *  Index Button Binding
