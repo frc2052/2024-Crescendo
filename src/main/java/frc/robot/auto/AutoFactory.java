@@ -61,14 +61,17 @@ public class AutoFactory {
      */
     public static enum Auto {
         NO_AUTO(null),
-        AUTO_C2617(new PathPlannerAuto("Auto-C2617")),
-        AUTO_A387(new PathPlannerAuto("Auto-A387")),
-        AUTO_S54(new PathPlannerAuto("Auto-S54")),
-        AUTO_S45(new PathPlannerAuto("Auto-S45")),
-        AUTO_C123(new PathPlannerAuto("Auto-C123")),
-        AUTO_C12387(new PathPlannerAuto("Auto-C12387")),
-        ALIGNMENT_4(new PathPlannerAuto("Alignment 45")),
-        BORING(new PathPlannerAuto("Fast Auto-C12387"));
+        C2617(new PathPlannerAuto("Auto-C2617")),
+        A387(new PathPlannerAuto("Auto-A387")),
+        S54(new PathPlannerAuto("Auto-S54")),
+        S45(new PathPlannerAuto("Auto-S45")),
+        C12387(new PathPlannerAuto("Auto-C12387")),
+        BORING(new PathPlannerAuto("Fast Auto-C12387")),
+        NEW_A387(new PathPlannerAuto("Auto-A387 NEW")),
+        NEW_S45(new PathPlannerAuto("Auto-S45 NEW")),
+        S56(new PathPlannerAuto("Auto-S56"));
+        // ALIGNMENT_4(new PathPlannerAuto("Alignment 45")),
+        // C123(new PathPlannerAuto("Auto-C123")),
         // alignment_test_auto(new PathPlannerAuto("alignment test auto"));
 
         private final PathPlannerAuto auto;

@@ -4,6 +4,7 @@
 
 package frc.robot.commands.auto.drive;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -11,7 +12,9 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.RobotState;
+import frc.robot.commands.drive.DriveWhileAimToAngle;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ForwardPixySubsystem;
@@ -26,7 +29,8 @@ public class AutoCenterLinePickupCommand extends SequentialCommandGroup {
   private RobotState robotState;
   private boolean secondAttempt;
   private boolean yay;
-
+  private boolean startRightSide;
+  private Rotation2d rotationDownLine;
    
   private DrivetrainSubsystem drivetrain;
   private ForwardPixySubsystem pixy;
@@ -39,8 +43,8 @@ public class AutoCenterLinePickupCommand extends SequentialCommandGroup {
       ForwardPixySubsystem pixy,
       IntakeSubsystem intake,
       IndexerSubsystem indexer,
-      ShamperSubsystem shamper
-      
+      ShamperSubsystem shamper,
+      Rotation2d rotationDirection
     ) {
       robotState = RobotState.getInstance();
       this.drivetrain = drivetrain;
@@ -49,32 +53,34 @@ public class AutoCenterLinePickupCommand extends SequentialCommandGroup {
       this.indexer = indexer;
       this. shamper = shamper;
 
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+      // check if coming from the left or right of field
+      this.rotationDownLine = rotationDirection;
 
       addCommands(
         // first attempt
         new ParallelRaceGroup(
           // burger midline
-          // new PastCenterlineCommand(),
+          new AutoPastHamburgerCenterlineCommand(),
           new IntakeCommand(intake, indexer, shamper),
-          new AutoDriveWhileGamePieceAlign(0.5, 1, drivetrain, pixy),
-          checkSecondAttempt()
+          new AutoDriveWhileGamePieceAlign(0.5, 1, 0.5, drivetrain, pixy)
         ),
+        
+        checkSecondAttempt(),
 
         new ConditionalCommand(
-          new ParallelCommandGroup(
+          new SequentialCommandGroup(
             // we failed first note so rotate down the line
-            new AutoAimDownCenterlineCommand(),
+            new DriveWhileAimToAngle(() -> 0, () -> 0, () -> rotationDownLine, () -> false, drivetrain),
 
             // second attempt (facing down the line)
             new ParallelRaceGroup(
               // hotdog midline
-              // new PastMidlineCommand(),
+              new AutoPastHotdogCenterlineCommand(),
               new IntakeCommand(intake, indexer, shamper),
-              new AutoDriveWhileGamePieceAlign(0.5, 1, drivetrain, pixy)
+              new AutoDriveWhileGamePieceAlign(0.5, 1, 0.5, drivetrain, pixy)
             )
           ), 
+          // something has to happen on false?
           new InstantCommand(() -> yay = true), 
           () -> secondAttempt
         )

@@ -23,10 +23,12 @@ public class AutoDriveWhileGamePieceAlign extends DriveCommand{
 
     private final double maxRotationalSpeed;
     private final double maxTranslationalSpeed;
+    private final double blindSpeed;
 
     public AutoDriveWhileGamePieceAlign(
         double maxRotationalSpeed,
         double maxTranslationalSpeed,
+        double blindSpeed,
         DrivetrainSubsystem drivetrain,
         ForwardPixySubsystem pixy
     ) {
@@ -41,6 +43,7 @@ public class AutoDriveWhileGamePieceAlign extends DriveCommand{
 
         this.maxRotationalSpeed = maxRotationalSpeed;
         this.maxTranslationalSpeed = maxTranslationalSpeed;
+        this.blindSpeed = blindSpeed;
 
         myFavoriteNote = null;
 
@@ -48,7 +51,7 @@ public class AutoDriveWhileGamePieceAlign extends DriveCommand{
     }
 
     @Override
-    public void execute(){
+    public void execute() {
         myFavoriteNote = pixy.findCentermostBlock();
 
         if(myFavoriteNote == null) {
@@ -56,6 +59,8 @@ public class AutoDriveWhileGamePieceAlign extends DriveCommand{
         } else { 
             blind = false;
         }
+
+        super.execute();
     }
 
     @Override
@@ -78,8 +83,10 @@ public class AutoDriveWhileGamePieceAlign extends DriveCommand{
     protected double getX(){
         double yOffset = pixy.yOffsetFromTop(myFavoriteNote);
 
-        if(blind || RobotState.getInstance().getNoteHeldDetected()) {
-            return 0.25;
+        if(blind) {
+            return -blindSpeed;
+        } else if (RobotState.getInstance().getNoteHeldDetected()){
+            return 0;
         } else {
             double pctOff = Math.abs(yOffset) / 158 * 3;
 
@@ -110,6 +117,11 @@ public class AutoDriveWhileGamePieceAlign extends DriveCommand{
 
     @Override
     protected boolean isFieldCentric(){
+        return false;
+    }
+
+    @Override
+    public boolean isFinished() {
         return false;
     }
 

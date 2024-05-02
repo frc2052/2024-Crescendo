@@ -44,7 +44,7 @@ public class AutoCenterLineNotePickupCommand extends AutoDriveWhileGamePieceAlig
         ForwardPixySubsystem pixy,
         IntakeSubsystem intake
     ) {
-        super(maxRotationalSpeed, maxTranslationalSpeed, drivetrain, pixy);
+        super(maxRotationalSpeed, maxTranslationalSpeed, 0, drivetrain, pixy);
 
         yController = new PIDController(.02, 0, 0);
         yController.setTolerance(30);

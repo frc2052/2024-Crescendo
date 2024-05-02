@@ -13,12 +13,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.RobotState;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class DriveWhileAimAmpCommand extends DriveCommand {
+public class DriveWhileAimToAngle extends DriveCommand {
     private final PIDController rotationController;
     private final Supplier<Rotation2d> targetRotation;
 
   /** Creates a new DriveWhileAimAmpCommand. */
-  public DriveWhileAimAmpCommand(        
+  public DriveWhileAimToAngle(        
         DoubleSupplier xSupplier, 
         DoubleSupplier ySupplier, 
         Supplier<Rotation2d> targetRotation,
@@ -52,5 +52,10 @@ public class DriveWhileAimAmpCommand extends DriveCommand {
     } else {
         return 0;
     }
+  }
+
+  @Override
+  public boolean isFinished() {
+    return rotationController.atSetpoint();
   }
 }
