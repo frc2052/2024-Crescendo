@@ -52,6 +52,7 @@ import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
+import frc.robot.subsystems.LedSubsystem.LEDStatusMode;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
 import frc.robot.util.AimingCalculator;
 import frc.robot.util.RobotStatusCommunicator;

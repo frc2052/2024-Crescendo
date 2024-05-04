@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
@@ -22,6 +23,8 @@ public class LedSubsystem extends SubsystemBase {
     private boolean disableLEDs;
     private boolean robotDisabled;
 
+    private double flashTime;
+
     private LedSubsystem() {
         // DIO outputs
         codeChannel1 = new DigitalOutput(Constants.LEDs.CHANNEL_1_PIN);
@@ -32,6 +35,8 @@ public class LedSubsystem extends SubsystemBase {
         robotDisabled = true;
 
         currentStatusMode = LEDStatusMode.OFF;
+
+        flashTime = 0;
 
         // For manually inputing code to encode to DIO pins
         // SmartDashboard.putNumber("LED CODE", 0);
@@ -57,7 +62,8 @@ public class LedSubsystem extends SubsystemBase {
         NO_AUTO(9),
         BLUE_AUTO(10),
         RED_AUTO(11),
-        AMP_IDLE(12);
+        AMP_IDLE(12),
+        FLASH(13);
 
         private final int code;
 
@@ -132,7 +138,16 @@ public class LedSubsystem extends SubsystemBase {
                 }
                 else {
                     if(RobotState.getInstance().getNoteHeldDetected()){
-                        currentStatusMode = LEDStatusMode.HAS_NOTE;
+                        if(currentStatusMode == LEDStatusMode.INTAKE) {
+                            flashTime = Timer.getFPGATimestamp();
+                        }
+
+                        if(Timer.getFPGATimestamp() - flashTime < 2){
+                            currentStatusMode = LEDStatusMode.FLASH;
+                        } else {
+                            currentStatusMode = LEDStatusMode.HAS_NOTE;
+                        }
+
                     } else if (RobotState.getInstance().getIsIntaking()){
                         currentStatusMode = LEDStatusMode.INTAKE;
                     } else {
