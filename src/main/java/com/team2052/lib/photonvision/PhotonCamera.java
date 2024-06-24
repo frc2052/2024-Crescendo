@@ -25,6 +25,7 @@
 package com.team2052.lib.photonvision;
 
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Matrix;
@@ -55,6 +56,8 @@ import org.photonvision.common.hardware.VisionLEDMode;
 import org.photonvision.common.networktables.PacketSubscriber;
 import org.photonvision.targeting.PhotonPipelineResult;
 
+import com.team2052.lib.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 /** Represents a camera that is connected to PhotonVision. */
 public class PhotonCamera implements AutoCloseable {
     private static int InstanceCount = 0;
@@ -80,6 +83,10 @@ public class PhotonCamera implements AutoCloseable {
     DoubleArraySubscriber cameraDistortionSubscriber;
 
     Transform3d robotToCamera;
+
+    private PhotonPoseEstimator poseEstimator;
+    private AprilTagFieldLayout tagLayout;
+    private PoseStrategy strategy;
 
     @Override
     public void close() {
@@ -173,9 +180,21 @@ public class PhotonCamera implements AutoCloseable {
      *
      * @param cameraName The nickname of the camera (found in the PhotonVision UI).
      */
-    public PhotonCamera(String cameraName, Transform3d robotToCamera) {
+    public PhotonCamera(String cameraName, Transform3d robotToCamera, AprilTagFieldLayout tagLayout, PoseStrategy strategy) {
         this(NetworkTableInstance.getDefault(), cameraName);
         this.robotToCamera = robotToCamera;
+        this.tagLayout = tagLayout;
+        this.strategy = strategy;
+        
+        this.poseEstimator = new PhotonPoseEstimator(tagLayout, strategy, this, robotToCamera);
+    }
+
+    /*
+     *  Returns pose estimator
+     */
+
+    public PhotonPoseEstimator getPoseEstimator(){
+        return poseEstimator;
     }
 
     /*

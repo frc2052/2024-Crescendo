@@ -5,6 +5,7 @@
 package frc.robot.commands.shamper;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
@@ -31,7 +32,7 @@ public class ShamperDefaultCommand extends Command {
     //   return;
     // }
     if(Dashboard.getInstance().shouldIdle()) {
-      if(RobotState.getInstance().getNoteHeldDetected()){
+      // if(RobotState.getInstance().getNoteHeldDetected()){
         switch (shamper.getCurrentIdleMode()) {
           case SPEAKER_IDLE:
             shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
@@ -40,10 +41,14 @@ public class ShamperDefaultCommand extends Command {
             shamper.setShootSpeed(ShamperSpeed.AMP_IDLE);
             break;
         }
-      }
+      // }
     } else {
       shamper.windDownShooter();
     }
+    
+    // if(RobotState.getInstance().getNoteHeldDetected() && RobotState.getInstance().isInWing()) {
+    //   shamper.setAngle(Constants.Shamper.Angle.PODIUM);
+    // }
 
 
     // if((!RobotState.getInstance().getNoteStagedDetected() && !RobotState.getInstance().getNoteHeldDetected()) &&

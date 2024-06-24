@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3491521419562087,
-      "y": 2.119661414786453
+      "x": 0.6825775190011933,
+      "y": 6.7095211113499165
     },
-    "rotation": -179.34893961977056
+    "rotation": -122.51538396335681
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "alignment test"
+            "pathName": "StP-AS-3"
           }
         },
         {

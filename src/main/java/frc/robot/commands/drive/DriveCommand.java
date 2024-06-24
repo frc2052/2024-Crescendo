@@ -65,11 +65,6 @@ public class DriveCommand extends Command {
         return fieldCentricSupplier.getAsBoolean();
     }
 
-    // @Override
-    // public void execute() {
-    //     drivetrain.drive(getX(), getY(), getRotation(), fieldCentricSupplier.getAsBoolean());
-    // }
-
     @Override
     public void execute() {
         drivetrain.drive(getX(), getY(), getRotation(), isFieldCentric());

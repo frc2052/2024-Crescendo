@@ -20,7 +20,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 
 public final class Constants {
@@ -119,6 +119,8 @@ public final class Constants {
         public static final double AIM_TOLERANCE_DEGREES = 2.5;
 
         public static final double LOB_ANGLE = 210;
+
+        public static final double COLLISION_THRESHOLD_DELTA_G = 1f;
     }
     
     public static class MotorConstants {
@@ -233,9 +235,9 @@ public final class Constants {
         public static final double PIVOT_DEADZONE_DEGREES = 1;
 
         public static class Angle {
-            public static final double MINIMUM  = 12;
+            public static final double MINIMUM  = 9;
             public static final double MAXIMUM = 124;
-            public static final double CLIMB = 13;
+            public static final double CLIMB = 10;
             public static final double AUTO_INTAKE = 30;
             public static final double INTAKE = 17;
             public static final double DEFAULT = 30;
@@ -281,6 +283,12 @@ public final class Constants {
         // blue line 231 inches
         public static final double BLUE_LOB_LINE = Units.inchesToMeters(413);
         public static final double RED_LOB_LINE = Units.inchesToMeters(240);
+        
+        public static final double BLUE_WING_LINE = Units.inchesToMeters(240);
+        public static final double RED_WING_LINE = Units.inchesToMeters(410);
+
+        public static final double CENTER_LINE_HAMBURGER = Units.inchesToMeters(325.6);
+        public static final double CENTER_LINE_HOTDOG = Units.inchesToMeters(161.63);
 
         public static final double FEED_WHILE_MOVING_ANGLE_MULTIPLIER = 0.75;
         public static final double FEED_WHILE_MOVING_VELOCITY_MULTIPLIER = -0.2;
@@ -299,15 +307,35 @@ public final class Constants {
 
         public static final Matrix<N3, N1> VISION_STDDEV = VecBuilder.fill(0.05, 0.05, Math.toRadians(99999999));
     }
+
+    //front left cam
+    public static final class PhotonCamera0 {
+        public static final String CAMERA_NAME = "KrawlerCam_FL_000";
+
+        public static final double X_OFFSET_M = 0.29;
+        public static final double Y_OFFSET_M = 0.26;
+        public static final double Z_OFFSET_M = 0.25;
+
+        public static final double THETA_X_OFFSET_DEGREES = 0; // roll
+        public static final double THETA_Y_OFFSET_DEGREES = -45; // pitch
+        public static final double THETA_Z_OFFSET_DEGREES = 0; // yaw
+
+        public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
+            new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 
+            new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
+        );
+    }
+
+    // front right cam
     public static final class PhotonCamera1 {
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_001";
+        public static final String CAMERA_NAME = "KrawlerCam_FR_001";
 
         public static final double X_OFFSET_M = 0.29;
         public static final double Y_OFFSET_M = -0.26;
         public static final double Z_OFFSET_M = 0.25;
 
         public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll
-        public static final double THETA_Y_OFFSET_DEGREES = -29.536; // pitch
+        public static final double THETA_Y_OFFSET_DEGREES = -30; // pitch
         public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
@@ -315,17 +343,36 @@ public final class Constants {
             new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
         );
     }
+
+    // back left cam
     public static final class PhotonCamera2 {
-        // TODO: make offsets more precise than caleb's eyeballing
-        public static final String CAMERA_NAME = "Arducam_OV9281_USB_Cam_002";
+        public static final String CAMERA_NAME = "KrawlerCam_BL_002";
 
-        public static final double X_OFFSET_M = 0.01;
-        public static final double Y_OFFSET_M = -0.40;
-        public static final double Z_OFFSET_M = 0.31;
+        public static final double X_OFFSET_M = -0.350;
+        public static final double Y_OFFSET_M = 0.202;
+        public static final double Z_OFFSET_M = 0.318;
 
-        public static final double THETA_X_OFFSET_DEGREES = 0.0; // roll
+        public static final double THETA_X_OFFSET_DEGREES = 0; // roll
+        public static final double THETA_Y_OFFSET_DEGREES = -17; // pitch
+        public static final double THETA_Z_OFFSET_DEGREES = 178; // yaw
+
+        public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
+            new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 
+            new Rotation3d(Units.degreesToRadians(THETA_X_OFFSET_DEGREES), Units.degreesToRadians(THETA_Y_OFFSET_DEGREES), Units.degreesToRadians(THETA_Z_OFFSET_DEGREES))
+        );
+    }
+
+    // back right cam
+    public static final class PhotonCamera3 {
+        public static final String CAMERA_NAME = "KrawlerCam_BR_003";
+
+        public static final double X_OFFSET_M = -0.350;
+        public static final double Y_OFFSET_M = -0.210;
+        public static final double Z_OFFSET_M = 0.318;
+
+        public static final double THETA_X_OFFSET_DEGREES = 0; // roll
         public static final double THETA_Y_OFFSET_DEGREES = -15; // pitch
-        public static final double THETA_Z_OFFSET_DEGREES = 0.0; // yaw
+        public static final double THETA_Z_OFFSET_DEGREES = -178; // yaw
 
         public static final Transform3d ROBOT_TO_CAMERA_METERS = new Transform3d(
             new Translation3d(X_OFFSET_M, Y_OFFSET_M, Z_OFFSET_M), 

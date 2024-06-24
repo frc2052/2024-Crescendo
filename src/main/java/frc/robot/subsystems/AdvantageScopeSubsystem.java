@@ -36,13 +36,13 @@ public class AdvantageScopeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        recordIntakeData();
-        recordShamperData();
-        recordClimberData();
-        recordDrivetrainData();
-        recordMusicPlayerData();
-        recordIndexerData();
-        recordTrapArmData();
+        // recordIntakeData();
+        // recordShamperData();
+        // recordClimberData();
+        // recordDrivetrainData();
+        // recordMusicPlayerData();
+        // recordIndexerData();
+        // recordTrapArmData();
 
     }
 
