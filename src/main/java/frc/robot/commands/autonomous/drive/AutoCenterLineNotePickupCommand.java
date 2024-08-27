@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.drive;
+package frc.robot.commands.autonomous.drive;
 
 import java.util.function.Supplier;
 
@@ -7,12 +7,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotState;
-import frc.robot.commands.drive.DriveCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ForwardPixySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.util.io.pixy.Pixy2CCC.Block;
 
 public class AutoCenterLineNotePickupCommand extends AutoDriveWhileGamePieceAlign {
 

@@ -1,17 +1,11 @@
 package frc.robot.commands.drive;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotState;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ForwardPixySubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.util.RobotStateEstimator;
 import frc.robot.util.io.pixy.Pixy2CCC.Block;
 
 public class GamePieceAlignmentCommand extends DriveCommand {

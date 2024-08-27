@@ -1,10 +1,10 @@
-package frc.robot.commands.auto.backupAuto;
+package frc.robot.auto.backupAuto;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.commands.auto.commands.drive.AutoDriveCommand;
+import frc.robot.commands.autonomous.backupAuto.AutoDriveCommand;
 import frc.robot.commands.indexer.IndexerIndexCommand;
 import frc.robot.commands.shamper.pivot.ShamperAngleCommand;
 import frc.robot.commands.shamper.shoot.ShamperManualShootCommand;

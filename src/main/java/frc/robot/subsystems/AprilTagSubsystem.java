@@ -3,8 +3,6 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentMap;
-
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import com.team2052.lib.photonvision.VisionUpdate;
@@ -80,20 +78,6 @@ public class AprilTagSubsystem extends SubsystemBase{
         camera3Update = null;
 
         cameras.parallelStream().forEach(this::pullCameraData);
-
-        // for(int i = 0; i < cameras.size(); i++){
-        //     PhotonCamera camera = cameras.get(i);
-        //     PhotonPipelineResult result = camera.getLatestResult();
-        //     PhotonPoseEstimator poseEstimator = camera.getPoseEstimator();
-
-        //     boolean hasTargets = result.hasTargets();
-        //     if (hasTargets){
-        //         Optional<VisionUpdate> poseUpdate = poseEstimator.update();
-        //         if (poseUpdate.isPresent()) {
-        //             estimatedPoses.add(poseUpdate.get());
-        //         }
-        //     }
-        // }
 
         // have to have individual variables for each camera for thread safety because we are running them all in parallel 
         estimatedPoses.clear();

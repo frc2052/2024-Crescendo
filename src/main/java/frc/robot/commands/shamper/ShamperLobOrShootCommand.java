@@ -4,7 +4,6 @@
 
 package frc.robot.commands.shamper;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.commands.shamper.lookup.ShamperShootCommand;

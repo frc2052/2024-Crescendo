@@ -1,11 +1,6 @@
-package frc.robot.commands.auto.drive;
-
-import java.util.function.DoubleSupplier;
+package frc.robot.commands.autonomous.drive;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotState;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.Constants;

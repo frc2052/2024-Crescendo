@@ -7,14 +7,12 @@ package frc.robot;
 import frc.robot.auto.AutoFactory;
 import frc.robot.commands.climb.ClimberRetractCommand;
 import frc.robot.commands.climb.ClimberSlowRetractCommand;
-import frc.robot.commands.auto.commands.IntakeCommandAuto;
-import frc.robot.commands.auto.commands.drive.AimToSpeakerCommand;
-import frc.robot.commands.auto.commands.shamper.PreShootCommandAuto;
-import frc.robot.commands.auto.commands.shamper.ShootCommandAuto;
-import frc.robot.commands.auto.commands.shamper.ShootSubCommandAuto;
-import frc.robot.commands.auto.drive.AutoCenterLineNotePickupCommand;
-import frc.robot.commands.auto.drive.AutoCenterLinePickupCommand;
-import frc.robot.commands.auto.drive.AutoDriveWhileGamePieceAlign;
+import frc.robot.commands.autonomous.drive.AimToSpeakerCommand;
+import frc.robot.commands.autonomous.drive.AutoCenterLinePickupCommand;
+import frc.robot.commands.autonomous.intake.AutoIntakeCommand;
+import frc.robot.commands.autonomous.shamper.PreShootCommandAuto;
+import frc.robot.commands.autonomous.shamper.ShootCommandAuto;
+import frc.robot.commands.autonomous.shamper.ShootSubCommandAuto;
 import frc.robot.commands.climb.ClimberExtendCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.DriveWhileAimToAngle;
@@ -30,16 +28,10 @@ import frc.robot.commands.shamper.ShamperAmpCommand;
 import frc.robot.commands.shamper.ShamperDefaultCommand;
 import frc.robot.commands.shamper.ShamperLobOrShootCommand;
 import frc.robot.commands.shamper.lookup.ShamperAimAngleCommand;
-import frc.robot.commands.shamper.lookup.ShamperShootCommand;
 import frc.robot.commands.shamper.pivot.ShamperAngleCommand;
-import frc.robot.commands.shamper.pivot.ShamperCustomAngle;
-import frc.robot.commands.shamper.pivot.ShamperPivotManualDownCommand;
 import frc.robot.commands.shamper.pivot.ShamperPivotManualUpCommand;
-import frc.robot.commands.shamper.pivot.ShamperSubCommand;
 import frc.robot.commands.shamper.shoot.ShamperManualShootCommand;
 import frc.robot.commands.shamper.shoot.ShamperTrapCommand;
-import frc.robot.commands.shamper.shoot.ShamperCustomShotCommand;
-import frc.robot.commands.shamper.shoot.ShamperLobCommand;
 import frc.robot.commands.trap.TrapToggleCommand;
 import frc.robot.subsystems.AprilTagSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -53,11 +45,8 @@ import frc.robot.subsystems.MusicPlayerSubsystem;
 import frc.robot.subsystems.ShamperSubsystem;
 import frc.robot.subsystems.TrapArmSubsystem;
 import frc.robot.subsystems.ShamperSubsystem.ShamperSpeed;
-import frc.robot.util.AimingCalculator;
 import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
-import frc.robot.util.io.pixy.Pixy2CCC;
-
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -136,7 +125,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Shoot Command", new ShootCommandAuto(shamper, indexer));
     NamedCommands.registerCommand("Sub Shoot Command", new ShootSubCommandAuto(shamper, indexer));
-    NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer));
+    NamedCommands.registerCommand("Intake Command", new AutoIntakeCommand(intake, indexer));
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
     NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
     NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(2, -.6, -.4, drivetrain, pixy));
@@ -171,7 +160,7 @@ public class RobotContainer {
     );
 
     ParallelDeadlineGroup specialIntakeCommand = new ParallelDeadlineGroup(
-      new IntakeCommandAuto(intake, indexer), 
+      new AutoIntakeCommand(intake, indexer), 
       new GamePieceAlignmentCommand(2, -.4, .3, drivetrain, pixy)
     );
 

@@ -1,17 +1,15 @@
-package frc.robot.commands.auto.commands;
+package frc.robot.commands.autonomous.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShamperSubsystem;
 
-public class IntakeCommandAuto extends Command {
+public class AutoIntakeCommand extends Command {
     private final IntakeSubsystem intake;
     private final IndexerSubsystem indexer;
     // private final ShamperSubsystem shamper;
 
-    public IntakeCommandAuto(IntakeSubsystem intake, IndexerSubsystem indexer) {
+    public AutoIntakeCommand(IntakeSubsystem intake, IndexerSubsystem indexer) {
         this.intake = intake;
         this.indexer = indexer;
         // this.shamper = shamper;
