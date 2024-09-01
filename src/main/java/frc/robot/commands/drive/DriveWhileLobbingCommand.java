@@ -16,7 +16,6 @@ import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.util.AimingCalculator;
-import frc.robot.util.io.Dashboard;
 
 public class DriveWhileLobbingCommand extends DriveCommand {
   private final PIDController rotationController;

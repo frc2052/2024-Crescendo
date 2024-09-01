@@ -57,8 +57,6 @@ public class SwerveModule {
             )
         );
 
-        // TODO: Reduce CAN status frame rates
-
     /*
      * Drive Motor Initialization
      */
