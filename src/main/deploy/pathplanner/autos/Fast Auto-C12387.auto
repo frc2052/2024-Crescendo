@@ -177,7 +177,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Note Alignment Command"
+                        "name": null
                       }
                     }
                   ]
@@ -246,7 +246,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Note Alignment Command"
+                        "name": null
                       }
                     }
                   ]

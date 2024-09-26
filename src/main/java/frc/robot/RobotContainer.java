@@ -58,6 +58,7 @@ import frc.robot.util.AimingCalculator;
 import frc.robot.util.RobotStatusCommunicator;
 import frc.robot.util.io.Dashboard;
 import frc.robot.util.io.pixy.Pixy2CCC;
+import frc.robot.util.io.pixy.Pixy2CCC.Block;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -140,7 +141,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake Command", new IntakeCommandAuto(intake, indexer));
     NamedCommands.registerCommand("Aim Speaker Command", new AimToSpeakerCommand(drivetrain).withTimeout(.75));
     NamedCommands.registerCommand("Pre-Shoot Command", new PreShootCommandAuto(shamper));
-    NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(2, -.6, -.4, drivetrain, pixy));
+    // NamedCommands.registerCommand("Note Alignment Command", new GamePieceAlignmentCommand(2, -.6, -.4, drivetrain, pixy));
       
     Rotation2d towardsAmpSide = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 270 : 90);
     Rotation2d towardsSourceSide = Rotation2d.fromDegrees(RobotState.getInstance().isRedAlliance() ? 90 : 270);
@@ -149,6 +150,7 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Game Piece Alignment Towards Source", new AutoCenterLineNotePickupCommand(2, -.6, -.4, () -> towardsSourceSide, drivetrain, pixy, intake));
     NamedCommands.registerCommand("AMP SIDE Game Piece Alignment", new AutoCenterLinePickupCommand(drivetrain, pixy, intake, indexer, shamper, towardsAmpSide));
     NamedCommands.registerCommand("SOURCE SIDE Game Piece Alignment", new AutoCenterLinePickupCommand(drivetrain, pixy, intake, indexer, shamper, towardsSourceSide));
+    NamedCommands.registerCommand("Game Piece Alignment", new AutoDriveWhileGamePieceAlign(0.5, 1, 0.5, drivetrain, pixy));
 
     configureButtonBindings();
   }
@@ -256,6 +258,7 @@ public class RobotContainer {
     JoystickButton shamperManualShootButton = new JoystickButton(controlPanel, 12);
     JoystickButton shamperTrapShootButton = new JoystickButton(controlPanel, 2);
     Trigger shamperIdleToggleButton = new Trigger(() -> controlPanel.getY() > 0.5);
+    JoystickButton shamperShouldIdleToggleButton = new JoystickButton(controlPanel, 7);
     // JoystickButton shamperCustomAngleButton = new JoystickButton(translationJoystick, 7);
     // JoystickButton shamperSubButton = new JoystickButton(translationJoystick, 2);
 
@@ -264,6 +267,7 @@ public class RobotContainer {
     shamperManualShootButton.whileTrue(new ShamperManualShootCommand(shamper, ShamperSpeed.SPEAKER_SCORE));
     shamperTrapShootButton.whileTrue(new ShamperTrapCommand(shamper, indexer, trapArm));
     shamperIdleToggleButton.onTrue(new InstantCommand(() -> shamper.toggleCurrentIdle()));
+    shamperShouldIdleToggleButton.onTrue(new InstantCommand(() -> shamper.setShouldIdle(!shamper.shouldIdle())));
     // shamperCustomAngleButton.onTrue(new ShamperCustomAngle(shamper));
     // shamperSubButton.whileTrue(new ShamperSubCommand(shamper, indexer));
 
@@ -278,7 +282,7 @@ public class RobotContainer {
      Trigger shamperAmpButton = new Trigger(() -> controlPanel.getX() < -0.5);
      JoystickButton shamperClimbHeightButton = new JoystickButton(controlPanel, 9);
      JoystickButton shamperTrapButton = new JoystickButton(controlPanel, 5);
-     JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 7);
+    //  JoystickButton shamperManualUpButton = new JoystickButton(controlPanel, 7);
     //  JoystickButton shamperManualDownButton = new JoystickButton(controlPanel, 5);
 
      shamper90Button.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.NINETY));
@@ -288,7 +292,7 @@ public class RobotContainer {
      shamperAmpButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.AMP));
      shamperClimbHeightButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.CLIMB));
      shamperTrapButton.onTrue(new ShamperAngleCommand(shamper, Constants.Shamper.Angle.TRAP));
-     shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
+    //  shamperManualUpButton.whileTrue(new ShamperPivotManualUpCommand(shamper));
     //  shamperManualDownButton.whileTrue(new ShamperPivotManualDownCommand(shamper));
 
     /*
@@ -335,5 +339,16 @@ public class RobotContainer {
     // if (RobotState.getInstance().gyroResetNeeded()){
     //   drivetrain.zeroOdometry();
     // }
+  }
+
+  public void updatePixyToDashboard(){
+    Block closestNote = pixy.findCentermostBlock();
+    if(closestNote != null){
+      Dashboard.getInstance().putData("Closest Note Y", closestNote.getY());
+      Dashboard.getInstance().putData("Closest Note X", closestNote.getX());
+    } else {
+      Dashboard.getInstance().putData("Closest Note Y", -1);
+      Dashboard.getInstance().putData("Closest Note X", -1);
+    }
   }
 }

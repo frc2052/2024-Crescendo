@@ -31,16 +31,19 @@ public class ShamperDefaultCommand extends Command {
     // if(RobotState.getInstance().getIsClimbing()) {
     //   return;
     // }
-    if(Dashboard.getInstance().shouldIdle()) {
+    boolean shouldIdle = shamper.shouldIdle();
+    Dashboard.getInstance().putData("Should Idle", shouldIdle);
+    if(shouldIdle) {
       // if(RobotState.getInstance().getNoteHeldDetected()){
-        switch (shamper.getCurrentIdleMode()) {
-          case SPEAKER_IDLE:
-            shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
-            break;
-          case AMP_IDLE:
-            shamper.setShootSpeed(ShamperSpeed.AMP_IDLE);
-            break;
-        }
+        // TODO: add back idle (removed for demo)
+        // switch (shamper.getCurrentIdleMode()) {
+        //   case SPEAKER_IDLE:
+        //     shamper.setShootSpeed(ShamperSpeed.SPEAKER_IDLE);
+        //     break;
+        //   case AMP_IDLE:
+        //     shamper.setShootSpeed(ShamperSpeed.AMP_IDLE);
+        //     break;
+        // }
       // }
     } else {
       shamper.windDownShooter();

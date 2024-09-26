@@ -68,38 +68,38 @@
           }
         },
         {
-          "type": "race",
+          "type": "sequential",
           "data": {
             "commands": [
               {
-                "type": "sequential",
+                "type": "path",
+                "data": {
+                  "pathName": "P-3-8"
+                }
+              },
+              {
+                "type": "race",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "P-3-8"
+                        "name": "Intake Command"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Note Alignment Command"
+                        "name": "Game Piece Alignment"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Pre-Shoot Command"
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake Command"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pre-Shoot Command"
                 }
               }
             ]
@@ -143,38 +143,38 @@
           }
         },
         {
-          "type": "race",
+          "type": "sequential",
           "data": {
             "commands": [
               {
-                "type": "sequential",
+                "type": "path",
+                "data": {
+                  "pathName": "PiP-AS-7"
+                }
+              },
+              {
+                "type": "race",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "PiP-AS-7"
+                        "name": "Intake Command"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Note Alignment Command"
+                        "name": "Game Piece Alignment"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Pre-Shoot Command"
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake Command"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pre-Shoot Command"
                 }
               }
             ]

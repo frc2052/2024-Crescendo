@@ -25,10 +25,10 @@ public class AutoPastHamburgerCenterlineCommand extends Command {
     robotX = robotState.getRobotPose().getX();
 
     System.out.println("robot x " + robotX + " midline: " + Constants.FieldAndRobot.CENTER_LINE_HAMBURGER);
-    if(!robotState.isRedAlliance() && robotX > Constants.FieldAndRobot.CENTER_LINE_HAMBURGER - 0.25) {
+    if(!robotState.isRedAlliance() && robotX > Constants.FieldAndRobot.CENTER_LINE_HAMBURGER) {
       System.out.println("PASSED HAMBURGER CENTER");
       pastCenter = true;
-    } else if (robotState.isRedAlliance() && robotX < Constants.FieldAndRobot.CENTER_LINE_HAMBURGER + 0.25){
+    } else if (robotState.isRedAlliance() && robotX < Constants.FieldAndRobot.CENTER_LINE_HAMBURGER){
       pastCenter = true;
     } else {
       pastCenter = false;

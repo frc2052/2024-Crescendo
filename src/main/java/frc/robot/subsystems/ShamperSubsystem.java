@@ -51,9 +51,11 @@ public class ShamperSubsystem extends SubsystemBase {
   private ClosedLoopRampsConfigs shootConfig;
 
   private ShamperIdleMode currentIdleMode;
+  private boolean shouldIdle;
 
   public ShamperSubsystem() {
     currentIdleMode = ShamperIdleMode.SPEAKER_IDLE;
+    shouldIdle = true;
 
     goalSpeedUpper = 0;
     goalSpeedLower = 0;
@@ -327,6 +329,14 @@ public class ShamperSubsystem extends SubsystemBase {
 
   public ShamperIdleMode getCurrentIdleMode() {
     return currentIdleMode;
+  }
+
+  public void setShouldIdle(boolean shouldIdle) {
+    this.shouldIdle = shouldIdle;
+  }
+
+  public boolean shouldIdle(){
+    return shouldIdle;
   }
 
   @Override

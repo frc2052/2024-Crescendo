@@ -59,6 +59,7 @@ public class Robot extends LoggedRobot {
   public void disabledPeriodic() {
     m_robotContainer.precompileAuto();
     m_robotContainer.resetGyro();
+    m_robotContainer.updatePixyToDashboard();
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

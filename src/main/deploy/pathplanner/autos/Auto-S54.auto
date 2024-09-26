@@ -18,38 +18,32 @@
           }
         },
         {
-          "type": "race",
+          "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "sequential",
+                "type": "deadline",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "PiP-S-5"
+                        "name": "Intake Command"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Note Alignment Command"
+                        "name": "Pre-Shoot Command"
                       }
                     }
                   ]
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Intake Command"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pre-Shoot Command"
+                  "pathName": "PiP-S-5"
                 }
               }
             ]
@@ -87,38 +81,32 @@
           }
         },
         {
-          "type": "race",
+          "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "sequential",
+                "type": "deadline",
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "SS-4"
+                        "name": "Intake Command"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Note Alignment Command"
+                        "name": "Pre-Shoot Command"
                       }
                     }
                   ]
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Intake Command"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Pre-Shoot Command"
+                  "pathName": "SS-4"
                 }
               }
             ]

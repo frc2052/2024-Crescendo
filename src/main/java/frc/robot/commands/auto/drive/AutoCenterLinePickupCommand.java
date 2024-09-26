@@ -75,7 +75,7 @@ public class AutoCenterLinePickupCommand extends SequentialCommandGroup {
             // second attempt (facing down the line)
             new ParallelRaceGroup(
               // hotdog midline
-              new AutoPastHotdogCenterlineCommand(),
+              // new AutoPastHotdogCenterlineCommand(),
               new IntakeCommand(intake, indexer, shamper),
               new AutoDriveWhileGamePieceAlign(0.5, 1, 0.5, drivetrain, pixy)
             )

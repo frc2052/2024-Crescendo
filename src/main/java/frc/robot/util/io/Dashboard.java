@@ -20,7 +20,7 @@ public class Dashboard {
     private final NetworkTable rPiTable;
 
     private final SendableChooser<DriveMode> driveModeChooser;
-    private final SendableChooser<Idle> shamperIdleModeChooser;
+    // private final SendableChooser<Idle> shamperIdleModeChooser;
     private final SendableChooser<Auto> autoChooser;
     private final SendableChooser<ClimberMode> climberModeChooser;
 
@@ -44,11 +44,11 @@ public class Dashboard {
         driveModeChooser.setDefaultOption(DriveMode.FIELD_CENTRIC.name(), DriveMode.FIELD_CENTRIC);
         SmartDashboard.putData(Constants.Dashboard.DRIVE_MODE_KEY, driveModeChooser);
 
-        shamperIdleModeChooser = new SendableChooser<Idle>();
-        shamperIdleModeChooser.addOption(Idle.NO_IDLE.name(), Idle.NO_IDLE);
-        shamperIdleModeChooser.addOption(Idle.IDLE.name(), Idle.IDLE);
-        shamperIdleModeChooser.setDefaultOption(Idle.IDLE.name(), Idle.IDLE);
-        SmartDashboard.putData(Constants.Dashboard.IDLE_CHOOSER_KEY, shamperIdleModeChooser);
+        // shamperIdleModeChooser = new SendableChooser<Idle>();
+        // shamperIdleModeChooser.addOption(Idle.NO_IDLE.name(), Idle.NO_IDLE);
+        // shamperIdleModeChooser.addOption(Idle.IDLE.name(), Idle.IDLE);
+        // shamperIdleModeChooser.setDefaultOption(Idle.IDLE.name(), Idle.IDLE);
+        // SmartDashboard.putData(Constants.Dashboard.IDLE_CHOOSER_KEY, shamperIdleModeChooser);
         
         autoChooser = new SendableChooser<Auto>();
         for (Auto auto : Auto.values()) {
@@ -125,9 +125,9 @@ public class Dashboard {
         SmartDashboard.putBoolean("Is Climbing", isClimbing);
     }
     
-    public boolean shouldIdle() {
-        return shamperIdleModeChooser.getSelected() == Idle.IDLE;
-    }
+    // public boolean shouldIdle() {
+    //     return shamperIdleModeChooser.getSelected() == Idle.IDLE;
+    // }
 
     public Auto getAuto() {
         return autoChooser.getSelected();
